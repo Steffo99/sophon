@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "sophon"
+version = "0.1.0"
+description = "Django project for dataset collection"
+authors = ["Stefano Pigozzi <256895@studenti.unimore.it>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^3.1.7"
+psycopg2 = "^2.8.6"
+djangorestframework = "^3.12.4"
+Markdown = "^3.3.4"
+django-filter = "^2.4.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
