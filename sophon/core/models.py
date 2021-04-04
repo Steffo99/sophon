@@ -16,9 +16,7 @@ class DataSource(models.Model):
     pandasdmx_id = models.CharField("Internal pandasdmx source id", max_length=16, primary_key=True)
     builtin = models.BooleanField("If the source is builtin in pandasdmx")
 
-    name = models.CharField("Full name of the data source", max_length=512)
-    documentation_url = models.URLField("Documentation URL provided by the data source")
-    api_url = models.URLField("API URL where the statistical data can be requested")
+    settings = models.JSONField("Source info to pass to pandasdmx if the source is not builtin")
 
 
 class Project(models.Model):
