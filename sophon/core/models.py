@@ -16,7 +16,7 @@ class DataSource(models.Model):
     pandasdmx_id = models.CharField("Internal pandasdmx source id", max_length=16, primary_key=True)
     builtin = models.BooleanField("If the source is builtin in pandasdmx")
 
-    settings = models.JSONField("Source info to pass to pandasdmx if the source is not builtin")
+    settings = models.JSONField("Source info to pass to pandasdmx if the source is not builtin", null=True)
 
 
 class Project(models.Model):
