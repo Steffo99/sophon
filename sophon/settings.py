@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ["DJANGO_SECRET_KEY"]
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY", "change-me-in-production")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DJANGO_DEBUG"))
@@ -77,10 +77,17 @@ WSGI_APPLICATION = 'sophon.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'HOST': '',  # Connect via UNIX socket (does not work on Windows)
+        'NAME': 'sophon',
+        'USER': 'sophon',  # Connect using its own user, isolating sophon from the rest of the server
     }
 }
+
+# Remember to run the following commands on a new installation:
+# sudo -iu postgres
+# createuser sophon
+# createdb --owner=sophon sophon
 
 
 # Password validation
