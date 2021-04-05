@@ -1,3 +1,20 @@
-from django.shortcuts import render
+from rest_framework import viewsets, permissions
+from . import models, serializers
 
-# Create your views here.
+
+class ProjectViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for :class:`.models.Project` instances.
+    """
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectSerializer
+    permission_classes = []
+
+
+class DataSourceViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for :class:`.models.DataSource` instances.
+    """
+    queryset = models.DataSource.objects.all()
+    serializer_class = serializers.DataSourceSerializer
+    permission_classes = []
