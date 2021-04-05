@@ -55,7 +55,8 @@ class Project(models.Model):
     sources = models.ManyToManyField(
         DataSource,
         help_text="The sources used by this project.",
-        related_name="used_in"
+        related_name="used_in",
+        null=True,
     )
 
     def __str__(self):
