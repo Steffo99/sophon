@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'sophon.core',
+    'sophon.core',  # FIXME: Is .apps.CoreConfig not needed?
 ]
 
 MIDDLEWARE = [
