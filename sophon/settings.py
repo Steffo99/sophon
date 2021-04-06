@@ -79,9 +79,10 @@ WSGI_APPLICATION = 'sophon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': '',  # Connect via UNIX socket (does not work on Windows)
-        'NAME': 'sophon',
-        'USER': 'sophon',  # Connect using its own user, isolating sophon from the rest of the server
+        'HOST': os.environ.get("DJANGO_DATABASE_HOST", ""),  # Connect via UNIX socket (does not work on Windows)
+        'NAME': os.environ.get("DJANGO_DATABASE_NAME", "sophon"),
+        'USER': os.environ.get("DJANGO_DATABASE_USER", "sophon"),  # Connect using its own user, isolating sophon from the rest of the server
+        'PASSWORD': os.environ.get("DJANGO_DATABASE_PASSWORD", ""),
     }
 }
 
