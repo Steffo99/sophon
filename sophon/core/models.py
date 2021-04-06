@@ -56,7 +56,7 @@ class Project(models.Model):
         DataSource,
         help_text="The sources used by this project.",
         related_name="used_in",
-        null=True,
+        blank=True,
     )
 
     def __str__(self):
