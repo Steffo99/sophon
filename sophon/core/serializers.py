@@ -16,6 +16,22 @@ class DataSourceSerializer(serializers.ModelSerializer):
         ]
 
 
+class DataFlowSerializer(serializers.ModelSerializer):
+    """
+    Serializer for :class:`.models.DataFlow` .
+    """
+
+    class Meta:
+        model = models.DataFlow
+        fields = [
+            "id",
+            "datasource_id",
+            "sdmx_id",
+            "last_update",
+            "description",
+        ]
+
+
 class ProjectSerializer(serializers.ModelSerializer):
     """
     Serializer for :class:`.models.Project` .
