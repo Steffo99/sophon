@@ -19,7 +19,7 @@ The following environment variables should be set:
 - `DJANGO_DATABASE_USER`: the username of the PostgreSQL user to login as
 - `DJANGO_DATABASE_PASSWORD`: the password of the PostgreSQL user to login as
 - `DJANGO_LANGUAGE_CODE`: the language to use in the dynamic pages
-- `DJANGO_TIME_ZONE`: the timezone to use in the display of datetimes
+- `DJANGO_TIME_ZONE`: the timezone to use in the display of datetimes (Italy uses `CET`)
 - `DJANGO_SETTINGS_MODULE`: should always be `sophon.settings`
 
 ## Development
