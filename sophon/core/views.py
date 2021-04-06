@@ -11,6 +11,15 @@ class ProjectViewSet(viewsets.ModelViewSet):
     permission_classes = []
 
 
+class DataFlowViewSet(viewsets.ModelViewSet):
+    """
+    Viewset for :class:`.models.DataFlow` instances.
+    """
+    queryset = models.DataFlow.objects.all()
+    serializer_class = serializers.DataFlowSerializer
+    permission_classes = []
+
+
 class DataSourceViewSet(viewsets.ModelViewSet):
     """
     Viewset for :class:`.models.DataSource` instances.

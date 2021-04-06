@@ -35,6 +35,38 @@ class DataSource(models.Model):
         return self.pandasdmx_id
 
 
+class DataFlow(models.Model):
+    """
+    A :class:`.DataFlow` is a object containing the metadata of a SDMX data set.
+
+    See `this page <https://ec.europa.eu/eurostat/online-help/redisstat-admin/en/TECH_A_main/>`_ for more details.
+    """
+
+    datasource_id = models.ForeignKey(
+        DataSource,
+        help_text="The DataSource this object belongs to.",
+        on_delete=models.RESTRICT,
+    )
+    sdmx_id = models.CharField(
+        "SDMX id",
+        help_text="Internal string used in SDMX communication to identify the DataFlow.",
+        max_length=64,
+    )
+    last_update = models.DateTimeField(
+        "Last updated",
+        help_text="The datetime at which the properties of this DataFlow were last updated.",
+    )
+
+    description = models.CharField(
+        "DataFlow description",
+        help_text="Natural language description of the DataFlow.",
+        max_length=8192,
+    )
+
+    def __str__(self):
+        return f"{self.datasource_id} | {self.sdmx_id} | {self.description}"
+
+
 class Project(models.Model):
     """
     A research :class:`.Project` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
