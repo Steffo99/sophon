@@ -1,4 +1,7 @@
 from django.db import models
+import pandas
+import pandasdmx
+import pandasdmx.message
 
 
 class DataSource(models.Model):
@@ -31,6 +34,42 @@ class DataSource(models.Model):
         null=True
     )
 
+    def to_pandasdmx_source(self) -> pandasdmx.source.Source:
+        """
+        Convert the :class:`.DataSource` to a :class:`pandasdmx.source.Source`\\ .
+
+        :return: The :class:`pandasdmx.source.Source`\\ .
+
+        .. todo:: :func:`.to_pandasdmx` does not currently support non :attr:`.builtin` sources.
+        """
+        return pandasdmx.source.sources[self.pandasdmx_id]
+
+    def to_pandasdmx_request(self) -> pandasdmx.Request:
+        """
+        Convert the :class:`.DataSource` to a :class:`pandasdmx.Request` client.
+
+        :return: The :class:`pandasdmx.Request`\\ .
+        """
+        return pandasdmx.Request(source=self.to_pandasdmx_source().id)
+
+    def request_flows(self) -> tuple[pandas.Series, pandas.Series]:
+        """
+        Retrieve all available dataflows and datastructures as two :class:`pandas.Series`\\ .
+
+        :return: A :class:`tuple` containing all dataflows and all datastructures.
+
+        .. note:: This seems to be an expensive operation, as it may take a few minutes to execute.
+
+        .. todo:: This function assumes both ``dataflow`` and ``structure`` will always be available.
+                  Can something happen to make at least one of them :data:`None` ?
+        """
+        source = self.to_pandasdmx_request()
+        message: pandasdmx.message.Message = source.dataflow()
+        data: dict[str, pandas.Series] = message.to_pandas()
+        flows = data["dataflow"]
+        structs = data["structure"]
+        return flows, structs
+
     def __str__(self):
         return self.pandasdmx_id
 
@@ -55,6 +94,7 @@ class DataFlow(models.Model):
     last_update = models.DateTimeField(
         "Last updated",
         help_text="The datetime at which the properties of this DataFlow were last updated.",
+        auto_now=True,
     )
 
     description = models.CharField(
