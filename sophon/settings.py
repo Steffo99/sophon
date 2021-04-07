@@ -141,3 +141,31 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# Logging
+# https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-LOGGING
+
+LOGGING = {
+    "version": 1,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+            "level": "DEBUG",
+            "stream": "ext://sys.stdout",
+        },
+    },
+    "loggers": {
+        "sophon": {
+            "level": "DEBUG",
+        },
+        "django": {
+            "level": "INFO",
+        },
+        "rest_framework": {
+            "level": "INFO",
+        },
+    },
+    "root": {
+        "handlers": ["console"],
+    }
+}
