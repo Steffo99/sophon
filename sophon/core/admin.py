@@ -10,14 +10,36 @@ class CoreAdmin(admin.ModelAdmin):
 
 @admin.register(models.Project)
 class ProjectAdmin(CoreAdmin):
-    pass
+    """
+    :class:`.CoreAdmin` class for :class:`.models.Project` .
+    """
+
+    list_display = (
+        "name",
+        "description",
+    )
 
 
 @admin.register(models.DataSource)
 class DataSourceAdmin(CoreAdmin):
-    pass
+    """
+    :class:`.CoreAdmin` class for :class:`.models.DataSource` .
+    """
+
+    list_display = (
+        "pandasdmx_id",
+        "builtin",
+    )
 
 
 @admin.register(models.DataFlow)
 class DataFlowAdmin(CoreAdmin):
-    pass
+    """
+    :class:`.CoreAdmin` class for :class:`.models.DataFlow` .
+    """
+
+    list_display = (
+        "sdmx_id",
+        "datasource_id",
+        "description",
+    )
