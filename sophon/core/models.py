@@ -1,7 +1,10 @@
 from django.db import models
+from django.core import validators
 import pandas
 import pandasdmx
 import pandasdmx.message
+import typing as t
+import json
 
 
 class DataSource(models.Model):
@@ -16,23 +19,202 @@ class DataSource(models.Model):
     method.
     """
 
-    pandasdmx_id = models.CharField(
+    id = models.CharField(
         "PandaSDMX id",
         help_text="Internal id used by PandaSDMX to reference the source.",
         max_length=16,
         primary_key=True,
     )
 
+    name = models.CharField(
+        "Name",
+        help_text="Full length name of the data source.",
+        max_length=512,
+    )
+
+    description = models.TextField(
+        "Description",
+        help_text="Long description of the data source.",
+        blank=True,
+    )
+
+    url = models.URLField(
+        "API URL",
+        help_text="The base URL of the SDMX endpoint of the data source."
+    )
+
+    documentation = models.URLField(
+        "Documentation URL",
+        help_text="Documentation URL of the data source.",
+        null=True,
+    )
+
+    data_content_type = models.CharField(
+        "API type",
+        help_text="The format in which the API returns its data.",
+        choices=[
+            ("JSON", "JSON"),
+            ("XML", "XML"),
+        ],
+        default="XML",
+        max_length=16,
+    )
+
+    headers = models.JSONField(
+        "HTTP Headers",
+        help_text="HTTP headers to attach to every request, as a JSON object.",
+        default=dict,
+    )
+
+    resources = models.JSONField(
+        "Resources",
+        help_text="Unknown and undocumented JSON object.",
+        default=dict,
+    )
+
+    supports_agencyscheme = models.BooleanField(
+        "Supports AgencyScheme",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.AgencyScheme">'
+                  'AgencyScheme '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_categoryscheme = models.BooleanField(
+        "Supports CategoryScheme",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.CategoryScheme">'
+                  'CategoryScheme '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_codelist = models.BooleanField(
+        "Supports CodeList",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.CodeList">'
+                  'CodeList '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_conceptscheme = models.BooleanField(
+        "Supports ConceptScheme",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.ConceptScheme">'
+                  'ConceptScheme '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_data = models.BooleanField(
+        "Supports DataSet",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.DataSet">'
+                  'DataSet '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_dataflow = models.BooleanField(
+        "Supports DataflowDefinition",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.DataflowDefinition">'
+                  'DataflowDefinition '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_datastructure = models.BooleanField(
+        "Supports DataStructureDefinition",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.DataStructureDefinition">'
+                  'CategoryScheme '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_provisionagreement = models.BooleanField(
+        "Supports ProvisionAgreement",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.model.ProvisionAgreement">'
+                  'CategoryScheme '
+                  '</a> or not.',
+        default=True,
+    )
+
+    supports_preview = models.BooleanField(
+        "Supports previews",
+        help_text='Whether the data source supports '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.Request.preview_data">'
+                  'previews of data '
+                  '</a> or not.',
+        default=False,
+    )
+
+    supports_structurespecific_data = models.BooleanField(
+        "Supports structure-specific data messages",
+        help_text='Whether the data source returns '
+                  '<a href="https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.source.Source">'
+                  'structure-specific data messages '
+                  '</a> or not.',
+        default=False,
+    )
+
+    def supports_dict(self) -> dict:
+        return {
+            "agencyscheme": self.supports_agencyscheme,
+            "categoryscheme": self.supports_categoryscheme,
+            "codelist": self.supports_codelist,
+            "conceptscheme": self.supports_conceptscheme,
+            "data": self.supports_data,
+            "dataflow": self.supports_dataflow,
+            "datastructure": self.supports_datastructure,
+            "provisionagreement": self.supports_provisionagreement,
+            "preview": self.supports_preview,
+            "structure-specific data": self.supports_structurespecific_data,
+        }
+
+    def info_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "name": self.name,
+            "data_content_type": self.data_content_type,
+            "url": self.url,
+            "documentation": self.documentation,
+            "supports": self.supports_dict(),
+            "headers": self.headers,
+            "resources": self.resources,
+        }
+
     builtin = models.BooleanField(
         "Builtin",
-        help_text="Whether the source is builtin in PandaSDMX or not.",
+        help_text="Whether the source is built-in in PandaSDMX or not.",
     )
-    settings = models.JSONField(
-        "Settings",
-        help_text="Info parameter to pass to pandasdmx.add_source if the source is not builtin "
-                  "(see https://pandasdmx.readthedocs.io/en/latest/api.html#pandasdmx.add_source).",
-        null=True
-    )
+
+    @classmethod
+    def create_from_sources_json(cls, file: t.TextIO):
+        j_sources: list = json.load(file)
+
+        for j_source in j_sources:
+
+            # Flatten supports
+            if supports := j_source.get("supports"):
+                del j_source["supports"]
+                for key, value in supports.items():
+                    if key == "structure-specific data":
+                        j_source["supports_structurespecific_data"] = value
+                    else:
+                        j_source[f"supports_{key}"] = value
+
+            cls.objects.update_or_create(
+                id=j_source["id"],
+                defaults={
+                    **j_source,
+                    "builtin": True,
+                }
+            )
 
     def to_pandasdmx_source(self) -> pandasdmx.source.Source:
         """
@@ -42,7 +224,7 @@ class DataSource(models.Model):
 
         .. todo:: :func:`.to_pandasdmx` does not currently support non :attr:`.builtin` sources.
         """
-        return pandasdmx.source.sources[self.pandasdmx_id]
+        return pandasdmx.source.sources[self.id]
 
     def to_pandasdmx_request(self) -> pandasdmx.Request:
         """
@@ -51,6 +233,12 @@ class DataSource(models.Model):
         :return: The :class:`pandasdmx.Request`\\ .
         """
         return pandasdmx.Request(source=self.to_pandasdmx_source().id)
+
+    last_sync = models.DateTimeField(
+        "Last updated",
+        help_text="The datetime at which the data flows of this source were last syncronized.",
+        null=True,
+    )
 
     def request_flows(self) -> tuple[pandas.Series, pandas.Series]:
         """
@@ -71,7 +259,7 @@ class DataSource(models.Model):
         return flows, structs
 
     def __str__(self):
-        return self.pandasdmx_id
+        return self.id
 
 
 class DataFlow(models.Model):
@@ -81,30 +269,32 @@ class DataFlow(models.Model):
     See `this page <https://ec.europa.eu/eurostat/online-help/redisstat-admin/en/TECH_A_main/>`_ for more details.
     """
 
-    datasource_id = models.ForeignKey(
+    surrogate_id = models.IntegerField(
+        "Surrogate id",
+        help_text="Internal id used by Django to identify this DataFlow.",
+        primary_key=True,
+    )
+
+    datasource = models.ForeignKey(
         DataSource,
         help_text="The DataSource this object belongs to.",
         on_delete=models.RESTRICT,
     )
-    sdmx_id = models.CharField(
+
+    id = models.CharField(
         "SDMX id",
         help_text="Internal string used in SDMX communication to identify the DataFlow.",
         max_length=64,
     )
-    last_update = models.DateTimeField(
-        "Last updated",
-        help_text="The datetime at which the properties of this DataFlow were last updated.",
-        auto_now=True,
-    )
 
-    description = models.CharField(
-        "DataFlow description",
+    description = models.TextField(
+        "Description",
         help_text="Natural language description of the DataFlow.",
-        max_length=8192,
+        blank=True,
     )
 
     def __str__(self):
-        return f"{self.datasource_id} | {self.sdmx_id} | {self.description}"
+        return f"[{self.datasource}] {self.id}"
 
 
 class Project(models.Model):
@@ -113,23 +303,31 @@ class Project(models.Model):
     hypothesis.
     """
 
+    slug = models.SlugField(
+        "Slug",
+        help_text="Unique alphanumeric string which identifies the project.",
+        max_length=64,
+        primary_key=True,
+    )
+
     name = models.CharField(
-        "Project name",
+        "Name",
         help_text="The display name of the project.",
         max_length=512,
     )
-    description = models.CharField(
-        "Project description",
+
+    description = models.TextField(
+        "Description",
         help_text="A brief description of the project, to be displayed inthe overview.",
-        max_length=8192,
+        blank=True,
     )
 
-    sources = models.ManyToManyField(
-        DataSource,
-        help_text="The sources used by this project.",
+    flows = models.ManyToManyField(
+        DataFlow,
+        help_text="The DataFlows used in this project.",
         related_name="used_in",
         blank=True,
     )
 
     def __str__(self):
-        return self.name
+        return self.slug
