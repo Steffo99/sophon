@@ -2,6 +2,16 @@ from django.contrib import admin
 from . import models
 
 
-admin.site.register(models.Project)
-admin.site.register(models.DataSource)
-admin.site.register(models.DataFlow)
+@admin.register(models.Project)
+class ProjectAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.DataSource)
+class DataSourceAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(models.DataFlow)
+class DataFlowAdmin(admin.ModelAdmin):
+    pass
