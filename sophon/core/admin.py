@@ -15,8 +15,8 @@ class ProjectAdmin(CoreAdmin):
     """
 
     list_display = (
+        "slug",
         "name",
-        "description",
     )
 
 
@@ -27,8 +27,62 @@ class DataSourceAdmin(CoreAdmin):
     """
 
     list_display = (
-        "pandasdmx_id",
-        "builtin",
+        "id",
+        "name",
+        "data_content_type",
+        "last_sync",
+    )
+
+    fieldsets = (
+        (
+            None, {
+                "fields": (
+                    "id",
+                    "name",
+                    "description",
+                )
+            }
+        ),
+        (
+            "URLs", {
+                "fields": (
+                    "url",
+                    "documentation",
+                )
+            }
+        ),
+        (
+            "API configuration", {
+                "fields": (
+                    "data_content_type",
+                    "headers",
+                    "resources",
+                )
+            }
+        ),
+        (
+            "Features supported", {
+                "fields": (
+                    "supports_agencyscheme",
+                    "supports_categoryscheme",
+                    "supports_codelist",
+                    "supports_conceptscheme",
+                    "supports_data",
+                    "supports_dataflow",
+                    "supports_datastructure",
+                    "supports_provisionagreement",
+                    "supports_preview",
+                    "supports_structurespecific_data",
+                )
+            }
+        ),
+        (
+            "Syncronization", {
+                "fields": (
+                    "last_sync",
+                )
+            }
+        )
     )
 
 
@@ -39,7 +93,6 @@ class DataFlowAdmin(CoreAdmin):
     """
 
     list_display = (
-        "sdmx_id",
-        "datasource_id",
-        "description",
+        "datasource",
+        "id",
     )

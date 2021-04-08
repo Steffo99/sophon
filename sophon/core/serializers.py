@@ -10,9 +10,25 @@ class DataSourceSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DataSource
         fields = [
-            "pandasdmx_id",
+            "id",
+            "name",
+            "description",
+            "url",
+            "documentation",
+            "data_content_type",
+            "headers",
+            "supports_agencyscheme",
+            "supports_categoryscheme",
+            "supports_codelist",
+            "supports_conceptscheme",
+            "supports_data",
+            "supports_dataflow",
+            "supports_datastructure",
+            "supports_provisionagreement",
+            "supports_preview",
+            "supports_structurespecific_data",
             "builtin",
-            "settings",
+            "last_sync",
         ]
 
 
@@ -24,10 +40,9 @@ class DataFlowSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.DataFlow
         fields = [
+            "surrogate_id",
+            "datasource",
             "id",
-            "datasource_id",
-            "sdmx_id",
-            "last_update",
             "description",
         ]
 
@@ -40,8 +55,8 @@ class ProjectSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = [
-            "id",
+            "slug",
             "name",
             "description",
-            "sources",
+            "flows",
         ]
