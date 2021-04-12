@@ -1,5 +1,6 @@
 from django.db import models
 from django.core import validators
+from django.contrib.auth.models import User
 import pandas
 import pandasdmx
 import pandasdmx.message
@@ -331,6 +332,19 @@ class Project(models.Model):
             ("PRIVATE", "🔒 Private"),
         ],
         default="INTERNAL",
+    )
+
+    owner = models.ForeignKey(
+        User,
+        help_text="The user who owns the project, and has full access to it.",
+        on_delete=models.CASCADE,
+    )
+
+    collaborators = models.ManyToManyField(
+        User,
+        help_text="The users who can edit the project.",
+        related_name="collaborates_in",
+        blank=True,
     )
 
     flows = models.ManyToManyField(
