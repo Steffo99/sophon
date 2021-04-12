@@ -6,6 +6,20 @@ import pandasdmx
 import pandasdmx.message
 import typing as t
 import json
+import abc
+
+
+class RelatedToProject(metaclass=abc.ABCMeta):
+    """
+    A model which is related to :class:`.Project` in some way.
+    """
+
+    @abc.abstractmethod
+    def get_project(self) -> "Project":
+        """
+        :return: The project this object is related to.
+        """
+        raise NotImplementedError()
 
 
 class DataSource(models.Model):
@@ -298,11 +312,14 @@ class DataFlow(models.Model):
         return f"[{self.datasource}] {self.id}"
 
 
-class Project(models.Model):
+class Project(models.Model, RelatedToProject):
     """
     A research :class:`.Project` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
     hypothesis.
     """
+
+    def get_project(self):
+        return self
 
     slug = models.SlugField(
         "Slug",
