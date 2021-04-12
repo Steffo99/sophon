@@ -58,5 +58,8 @@ class ProjectSerializer(serializers.ModelSerializer):
             "slug",
             "name",
             "description",
+            "visibility",
+            "owner",
+            "collaborators",
             "flows",
         ]
