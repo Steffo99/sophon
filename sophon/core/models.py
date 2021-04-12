@@ -322,6 +322,17 @@ class Project(models.Model):
         blank=True,
     )
 
+    visibility = models.CharField(
+        "Visibility",
+        help_text="A setting specifying who can view the project.",
+        choices=[
+            ("PUBLIC", "🌍 Public"),
+            ("INTERNAL", "🏭 Internal"),
+            ("PRIVATE", "🔒 Private"),
+        ],
+        default="INTERNAL",
+    )
+
     flows = models.ManyToManyField(
         DataFlow,
         help_text="The DataFlows used in this project.",
