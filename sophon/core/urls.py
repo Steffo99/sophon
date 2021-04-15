@@ -4,7 +4,9 @@ from . import views
 
 
 router = DefaultRouter()
-router.register("projects", views.ProjectViewSet)
+router.register("projects_external", views.ProjectExternalViewSet)
+router.register("projects_contributor", views.ProjectContributorViewSet)
+router.register("projects_owner", views.ProjectOwnerViewSet)
 router.register("datasources", views.DataSourceViewSet)
 router.register("dataflows", views.DataFlowViewSet)
 
