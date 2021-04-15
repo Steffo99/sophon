@@ -30,6 +30,10 @@ class DataSourceSerializer(serializers.ModelSerializer):
             "builtin",
             "last_sync",
         ]
+        read_only_fields = [
+            "builtin",
+            "last_sync",
+        ]
 
 
 class DataFlowSerializer(serializers.ModelSerializer):
@@ -45,11 +49,35 @@ class DataFlowSerializer(serializers.ModelSerializer):
             "id",
             "description",
         ]
+        read_only_fields = [
+            "surrogate_id",
+        ]
 
 
-class ProjectSerializer(serializers.ModelSerializer):
+class ProjectExternalSerializer(serializers.ModelSerializer):
     """
-    Serializer for :class:`.models.Project` .
+    Serializer for :class:`.models.Project` when accessed from outside.
+    """
+
+    class Meta:
+        model = models.Project
+        fields = [
+            "slug",
+            "name",
+            "visibility",
+            "owner",
+        ]
+        read_only_fields = [
+            "slug",
+            "name",
+            "visibility",
+            "owner",
+        ]
+
+
+class ProjectCollaboratorSerializer(serializers.ModelSerializer):
+    """
+    Serializer for :class:`.models.Project` when accessed as a collaborator.
     """
 
     class Meta:
@@ -62,4 +90,31 @@ class ProjectSerializer(serializers.ModelSerializer):
             "owner",
             "collaborators",
             "flows",
+        ]
+        read_only_fields = [
+            "slug",
+            "visibility",
+            "owner",
+            "collaborators",
+        ]
+
+
+class ProjectOwnerSerializer(serializers.ModelSerializer):
+    """
+    Serializer for :class:`.models.Project` when accessed as the project owner.
+    """
+
+    class Meta:
+        model = models.Project
+        fields = [
+            "slug",
+            "name",
+            "description",
+            "visibility",
+            "owner",
+            "collaborators",
+            "flows",
+        ]
+        read_only_fields = [
+            "slug",
         ]

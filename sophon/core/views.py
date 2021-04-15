@@ -1,4 +1,4 @@
-from rest_framework import viewsets, decorators, response, permissions
+from rest_framework import viewsets, decorators, response, permissions, mixins
 from . import models, serializers, permissions as custom_permissions
 from datetime import datetime
 from logging import getLogger
@@ -6,19 +6,46 @@ from logging import getLogger
 log = getLogger(__name__)
 
 
-class ProjectViewSet(viewsets.ModelViewSet):
+class ProjectExternalViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    Viewset for :class:`.models.Project` instances.
+    Viewset for :class:`.models.Project` instances when viewed by the outside.
     """
+
     queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectSerializer
-    permission_classes = [custom_permissions.ProjectPermissions]
+    serializer_class = serializers.ProjectExternalSerializer
+    permission_classes = []
+
+
+class ProjectContributorViewSet(viewsets.GenericViewSet,
+                                mixins.RetrieveModelMixin,
+                                mixins.UpdateModelMixin):
+    """
+    Viewset for :class:`.models.Project` instances when viewed by a project contributor.
+    """
+
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectCollaboratorSerializer
+    permission_classes = [custom_permissions.CanEditObject]
+
+
+class ProjectOwnerViewSet(viewsets.GenericViewSet,
+                          mixins.RetrieveModelMixin,
+                          mixins.UpdateModelMixin,
+                          mixins.DestroyModelMixin):
+    """
+    Viewset for :class:`.models.Project` instances when viewed by a project owner.
+    """
+
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectOwnerSerializer
+    permission_classes = [custom_permissions.CanAdministrateObject]
 
 
 class DataFlowViewSet(viewsets.ModelViewSet):
     """
     Viewset for :class:`.models.DataFlow` instances.
     """
+
     queryset = models.DataFlow.objects.all()
     serializer_class = serializers.DataFlowSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
@@ -28,6 +55,7 @@ class DataSourceViewSet(viewsets.ModelViewSet):
     """
     Viewset for :class:`.models.DataSource` instances.
     """
+
     queryset = models.DataSource.objects.all()
     serializer_class = serializers.DataSourceSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
