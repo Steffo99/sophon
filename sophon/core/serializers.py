@@ -54,11 +54,7 @@ class DataFlowSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProjectExternalSerializer(serializers.ModelSerializer):
-    """
-    Serializer for :class:`.models.Project` when accessed from outside.
-    """
-
+class ProjectListSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = [
@@ -76,10 +72,6 @@ class ProjectExternalSerializer(serializers.ModelSerializer):
 
 
 class ProjectCollaboratorSerializer(serializers.ModelSerializer):
-    """
-    Serializer for :class:`.models.Project` when accessed as a collaborator.
-    """
-
     class Meta:
         model = models.Project
         fields = [
@@ -117,4 +109,5 @@ class ProjectOwnerSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = [
             "slug",
+            "owner",
         ]

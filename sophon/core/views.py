@@ -1,4 +1,4 @@
-from rest_framework import viewsets, decorators, response, permissions, mixins
+from rest_framework import viewsets, decorators, response, permissions, mixins, generics
 from . import models, serializers, permissions as custom_permissions
 from datetime import datetime
 from logging import getLogger
@@ -6,39 +6,47 @@ from logging import getLogger
 log = getLogger(__name__)
 
 
-class ProjectExternalViewSet(viewsets.ReadOnlyModelViewSet):
-    """
-    Viewset for :class:`.models.Project` instances when viewed by the outside.
-    """
-
+class ProjectViewSet(viewsets.GenericViewSet):
     queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectExternalSerializer
+
+    def get_serializer_class(self):
+        if self.action == ""
+
+
+class ProjectListView(generics.ListAPIView):
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectListSerializer
     permission_classes = []
 
 
-class ProjectContributorViewSet(viewsets.GenericViewSet,
-                                mixins.RetrieveModelMixin,
-                                mixins.UpdateModelMixin):
-    """
-    Viewset for :class:`.models.Project` instances when viewed by a project contributor.
-    """
-
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectCollaboratorSerializer
-    permission_classes = [custom_permissions.CanEditObject]
-
-
-class ProjectOwnerViewSet(viewsets.GenericViewSet,
-                          mixins.RetrieveModelMixin,
-                          mixins.UpdateModelMixin,
-                          mixins.DestroyModelMixin):
-    """
-    Viewset for :class:`.models.Project` instances when viewed by a project owner.
-    """
-
+class ProjectCreateView(generics.CreateAPIView):
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectOwnerSerializer
-    permission_classes = [custom_permissions.CanAdministrateObject]
+    permission_classes = [permissions.IsAuthenticated]
+
+
+class ProjectRetrieveView(generics.RetrieveAPIView):
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectCollaboratorSerializer
+    permission_classes = [custom_permissions.CanViewProject]
+
+
+class ProjectUpdateCollaboratorView(generics.UpdateAPIView):
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectCollaboratorSerializer
+    permission_classes = [custom_permissions.CanEditProject]
+
+
+class ProjectUpdateOwnerView(generics.DestroyAPIView):
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectOwnerSerializer
+    permission_classes = [custom_permissions.CanAdministrateProject]
+
+
+class ProjectDestroyView(generics.DestroyAPIView):
+    queryset = models.Project.objects.all()
+    serializer_class = serializers.ProjectCollaboratorSerializer
+    permission_classes = [custom_permissions.CanAdministrateProject]
 
 
 class DataFlowViewSet(viewsets.ModelViewSet):
