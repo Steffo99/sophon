@@ -357,9 +357,20 @@ class Project(models.Model):
     )
 
     def get_contributors(self):
+        """
+        :return: All the contributors (:attr:`.owner` + :attr:`.collaborators`) of the project.
+        """
+
         return {self.owner, *self.collaborators.values()}
 
-    def can_be_viewed_by(self, user):
+    def can_be_viewed_by(self, user) -> bool:
+        """
+        Check whether an user should be allowed to **view** the project details.
+
+        :param user: The user to check permissions for.
+        :return: :data:`True` if the user can view the details, or :data:`False` if they cannot.
+        """
+
         if self.visibility == "PUBLIC":
             return True
         elif self.visibility == "INTERNAL":
@@ -369,10 +380,24 @@ class Project(models.Model):
         else:
             raise ValueError(f"Unknown visibility value: {self.visibility}")
 
-    def can_be_edited_by(self, user):
+    def can_be_edited_by(self, user) -> bool:
+        """
+        Check whether an user should be allowed to **edit** the project details.
+
+        :param user: The user to check permissions for.
+        :return: :data:`True` if the user can edit the details, or :data:`False` if they cannot.
+        """
+
         return user in self.get_contributors()
 
-    def can_be_administrated_by(self, user):
+    def can_be_administrated_by(self, user) -> bool:
+        """
+        Check whether an user should be allowed to **administrate** the project.
+
+        :param user: The user to check permissions for.
+        :return: :data:`True` if the user can administrate the project, or :data:`False` if they cannot.
+        """
+
         return user == self.owner
 
     def __str__(self):
