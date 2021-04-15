@@ -4,16 +4,19 @@ from rest_framework import permissions
 log = logging.getLogger(__name__)
 
 
-class CanViewObject(permissions.BasePermission):
+class CanAdministrateProject(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.can_be_viewed_by(request.user)
+        project = obj.get_project()
+        return project.can_be_administrated_by(request.user)
 
 
-class CanEditObject(permissions.BasePermission):
+class CanEditProject(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.can_be_edited_by(request.user)
+        project = obj.get_project()
+        return project.can_be_edited_by(request.user)
 
 
-class CanAdministrateObject(permissions.BasePermission):
+class CanViewProject(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
-        return obj.can_be_administrated_by(request.user)
+        project = obj.get_project()
+        return project.can_be_viewed_by(request.user)
