@@ -9,19 +9,6 @@ import json
 import abc
 
 
-class RelatedToProject(metaclass=abc.ABCMeta):
-    """
-    A model which is related to :class:`.Project` in some way.
-    """
-
-    @abc.abstractmethod
-    def get_project(self) -> "Project":
-        """
-        :return: The project this object is related to.
-        """
-        raise NotImplementedError()
-
-
 class DataSource(models.Model):
     """
     A :class:`.DataSource` is a web service which provides access to statistical information sourced by multiple data
@@ -312,14 +299,11 @@ class DataFlow(models.Model):
         return f"[{self.datasource}] {self.id}"
 
 
-class Project(models.Model, RelatedToProject):
+class Project(models.Model):
     """
     A research :class:`.Project` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
     hypothesis.
     """
-
-    def get_project(self):
-        return self
 
     slug = models.SlugField(
         "Slug",
@@ -349,6 +333,7 @@ class Project(models.Model, RelatedToProject):
             ("PRIVATE", "🔒 Private"),
         ],
         default="INTERNAL",
+        max_length=16,
     )
 
     owner = models.ForeignKey(
@@ -370,6 +355,25 @@ class Project(models.Model, RelatedToProject):
         related_name="used_in",
         blank=True,
     )
+
+    def get_contributors(self):
+        return {self.owner, *self.collaborators.values()}
+
+    def can_be_viewed_by(self, user):
+        if self.visibility == "PUBLIC":
+            return True
+        elif self.visibility == "INTERNAL":
+            return not user.is_anonymous()
+        elif self.visibility == "PRIVATE":
+            return user in self.get_contributors()
+        else:
+            raise ValueError(f"Unknown visibility value: {self.visibility}")
+
+    def can_be_edited_by(self, user):
+        return user in self.get_contributors()
+
+    def can_be_administrated_by(self, user):
+        return user == self.owner
 
     def __str__(self):
         return self.slug

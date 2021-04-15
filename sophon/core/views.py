@@ -1,5 +1,5 @@
-from rest_framework import viewsets, decorators, response
-from . import models, serializers
+from rest_framework import viewsets, decorators, response, permissions
+from . import models, serializers, permissions as custom_permissions
 from datetime import datetime
 from logging import getLogger
 
@@ -12,7 +12,7 @@ class ProjectViewSet(viewsets.ModelViewSet):
     """
     queryset = models.Project.objects.all()
     serializer_class = serializers.ProjectSerializer
-    permission_classes = []
+    permission_classes = [custom_permissions.ProjectPermissions]
 
 
 class DataFlowViewSet(viewsets.ModelViewSet):
@@ -21,7 +21,7 @@ class DataFlowViewSet(viewsets.ModelViewSet):
     """
     queryset = models.DataFlow.objects.all()
     serializer_class = serializers.DataFlowSerializer
-    permission_classes = []
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
 
 class DataSourceViewSet(viewsets.ModelViewSet):
@@ -30,10 +30,10 @@ class DataSourceViewSet(viewsets.ModelViewSet):
     """
     queryset = models.DataSource.objects.all()
     serializer_class = serializers.DataSourceSerializer
-    permission_classes = []
+    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
     @decorators.action(methods=["post"], detail=True)
-    def sync(self, request, pk):
+    def sync(self, request, *args, **kwargs):
         """
         Syncronize the :class:`.models.DataFlow`\\ s with the ones stored in the server of the
         :class:`.models.DataSource`\\ .
