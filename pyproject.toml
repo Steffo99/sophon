@@ -13,6 +13,7 @@ Markdown = "^3.3.4"
 django-filter = "^2.4.0"
 pandaSDMX = "^1.4.2"
 pydantic = "~1.7.3"
+django-pam = "^2.0.0"
 
 [tool.poetry.dev-dependencies]
 
