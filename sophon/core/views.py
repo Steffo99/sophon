@@ -6,47 +6,37 @@ from logging import getLogger
 log = getLogger(__name__)
 
 
-class ProjectViewSet(viewsets.GenericViewSet):
+class ProjectViewSet(viewsets.ModelViewSet):
     queryset = models.Project.objects.all()
+
+    @property
+    def permission_classes(self):
+        return {
+            "list": [],
+            "create": [permissions.IsAuthenticated],
+            "retrieve": [custom_permissions.CanViewProject],
+            "update": [custom_permissions.CanEditProject],
+            "partial_update": [custom_permissions.CanEditProject],
+            "destroy": [custom_permissions.CanAdministrateProject],
+            None: [],
+        }[self.action]
 
     def get_serializer_class(self):
-        if self.action == ""
-
-
-class ProjectListView(generics.ListAPIView):
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectListSerializer
-    permission_classes = []
-
-
-class ProjectCreateView(generics.CreateAPIView):
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectOwnerSerializer
-    permission_classes = [permissions.IsAuthenticated]
-
-
-class ProjectRetrieveView(generics.RetrieveAPIView):
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectCollaboratorSerializer
-    permission_classes = [custom_permissions.CanViewProject]
-
-
-class ProjectUpdateCollaboratorView(generics.UpdateAPIView):
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectCollaboratorSerializer
-    permission_classes = [custom_permissions.CanEditProject]
-
-
-class ProjectUpdateOwnerView(generics.DestroyAPIView):
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectOwnerSerializer
-    permission_classes = [custom_permissions.CanAdministrateProject]
-
-
-class ProjectDestroyView(generics.DestroyAPIView):
-    queryset = models.Project.objects.all()
-    serializer_class = serializers.ProjectCollaboratorSerializer
-    permission_classes = [custom_permissions.CanAdministrateProject]
+        if self.action == "list":
+            return serializers.ProjectPrivateSerializer
+        elif self.action == "create":
+            return serializers.ProjectAdministrableSerializer
+        else:
+            project = self.get_object()
+            user = self.request.user
+            if project.can_be_administrated_by(user):
+                return serializers.ProjectAdministrableSerializer
+            elif project.can_be_edited_by(user):
+                return serializers.ProjectEditableSerializer
+            elif project.can_be_viewed_by(user):
+                return serializers.ProjectViewableSerializer
+            else:
+                return serializers.ProjectPrivateSerializer
 
 
 class DataFlowViewSet(viewsets.ModelViewSet):

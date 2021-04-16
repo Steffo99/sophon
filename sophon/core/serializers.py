@@ -54,7 +54,7 @@ class DataFlowSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProjectListSerializer(serializers.ModelSerializer):
+class ProjectPrivateSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = [
@@ -71,7 +71,30 @@ class ProjectListSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProjectCollaboratorSerializer(serializers.ModelSerializer):
+class ProjectViewableSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Project
+        fields = [
+            "slug",
+            "name",
+            "description",
+            "visibility",
+            "owner",
+            "collaborators",
+            "flows",
+        ]
+        read_only_fields = [
+            "slug",
+            "name",
+            "description",
+            "visibility",
+            "owner",
+            "collaborators",
+            "flows",
+        ]
+
+
+class ProjectEditableSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Project
         fields = [
@@ -91,7 +114,7 @@ class ProjectCollaboratorSerializer(serializers.ModelSerializer):
         ]
 
 
-class ProjectOwnerSerializer(serializers.ModelSerializer):
+class ProjectAdministrableSerializer(serializers.ModelSerializer):
     """
     Serializer for :class:`.models.Project` when accessed as the project owner.
     """
