@@ -4,6 +4,7 @@
     <option name="poetryVirtualenvPaths">
       <set>
         <option value="$USER_HOME$/.cache/pypoetry/virtualenvs/sophon-BQr90Ext-py3.9/bin/python" />
+        <option value="$USER_HOME$/.cache/pypoetry/virtualenvs/sophon-oyAYqTyT-py3.9/bin/python" />
       </set>
     </option>
   </component>
