@@ -356,6 +356,9 @@ class Project(models.Model):
         blank=True,
     )
 
+    def get_project(self):
+        return self
+
     def get_contributors(self):
         """
         :return: All the contributors (:attr:`.owner` + :attr:`.collaborators`) of the project.
