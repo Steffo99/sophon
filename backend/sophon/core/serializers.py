@@ -46,7 +46,7 @@ class DataFlowSerializer(serializers.ModelSerializer):
         fields = [
             "surrogate_id",
             "datasource",
-            "id",
+            "sdmx_id",
             "description",
         ]
         read_only_fields = [
