@@ -19,6 +19,17 @@ class ProjectAdmin(CoreAdmin):
         "name",
     )
 
+    ordering = (
+        "slug",
+    )
+
+
+@admin.action(description="Syncronize DataFlows (slow, be patient!)")
+def sync_flows_admin(modeladmin, request, queryset):
+    for datasource in queryset:
+        datasource: models.DataSource
+        datasource.sync_flows()
+
 
 @admin.register(models.DataSource)
 class DataSourceAdmin(CoreAdmin):
@@ -31,6 +42,14 @@ class DataSourceAdmin(CoreAdmin):
         "name",
         "data_content_type",
         "last_sync",
+    )
+
+    ordering = (
+        "last_sync",
+    )
+
+    actions = (
+        sync_flows_admin,
     )
 
     fieldsets = (
@@ -94,5 +113,11 @@ class DataFlowAdmin(CoreAdmin):
 
     list_display = (
         "datasource",
-        "id",
+        "sdmx_id",
+        "description",
+    )
+
+    ordering = (
+        "datasource",
+        "sdmx_id",
     )

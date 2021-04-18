@@ -9,6 +9,7 @@ import json
 import abc
 import datetime
 import logging
+import pytz
 
 log = logging.getLogger(__name__)
 
@@ -278,18 +279,22 @@ class DataSource(models.Model):
         log.info(f"Syncing DataFlows of {self!r}...")
         for description, sdmx_id in zip(flows, flows.index):
 
-            db_flow = DataFlow.objects.update_or_create(
+            db_flow, _created = DataFlow.objects.update_or_create(
                 **{
                     "datasource": self,
-                    "id": sdmx_id,
+                    "sdmx_id": sdmx_id,
                 },
                 defaults={
-                    "last_update": datetime.datetime.now(),
                     "description": description,
                 }
             )
             db_flow.save()
-            log.info(f"Synced {db_flow}!")
+            log.debug(f"Synced {db_flow}!")
+
+        log.debug(f"Updating last_sync value of {self!r}")
+        self.last_sync = datetime.datetime.now()
+        self.save()
+        log.info(f"Finished syncing DataFlows of {self!r}")
 
     def __str__(self):
         return self.id
@@ -302,7 +307,7 @@ class DataFlow(models.Model):
     See `this page <https://ec.europa.eu/eurostat/online-help/redisstat-admin/en/TECH_A_main/>`_ for more details.
     """
 
-    surrogate_id = models.IntegerField(
+    surrogate_id = models.BigAutoField(
         "Surrogate id",
         help_text="Internal id used by Django to identify this DataFlow.",
         primary_key=True,
@@ -314,7 +319,7 @@ class DataFlow(models.Model):
         on_delete=models.RESTRICT,
     )
 
-    id = models.CharField(
+    sdmx_id = models.CharField(
         "SDMX id",
         help_text="Internal string used in SDMX communication to identify the DataFlow.",
         max_length=64,
@@ -327,7 +332,7 @@ class DataFlow(models.Model):
     )
 
     def __str__(self):
-        return f"[{self.datasource}] {self.id}"
+        return f"[{self.datasource}] {self.sdmx_id}"
 
 
 class Project(models.Model):
