@@ -7,6 +7,10 @@ import pandasdmx.message
 import typing as t
 import json
 import abc
+import datetime
+import logging
+
+log = logging.getLogger(__name__)
 
 
 class DataSource(models.Model):
@@ -259,6 +263,33 @@ class DataSource(models.Model):
         flows = data["dataflow"]
         structs = data["structure"]
         return flows, structs
+
+    def sync_flows(self) -> None:
+        """
+        Create :class:`.DataFlow` objects for every dataflow returned by :meth:`.request_flows`, and update the ones
+        that already exist.
+
+        .. warning:: This function does not delete any :class:`.DataFlow`, even if it doesn't exist anymore!
+        """
+
+        log.debug(f"Requesting dataflows of {self!r}...")
+        flows, structs = self.request_flows()
+
+        log.info(f"Syncing DataFlows of {self!r}...")
+        for description, sdmx_id in zip(flows, flows.index):
+
+            db_flow = DataFlow.objects.update_or_create(
+                **{
+                    "datasource": self,
+                    "id": sdmx_id,
+                },
+                defaults={
+                    "last_update": datetime.datetime.now(),
+                    "description": description,
+                }
+            )
+            db_flow.save()
+            log.info(f"Synced {db_flow}!")
 
     def __str__(self):
         return self.id
