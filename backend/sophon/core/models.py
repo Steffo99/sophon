@@ -1,15 +1,14 @@
 from django.db import models
 from django.core import validators
 from django.contrib.auth.models import User
+from django.utils import timezone
 import pandas
 import pandasdmx
 import pandasdmx.message
 import typing as t
 import json
 import abc
-import datetime
 import logging
-import pytz
 
 log = logging.getLogger(__name__)
 
@@ -292,7 +291,7 @@ class DataSource(models.Model):
             log.debug(f"Synced {db_flow}!")
 
         log.debug(f"Updating last_sync value of {self!r}")
-        self.last_sync = datetime.datetime.now()
+        self.last_sync = timezone.now()
         self.save()
         log.info(f"Finished syncing DataFlows of {self!r}")
 
