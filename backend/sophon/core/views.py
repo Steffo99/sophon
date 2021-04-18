@@ -1,7 +1,8 @@
-from rest_framework import viewsets, decorators, response, permissions, mixins, generics
-from . import models, serializers, permissions as custom_permissions
-from datetime import datetime
 from logging import getLogger
+
+from rest_framework import viewsets, decorators, response, permissions
+
+from . import models, serializers, permissions as custom_permissions
 
 log = getLogger(__name__)
 

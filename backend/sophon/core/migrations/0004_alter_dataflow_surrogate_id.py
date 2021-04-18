@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('core', '0003_rename_id_dataflow_sdmx_id'),
     ]
@@ -13,6 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='dataflow',
             name='surrogate_id',
-            field=models.BigAutoField(help_text='Internal id used by Django to identify this DataFlow.', primary_key=True, serialize=False, verbose_name='Surrogate id'),
+            field=models.BigAutoField(help_text='Internal id used by Django to identify this DataFlow.',
+                                      primary_key=True, serialize=False, verbose_name='Surrogate id'),
         ),
     ]

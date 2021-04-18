@@ -1,14 +1,13 @@
-from django.db import models
-from django.core import validators
-from django.contrib.auth.models import User
-from django.utils import timezone
+import json
+import logging
+import typing as t
+
 import pandas
 import pandasdmx
 import pandasdmx.message
-import typing as t
-import json
-import abc
-import logging
+from django.contrib.auth.models import User
+from django.db import models
+from django.utils import timezone
 
 log = logging.getLogger(__name__)
 
@@ -277,7 +276,6 @@ class DataSource(models.Model):
 
         log.info(f"Syncing DataFlows of {self!r}...")
         for description, sdmx_id in zip(flows, flows.index):
-
             db_flow, _created = DataFlow.objects.update_or_create(
                 **{
                     "datasource": self,

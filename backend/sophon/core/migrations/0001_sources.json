@@ -16,7 +16,9 @@
         "url": "https://sdw-wsrest.ecb.europa.eu/service",
         "name": "European Central Bank",
         "documentation": "https://www.ecb.europa.eu/stats/ecb_statistics/co-operation_and_standards/sdmx/html/index.en.html",
-        "supports": {"preview": true}
+        "supports": {
+            "preview": true
+        }
     },
     {
         "id": "ESTAT",
@@ -72,7 +74,9 @@
                 "Accept": "application/vnd.sdmx.genericdata+xml;version=2.1"
             }
         },
-        "supports": {"provisionagreement": false}
+        "supports": {
+            "provisionagreement": false
+        }
     },
     {
         "id": "ISTAT",
@@ -103,7 +107,10 @@
         "name": "Norges Bank (NO)",
         "documentation": "https://www.norges-bank.no/en/topics/Statistics/open-data/",
         "url": "https://data.norges-bank.no/api",
-        "supports": {"categoryscheme": false, "structure-specific data": true},
+        "supports": {
+            "categoryscheme": false,
+            "structure-specific data": true
+        },
         "headers": {
             "data": {
                 "accept": "application/vnd.sdmx.genericdata+xml;version=2.1"
@@ -128,17 +135,22 @@
     {
         "id": "SPC",
         "name": "Pacific Data Hub",
-        "documentation":"https://stats.pacificdata.org/?locale=en",
+        "documentation": "https://stats.pacificdata.org/?locale=en",
         "url": "https://stats-nsi-stable.pacificdata.org/rest",
-        "supports": {"preview": false, "provisionagreement": false}
+        "supports": {
+            "preview": false,
+            "provisionagreement": false
+        }
     },
-
     {
         "id": "UNSD",
         "name": "United Nations Statistics Division",
         "documentation": "https://unstats.un.org/home/",
         "url": "https://data.un.org/WS/rest",
-        "supports": {"preview": true, "provisionagreement": false}
+        "supports": {
+            "preview": true,
+            "provisionagreement": false
+        }
     },
     {
         "id": "WB",
