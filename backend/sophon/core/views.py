@@ -68,7 +68,18 @@ class DataSourceViewSet(viewsets.ModelViewSet):
 
         log.debug(f"Getting DataSource from the database...")
         db_datasource: models.DataSource = self.get_object()
-        db_datasource.sync_flows()
+        try:
+            db_datasource.sync_flows()
+        except NotImplementedError:
+            return response.Response({
+                "success": False,
+                "error": "Syncing DataFlows is not supported on this DataSource."
+            })
+        except Exception as exc:
+            return response.Response({
+                "success": False,
+                "error": f"{exc}"
+            })
 
         return response.Response({
             "success": True,
