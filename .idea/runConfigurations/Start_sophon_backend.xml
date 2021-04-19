@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="sophon" type="Python.DjangoServer" factoryName="Django server">
+  <configuration default="false" name="Start sophon backend" type="Python.DjangoServer" factoryName="Django server">
     <module name="Backend (Django)" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />
@@ -10,7 +10,7 @@
       <env name="DJANGO_DEBUG" value="1" />
       <env name="DJANGO_TIME_ZONE" value="CET" />
     </envs>
-    <option name="SDK_HOME" value="/usr/bin/python3.9" />
+    <option name="SDK_HOME" value="" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="true" />
