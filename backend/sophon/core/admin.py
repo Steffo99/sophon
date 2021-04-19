@@ -1,4 +1,4 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 
 from . import models
 
@@ -25,11 +25,26 @@ class ProjectAdmin(CoreAdmin):
     )
 
 
-@admin.action(description="Syncronize DataFlows (slow, be patient!)")
+@admin.action(description="Sync DataFlows")
 def sync_flows_admin(modeladmin, request, queryset):
     for datasource in queryset:
         datasource: models.DataSource
-        datasource.sync_flows()
+        try:
+            datasource.sync_flows()
+        except NotImplementedError:
+            modeladmin.message_user(
+                request,
+                f"Skipped {datasource}: Syncing DataFlows is not supported on this DataSource.",
+                level=messages.ERROR
+            )
+        except Exception as exc:
+            modeladmin.message_user(
+                request,
+                f"Skipped {datasource}: {exc}",
+                level=messages.ERROR
+            )
+        else:
+            modeladmin.log_change(request, datasource, "Sync DataFlows")
 
 
 @admin.register(models.DataSource)
