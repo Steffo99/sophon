@@ -1,6 +1,6 @@
 from logging import getLogger
 
-from rest_framework import viewsets, decorators, response, permissions
+from rest_framework import viewsets, decorators, response, permissions, request as r
 
 from . import models, serializers, permissions as custom_permissions
 
@@ -49,6 +49,29 @@ class DataFlowViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.DataFlowSerializer
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
+    @decorators.action(methods=["get"], detail=False)
+    def search(self, request: r.Request, *args, **kwargs):
+        """
+        Use Django and PostgreSQL's full text search capabilities to find DataFlows containing certain words in the
+        description.
+        """
+
+        log.debug("Searching DataFlows...")
+        if not (query := request.query_params.get("q")):
+            return response.Response({
+                "success": False,
+                "error": "No query was specified in the `q` query_param."
+            }, 400)
+
+        results = models.DataFlow.objects.filter(description__search=query)
+        page = self.paginate_queryset(results)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(results, many=True)
+        return response.Response(serializer.data)
+
 
 class DataSourceViewSet(viewsets.ModelViewSet):
     """
@@ -60,7 +83,7 @@ class DataSourceViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
 
     @decorators.action(methods=["post"], detail=True)
-    def sync(self, request, *args, **kwargs):
+    def sync(self, request: r.Request, *args, **kwargs):
         """
         Syncronize the :class:`.models.DataFlow`\\ s with the ones stored in the server of the
         :class:`.models.DataSource`\\ .
@@ -74,12 +97,12 @@ class DataSourceViewSet(viewsets.ModelViewSet):
             return response.Response({
                 "success": False,
                 "error": "Syncing DataFlows is not supported on this DataSource."
-            })
+            }, 400)
         except Exception as exc:
             return response.Response({
                 "success": False,
                 "error": f"{exc}"
-            })
+            }, 500)
 
         return response.Response({
             "success": True,
