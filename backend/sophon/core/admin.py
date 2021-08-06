@@ -9,15 +9,26 @@ class CoreAdmin(admin.ModelAdmin):
     """
 
 
-@admin.register(models.Project)
-class ProjectAdmin(CoreAdmin):
-    """
-    :class:`.CoreAdmin` class for :class:`.models.Project` .
-    """
-
+@admin.register(models.ResearchGroup)
+class ResearchGroupAdmin(CoreAdmin):
     list_display = (
         "slug",
         "name",
+        "access",
+    )
+
+    ordering = (
+        "slug",
+    )
+
+
+@admin.register(models.ResearchProject)
+class ResearchProjectAdmin(CoreAdmin):
+    list_display = (
+        "group",
+        "slug",
+        "name",
+        "visibility",
     )
 
     ordering = (
