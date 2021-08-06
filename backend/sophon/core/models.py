@@ -332,9 +332,61 @@ class DataFlow(models.Model):
         return f"[{self.datasource}] {self.sdmx_id}"
 
 
-class Project(models.Model):
+class ResearchGroup(models.Model):
     """
-    A research :class:`.Project` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
+    A :class:`.ResearchGroup` is a group of users which collectively own :class:`.ResearchProjects`.
+    """
+
+    slug = models.SlugField(
+        "Slug",
+        help_text="Unique alphanumeric string which identifies the group.",
+        max_length=64,
+        primary_key=True,
+    )
+
+    name = models.CharField(
+        "Name",
+        help_text="The display name of the group.",
+        max_length=512,
+    )
+
+    description = models.TextField(
+        "Description",
+        help_text="A brief description of what the group is about, to be displayed in the overview.",
+        blank=True,
+    )
+
+    owner = models.ForeignKey(
+        User,
+        help_text="The user who created the group, and therefore can add other users to it.",
+        on_delete=models.CASCADE,
+    )
+
+    members = models.ManyToManyField(
+        User,
+        help_text="The users who belong to this group, including the owner.",
+        related_name="is_a_member_of",
+        blank=True,
+    )
+
+    access = models.CharField(
+        "Access",
+        help_text="A setting specifying how can users join this group.",
+        choices=[
+            ("MANUAL", "⛔️ Collaborators must be added manually"),
+            ("OPEN", "❇️ Users can join the group freely"),
+        ],
+        default="MANUAL",
+        max_length=16,
+    )
+
+    def __str__(self):
+        return f"{self.slug}"
+
+
+class ResearchProject(models.Model):
+    """
+    A :class:`.ResearchProject` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
     hypothesis.
     """
 
@@ -353,13 +405,13 @@ class Project(models.Model):
 
     description = models.TextField(
         "Description",
-        help_text="A brief description of the project, to be displayed inthe overview.",
+        help_text="A brief description of the project, to be displayed in the overview.",
         blank=True,
     )
 
     visibility = models.CharField(
         "Visibility",
-        help_text="A setting specifying who can view the project.",
+        help_text="A setting specifying who can view the project contents.",
         choices=[
             ("PUBLIC", "🌍 Public"),
             ("INTERNAL", "🏭 Internal"),
@@ -369,17 +421,10 @@ class Project(models.Model):
         max_length=16,
     )
 
-    owner = models.ForeignKey(
-        User,
-        help_text="The user who owns the project, and has full access to it.",
+    group = models.ForeignKey(
+        ResearchGroup,
+        help_text="The group this project belongs to.",
         on_delete=models.CASCADE,
-    )
-
-    collaborators = models.ManyToManyField(
-        User,
-        help_text="The users who can edit the project.",
-        related_name="collaborates_in",
-        blank=True,
     )
 
     flows = models.ManyToManyField(
@@ -389,30 +434,24 @@ class Project(models.Model):
         blank=True,
     )
 
-    def get_project(self):
-        return self
-
-    def get_contributors(self):
-        """
-        :return: All the contributors (:attr:`.owner` + :attr:`.collaborators`) of the project.
-        """
-
-        return {self.owner, *self.collaborators.values()}
-
     def can_be_viewed_by(self, user) -> bool:
         """
-        Check whether an user should be allowed to **view** the project details.
+        Check whether an user should be allowed to **view** the project contents.
 
         :param user: The user to check permissions for.
         :return: :data:`True` if the user can view the details, or :data:`False` if they cannot.
         """
 
-        if self.visibility == "PUBLIC":
+        if user.is_superuser:
+            return True
+
+        elif self.visibility == "PUBLIC":
             return True
         elif self.visibility == "INTERNAL":
             return not user.is_anonymous()
         elif self.visibility == "PRIVATE":
-            return user in self.get_contributors()
+            return user in self.group.members
+
         else:
             raise ValueError(f"Unknown visibility value: {self.visibility}")
 
@@ -424,7 +463,13 @@ class Project(models.Model):
         :return: :data:`True` if the user can edit the details, or :data:`False` if they cannot.
         """
 
-        return user in self.get_contributors()
+        if user.is_superuser:
+            return True
+
+        elif user in self.group.members:
+            return True
+
+        return False
 
     def can_be_administrated_by(self, user) -> bool:
         """
@@ -434,7 +479,13 @@ class Project(models.Model):
         :return: :data:`True` if the user can administrate the project, or :data:`False` if they cannot.
         """
 
-        return user == self.owner
+        if user.is_superuser:
+            return True
+
+        elif user in self.group.members:
+            return True
+
+        return False
 
     def __str__(self):
-        return self.slug
+        return f"{self.group.slug}/{self.slug}"

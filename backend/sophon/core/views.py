@@ -7,8 +7,8 @@ from . import models, serializers, permissions as custom_permissions
 log = getLogger(__name__)
 
 
-class ProjectViewSet(viewsets.ModelViewSet):
-    queryset = models.Project.objects.all()
+class ResearchProjectViewSet(viewsets.ModelViewSet):
+    queryset = models.ResearchProject.objects.all()
 
     @property
     def permission_classes(self):
@@ -19,25 +19,26 @@ class ProjectViewSet(viewsets.ModelViewSet):
             "update": [custom_permissions.CanEditProject],
             "partial_update": [custom_permissions.CanEditProject],
             "destroy": [custom_permissions.CanAdministrateProject],
+            "metadata": [],
             None: [],
         }[self.action]
 
     def get_serializer_class(self):
         if self.action == "list":
-            return serializers.ProjectPrivateSerializer
+            return serializers.ResearchProjectPublicSerializer
         elif self.action == "create":
-            return serializers.ProjectAdministrableSerializer
+            return serializers.ResearchProjectAdminSerializer
         else:
             project = self.get_object()
             user = self.request.user
             if project.can_be_administrated_by(user):
-                return serializers.ProjectAdministrableSerializer
+                return serializers.ResearchProjectAdminSerializer
             elif project.can_be_edited_by(user):
-                return serializers.ProjectEditableSerializer
+                return serializers.ResearchProjectCollaboratorSerializer
             elif project.can_be_viewed_by(user):
-                return serializers.ProjectViewableSerializer
+                return serializers.ResearchProjectViewerSerializer
             else:
-                return serializers.ProjectPrivateSerializer
+                return serializers.ResearchProjectPublicSerializer
 
 
 class DataFlowViewSet(viewsets.ModelViewSet):
