@@ -8,6 +8,7 @@ import pandasdmx.message
 from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
+from colorfield import fields as colorfield_models
 
 log = logging.getLogger(__name__)
 
@@ -384,6 +385,45 @@ class ResearchGroup(models.Model):
         return f"{self.slug}"
 
 
+class ResearchTag(models.Model):
+    """
+    A :class:`.ResearchTag` is a keyword that :class:`.ResearchProject`\\ s can be associated with.
+    """
+
+    slug = models.SlugField(
+        "Slug",
+        help_text="Unique alphanumeric string which identifies the tag.",
+        max_length=64,
+        primary_key=True,
+    )
+
+    name = models.CharField(
+        "Name",
+        help_text="The name of the tag.",
+        max_length=512,
+    )
+
+    description = models.TextField(
+        "Description",
+        help_text="Additional information about the tag.",
+    )
+
+    color = colorfield_models.ColorField(
+        "Color",
+        help_text="The color that the tag should have when displayed.",
+        default="#FF7F00",
+    )
+
+    owner = models.ForeignKey(
+        User,
+        help_text="The user who created the tag, and therefore can delete it.",
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return f"[{self.name}]"
+
+
 class ResearchProject(models.Model):
     """
     A :class:`.ResearchProject` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
@@ -425,6 +465,13 @@ class ResearchProject(models.Model):
         ResearchGroup,
         help_text="The group this project belongs to.",
         on_delete=models.CASCADE,
+    )
+
+    tags = models.ManyToManyField(
+        ResearchTag,
+        help_text="The tags this project has been tagged with.",
+        related_name="tagged",
+        blank=True,
     )
 
     flows = models.ManyToManyField(
@@ -488,4 +535,4 @@ class ResearchProject(models.Model):
         return False
 
     def __str__(self):
-        return f"{self.group.slug}/{self.slug}"
+        return f"{self.slug}"

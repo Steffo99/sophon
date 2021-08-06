@@ -22,6 +22,20 @@ class ResearchGroupAdmin(CoreAdmin):
     )
 
 
+@admin.register(models.ResearchTag)
+class ResearchTagAdmin(CoreAdmin):
+    list_display = (
+        "slug",
+        "name",
+        "color",
+        "owner",
+    )
+
+    ordering = (
+        "slug",
+    )
+
+
 @admin.register(models.ResearchProject)
 class ResearchProjectAdmin(CoreAdmin):
     list_display = (
@@ -60,10 +74,6 @@ def sync_flows_admin(modeladmin, request, queryset):
 
 @admin.register(models.DataSource)
 class DataSourceAdmin(CoreAdmin):
-    """
-    :class:`.CoreAdmin` class for :class:`.models.DataSource` .
-    """
-
     list_display = (
         "id",
         "name",
@@ -134,10 +144,6 @@ class DataSourceAdmin(CoreAdmin):
 
 @admin.register(models.DataFlow)
 class DataFlowAdmin(CoreAdmin):
-    """
-    :class:`.CoreAdmin` class for :class:`.models.DataFlow` .
-    """
-
     list_display = (
         "datasource",
         "sdmx_id",
