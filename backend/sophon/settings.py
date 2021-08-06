@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'rest_framework',
+    'colorfield',
     'sophon.core',  # FIXME: Is .apps.CoreConfig not needed?
 ]
 
