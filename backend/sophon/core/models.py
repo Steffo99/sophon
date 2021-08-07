@@ -381,6 +381,24 @@ class ResearchGroup(models.Model):
         max_length=16,
     )
 
+    def can_be_edited_by(self, user) -> bool:
+        if user.is_superuser:
+            return True
+
+        elif user in self.members:
+            return True
+
+        return False
+
+    def can_be_administrated_by(self, user) -> bool:
+        if user.is_superuser:
+            return True
+
+        elif user in self.owner:
+            return True
+
+        return False
+
     def __str__(self):
         return f"{self.slug}"
 
@@ -419,6 +437,15 @@ class ResearchTag(models.Model):
         help_text="The user who created the tag, and therefore can delete it.",
         on_delete=models.CASCADE,
     )
+
+    def can_be_administrated_by(self, user) -> bool:
+        if user.is_superuser:
+            return True
+
+        elif user == self.owner:
+            return True
+
+        return False
 
     def __str__(self):
         return f"[{self.name}]"
@@ -482,13 +509,6 @@ class ResearchProject(models.Model):
     )
 
     def can_be_viewed_by(self, user) -> bool:
-        """
-        Check whether an user should be allowed to **view** the project contents.
-
-        :param user: The user to check permissions for.
-        :return: :data:`True` if the user can view the details, or :data:`False` if they cannot.
-        """
-
         if user.is_superuser:
             return True
 
@@ -503,13 +523,6 @@ class ResearchProject(models.Model):
             raise ValueError(f"Unknown visibility value: {self.visibility}")
 
     def can_be_edited_by(self, user) -> bool:
-        """
-        Check whether an user should be allowed to **edit** the project details.
-
-        :param user: The user to check permissions for.
-        :return: :data:`True` if the user can edit the details, or :data:`False` if they cannot.
-        """
-
         if user.is_superuser:
             return True
 
@@ -519,13 +532,6 @@ class ResearchProject(models.Model):
         return False
 
     def can_be_administrated_by(self, user) -> bool:
-        """
-        Check whether an user should be allowed to **administrate** the project.
-
-        :param user: The user to check permissions for.
-        :return: :data:`True` if the user can administrate the project, or :data:`False` if they cannot.
-        """
-
         if user.is_superuser:
             return True
 

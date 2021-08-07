@@ -120,6 +120,53 @@ class ResearchProjectPublicSerializer(serializers.ModelSerializer):
         )
 
 
+class ResearchTagPublicSerializer(serializers.ModelSerializer):
+    """
+    Serializer for users who are not owners of a :class:`.models.ResearchTag`.
+    """
+
+    # TODO: Add a list of projects with the tag
+
+    class Meta:
+        model = models.ResearchTag
+        fields = (
+            "slug",
+            "name",
+            "description",
+            "color",
+            "owner",
+        )
+        read_only_fields = (
+            "slug",
+            "name",
+            "description",
+            "color",
+            "owner",
+        )
+
+
+class ResearchTagAdminSerializer(serializers.ModelSerializer):
+    """
+    Serializer for users who are owners of a :class:`.models.ResearchTag`.
+    """
+
+    # TODO: Add a list of projects with the tag
+
+    class Meta:
+        model = models.ResearchTag
+        fields = (
+            "slug",
+            "name",
+            "description",
+            "color",
+            "owner",
+        )
+        read_only_fields = (
+            "slug",
+            "owner",
+        )
+
+
 class ResearchProjectViewerSerializer(serializers.ModelSerializer):
     """
     Serializer for users who are not collaborators of a :class:`~.models.ResearchProject`, but have permissions to view it.
