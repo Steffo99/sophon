@@ -2,7 +2,8 @@ from logging import getLogger
 
 from rest_framework import viewsets, decorators, response, permissions, request as r
 
-from . import models, serializers, permissions as custom_permissions
+from . import models, serializers
+from .. import permissions as custom_permissions
 
 log = getLogger(__name__)
 
@@ -15,10 +16,10 @@ class ResearchProjectViewSet(viewsets.ModelViewSet):
         return {
             "list": [],
             "create": [permissions.IsAuthenticated],
-            "retrieve": [custom_permissions.CanViewProject],
-            "update": [custom_permissions.CanEditProject],
-            "partial_update": [custom_permissions.CanEditProject],
-            "destroy": [custom_permissions.CanAdministrateProject],
+            "retrieve": [custom_permissions.CanView],
+            "update": [custom_permissions.CanEdit],
+            "partial_update": [custom_permissions.CanEdit],
+            "destroy": [custom_permissions.CanAdministrate],
             "metadata": [],
             None: [],
         }[self.action]
@@ -39,6 +40,66 @@ class ResearchProjectViewSet(viewsets.ModelViewSet):
                 return serializers.ResearchProjectViewerSerializer
             else:
                 return serializers.ResearchProjectPublicSerializer
+
+
+class ResearchGroupViewSet(viewsets.ModelViewSet):
+    queryset = models.ResearchGroup.objects.all()
+
+    @property
+    def permission_classes(self):
+        return {
+            "list": [],
+            "create": [permissions.IsAuthenticated],
+            "retrieve": [permissions.IsAuthenticated],
+            "update": [custom_permissions.CanAdministrate],
+            "partial_update": [custom_permissions.CanAdministrate],
+            "destroy": [custom_permissions.CanAdministrate],
+            "metadata": [],
+            None: [],
+        }[self.action]
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return serializers.ResearchGroupPublicSerializer
+        elif self.action == "create":
+            return serializers.ResearchGroupAdminSerializer
+        else:
+            group = self.get_object()
+            user = self.request.user
+            if group.can_be_administrated_by(user):
+                return serializers.ResearchGroupAdminSerializer
+            else:
+                return serializers.ResearchGroupPublicSerializer
+
+
+class ResearchTagViewSet(viewsets.ModelViewSet):
+    queryset = models.ResearchTag.objects.all()
+
+    @property
+    def permission_classes(self):
+        return {
+            "list": [],
+            "create": [permissions.IsAuthenticated],
+            "retrieve": [permissions.IsAuthenticated],
+            "update": [custom_permissions.CanAdministrate],
+            "partial_update": [custom_permissions.CanAdministrate],
+            "destroy": [custom_permissions.CanAdministrate],
+            "metadata": [],
+            None: [],
+        }[self.action]
+
+    def get_serializer_class(self):
+        if self.action == "list":
+            return serializers.ResearchTagPublicSerializer
+        elif self.action == "create":
+            return serializers.ResearchTagAdminSerializer
+        else:
+            group = self.get_object()
+            user = self.request.user
+            if group.can_be_administrated_by(user):
+                return serializers.ResearchTagAdminSerializer
+            else:
+                return serializers.ResearchTagPublicSerializer
 
 
 class DataFlowViewSet(viewsets.ModelViewSet):
