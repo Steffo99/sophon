@@ -1,0 +1,13 @@
+OPTIONS http://127.0.0.1:30033/api/auth/token/
+
+###
+
+POST http://127.0.0.1:30033/api/auth/token/
+Content-Type: application/json
+
+{
+    "username": "",
+    "password": ""
+}
+
+###

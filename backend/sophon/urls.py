@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from .auth2 import CustomObtainAuthToken
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include("rest_framework.urls")),
+    path('api/auth/token/', CustomObtainAuthToken.as_view()),
+    path('api/auth/session/', include("rest_framework.urls")),
     path('api/', include("sophon.core.urls")),
 ]
