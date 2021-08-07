@@ -21,5 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/auth/token/', CustomObtainAuthToken.as_view()),
     path('api/auth/session/', include("rest_framework.urls")),
-    path('api/', include("sophon.core.urls")),
+    path('api/core/', include("sophon.core.urls")),
 ]
