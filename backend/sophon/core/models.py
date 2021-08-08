@@ -385,6 +385,35 @@ class ResearchGroup(SophonGroupModel):
     def get_group(self):
         return self
 
+    @classmethod
+    def get_public_fields(cls) -> set[str]:
+        return {
+            "slug",
+            "name",
+            "description",
+            "owner",
+            "members",
+            "access",
+        }
+
+    @classmethod
+    def get_view_fields(cls) -> set[str]:
+        return set()
+
+    @classmethod
+    def get_edit_fields(cls) -> set[str]:
+        return {
+            "name",
+            "description",
+        }
+
+    @classmethod
+    def get_admin_fields(cls) -> set[str]:
+        return {
+            "members",
+            "access",
+        }
+
     def get_access_level(self, user) -> SophonUserType:
         if user.is_superuser:
             return SophonUserType.SUPERUSER

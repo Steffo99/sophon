@@ -10,6 +10,7 @@ log = getLogger(__name__)
 
 
 class ResearchGroupViewSet(custom_permissions.SophonGroupViewset):
+    @classmethod
     def get_model(self):
         return models.ResearchGroup
 
@@ -21,13 +22,14 @@ class ResearchGroupViewSet(custom_permissions.SophonGroupViewset):
 
 
 class ResearchProjectViewSet(custom_permissions.SophonGroupViewset):
+    @classmethod
     def get_model(self):
         return models.ResearchProject
 
     def get_list_queryset(self):
         query_sets = [models.ResearchProject.objects.filter(visibility="PUBLIC")]
 
-        if not self.request.user.is_anonymous():
+        if not self.request.user.is_anonymous:
             query_sets.append(models.ResearchProject.objects.filter(visibility="INTERNAL"))
             query_sets.append(models.ResearchProject.objects.filter(visibility="PRIVATE").filter(group__members__in=[self.request.user]))  # TODO: Ensure this works
 
@@ -36,8 +38,12 @@ class ResearchProjectViewSet(custom_permissions.SophonGroupViewset):
     def get_full_queryset(self):
         return models.ResearchProject.objects.all()
 
+    # def create(self, request, *args, **kwargs):
+    #     ...
+
 
 class ResearchTagViewSet(custom_permissions.SophonGroupViewset):
+    @classmethod
     def get_model(self):
         return models.ResearchTag
 

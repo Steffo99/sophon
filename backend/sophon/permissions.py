@@ -7,6 +7,11 @@ from django.db.models import Model as DjangoModel
 from django.db.models import QuerySet
 from rest_framework.viewsets import ModelViewSet as DjangoViewSet
 from rest_framework.serializers import ModelSerializer as DjangoSerializer
+from rest_framework.permissions import BasePermission
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework import status as Status
 
 log = logging.getLogger(__name__)
 
@@ -22,7 +27,8 @@ class SophonUserType(enum.IntEnum):
     SUPERUSER = 200
 
 
-class SophonGroupModel(abc.ABC, DjangoModel):
+# Can't add abc.ABC here
+class SophonGroupModel(DjangoModel):
     class Meta:
         abstract = True
 
@@ -150,8 +156,9 @@ class SophonGroupModel(abc.ABC, DjangoModel):
 
 
 class SophonGroupViewset(abc.ABC, DjangoViewSet):
+    @classmethod
     @abc.abstractmethod
-    def get_model(self) -> typing.Type[SophonGroupModel]:
+    def get_model(cls) -> typing.Type[SophonGroupModel]:
         raise NotImplementedError()
 
     @abc.abstractmethod
@@ -168,6 +175,11 @@ class SophonGroupViewset(abc.ABC, DjangoViewSet):
         else:
             return self.get_full_queryset()
 
+    @classmethod
+    def get_base_name(cls) -> str:
+        model = cls.get_model()
+        return model._meta.object_name.lower()
+
     def get_serializer_class(self):
         model = self.get_model()
 
@@ -179,4 +191,11 @@ class SophonGroupViewset(abc.ABC, DjangoViewSet):
             obj: SophonGroupModel = self.get_object()
             return obj.get_user_serializer(self.request.user)
 
-    def get_permissions(self):
+    def destroy(self, request: Request, *args, **kwargs):
+        obj: SophonGroupModel = self.get_object()
+
+        if not obj.can_admin(request.user):
+            return Response(status=Status.HTTP_403_FORBIDDEN)
+
+        self.perform_destroy(obj)
+        return Response(status=Status.HTTP_204_NO_CONTENT)

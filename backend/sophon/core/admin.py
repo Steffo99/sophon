@@ -25,10 +25,10 @@ class ResearchGroupAdmin(CoreAdmin):
 @admin.register(models.ResearchTag)
 class ResearchTagAdmin(CoreAdmin):
     list_display = (
+        "group",
         "slug",
         "name",
         "color",
-        "owner",
     )
 
     ordering = (
