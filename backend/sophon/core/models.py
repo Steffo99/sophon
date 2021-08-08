@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from colorfield import fields as colorfield_models
+from sophon import permissions
 
 log = logging.getLogger(__name__)
 
@@ -381,23 +382,17 @@ class ResearchGroup(models.Model):
         max_length=16,
     )
 
-    def can_be_edited_by(self, user) -> bool:
+    def get_access_level(self, user) -> permissions.AccessLevel:
         if user.is_superuser:
-            return True
-
+            return permissions.AccessLevel.SUPERUSER
+        elif user == self.owner:
+            return permissions.AccessLevel.OWNER
         elif user in self.members:
-            return True
-
-        return False
-
-    def can_be_administrated_by(self, user) -> bool:
-        if user.is_superuser:
-            return True
-
-        elif user in self.owner:
-            return True
-
-        return False
+            return permissions.AccessLevel.MEMBER
+        elif not user.is_anonymous():
+            return permissions.AccessLevel.REGISTERED
+        else:
+            return permissions.AccessLevel.NONE
 
     def __str__(self):
         return f"{self.slug}"
@@ -431,6 +426,8 @@ class ResearchTag(models.Model):
         help_text="The color that the tag should have when displayed.",
         default="#FF7F00",
     )
+
+    # TODO: Move ownership to groups
 
     owner = models.ForeignKey(
         User,

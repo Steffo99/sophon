@@ -1,5 +1,6 @@
 from logging import getLogger
 
+from django.db.models import QuerySet
 from rest_framework import viewsets, decorators, response, permissions, request as r
 
 from . import models, serializers
@@ -8,71 +9,54 @@ from .. import permissions as custom_permissions
 log = getLogger(__name__)
 
 
-class ResearchProjectViewSet(viewsets.ModelViewSet):
-    queryset = models.ResearchProject.objects.all()
+class ResearchGroupViewSet(custom_permissions.SophonGroupViewset):
 
-    @property
-    def permission_classes(self):
-        return {
-            "list": [],
-            "create": [permissions.IsAuthenticated],
-            "retrieve": [custom_permissions.CanView],
-            "update": [custom_permissions.CanEdit],
-            "partial_update": [custom_permissions.CanEdit],
-            "destroy": [custom_permissions.CanAdministrate],
-            "metadata": [],
-            None: [],
-        }[self.action]
+    # TODO: Add fields
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return serializers.ResearchProjectPublicSerializer
-        elif self.action == "create":
-            return serializers.ResearchProjectAdminSerializer
-        else:
-            project = self.get_object()
-            user = self.request.user
-            if project.can_be_administrated_by(user):
-                return serializers.ResearchProjectAdminSerializer
-            elif project.can_be_edited_by(user):
-                return serializers.ResearchProjectCollaboratorSerializer
-            elif project.can_be_viewed_by(user):
-                return serializers.ResearchProjectViewerSerializer
-            else:
-                return serializers.ResearchProjectPublicSerializer
+    shown_fields = []
+    hidden_fields = []
+    admin_fields = []
+    immutable_fields = []
+
+    def get_model(viewset):
+        return models.ResearchGroup
+
+    def get_viewable_queryset(viewset):
+        return models.ResearchGroup.objects.all()
+
+    def get_full_queryset(viewset):
+        return models.ResearchGroup.objects.all()
 
 
-class ResearchGroupViewSet(viewsets.ModelViewSet):
-    queryset = models.ResearchGroup.objects.all()
+class ResearchProjectViewSet(custom_permissions.SophonGroupViewset):
 
-    @property
-    def permission_classes(self):
-        return {
-            "list": [],
-            "create": [permissions.IsAuthenticated],
-            "retrieve": [permissions.IsAuthenticated],
-            "update": [custom_permissions.CanAdministrate],
-            "partial_update": [custom_permissions.CanAdministrate],
-            "destroy": [custom_permissions.CanAdministrate],
-            "metadata": [],
-            None: [],
-        }[self.action]
+    # TODO: Add fields
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return serializers.ResearchGroupPublicSerializer
-        elif self.action == "create":
-            return serializers.ResearchGroupAdminSerializer
-        else:
-            group = self.get_object()
-            user = self.request.user
-            if group.can_be_administrated_by(user):
-                return serializers.ResearchGroupAdminSerializer
-            else:
-                return serializers.ResearchGroupPublicSerializer
+    shown_fields = []
+    hidden_fields = []
+    admin_fields = []
+    immutable_fields = []
+
+    def get_model(viewset):
+        return models.ResearchProject
+
+    def get_viewable_queryset(viewset):
+        query_sets = [models.ResearchProject.objects.filter(visibility="PUBLIC")]
+
+        if not viewset.request.user.is_anonymous():
+            query_sets.append(models.ResearchProject.objects.filter(visibility="INTERNAL"))
+            query_sets.append(models.ResearchProject.objects.filter(visibility="PRIVATE").filter(group__members__in=[viewset.request.user]))
+
+        return QuerySet.union(*query_sets)
+
+    def get_full_queryset(viewset):
+        return models.ResearchProject.objects.all()
 
 
 class ResearchTagViewSet(viewsets.ModelViewSet):
+
+    # TODO: Port to the new permission format
+
     queryset = models.ResearchTag.objects.all()
 
     @property
