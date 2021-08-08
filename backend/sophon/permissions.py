@@ -1,14 +1,20 @@
+import typing
 import logging
 import enum
 import abc
+
 from django.db.models import Model as DjangoModel
+from django.db.models import QuerySet
 from rest_framework.viewsets import ModelViewSet as DjangoViewSet
 from rest_framework.serializers import ModelSerializer as DjangoSerializer
 
 log = logging.getLogger(__name__)
 
+if typing.TYPE_CHECKING:
+    from sophon.core.models import ResearchGroup
 
-class AccessLevel(enum.IntEnum):
+
+class SophonUserType(enum.IntEnum):
     NONE = 0
     REGISTERED = 10
     MEMBER = 50
@@ -16,126 +22,161 @@ class AccessLevel(enum.IntEnum):
     SUPERUSER = 200
 
 
-class SophonGroupModel(DjangoModel):
+class SophonGroupModel(abc.ABC, DjangoModel):
     class Meta:
         abstract = True
 
-    def get_group(self):
+    @abc.abstractmethod
+    def get_group(self) -> "ResearchGroup":
         raise NotImplementedError()
 
-    # noinspection PyMethodMayBeStatic
-    def get_access_to_view(self):
-        return AccessLevel.NONE
+    @classmethod
+    @abc.abstractmethod
+    def get_public_fields(cls) -> set[str]:
+        raise NotImplementedError()
 
-    # noinspection PyMethodMayBeStatic
-    def get_access_to_edit(self):
-        return AccessLevel.MEMBER
+    @classmethod
+    @abc.abstractmethod
+    def get_view_fields(cls) -> set[str]:
+        raise NotImplementedError()
 
-    # noinspection PyMethodMayBeStatic
-    def get_access_to_admin(self):
-        return AccessLevel.OWNER
+    @classmethod
+    def get_all_fields(cls) -> set[str]:
+        return set.union(
+            cls.get_public_fields(),
+            cls.get_view_fields(),
+        )
 
-    def can_view(self, user):
+    @classmethod
+    @abc.abstractmethod
+    def get_edit_fields(cls) -> set[str]:
+        raise NotImplementedError()
+
+    @classmethod
+    def get_non_editable_fields(cls) -> set[str]:
+        return set.difference(
+            cls.get_all_fields(),
+            cls.get_edit_fields(),
+        )
+
+    @classmethod
+    @abc.abstractmethod
+    def get_admin_fields(cls) -> set[str]:
+        raise NotImplementedError()
+
+    @classmethod
+    def get_non_admin_fields(cls) -> set[str]:
+        return set.difference(
+            cls.get_non_editable_fields(),
+            cls.get_admin_fields(),
+        )
+
+    @classmethod
+    def get_access_to_view(cls) -> SophonUserType:
+        return SophonUserType.NONE
+
+    @classmethod
+    def get_access_to_edit(cls) -> SophonUserType:
+        return SophonUserType.MEMBER
+
+    @classmethod
+    def get_access_to_admin(cls) -> SophonUserType:
+        return SophonUserType.OWNER
+
+    def can_view(self, user) -> bool:
         current = self.get_group().get_access_level(user)
         required = self.get_access_to_view()
         return current >= required
 
-    def can_edit(self, user):
+    def can_edit(self, user) -> bool:
         current = self.get_group().get_access_level(user)
         required = self.get_access_to_edit()
         return current >= required
 
-    def can_admin(self, user):
+    def can_admin(self, user) -> bool:
         current = self.get_group().get_access_level(user)
         required = self.get_access_to_admin()
         return current >= required
 
-
-class SophonGroupViewset(abc.ABC, DjangoViewSet):
-    shown_fields = []
-    hidden_fields = []
-    admin_fields = []
-    immutable_fields = []
-
-    @abc.abstractmethod
-    def get_model(viewset):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get_viewable_queryset(viewset):
-        raise NotImplementedError()
-
-    @abc.abstractmethod
-    def get_full_queryset(viewset):
-        raise NotImplementedError()
-
-    def get_queryset(viewset):
-        if viewset.action == "list":
-            return viewset.get_viewable_queryset()
-        else:
-            return viewset.get_full_queryset()
-
-    def get_serializer_class(viewset):
-        if viewset.action == "list":
-            return viewset.get_viewable_serializer()
-        elif viewset.action == "create":
-            return viewset.get_administrable_serializer()
-        else:
-            obj = viewset.get_object()
-            user = viewset.request.user
-            if obj.can_admin(user):
-                return viewset.get_administrable_serializer()
-            elif obj.can_edit(user):
-                return viewset.get_editable_serializer()
-            elif obj.can_view(user):
-                return viewset.get_viewable_serializer()
-            else:
-                return viewset.get_public_serializer()
-
-    def get_shown_fields(viewset):
-        return viewset.shown_fields
-
-    def get_public_serializer(viewset):
+    @classmethod
+    def get_public_serializer(cls) -> typing.Type[DjangoSerializer]:
         class PublicSerializer(DjangoSerializer):
             class Meta:
-                model = viewset.get_model()
-                fields = viewset.get_shown_fields()
+                model = cls
+                fields = list(cls.get_public_fields())
                 read_only_fields = fields
 
         return PublicSerializer
 
-    def get_all_fields(viewset):
-        return [*viewset.shown_fields, *viewset.hidden_fields]
-
-    def get_viewable_serializer(viewset):
-        class ViewableSerializer(DjangoSerializer):
+    @classmethod
+    def get_view_serializer(cls) -> typing.Type[DjangoSerializer]:
+        class ViewSerializer(DjangoSerializer):
             class Meta:
-                model = viewset.get_model()
-                fields = viewset.get_all_fields()
+                model = cls
+                fields = list(cls.get_all_fields())
                 read_only_fields = fields
 
-        return ViewableSerializer
+        return ViewSerializer
 
-    def get_editable_fields(viewset):
-        return [field for field in viewset.get_all_fields() if not (field in viewset.admin_fields or field in viewset.immutable_fields)]
-
-    def get_editable_serializer(viewset):
-        class EditableSerializer(DjangoSerializer):
+    @classmethod
+    def get_edit_serializer(cls) -> typing.Type[DjangoSerializer]:
+        class EditSerializer(DjangoSerializer):
             class Meta:
-                model = viewset.get_model()
-                fields = viewset.get_all_fields()
-                read_only_fields = viewset.get_editable_fields()
+                model = cls
+                fields = list(cls.get_all_fields())
+                read_only_fields = list(cls.get_non_editable_fields())
 
-        return EditableSerializer
+        return EditSerializer
 
-    def get_administrable_fields(viewset):
-        return [field for field in viewset.get_all_fields() if field not in viewset.immutable_fields]
-
-    def get_administrable_serializer(viewset):
-        class AdministrableSerializer(DjangoSerializer):
+    @classmethod
+    def get_admin_serializer(cls) -> typing.Type[DjangoSerializer]:
+        class AdminSerializer(DjangoSerializer):
             class Meta:
-                model = viewset.get_model()
-                fields = viewset.get_all_fields()
-                read_only_fields = viewset.get_administrable_fields()
+                model = cls
+                fields = list(cls.get_all_fields())
+                read_only_fields = list(cls.get_non_admin_fields())
 
-        return AdministrableSerializer
+        return AdminSerializer
+
+    def get_user_serializer(self, user) -> typing.Type[DjangoSerializer]:
+        if self.can_admin(user):
+            return self.get_admin_serializer()
+        elif self.can_edit(user):
+            return self.get_edit_serializer()
+        elif self.can_view(user):
+            return self.get_view_serializer()
+        else:
+            return self.get_public_serializer()
+
+
+class SophonGroupViewset(abc.ABC, DjangoViewSet):
+    @abc.abstractmethod
+    def get_model(self) -> typing.Type[SophonGroupModel]:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get_list_queryset(self) -> QuerySet:
+        raise NotImplementedError()
+
+    @abc.abstractmethod
+    def get_full_queryset(self) -> QuerySet:
+        raise NotImplementedError()
+
+    def get_queryset(self) -> QuerySet:
+        if self.action == "list":
+            return self.get_list_queryset()
+        else:
+            return self.get_full_queryset()
+
+    def get_serializer_class(self):
+        model = self.get_model()
+
+        if self.action == "list":
+            return model.get_public_serializer()
+        elif self.action == "create":
+            return model.get_admin_serializer()
+        else:
+            obj: SophonGroupModel = self.get_object()
+            return obj.get_user_serializer(self.request.user)
+
+    def get_permissions(self):

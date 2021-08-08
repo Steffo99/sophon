@@ -9,7 +9,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 from colorfield import fields as colorfield_models
-from sophon import permissions
+from sophon.permissions import SophonGroupModel, SophonUserType
 
 log = logging.getLogger(__name__)
 
@@ -334,7 +334,7 @@ class DataFlow(models.Model):
         return f"[{self.datasource}] {self.sdmx_id}"
 
 
-class ResearchGroup(models.Model):
+class ResearchGroup(SophonGroupModel):
     """
     A :class:`.ResearchGroup` is a group of users which collectively own :class:`.ResearchProjects`.
     """
@@ -382,23 +382,26 @@ class ResearchGroup(models.Model):
         max_length=16,
     )
 
-    def get_access_level(self, user) -> permissions.AccessLevel:
+    def get_group(self):
+        return self
+
+    def get_access_level(self, user) -> SophonUserType:
         if user.is_superuser:
-            return permissions.AccessLevel.SUPERUSER
+            return SophonUserType.SUPERUSER
         elif user == self.owner:
-            return permissions.AccessLevel.OWNER
+            return SophonUserType.OWNER
         elif user in self.members:
-            return permissions.AccessLevel.MEMBER
+            return SophonUserType.MEMBER
         elif not user.is_anonymous():
-            return permissions.AccessLevel.REGISTERED
+            return SophonUserType.REGISTERED
         else:
-            return permissions.AccessLevel.NONE
+            return SophonUserType.NONE
 
     def __str__(self):
         return f"{self.slug}"
 
 
-class ResearchTag(models.Model):
+class ResearchTag(SophonGroupModel):
     """
     A :class:`.ResearchTag` is a keyword that :class:`.ResearchProject`\\ s can be associated with.
     """
@@ -427,28 +430,20 @@ class ResearchTag(models.Model):
         default="#FF7F00",
     )
 
-    # TODO: Move ownership to groups
-
-    owner = models.ForeignKey(
-        User,
-        help_text="The user who created the tag, and therefore can delete it.",
+    group = models.ForeignKey(
+        ResearchGroup,
+        help_text="The group this project belongs to.",
         on_delete=models.CASCADE,
     )
 
-    def can_be_administrated_by(self, user) -> bool:
-        if user.is_superuser:
-            return True
-
-        elif user == self.owner:
-            return True
-
-        return False
+    def get_group(self):
+        return self.group
 
     def __str__(self):
         return f"[{self.name}]"
 
 
-class ResearchProject(models.Model):
+class ResearchProject(SophonGroupModel):
     """
     A :class:`.ResearchProject` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
     hypothesis.
@@ -505,37 +500,8 @@ class ResearchProject(models.Model):
         blank=True,
     )
 
-    def can_be_viewed_by(self, user) -> bool:
-        if user.is_superuser:
-            return True
-
-        elif self.visibility == "PUBLIC":
-            return True
-        elif self.visibility == "INTERNAL":
-            return not user.is_anonymous()
-        elif self.visibility == "PRIVATE":
-            return user in self.group.members
-
-        else:
-            raise ValueError(f"Unknown visibility value: {self.visibility}")
-
-    def can_be_edited_by(self, user) -> bool:
-        if user.is_superuser:
-            return True
-
-        elif user in self.group.members:
-            return True
-
-        return False
-
-    def can_be_administrated_by(self, user) -> bool:
-        if user.is_superuser:
-            return True
-
-        elif user in self.group.members:
-            return True
-
-        return False
+    def get_group(self):
+        return self.group
 
     def __str__(self):
         return f"{self.slug}"
