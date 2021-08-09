@@ -1,14 +1,20 @@
+import typing
+
 from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+import rest_framework.routers
 
 from . import views
 
-router = DefaultRouter()
-router.register("datasources", views.DataSourceViewSet)
-router.register("dataflows", views.DataFlowViewSet)
-router.register("projects", views.ResearchProjectViewSet, basename=views.ResearchProjectViewSet.get_base_name())
-router.register("tags", views.ResearchTagViewSet, basename=views.ResearchTagViewSet.get_base_name())
-router.register("groups", views.ResearchGroupViewSet, basename=views.ResearchGroupViewSet.get_base_name())
+
+class SophonRouter(rest_framework.routers.DefaultRouter):
+    def register_group_viewset(self, prefix, viewset: typing.Type[views.BaseSophonGroupModelViewSet]):
+        self.register(prefix, viewset, basename=viewset.get_basename())
+
+
+router = SophonRouter()
+router.register_group_viewset("projects", views.ResearchProjectViewSet)
+router.register_group_viewset("tags", views.ResearchTagViewSet)
+
 
 urlpatterns = [
     path("", include(router.urls)),
