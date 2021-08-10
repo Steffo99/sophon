@@ -23,54 +23,9 @@ class SophonModel(models.Model):
 
     @classmethod
     @abc.abstractmethod
-    def get_public_fields(cls) -> set[str]:
+    def get_fields(cls) -> set[str]:
         """
-        :return: A :class:`set` of field names that will **always** be serialized, even if the user has no access to the object.
-
-        .. warning:: Be careful with the fields you add in this set, as it may cause accidental data leaks!
-        """
-
-        raise NotImplementedError()
-
-    @classmethod
-    def get_public_serializer(cls) -> typing.Type[ModelSerializer]:
-        """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's public fields in _read-only_ mode.
-        """
-
-        class PublicSerializer(ModelSerializer):
-            class Meta:
-                model = cls
-                fields = tuple(cls.get_public_fields())
-                read_only_fields = fields
-
-        return PublicSerializer
-
-    @classmethod
-    @abc.abstractmethod
-    def get_private_fields(cls) -> set[str]:
-        """
-        :return: A :class:`set` of field names that will be serialized only to users with **View** permission on the object.
-        """
-
-        raise NotImplementedError()
-
-    @classmethod
-    def get_all_fields(cls) -> set[str]:
-        """
-        :return: The :meth:`set.union` of :meth:`.get_public_fields` and :meth:`.get_private_field` :class:`set`\\ s.
-        """
-
-        return set.union(
-            cls.get_public_fields(),
-            cls.get_private_fields(),
-        )
-
-    @abc.abstractmethod
-    def can_view(self, user: User) -> bool:
-        """
-        :param user: The user to check the **View** permission of.
-        :return: :data:`True` if the user can view the object's private fields, :data:`False` otherwise.
+        :return: A :class:`set` of field names that will be serialized.
         """
 
         raise NotImplementedError()
@@ -78,13 +33,13 @@ class SophonModel(models.Model):
     @classmethod
     def get_view_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's public and private fields in _read-only_ mode.
+        :return: A :class:`.serializers.ModelSerializer` containing this object's fields in _read-only_ mode.
         """
 
         class ViewSerializer(ModelSerializer):
             class Meta:
                 model = cls
-                fields = list(cls.get_all_fields())
+                fields = list(cls.get_fields())
                 read_only_fields = fields
 
         return ViewSerializer
@@ -105,7 +60,7 @@ class SophonModel(models.Model):
         """
 
         return set.difference(
-            cls.get_all_fields(),
+            cls.get_fields(),
             cls.get_editable_fields(),
         )
 
@@ -121,14 +76,14 @@ class SophonModel(models.Model):
     @classmethod
     def get_edit_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's public and private fields, where the fields returned by
+        :return: A :class:`.serializers.ModelSerializer` containing this object's fields, where the fields returned by
                  :meth:`.get_non_editable_fields` are _read-only_.
         """
 
         class EditSerializer(ModelSerializer):
             class Meta:
                 model = cls
-                fields = list(cls.get_all_fields())
+                fields = list(cls.get_fields())
                 read_only_fields = list(cls.get_non_editable_fields())
 
         return EditSerializer
@@ -149,7 +104,7 @@ class SophonModel(models.Model):
         """
 
         return set.difference(
-            cls.get_all_fields(),
+            cls.get_fields(),
             cls.get_administrable_fields(),
         )
 
@@ -165,15 +120,36 @@ class SophonModel(models.Model):
     @classmethod
     def get_admin_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's public and private fields, where the fields returned by
+        :return: A :class:`.serializers.ModelSerializer` containing this object's fields, where the fields returned by
                  :meth:`.get_non_administrable` are _read-only_.
         """
 
         class AdminSerializer(ModelSerializer):
             class Meta:
                 model = cls
-                fields = list(cls.get_all_fields())
+                fields = list(cls.get_fields())
                 read_only_fields = list(cls.get_non_administrable_fields())
+
+        return AdminSerializer
+
+    @classmethod
+    @abc.abstractmethod
+    def get_creation_fields(cls) -> set[str]:
+        """
+        :return: A :class:`set` of field names that can be specified by the user on object creation.
+        """
+        raise NotImplementedError()
+
+    @classmethod
+    def get_creation_serializer(cls) -> typing.Type[ModelSerializer]:
+        """
+        :return: A :class:`.serializers.ModelSerializer` containing this object's fields.
+        """
+
+        class AdminSerializer(ModelSerializer):
+            class Meta:
+                model = cls
+                fields = list(cls.get_creation_fields())
 
         return AdminSerializer
 
@@ -197,13 +173,6 @@ class SophonGroupModel(SophonModel):
         raise NotImplementedError()
 
     @classmethod
-    def get_access_to_view(cls) -> SophonGroupAccess:
-        """
-        :return: The minimum required :class:`.SophonGroupAccess` to **View** this object.
-        """
-        return SophonGroupAccess.NONE
-
-    @classmethod
     def get_access_to_edit(cls) -> SophonGroupAccess:
         """
         :return: The minimum required :class:`.SophonGroupAccess` to **Edit** this object.
@@ -216,11 +185,6 @@ class SophonGroupModel(SophonModel):
         :return: The minimum required :class:`.SophonGroupAccess` to **Admin**\\ istrate this object.
         """
         return SophonGroupAccess.OWNER
-
-    def can_view(self, user: User) -> bool:
-        current = self.get_group().get_access(user)
-        required = self.get_access_to_view()
-        return current >= required
 
     def can_edit(self, user: User) -> bool:
         current = self.get_group().get_access(user)
@@ -243,10 +207,8 @@ class SophonGroupModel(SophonModel):
             return self.get_admin_serializer()
         elif self.can_edit(user):
             return self.get_edit_serializer()
-        elif self.can_view(user):
-            return self.get_view_serializer()
         else:
-            return self.get_public_serializer()
+            return self.get_view_serializer()
 
 
 class ResearchGroup(SophonGroupModel):
@@ -301,7 +263,7 @@ class ResearchGroup(SophonGroupModel):
         return self
 
     @classmethod
-    def get_public_fields(cls) -> set[str]:
+    def get_fields(cls) -> set[str]:
         return {
             "slug",
             "name",
@@ -310,10 +272,6 @@ class ResearchGroup(SophonGroupModel):
             "members",
             "access",
         }
-
-    @classmethod
-    def get_private_fields(cls) -> set[str]:
-        return set()
 
     @classmethod
     def get_editable_fields(cls) -> set[str]:
@@ -325,6 +283,16 @@ class ResearchGroup(SophonGroupModel):
     @classmethod
     def get_administrable_fields(cls) -> set[str]:
         return {
+            "members",
+            "access",
+        }
+
+    @classmethod
+    def get_creation_fields(cls) -> set[str]:
+        return {
+            "slug",
+            "name",
+            "description",
             "members",
             "access",
         }
@@ -356,16 +324,10 @@ class ResearchTag(SophonGroupModel):
     A :class:`.ResearchTag` is a keyword that :class:`.ResearchProject`\\ s can be associated with.
     """
 
-    class Meta:
-        unique_together = (
-            (
-                "group",
-                "slug",
-            ),
-        )
-
-    id = models.AutoField(
-        "ID",
+    slug = models.SlugField(
+        "Slug",
+        help_text="Unique alphanumeric string which identifies the tag in the group.",
+        max_length=64,
         primary_key=True,
     )
 
@@ -373,12 +335,6 @@ class ResearchTag(SophonGroupModel):
         ResearchGroup,
         help_text="The group this tag belongs to.",
         on_delete=models.CASCADE,
-    )
-
-    slug = models.SlugField(
-        "Slug",
-        help_text="Unique alphanumeric string which identifies the tag in the group.",
-        max_length=64,
     )
 
     name = models.CharField(
@@ -402,18 +358,15 @@ class ResearchTag(SophonGroupModel):
         return self.group
 
     @classmethod
-    def get_public_fields(cls) -> set[str]:
+    def get_fields(cls) -> set[str]:
         return {
+            "id",
             "slug",
             "name",
             "description",
             "color",
             "group",
         }
-
-    @classmethod
-    def get_private_fields(cls) -> set[str]:
-        return set()
 
     @classmethod
     def get_editable_fields(cls) -> set[str]:
@@ -442,16 +395,10 @@ class ResearchProject(SophonGroupModel):
     hypothesis.
     """
 
-    class Meta:
-        unique_together = (
-            (
-                "group",
-                "slug",
-            ),
-        )
-
-    id = models.AutoField(
-        "ID",
+    slug = models.SlugField(
+        "Slug",
+        help_text="Unique alphanumeric string which identifies the project.",
+        max_length=64,
         primary_key=True,
     )
 
@@ -459,12 +406,6 @@ class ResearchProject(SophonGroupModel):
         ResearchGroup,
         help_text="The group this project belongs to.",
         on_delete=models.CASCADE,
-    )
-
-    slug = models.SlugField(
-        "Slug",
-        help_text="Unique alphanumeric string which identifies the project in the group.",
-        max_length=64,
     )
 
     name = models.CharField(
@@ -502,16 +443,11 @@ class ResearchProject(SophonGroupModel):
         return self.group
 
     @classmethod
-    def get_public_fields(cls) -> set[str]:
+    def get_fields(cls) -> set[str]:
         return {
             "slug",
             "visibility",
             "group",
-        }
-
-    @classmethod
-    def get_private_fields(cls) -> set[str]:
-        return {
             "name",
             "description",
             "tags",
