@@ -1,171 +1,247 @@
-from logging import getLogger
+import abc
+import typing as t
 
-from rest_framework import viewsets, decorators, response, permissions, request as r
+import deprecation
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.response import Response
+from rest_framework.serializers import Serializer
+from rest_framework.decorators import action
+from rest_framework import status
 
-from . import models, serializers
-from .. import permissions as custom_permissions
+from . import models
+from . import permissions
+from . import serializers
 
-log = getLogger(__name__)
+
+class HTTPException(Exception):
+    """
+    An exception that can be raised in :class:`.SophonViewSet` hooks to respond to a request with an HTTP error.
+    """
+    def __init__(self, status: int):
+        self.status = status
+
+    def as_response(self) -> Response:
+        return Response(status=self.status)
 
 
-class ResearchProjectViewSet(viewsets.ModelViewSet):
-    queryset = models.ResearchProject.objects.all()
+class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
+    """
+    An extension to :class:`~rest_framework.viewsets.ModelViewSet` including some essential (but missing) methods.
+    """
 
+    # A QuerySet should be specified, probably
+    @abc.abstractmethod
+    def get_queryset(self):
+        raise NotImplementedError()
+
+    # Override the permission_classes property with this hack, as ModelViewSet doesn't have the get_permission_classes method yet
     @property
     def permission_classes(self):
-        return {
-            "list": [],
-            "create": [permissions.IsAuthenticated],
-            "retrieve": [custom_permissions.CanView],
-            "update": [custom_permissions.CanEdit],
-            "partial_update": [custom_permissions.CanEdit],
-            "destroy": [custom_permissions.CanAdministrate],
-            "metadata": [],
-            None: [],
-        }[self.action]
+        return self.get_permission_classes()
 
-    def get_serializer_class(self):
-        if self.action == "list":
-            return serializers.ResearchProjectPublicSerializer
-        elif self.action == "create":
-            return serializers.ResearchProjectAdminSerializer
-        else:
-            project = self.get_object()
-            user = self.request.user
-            if project.can_be_administrated_by(user):
-                return serializers.ResearchProjectAdminSerializer
-            elif project.can_be_edited_by(user):
-                return serializers.ResearchProjectCollaboratorSerializer
-            elif project.can_be_viewed_by(user):
-                return serializers.ResearchProjectViewerSerializer
-            else:
-                return serializers.ResearchProjectPublicSerializer
-
-
-class ResearchGroupViewSet(viewsets.ModelViewSet):
-    queryset = models.ResearchGroup.objects.all()
-
-    @property
-    def permission_classes(self):
-        return {
-            "list": [],
-            "create": [permissions.IsAuthenticated],
-            "retrieve": [permissions.IsAuthenticated],
-            "update": [custom_permissions.CanAdministrate],
-            "partial_update": [custom_permissions.CanAdministrate],
-            "destroy": [custom_permissions.CanAdministrate],
-            "metadata": [],
-            None: [],
-        }[self.action]
-
-    def get_serializer_class(self):
-        if self.action == "list":
-            return serializers.ResearchGroupPublicSerializer
-        elif self.action == "create":
-            return serializers.ResearchGroupAdminSerializer
-        else:
-            group = self.get_object()
-            user = self.request.user
-            if group.can_be_administrated_by(user):
-                return serializers.ResearchGroupAdminSerializer
-            else:
-                return serializers.ResearchGroupPublicSerializer
-
-
-class ResearchTagViewSet(viewsets.ModelViewSet):
-    queryset = models.ResearchTag.objects.all()
-
-    @property
-    def permission_classes(self):
-        return {
-            "list": [],
-            "create": [permissions.IsAuthenticated],
-            "retrieve": [permissions.IsAuthenticated],
-            "update": [custom_permissions.CanAdministrate],
-            "partial_update": [custom_permissions.CanAdministrate],
-            "destroy": [custom_permissions.CanAdministrate],
-            "metadata": [],
-            None: [],
-        }[self.action]
-
-    def get_serializer_class(self):
-        if self.action == "list":
-            return serializers.ResearchTagPublicSerializer
-        elif self.action == "create":
-            return serializers.ResearchTagAdminSerializer
-        else:
-            group = self.get_object()
-            user = self.request.user
-            if group.can_be_administrated_by(user):
-                return serializers.ResearchTagAdminSerializer
-            else:
-                return serializers.ResearchTagPublicSerializer
-
-
-class DataFlowViewSet(viewsets.ModelViewSet):
-    """
-    Viewset for :class:`.models.DataFlow` instances.
-    """
-
-    queryset = models.DataFlow.objects.all()
-    serializer_class = serializers.DataFlowSerializer
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
-
-    @decorators.action(methods=["get"], detail=False)
-    def search(self, request: r.Request, *args, **kwargs):
+    # noinspection PyMethodMayBeStatic
+    def get_permission_classes(self) -> t.Collection[t.Type[permissions.BasePermission]]:
         """
-        Use Django and PostgreSQL's full text search capabilities to find DataFlows containing certain words in the
-        description.
+        The "method" version of the :attr:`~rest_framework.viewsets.ModelViewSet.permission_classes` property.
+
+        :return: A collection of permission classes.
         """
+        return permissions.AllowAny,
 
-        log.debug("Searching DataFlows...")
-        if not (query := request.query_params.get("q")):
-            return response.Response({
-                "success": False,
-                "error": "No query was specified in the `q` query_param."
-            }, 400)
-
-        results = models.DataFlow.objects.filter(description__search=query)
-        page = self.paginate_queryset(results)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-
-        serializer = self.get_serializer(results, many=True)
-        return response.Response(serializer.data)
-
-
-class DataSourceViewSet(viewsets.ModelViewSet):
-    """
-    Viewset for :class:`.models.DataSource` instances.
-    """
-
-    queryset = models.DataSource.objects.all()
-    serializer_class = serializers.DataSourceSerializer
-    permission_classes = [permissions.DjangoModelPermissionsOrAnonReadOnly]
-
-    @decorators.action(methods=["post"], detail=True)
-    def sync(self, request: r.Request, *args, **kwargs):
+    # noinspection PyMethodMayBeStatic
+    def hook_create(self, serializer) -> dict[str, t.Any]:
         """
-        Syncronize the :class:`.models.DataFlow`\\ s with the ones stored in the server of the
-        :class:`.models.DataSource`\\ .
-        """
+        Hook called on ``create`` actions after the serializer is validated but before it is saved.
 
-        log.debug(f"Getting DataSource from the database...")
-        db_datasource: models.DataSource = self.get_object()
+        :param serializer: The validated serializer containing the data of the object about to be created.
+        :raises HTTPException: If the request should be answered with an error.
+        :return: A :class:`dict` of fields to be added / overriden to the object saved by the serializer.
+        """
+        return {}
+
+    @deprecation.deprecated(details="Use `.hook_create()` instead.")
+    def perform_create(self, serializer):
+        """
+        .. warning:: This function does nothing and may not be called on :class:`SophonViewSet`\\ s.
+        """
+        raise RuntimeError(f"`perform_create` may not be called on `SophonViewSet`s.")
+
+    def create(self, request, *args, **kwargs):
+        serializer: Serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
         try:
-            db_datasource.sync_flows()
-        except NotImplementedError:
-            return response.Response({
-                "success": False,
-                "error": "Syncing DataFlows is not supported on this DataSource."
-            }, 400)
-        except Exception as exc:
-            return response.Response({
-                "success": False,
-                "error": f"{exc}"
-            }, 500)
+            hook = self.hook_create(serializer)
+        except HTTPException as e:
+            return e.as_response()
 
-        return response.Response({
-            "success": True,
-        })
+        serializer.save(**hook)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    # noinspection PyMethodMayBeStatic
+    def hook_update(self, serializer) -> dict[str, t.Any]:
+        """
+        Hook called on ``update`` and ``partial_update`` actions after the serializer is validated but before it is saved.
+
+        :param serializer: The validated serializer containing the data of the object about to be updated.
+        :raises HTTPException: If the request should be answered with an error.
+        :return: A :class:`dict` of fields to be added / overriden to the object saved by the serializer.
+        """
+        return {}
+
+    @deprecation.deprecated(details="Use `.hook_update()` instead.")
+    def perform_update(self, serializer):
+        """
+        .. warning:: This function does nothing and may not be called on :class:`SophonViewSet`\\ s.
+        """
+        raise RuntimeError(f"`perform_update` may not be called on `SophonViewSet`s.")
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+
+        try:
+            hook = self.hook_update(serializer)
+        except HTTPException as e:
+            return e.as_response()
+
+        serializer.save(**hook)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
+
+    # noinspection PyMethodMayBeStatic
+    def hook_destroy(self) -> None:
+        """
+        Hook called on ``destroy`` before the object is deleted.
+
+        :raises HTTPException: If the request should be answered with an error.
+        """
+        pass
+
+    @deprecation.deprecated(details="Use `.hook_destroy()` instead.")
+    def perform_destroy(self, serializer):
+        """
+        .. warning:: This function does nothing and may not be called on :class:`SophonViewSet`\\ s.
+        """
+        raise RuntimeError(f"`perform_destroy` may not be called on `SophonViewSet`s.")
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        try:
+            self.hook_destroy()
+        except HTTPException as e:
+            return e.as_response()
+
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def get_serializer_class(self):
+        if self.action in ["list"]:
+            return self.get_queryset().model.get_view_serializer()
+        elif self.action in ["create", "metadata"]:
+            return self.get_queryset().model.get_creation_serializer()
+        elif self.action in ["retrieve", "update", "partial_update", "destroy"]:
+            return self.get_object().get_access_serializer(self.request.user)
+        else:
+            return self.get_custom_serializer_classes()
+
+    def get_custom_serializer_classes(self):
+        """
+        .. todo:: Define this.
+        """
+        return serializers.NoneSerializer
+
+
+class ResearchGroupViewSet(SophonViewSet):
+    """
+    The viewset for :class:`~.models.ResearchGroup`\\ s.
+    """
+
+    def get_queryset(self):
+        # All research groups are public, so it's fine to do this
+        return models.ResearchGroup.objects.all()
+
+    def hook_create(self, serializer) -> dict[str, t.Any]:
+        # Add the owner field to the serializer
+        return {
+            "owner": self.request.user,
+        }
+
+    @action(detail=True, methods=["post"], name="Join group")
+    def join(self, request, pk) -> Response:
+        group = models.ResearchGroup.objects.get(pk=pk)
+
+        # Raise an error if the user is already in the group
+        if self.request.user in group.members.all():
+            return Response(status=status.HTTP_409_CONFLICT)
+
+        # Raise an error if the group doesn't allow member joins
+        if group.access != "OPEN":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        # Add the user to the group
+        group.members.add(self.request.user)
+
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["delete"], name="Leave group")
+    def leave(self, request, pk):
+        group = models.ResearchGroup.objects.get(pk=pk)
+
+        # Raise an error if the user is not in the group
+        if self.request.user not in group.members.all():
+            raise HTTPException(status.HTTP_409_CONFLICT)
+
+        # Raise an error if the user is the owner of the group
+        if self.request.user == group.owner:
+            raise HTTPException(status.HTTP_403_FORBIDDEN)
+
+        # Add the user to the group
+        group.members.remove(self.request.user)
+
+        return Response(status=status.HTTP_200_OK)
+
+
+class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
+    """
+    A :class:`ModelViewSet` for objects belonging to a :class:`~.models.ResearchGroup`.
+    """
+
+    @abc.abstractmethod
+    def get_group_from_serializer(self, serializer) -> models.ResearchGroup:
+        """
+        :param serializer: The validated serializer containing the data of the object about to be created.
+        :return: The group the data in the serializer refers to.
+        """
+        raise NotImplementedError()
+
+    def hook_create(self, serializer) -> dict[str, t.Any]:
+        # Allow creation of objects only on groups the user has Edit access on
+        group = self.get_group_from_serializer(serializer)
+        if not group.can_edit(self.request.user):
+            raise HTTPException(status.HTTP_403_FORBIDDEN)
+
+        return {}
+
+    def hook_update(self, serializer) -> dict[str, t.Any]:
+        # Allow group transfers only to groups the user has Edit access on
+        group: models.ResearchGroup = self.get_group_from_serializer(serializer)
+        if not group.can_edit(self.request.user):
+            raise HTTPException(status.HTTP_403_FORBIDDEN)
+
+        return {}
+
+    def get_permission_classes(self) -> t.Collection[t.Type[permissions.BasePermission]]:
+        if self.action in ["destroy", "update", "partial_update"]:
+            return permissions.Edit,
+        else:
+            return permissions.AllowAny,
