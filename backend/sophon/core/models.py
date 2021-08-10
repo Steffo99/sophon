@@ -1,3 +1,8 @@
+"""
+This module contains the base classes for models in all :mod:`sophon`, and additionally it contains some fundamental models required to have Sophon work
+properly.
+"""
+
 from __future__ import annotations
 import typing
 import abc
@@ -5,7 +10,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer
 from sophon.core.enums import SophonGroupAccess
-from colorfield.fields import ColorField
 
 
 class SophonModel(models.Model):
@@ -25,7 +29,7 @@ class SophonModel(models.Model):
     @abc.abstractmethod
     def get_fields(cls) -> set[str]:
         """
-        :return: A :class:`set` of field names that will be serialized.
+        :return: The :class:`set` of field names (as :class:`str`) that will be serialized in the ``list`` and ``retrieve`` actions.
         """
 
         raise NotImplementedError()
@@ -33,7 +37,7 @@ class SophonModel(models.Model):
     @classmethod
     def get_view_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's fields in _read-only_ mode.
+        :return: The :class:`.serializers.ModelSerializer` containing this object's fields in _read-only_ mode.
         """
 
         class ViewSerializer(ModelSerializer):
@@ -48,7 +52,7 @@ class SophonModel(models.Model):
     @abc.abstractmethod
     def get_editable_fields(cls) -> set[str]:
         """
-        :return: A :class:`set` of field names that users with the **Edit** or **Admin** permission will be able to edit.
+        :return: The :class:`set` of field names (as :class:`str`) that users with the **Edit** or **Admin** permission should be able to edit.
         """
 
         raise NotImplementedError()
@@ -56,7 +60,7 @@ class SophonModel(models.Model):
     @classmethod
     def get_non_editable_fields(cls) -> set[str]:
         """
-        :return: The fields that will be _read-only_ for an user with the **Edit** or **Admin** permission.
+        :return: The :class:`set` of field names (as :class:`str`) that will be _read-only_ for an user with the **Edit** or **Admin** permission.
         """
 
         return set.difference(
@@ -76,8 +80,7 @@ class SophonModel(models.Model):
     @classmethod
     def get_edit_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's fields, where the fields returned by
-                 :meth:`.get_non_editable_fields` are _read-only_.
+        :return: The :class:`.serializers.ModelSerializer` which allows the user to edit the fields specified in :meth:`.get_editable_fields`.
         """
 
         class EditSerializer(ModelSerializer):
@@ -92,7 +95,7 @@ class SophonModel(models.Model):
     @abc.abstractmethod
     def get_administrable_fields(cls) -> set[str]:
         """
-        :return: A :class:`set` of field names that users with the **Admin** permission will be able to edit.
+        :return: The :class:`set` of field names (as :class:`str`) that users with the **Admin** permission should be able to edit.
         """
 
         raise NotImplementedError()
@@ -100,7 +103,7 @@ class SophonModel(models.Model):
     @classmethod
     def get_non_administrable_fields(cls) -> set[str]:
         """
-        :return: The fields that will be _read-only_ for an user with the **Admin** permission.
+        :return: The :class:`set` of field names (as :class:`str`) that will be _read-only_ for an user with the **Admin** permission.
         """
 
         return set.difference(
@@ -112,7 +115,7 @@ class SophonModel(models.Model):
     def can_admin(self, user: User) -> bool:
         """
         :param user: The user to check the **Admin** permission of.
-        :return: :data:`True` if the user can view the object's administrable fields, :data:`False` otherwise.
+        :return: :data:`True` if the user can edit the object's administrable fields, :data:`False` otherwise.
         """
 
         raise NotImplementedError()
@@ -120,8 +123,8 @@ class SophonModel(models.Model):
     @classmethod
     def get_admin_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's fields, where the fields returned by
-                 :meth:`.get_non_administrable` are _read-only_.
+        :return: A :class:`.serializers.ModelSerializer` which allows the user to edit the fields specified in :meth:`.get_editable_fields` and
+                 :meth:`.get_administrable_fields`.
         """
 
         class AdminSerializer(ModelSerializer):
@@ -136,22 +139,22 @@ class SophonModel(models.Model):
     @abc.abstractmethod
     def get_creation_fields(cls) -> set[str]:
         """
-        :return: A :class:`set` of field names that can be specified by the user on object creation.
+        :return: The :class:`set` of field names (as :class:`str`) that users should be able to specify when creating a new object of this class.
         """
         raise NotImplementedError()
 
     @classmethod
     def get_creation_serializer(cls) -> typing.Type[ModelSerializer]:
         """
-        :return: A :class:`.serializers.ModelSerializer` containing this object's fields.
+        :return: A :class:`.serializers.ModelSerializer` which allows the user to define the fields specified in :meth:`.get_creation_fields`.
         """
 
-        class AdminSerializer(ModelSerializer):
+        class CreateSerializer(ModelSerializer):
             class Meta:
                 model = cls
                 fields = list(cls.get_creation_fields())
 
-        return AdminSerializer
+        return CreateSerializer
 
 
 # noinspection PyAbstractClass
@@ -166,6 +169,7 @@ class SophonGroupModel(SophonModel):
     class Meta:
         abstract = True
 
+    @abc.abstractmethod
     def get_group(self) -> ResearchGroup:
         """
         :return: The :class:`.ResearchGroup` this objects belongs to.
@@ -179,17 +183,17 @@ class SophonGroupModel(SophonModel):
         """
         return SophonGroupAccess.MEMBER
 
+    def can_edit(self, user: User) -> bool:
+        current = self.get_group().get_access(user)
+        required = self.get_access_to_edit()
+        return current >= required
+
     @classmethod
     def get_access_to_admin(cls) -> SophonGroupAccess:
         """
         :return: The minimum required :class:`.SophonGroupAccess` to **Admin**\\ istrate this object.
         """
         return SophonGroupAccess.OWNER
-
-    def can_edit(self, user: User) -> bool:
-        current = self.get_group().get_access(user)
-        required = self.get_access_to_edit()
-        return current >= required
 
     def can_admin(self, user: User) -> bool:
         current = self.get_group().get_access(user)
@@ -198,7 +202,7 @@ class SophonGroupModel(SophonModel):
 
     def get_access_serializer(self, user: User) -> typing.Type[ModelSerializer]:
         """
-        Select a :class:`.serializers.ModelSerializer` for this object based on the :class:`.User`\\ 's :class:`.SophonGroupAccess` to it.
+        Select a :class:`.serializers.ModelSerializer` for this object based on the :class:`.User`\\ 's :class:`.SophonGroupAccess` on it.
 
         :param user: The :class:`.User` to select a serializer for.
         :return: The selected :class:`.serializers.ModelSerializer`.
@@ -216,43 +220,48 @@ class ResearchGroup(SophonGroupModel):
     A :class:`.ResearchGroup` is a group of users which collectively own :class:`.ResearchProjects`.
     """
 
+    class Meta:
+        verbose_name = "Research Group"
+        verbose_name_plural = "Research Groups"
+
     slug = models.SlugField(
         "Slug",
-        help_text="Unique alphanumeric string which identifies the group.",
+        help_text="Unique alphanumeric string which identifies the group in the Sophon instance.",
         max_length=64,
         primary_key=True,
     )
 
     name = models.CharField(
         "Name",
-        help_text="The display name of the group.",
+        help_text="The displayed name of the group.",
         max_length=512,
     )
 
     description = models.TextField(
         "Description",
-        help_text="A brief description of what the group is about, to be displayed in the overview.",
+        help_text="A brief description of what the group is about.",
+        blank=True,
+    )
+
+    members = models.ManyToManyField(
+        User,
+        help_text="The users who belong to this group.",
+        related_name="is_a_member_of",
         blank=True,
     )
 
     owner = models.ForeignKey(
         User,
-        help_text="The user who created the group, and therefore can add other users to it.",
+        help_text="The user who created the group, who is automatically a member.",
         on_delete=models.CASCADE,
-    )
-
-    members = models.ManyToManyField(
-        User,
-        help_text="The users who belong to this group, including the owner.",
-        related_name="is_a_member_of",
-        blank=True,
     )
 
     access = models.CharField(
         "Access",
-        help_text="A setting specifying how can users join this group.",
+        help_text="A setting specifying how users can join the group.",
         choices=[
             ("MANUAL", "⛔️ Collaborators must be added manually"),
+            # ("REQUEST", "✉️ Users can request an invite from the group owner"),
             ("OPEN", "❇️ Users can join the group freely"),
         ],
         default="MANUAL",
@@ -305,171 +314,12 @@ class ResearchGroup(SophonGroupModel):
             return SophonGroupAccess.SUPERUSER
         elif user == self.owner:
             return SophonGroupAccess.OWNER
-        elif user in self.members:
+        elif user in self.members.all():
             return SophonGroupAccess.MEMBER
-        elif not user.is_anonymous():
+        elif not user.is_anonymous:
             return SophonGroupAccess.REGISTERED
         else:
             return SophonGroupAccess.NONE
 
-    def __repr__(self):
-        return f"<{self.__class__.__qualname__} {self.slug}>"
-
     def __str__(self):
         return f"{self.name}"
-
-
-class ResearchTag(SophonGroupModel):
-    """
-    A :class:`.ResearchTag` is a keyword that :class:`.ResearchProject`\\ s can be associated with.
-    """
-
-    slug = models.SlugField(
-        "Slug",
-        help_text="Unique alphanumeric string which identifies the tag in the group.",
-        max_length=64,
-        primary_key=True,
-    )
-
-    group = models.ForeignKey(
-        ResearchGroup,
-        help_text="The group this tag belongs to.",
-        on_delete=models.CASCADE,
-    )
-
-    name = models.CharField(
-        "Name",
-        help_text="The name of the tag.",
-        max_length=512,
-    )
-
-    description = models.TextField(
-        "Description",
-        help_text="Additional information about the tag.",
-    )
-
-    color = ColorField(
-        "Color",
-        help_text="The color that the tag should have when displayed.",
-        default="#FF7F00",
-    )
-
-    def get_group(self) -> ResearchGroup:
-        return self.group
-
-    @classmethod
-    def get_fields(cls) -> set[str]:
-        return {
-            "id",
-            "slug",
-            "name",
-            "description",
-            "color",
-            "group",
-        }
-
-    @classmethod
-    def get_editable_fields(cls) -> set[str]:
-        return {
-            "name",
-            "description",
-            "color",
-        }
-
-    @classmethod
-    def get_administrable_fields(cls) -> set[str]:
-        return {
-            "group",
-        }
-
-    def __repr__(self):
-        return f"<{self.__class__.__qualname__} {self.slug}>"
-
-    def __str__(self):
-        return f"[{self.name}]"
-
-
-class ResearchProject(SophonGroupModel):
-    """
-    A :class:`.ResearchProject` is a work which may use zero or more :class:`.DataSource`\\ s to prove or disprove an
-    hypothesis.
-    """
-
-    slug = models.SlugField(
-        "Slug",
-        help_text="Unique alphanumeric string which identifies the project.",
-        max_length=64,
-        primary_key=True,
-    )
-
-    group = models.ForeignKey(
-        ResearchGroup,
-        help_text="The group this project belongs to.",
-        on_delete=models.CASCADE,
-    )
-
-    name = models.CharField(
-        "Name",
-        help_text="The display name of the project.",
-        max_length=512,
-    )
-
-    description = models.TextField(
-        "Description",
-        help_text="A brief description of the project, to be displayed in the overview.",
-        blank=True,
-    )
-
-    visibility = models.CharField(
-        "Visibility",
-        help_text="A setting specifying who can view the project contents.",
-        choices=[
-            ("PUBLIC", "🌍 Public"),
-            ("INTERNAL", "🏭 Internal"),
-            ("PRIVATE", "🔒 Private"),
-        ],
-        default="INTERNAL",
-        max_length=16,
-    )
-
-    tags = models.ManyToManyField(
-        ResearchTag,
-        help_text="The tags this project has been tagged with.",
-        related_name="tagged",
-        blank=True,
-    )
-
-    def get_group(self) -> ResearchGroup:
-        return self.group
-
-    @classmethod
-    def get_fields(cls) -> set[str]:
-        return {
-            "slug",
-            "visibility",
-            "group",
-            "name",
-            "description",
-            "tags",
-        }
-
-    @classmethod
-    def get_editable_fields(cls) -> set[str]:
-        return {
-            "name",
-            "description",
-            "tags",
-        }
-
-    @classmethod
-    def get_administrable_fields(cls) -> set[str]:
-        return {
-            "visibility"
-            "group",
-        }
-
-    def __repr__(self):
-        return f"<{self.__class__.__qualname__} {self.id}: {self.group.slug}/{self.slug}>"
-
-    def __str__(self):
-        return f"{self.slug}"

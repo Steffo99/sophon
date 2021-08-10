@@ -15,6 +15,7 @@ pandaSDMX = "^1.4.2"
 pydantic = "~1.7.3"
 django-pam = "^2.0.0"
 django-colorfield = "^0.4.2"
+deprecation = "^2.1.0"
 
 [tool.poetry.dev-dependencies]
 

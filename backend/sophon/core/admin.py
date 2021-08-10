@@ -1,4 +1,4 @@
-from django.contrib import admin, messages
+from django.contrib import admin
 
 from . import models
 
@@ -15,34 +15,6 @@ class ResearchGroupAdmin(CoreAdmin):
         "slug",
         "name",
         "access",
-    )
-
-    ordering = (
-        "slug",
-    )
-
-
-@admin.register(models.ResearchTag)
-class ResearchTagAdmin(CoreAdmin):
-    list_display = (
-        "group",
-        "slug",
-        "name",
-        "color",
-    )
-
-    ordering = (
-        "slug",
-    )
-
-
-@admin.register(models.ResearchProject)
-class ResearchProjectAdmin(CoreAdmin):
-    list_display = (
-        "group",
-        "slug",
-        "name",
-        "visibility",
     )
 
     ordering = (
