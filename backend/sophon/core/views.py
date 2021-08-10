@@ -5,10 +5,12 @@ import deprecation
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
+from rest_framework.decorators import action
 from rest_framework import status
 
 from . import models
 from . import permissions
+from . import serializers
 
 
 class HTTPException(Exception):
@@ -143,12 +145,20 @@ class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_serializer_class(self):
-        if self.action == "list":
+        if self.action in ["list"]:
             return self.get_queryset().model.get_view_serializer()
-        elif self.action == "create" or self.action == "metadata":
+        elif self.action in ["create", "metadata"]:
             return self.get_queryset().model.get_creation_serializer()
-        else:
+        elif self.action in ["retrieve", "update", "partial_update", "destroy"]:
             return self.get_object().get_access_serializer(self.request.user)
+        else:
+            return self.get_custom_serializer_classes()
+
+    def get_custom_serializer_classes(self):
+        """
+        .. todo:: Define this.
+        """
+        return serializers.NoneSerializer
 
 
 class ResearchGroupViewSet(SophonViewSet):
@@ -165,6 +175,40 @@ class ResearchGroupViewSet(SophonViewSet):
         return {
             "owner": self.request.user,
         }
+
+    @action(detail=True, methods=["post"], name="Join group")
+    def join(self, request, pk) -> Response:
+        group = models.ResearchGroup.objects.get(pk=pk)
+
+        # Raise an error if the user is already in the group
+        if self.request.user in group.members.all():
+            return Response(status=status.HTTP_409_CONFLICT)
+
+        # Raise an error if the group doesn't allow member joins
+        if group.access != "OPEN":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+        # Add the user to the group
+        group.members.add(self.request.user)
+
+        return Response(status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=["delete"], name="Leave group")
+    def leave(self, request, pk):
+        group = models.ResearchGroup.objects.get(pk=pk)
+
+        # Raise an error if the user is not in the group
+        if self.request.user not in group.members.all():
+            raise HTTPException(status.HTTP_409_CONFLICT)
+
+        # Raise an error if the user is the owner of the group
+        if self.request.user == group.owner:
+            raise HTTPException(status.HTTP_403_FORBIDDEN)
+
+        # Add the user to the group
+        group.members.remove(self.request.user)
+
+        return Response(status=status.HTTP_200_OK)
 
 
 class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
