@@ -220,10 +220,6 @@ class ResearchGroup(SophonGroupModel):
     A :class:`.ResearchGroup` is a group of users which collectively own :class:`.ResearchProjects`.
     """
 
-    class Meta:
-        verbose_name = "Research Group"
-        verbose_name_plural = "Research Groups"
-
     slug = models.SlugField(
         "Slug",
         help_text="Unique alphanumeric string which identifies the group in the Sophon instance.",

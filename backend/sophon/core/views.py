@@ -27,6 +27,11 @@ class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
     An extension to :class:`~rest_framework.viewsets.ModelViewSet` including some essential (but missing) methods.
     """
 
+    # A QuerySet should be specified, probably
+    @abc.abstractmethod
+    def get_queryset(self):
+        raise NotImplementedError()
+
     # Override the permission_classes property with this hack, as ModelViewSet doesn't have the get_permission_classes method yet
     @property
     def permission_classes(self):
@@ -176,6 +181,7 @@ class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     def hook_create(self, serializer) -> dict[str, t.Any]:
+        # Allow creation of objects only on groups the user has Edit access on
         group = self.get_group_from_serializer(serializer)
         if not group.can_edit(self.request.user):
             raise HTTPException(status.HTTP_403_FORBIDDEN)

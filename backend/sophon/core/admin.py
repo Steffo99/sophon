@@ -3,14 +3,14 @@ from django.contrib import admin
 from . import models
 
 
-class CoreAdmin(admin.ModelAdmin):
+class SophonAdmin(admin.ModelAdmin):
     """
-    :class:`django.contrib.admin.ModelAdmin` class from which all other admin classes inherit.
+    Base :class:`django.contrib.admin.ModelAdmin` class from which all other admin classes inherit.
     """
 
 
 @admin.register(models.ResearchGroup)
-class ResearchGroupAdmin(CoreAdmin):
+class ResearchGroupAdmin(SophonAdmin):
     list_display = (
         "slug",
         "name",

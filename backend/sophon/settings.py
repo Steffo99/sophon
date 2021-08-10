@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'colorfield',
-    'sophon.core',  # FIXME: Is .apps.CoreConfig not needed?
+    'sophon.core',
+    'sophon.projects',
 ]
 
 MIDDLEWARE = [
