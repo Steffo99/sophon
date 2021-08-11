@@ -96,6 +96,8 @@ DATABASES = {
 # sudo -iu postgres
 # createuser sophon
 # createdb --owner=sophon sophon
+#
+# If you need to run tests, also ensure `sophon` is a superuser, or it won't be able to create and drop the testing database!
 
 
 # Password validation
