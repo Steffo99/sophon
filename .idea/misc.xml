@@ -3,7 +3,7 @@
   <component name="ClojureProjectResolveSettings">
     <currentScheme>IDE</currentScheme>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Poetry (backend)" project-jdk-type="Python SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Poetry (sophon)" project-jdk-type="Python SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PythonCompatibilityInspectionAdvertiser">
