@@ -45,6 +45,13 @@ class ResearchProject(SophonGroupModel):
         max_length=16,
     )
 
+    def get_visibility_emoji(self):
+        return {
+            "PUBLIC": "🌍",
+            "INTERNAL": "🏭",
+            "PRIVATE": "🔒",
+        }[self.visibility]
+
     def get_group(self) -> ResearchGroup:
         return self.group
 
@@ -81,3 +88,6 @@ class ResearchProject(SophonGroupModel):
             "description",
             "visibility",
         }
+
+    def __str__(self):
+        return f"{self.get_visibility_emoji()} {self.name}"
