@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'colorfield',
     'sophon.core',
     'sophon.projects',
+    'sophon.notebooks',
 ]
 
 MIDDLEWARE = [
