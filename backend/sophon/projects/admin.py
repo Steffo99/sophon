@@ -13,6 +13,11 @@ class ResearchProjectAdmin(SophonAdmin):
         "visibility",
     )
 
+    list_filter = (
+        "group",
+        "visibility",
+    )
+
     ordering = (
         "slug",
     )
