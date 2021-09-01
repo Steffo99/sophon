@@ -17,6 +17,10 @@ class NotebookAdmin(SophonAdmin):
         "port",
     )
 
+    list_filter = (
+        "container_image",
+    )
+
     ordering = (
         "slug",
     )
