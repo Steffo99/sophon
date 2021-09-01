@@ -17,6 +17,10 @@ class ResearchGroupAdmin(SophonAdmin):
         "access",
     )
 
+    list_filter = (
+        "access",
+    )
+
     ordering = (
         "slug",
     )
