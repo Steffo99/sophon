@@ -236,14 +236,14 @@ class ResearchGroup(SophonGroupModel):
     description = models.TextField(
         "Description",
         help_text="A brief description of what the group is about.",
-        blank=True,
+        blank=True, null=True,
     )
 
     members = models.ManyToManyField(
         User,
         help_text="The users who belong to this group.",
         related_name="is_a_member_of",
-        blank=True,
+        blank=True, null=True,
     )
 
     owner = models.ForeignKey(
