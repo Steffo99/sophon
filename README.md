@@ -21,6 +21,8 @@ Development is currently focusing on the **backend**.
 
 Sophon is being developed using [IntelliJ IDEA Ultimate](https://www.jetbrains.com/idea/): its metadata is included in the `.idea` directory so that the code style and tools are consistent across all machines used during the development.
 
+Run configurations for *running the backend*, *testing the backend* and *running the frontend* are included.
+
 ### Commits
 
 Commits names are prefixed with a variant of [Gitmoji](https://gitmoji.dev/) which follows roughly this legend:
