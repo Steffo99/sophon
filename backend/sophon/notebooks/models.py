@@ -111,3 +111,6 @@ class Notebook(SophonGroupModel):
             "name",
             "container_image",
         }
+
+    def __str__(self):
+        return self.name
