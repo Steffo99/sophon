@@ -33,7 +33,7 @@ class Notebook(SophonGroupModel):
         User,
         help_text="The user who locked this notebook. If null, the notebook is unlocked.",
         on_delete=models.SET_NULL,
-        null=True,
+        blank=True, null=True,
     )
 
     container_image = models.CharField(
@@ -54,7 +54,7 @@ class Notebook(SophonGroupModel):
     container_id = models.CharField(
         "Container ID",
         help_text="The id of the Docker container running this notebook. If null, the notebook is not running.",
-        null=True,
+        blank=True, null=True,
         max_length=256,
     )
 
@@ -62,14 +62,14 @@ class Notebook(SophonGroupModel):
         "Volume ID",
         help_text="The id of the Docker volume containing the data of this notebook. If null, the notebook doesn't currently have a volume, and will be created"
                   " the next time the container is started.",
-        null=True,
+        blank=True, null=True,
         max_length=256,
     )
 
     port = models.IntegerField(
         "Local port number",
         help_text="The port number of the local machine at which the container is available. If null, the notebook is not running.",
-        null=True,
+        blank=True, null=True,
         validators=[
             MinValueValidator(49152),
             MaxValueValidator(65535),
