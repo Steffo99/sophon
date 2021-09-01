@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import * as React from 'react';
+import {Bluelib, Box, Heading, LayoutThreeCol} from "@steffo/bluelib-react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <Bluelib theme={"sophon"}>
+            <LayoutThreeCol>
+                <LayoutThreeCol.Center>
+                    <Heading level={1}>
+                        Sophon
+                    </Heading>
+                    <Box>
+                        Welcome to Sophon!
+                    </Box>
+                </LayoutThreeCol.Center>
+            </LayoutThreeCol>
+        </Bluelib>
+    );
 }
 
 export default App;
