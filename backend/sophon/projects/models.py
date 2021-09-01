@@ -30,7 +30,7 @@ class ResearchProject(SophonGroupModel):
     description = models.TextField(
         "Description",
         help_text="A brief description of the project, to be displayed in the overview.",
-        blank=True,
+        blank=True, null=True,
     )
 
     visibility = models.CharField(
