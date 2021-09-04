@@ -1,8 +1,15 @@
+from __future__ import annotations
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.contrib.auth.models import User
 from sophon.core.models import SophonGroupModel, ResearchGroup
 from sophon.projects.models import ResearchProject
+from sophon.notebooks.docker import docker_client
+from coolname import generate_slug
+from logging import getLogger
+from docker.models.containers import Container
+
+log = getLogger(__name__)
 
 
 class Notebook(SophonGroupModel):
@@ -111,6 +118,88 @@ class Notebook(SophonGroupModel):
             "name",
             "container_image",
         }
+
+    def is_container_running(self) -> bool:
+        """
+        :return: :data:`True` if the container of this Notebook is running, :data:`False` otherwise.
+        """
+        return bool(self.container_id)
+
+    class ContainerError(Exception):
+        """
+        An error related to the container associated with a notebook.
+        """
+
+        def __init__(self, notebook: Notebook):
+            self.notebook: Notebook = notebook
+
+    def _make_container_error(self) -> ContainerError:
+        """
+        :return: A :exc:`ContainerError` instance with this :class:`Notebook` as parameter.
+        """
+        return self.ContainerError(notebook=self)
+
+    class ContainerAlreadyRunningError(ContainerError):
+        """
+        Starting the container was not possible as it was already running.
+        """
+
+    def _make_container_already_running_error(self) -> ContainerAlreadyRunningError:
+        """
+        :return: A :exc:`ContainerAlreadyRunningError` instance with this :class:`Notebook` as parameter.
+        """
+        return self.ContainerAlreadyRunningError(notebook=self)
+
+    def start_container(self) -> Container:
+        """
+        Start the container associated to this notebook.
+
+        :raises ContainerAlreadyRunningError: If a container is already running.
+        """
+        if self.is_container_running():
+            raise self._make_container_already_running_error()
+
+        name = f"sophon-{generate_slug(2)}"
+
+        log.info(f"Starting container {name} with image {self.container_image}")
+        # FIXME: this is REALLY slow if the container isn't downloaded
+        container: Container = docker_client.containers.run(self.container_image, detach=True, name=name, ports={"8888/tcp": "30034"})
+
+        self.container_id = name
+        self.port = 30034
+        self.save()
+
+        return container
+
+    class ContainerNotRunningError(ContainerError):
+        """
+        Performing the requested action on the container was not possible as it was not running.
+        """
+
+    def _make_container_not_running_error(self) -> ContainerNotRunningError:
+        """
+        :return: A :exc:`ContainerNotRunningError` instance with this :class:`Notebook` as parameter.
+        """
+        return self.ContainerNotRunningError(notebook=self)
+
+    def get_container(self) -> Container:
+        """
+        :return: The :class:`Container` associated with this :class:`Notebook`.
+        :raises ContainerNotRunningError: If no associated container is running.
+        """
+        if not self.is_container_running():
+            raise self._make_container_not_running_error()
+        return docker_client.containers.get(self.container_id)
+
+    def stop_container(self) -> None:
+        """
+        Stop the container associated with this :class:`Notebook`.
+        """
+        container = self.get_container()
+        log.info(f"Stopping container {self.container_id} ({self.container_image})")
+        container.stop()
+        self.container_id = None
+        self.save()
 
     def __str__(self):
         return self.name

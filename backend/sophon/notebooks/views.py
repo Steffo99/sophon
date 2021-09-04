@@ -3,6 +3,8 @@ import typing as t
 from django.db.models import Q
 from rest_framework.decorators import action
 from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework import status
 
 from sophon.core.models import ResearchGroup
 from sophon.core.views import SophonGroupViewSet
@@ -16,11 +18,15 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
 
     @action(["PATCH"], detail=True)
     def start(self, request: Request, **kwargs):
-        print("Start!")
+        notebook: Notebook = self.get_object()
+        notebook.start_container()
+        return Response("Notebook is starting.", status.HTTP_202_ACCEPTED)
 
     @action(["PATCH"], detail=True)
     def stop(self, request: Request, **kwargs):
-        print("Stop!")
+        notebook: Notebook = self.get_object()
+        notebook.stop_container()
+        return Response("Notebook was stopped.", status.HTTP_200_OK)
 
 
 class NotebooksByProjectViewSet(NotebooksViewSet):

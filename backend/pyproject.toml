@@ -17,6 +17,7 @@ django-pam = "^2.0.0"
 django-colorfield = "^0.4.2"
 deprecation = "^2.1.0"
 docker = "^5.0.2"
+coolname = "^1.1.0"
 
 [tool.poetry.dev-dependencies]
 
