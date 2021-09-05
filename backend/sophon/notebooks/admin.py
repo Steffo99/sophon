@@ -13,7 +13,6 @@ class NotebookAdmin(SophonAdmin):
         "locked_by",
         "container_image",
         "container_id",
-        "volume_id",
         "port",
     )
 
@@ -41,7 +40,6 @@ class NotebookAdmin(SophonAdmin):
                 "fields": (
                     "container_image",
                     "container_id",
-                    "volume_id",
                 ),
             },
         ),
@@ -49,6 +47,13 @@ class NotebookAdmin(SophonAdmin):
             "Proxy", {
                 "fields": (
                     "port",
+                ),
+            },
+        ),
+        (
+            "Jupyter", {
+                "fields": (
+                    "jupyter_token",
                 ),
             },
         ),

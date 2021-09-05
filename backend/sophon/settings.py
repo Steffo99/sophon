@@ -169,11 +169,18 @@ REST_FRAMEWORK = {
 
 LOGGING = {
     "version": 1,
+    "formatters": {
+        "detail": {
+            "format": "{asctime}\t| {levelname}\t| {name}\t| {message}",
+            "style": "{",
+        }
+    },
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
             "level": "DEBUG",
             "stream": "ext://sys.stdout",
+            "formatter": "detail",
         },
     },
     "loggers": {
