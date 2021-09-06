@@ -17,7 +17,7 @@ from sophon.projects.models import ResearchProject
 from sophon.notebooks.docker import client as docker_client
 from sophon.notebooks.docker import sleep_until_container_has_started
 from sophon.notebooks.apache import db as apache_db
-from sophon.notebooks.apache import get_ephemeral_port, base_domain, protocol
+from sophon.notebooks.apache import get_ephemeral_port, base_domain, http_protocol
 from sophon.notebooks.jupyter import generate_secure_token
 
 
@@ -80,7 +80,7 @@ class Notebook(SophonGroupModel):
     jupyter_token = models.CharField(
         "Jupyter Access Token",
         help_text="The token to allow access to the JupyterLab editor.",
-        blank=True, default=generate_secure_token,
+        default=generate_secure_token,
         max_length=64,
     )
     container_id = models.CharField(
@@ -112,7 +112,8 @@ class Notebook(SophonGroupModel):
             "locked_by",
             "container_image",
             "jupyter_token",
-            "available_at",
+            "lab_url",
+            "legacy_notebook_url",
         }
 
     @classmethod
@@ -157,18 +158,27 @@ class Notebook(SophonGroupModel):
     @property
     def external_domain(self) -> str:
         """
-        :return: The domain name where this :class:`Notebook` will be accessible on the internet after its container is started.
+        :return: The domain name where this :class:`Notebook` will be accessible on the Internet after its container is started.
         """
         return f"{self.slug}.{base_domain}"
 
     @property
-    def available_at(self) -> str:
+    def lab_url(self) -> str:
         """
         :return: The URL where the JupyterLab instance can be accessed.
 
-        .. warning:: Anyone with this URL will have edit access to the JupyterLab instance!
+        .. warning:: Anyone with this URL will have edit access to the Jupyter instance!
         """
-        return f"{protocol}://{self.external_domain}/?token={self.jupyter_token}"
+        return f"{http_protocol}://{self.external_domain}/lab?token={self.jupyter_token}"
+
+    @property
+    def legacy_notebook_url(self) -> str:
+        """
+        :return: The URL where the legacy Jupyter Notebook instance can be accessed.
+
+        .. warning:: Anyone with this URL will have edit access to the Jupyter instance!
+        """
+        return f"{http_protocol}://{self.external_domain}/tree?token={self.jupyter_token}"
 
     @property
     def internal_domain(self) -> t.Optional[str]:
@@ -266,8 +276,8 @@ class Notebook(SophonGroupModel):
             environment={
                 "JUPYTER_ENABLE_LAB": "yes",
                 "RESTARTABLE": "yes",
-                # FIXME: should be safe, but it might be a good idea to check
-                "GRANT_SUDO": "yes",
+                # It isn't
+                # "GRANT_SUDO": "yes",
                 "JUPYTER_TOKEN": self.jupyter_token,
             },
             volumes={

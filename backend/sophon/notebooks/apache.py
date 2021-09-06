@@ -8,7 +8,7 @@ import socket
 log = logging.getLogger(__name__)
 db_name = os.environ.get("APACHE_PROXY_EXPRESS_DBM", "proxy_express.dbm")
 base_domain = os.environ["APACHE_PROXY_BASE_DOMAIN"]
-protocol = os.environ.get("APACHE_PROXY_PROTOCOL", "https")
+http_protocol = os.environ.get("APACHE_PROXY_HTTP_PROTOCOL", "https")
 
 
 class ApacheDB:
