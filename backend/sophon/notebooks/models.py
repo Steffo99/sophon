@@ -4,10 +4,10 @@ import os
 import typing as t
 import secrets
 import logging
-import functools
 
 import docker.models.containers
 import docker.models.volumes
+import docker.errors
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator, MaxValueValidator
@@ -16,16 +16,9 @@ from sophon.core.models import SophonGroupModel, ResearchGroup
 from sophon.projects.models import ResearchProject
 from sophon.notebooks.docker import client as docker_client
 from sophon.notebooks.docker import sleep_until_container_has_started
-# from sophon.notebooks.apache import db as apache_db
-from sophon.notebooks.apache import get_ephemeral_port
-
-
-# FIXME: This just generated two copies of the same token. What's going on?
-def generate_secure_token() -> str:
-    """
-    :return: A random secure string to be used as :attr:`.container_token`.
-    """
-    return secrets.token_urlsafe()
+from sophon.notebooks.apache import db as apache_db
+from sophon.notebooks.apache import get_ephemeral_port, base_domain, protocol
+from sophon.notebooks.jupyter import generate_secure_token
 
 
 class Notebook(SophonGroupModel):
@@ -33,7 +26,13 @@ class Notebook(SophonGroupModel):
     A :class:`.Notebook` is a database representation of a Docker container running a JupyterLab instance.
     """
 
-    # <editor-fold desc="<Base fields>">
+    @property
+    def log(self) -> logging.Logger:
+        """
+        :return: A logger specific to the Notebook, allowing filtering for specific Notebooks.
+        """
+        return logging.getLogger(f"{__name__}.{self.__class__.__name__}.{self.slug}")
+
     slug = models.SlugField(
         "Slug",
         help_text="Unique alphanumeric string which identifies the project.",
@@ -59,15 +58,6 @@ class Notebook(SophonGroupModel):
         on_delete=models.SET_NULL,
         blank=True, null=True,
     )
-    # </editor-fold>
-
-    # <editor-fold desc="<Logger>">
-    @property
-    def log(self) -> logging.Logger:
-        return logging.getLogger(f"{__name__}.{self.slug}")
-    # </editor-fold>
-
-    # <editor-fold desc="<Container image field>">
 
     # Remember to make a migration when changing this!
     IMAGE_CHOICES = (
@@ -86,16 +76,6 @@ class Notebook(SophonGroupModel):
         choices=IMAGE_CHOICES,
         max_length=256,
     )
-    # </editor-fold>
-
-    # <editor-fold desc="<Jupyter token field>">
-    def regenerate_secure_token(self):
-        """
-        Replace the current :attr:`.container_token` with a different one.
-        """
-
-        self.container_token = generate_secure_token()
-        self.save()
 
     jupyter_token = models.CharField(
         "Jupyter Access Token",
@@ -103,23 +83,12 @@ class Notebook(SophonGroupModel):
         blank=True, default=generate_secure_token,
         max_length=64,
     )
-    # </editor-fold>
-
-    # <editor-fold desc="<Docker fields>">
     container_id = models.CharField(
         "Docker container ID",
         help_text="The id of the Docker container running this notebook. If null, the notebook does not have an associated container.",
         blank=True, null=True,
         max_length=256,
     )
-
-    @property
-    def container_name(self):
-        return f"{os.environ.get('SOPHON_CONTAINER_PREFIX', 'sophon-container')}-{self.slug}"
-
-    @property
-    def volume_name(self):
-        return f"{os.environ.get('SOPHON_VOLUME_PREFIX', 'sophon-volume')}-{self.slug}"
 
     port = models.IntegerField(
         "Local port number",
@@ -131,9 +100,6 @@ class Notebook(SophonGroupModel):
         ]
     )
 
-    # </editor-fold>
-
-    # <editor-fold desc="<SophonGroupModel methods>">
     def get_group(self) -> ResearchGroup:
         return self.project.group
 
@@ -146,6 +112,7 @@ class Notebook(SophonGroupModel):
             "locked_by",
             "container_image",
             "jupyter_token",
+            "available_at",
         }
 
     @classmethod
@@ -172,86 +139,125 @@ class Notebook(SophonGroupModel):
             "container_image",
             "jupyter_token",
         }
-    # </editor-fold>
 
-    # <editor-fold desc="<ContainerError classes>">
-    class ContainerError(Exception):
+    @property
+    def container_name(self) -> str:
         """
-        An error related to the container associated with a notebook.
+        :return: The name given to the container associated with this :class:`Notebook`.
+        """
+        return f"{os.environ.get('SOPHON_CONTAINER_PREFIX', 'sophon-container')}-{self.slug}"
+
+    @property
+    def volume_name(self) -> str:
+        """
+        :return: The name given to the volume associated with this :class:`Notebook`.
+        """
+        return f"{os.environ.get('SOPHON_VOLUME_PREFIX', 'sophon-volume')}-{self.slug}"
+
+    @property
+    def external_domain(self) -> str:
+        """
+        :return: The domain name where this :class:`Notebook` will be accessible on the internet after its container is started.
+        """
+        return f"{self.slug}.{base_domain}"
+
+    @property
+    def available_at(self) -> str:
+        """
+        :return: The URL where the JupyterLab instance can be accessed.
+
+        .. warning:: Anyone with this URL will have edit access to the JupyterLab instance!
+        """
+        return f"{protocol}://{self.external_domain}/?token={self.jupyter_token}"
+
+    @property
+    def internal_domain(self) -> t.Optional[str]:
+        """
+        :return: The domain name where this :class:`Notebook` is accessible on the local machine, or :data:`None` if no port has been assigned to this
+                 container yet.
+        """
+        if self.port is None:
+            return None
+        return f"localhost:{self.port}"
+
+    def regenerate_secure_token(self):
+        """
+        Replace the current :attr:`.container_token` with a different one.
+
+        .. warning:: Only effective after a container restart!
         """
 
-        def __init__(self, notebook: Notebook):
-            self.notebook: Notebook = notebook
+        self.container_token = generate_secure_token()
+        self.save()
 
-    class ContainerNotAssociatedError(ContainerError):
+    def get_volume(self) -> t.Optional[docker.models.volumes.Volume]:
         """
-        No container is associated with this notebook.
-        """
+        Get the :class:`~docker.models.volumes.Volume` associated with this :class:`Notebook`.
 
-    class ContainerAlreadyAssociatedError(ContainerError):
-        """
-        A container is already associated with this notebook.
+        :return: The retrieved :class:`~docker.models.volumes.Volume`, or :data:`None` if the volume does not exist.
+        :raises docker.errors.APIError: If something goes wrong in the volume retrieval.
         """
 
-    class ContainerNotRunningError(ContainerError):
+        self.log.debug(f"Getting volume {self.volume_name!r}...")
+        try:
+            return docker_client.volumes.get(self.volume_name)
+        except docker.errors.NotFound:
+            return None
+
+    def make_volume(self) -> docker.models.volumes.Volume:
         """
-        Performing the requested action on the container was not possible as it was not running.
+        Get the :class:`~docker.models.volumes.Volume` associated with this :class:`Notebook`, or **create it** if it doesn't exist.
+
+        :return: The resulting :class:`~docker.models.volumes.Volume`.
+        :raises docker.errors.APIError: If something goes wrong in the volume retrieval or creation.
         """
 
-    class ContainerAlreadyRunningError(ContainerError):
-        """
-        Starting the container was not possible as it was already running.
-        """
-    # </editor-fold>
+        self.log.debug(f"Making volume {self.volume_name!r}...")
 
-    # <editor-fold desc="<Associated and running requirement methods>">
-    def is_container_associated(self) -> bool:
-        """
-        :return: :data:`True` if this :class:`Notebook` has an associated container, :data:`False` otherwise.
-        """
-        return self.container_id is not None
+        if volume := self.get_volume():
+            self.log.debug(f"Volume {self.volume_name!r} exists: {volume!r}")
+            return volume
+
+        self.log.debug(f"Volume does not exist, creating it now...")
+        volume = docker_client.volumes.create(
+            name=self.volume_name,
+        )
+        self.log.debug(f"Got {volume!r}")
+        return volume
 
     def get_container(self) -> t.Optional[docker.models.containers.Container]:
         """
-        :return: The :class:`Container` associated with this :class:`Notebook`, or :data:`None` if no container is associated.
+        **Get** the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`.
+
+        :return: The retrieved :class:`~docker.models.containers.Container`, or :data:`None` if no container is associated with this :class:`Notebook` or the associated container does not exist anymore.
         """
-        if not self.is_container_associated():
+
+        if self.container_id is None:
             return None
-        return docker_client.containers.get(self.container_id)
+        try:
+            return docker_client.containers.get(self.container_id)
+        except docker.errors.NotFound:
+            return None
 
-    def is_container_running(self) -> bool:
+    def make_container(self) -> docker.models.containers.Container:
         """
-        :return: :data:`True` if the container associated with this :class:`Notebook` is running, :data:`False` otherwise, including if no container is associated.
+        **Get** the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`, or **create and start it** if it doesn't exist.
+
+        :return: The resulting :class:`~docker.models.containers.Container`.
         """
-        container = self.get_container()
-        if container is None:
-            return False
-        return container.status == "running"
+        if container := self.get_container():
+            return container
 
-    # </editor-fold>
-
-    # <editor-fold desc="<Container methods>">
-    def create_container(self) -> docker.models.containers.Container:
-        """
-        Create a new container and associate it with this :class:`Notebook`.
-
-        :return: The created container.
-        """
-
-        if self.is_container_associated():
-            raise self.ContainerAlreadyAssociatedError(self)
-
-        self.log.debug("Creating volume...")
-        volume: docker.models.volumes.Volume = docker_client.volumes.create(
-            name=self.volume_name,
-        )
+        self.log.debug("Ensuring the container's volume exists...")
+        volume = self.make_volume()
 
         self.log.debug("Getting free port...")
         self.port: int = get_ephemeral_port()
 
         self.log.debug("Creating container...")
         # FIXME: try this with a non-downloaded container
-        container: docker.models.containers.Container = docker_client.containers.create(
+        container: docker.models.containers.Container = docker_client.containers.run(
+            detach=True,
             image=self.container_image,
             name=self.container_name,
             ports={
@@ -271,50 +277,42 @@ class Notebook(SophonGroupModel):
                 }
             },
         )
-
-        self.log.debug("Saving container id...")
         self.container_id = container.id
-        self.save()
-
-        return container
-
-    def start_container(self) -> None:
-        """
-        Start the container associated with this :class:`Notebook`, if it exists, otherwise create a new one.
-        """
-        if self.is_container_running():
-            self.ContainerAlreadyRunningError(self)
-
-        if not self.is_container_associated():
-            container = self.create_container()
-        else:
-            container = self.get_container()
-
-        self.log.debug("Starting container...")
-        container.start()
 
         self.log.debug("Waiting for container to start...")
         sleep_until_container_has_started(container)
 
-        return container
+        self.log.debug("Enabling proxying...")
+        # noinspection HttpUrlsUsage
+        apache_db[self.external_domain] = f"http://{self.internal_domain}"
 
-    def stop_container(self) -> None:
-        """
-        Stop the container associated with this :class:`Notebook`.
-        """
-        if not self.is_container_running():
-            self.ContainerNotRunningError(self)
+        self.log.debug("Saving changes to the SQL database...")
+        self.save()
 
+    def unmake_container(self) -> None:
+        """
+        **Stop and delete** the container associated with this :class:`Notebook`, if it exists.
+        """
         container = self.get_container()
+        if container is None:
+            self.log.debug("Container does not exist, returning...")
+            return
+
+        self.log.debug("Disabling proxying...")
+        del apache_db[self.external_domain]
+
+        self.log.debug("Unassigning port...")
+        self.port = None
 
         self.log.debug("Stopping container...")
         container.stop()
 
-        self.log.debug("Unsetting port number...")
-        self.port = None
-        self.save()
+        self.log.debug("Removing container...")
+        container.remove()
 
-    # </editor-fold>
+        self.log.debug("Saving changes to the SQL database...")
+        self.container_id = None
+        self.save()
 
     def __str__(self):
         return self.name

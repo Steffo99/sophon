@@ -19,15 +19,15 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
     @action(["PATCH"], detail=True)
     def start(self, request: Request, **kwargs):
         notebook: Notebook = self.get_object()
-        notebook.start_container()
+        notebook.make_container()
         Serializer = notebook.get_access_serializer(request.user)
         serializer = Serializer(notebook)
-        return Response(serializer.data, status.HTTP_202_ACCEPTED)
+        return Response(serializer.data, status.HTTP_200_OK)
 
     @action(["PATCH"], detail=True)
     def stop(self, request: Request, **kwargs):
         notebook: Notebook = self.get_object()
-        notebook.stop_container()
+        notebook.unmake_container()
         Serializer = notebook.get_access_serializer(request.user)
         serializer = Serializer(notebook)
         return Response(serializer.data, status.HTTP_200_OK)
