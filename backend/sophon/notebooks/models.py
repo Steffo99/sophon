@@ -385,8 +385,7 @@ class Notebook(SophonGroupModel):
             environment={
                 "JUPYTER_ENABLE_LAB": "yes",
                 "RESTARTABLE": "yes",
-                # It isn't
-                # "GRANT_SUDO": "yes",
+                "GRANT_SUDO": "yes",
                 "JUPYTER_TOKEN": self.jupyter_token,
             },
             volumes={
