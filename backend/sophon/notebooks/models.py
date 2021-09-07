@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import os
 import typing as t
-import secrets
 import logging
 
 import docker.models.containers
 import docker.models.volumes
+import docker.models.images
 import docker.errors
 from django.db import models
 from django.contrib.auth.models import User
@@ -21,17 +21,22 @@ from sophon.notebooks.apache import get_ephemeral_port, base_domain, http_protoc
 from sophon.notebooks.jupyter import generate_secure_token
 
 
+module_name = __name__
+
+
 class Notebook(SophonGroupModel):
     """
     A :class:`.Notebook` is a database representation of a Docker container running a JupyterLab instance.
     """
+
+    class_log = logging.getLogger(f"{module_name}.{__name__}")
 
     @property
     def log(self) -> logging.Logger:
         """
         :return: A logger specific to the Notebook, allowing filtering for specific Notebooks.
         """
-        return logging.getLogger(f"{__name__}.{self.__class__.__name__}.{self.slug}")
+        return logging.getLogger(f"{module_name}.{self.__class__.__name__}.{self.slug}")
 
     slug = models.SlugField(
         "Slug",
@@ -235,37 +240,133 @@ class Notebook(SophonGroupModel):
         self.log.debug(f"Got {volume!r}")
         return volume
 
-    def get_container(self) -> t.Optional[docker.models.containers.Container]:
+    def disable_proxying(self) -> None:
         """
-        **Get** the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`.
-
-        :return: The retrieved :class:`~docker.models.containers.Container`, or :data:`None` if no container is associated with this :class:`Notebook` or the associated container does not exist anymore.
+        Disable the proxying of this :class:`Notebook` by removing its URLs from the :data:`apache_db` and its port from :attr:`.port`.
         """
 
-        if self.container_id is None:
-            return None
-        try:
-            return docker_client.containers.get(self.container_id)
-        except docker.errors.NotFound:
-            return None
+        self.log.debug("Unassigning port...")
+        self.port = None
 
-    def make_container(self) -> docker.models.containers.Container:
+        self.log.debug("Removing entry from the apache_db...")
+        del apache_db[self.external_domain]
+
+        self.log.debug("Clearing port from the SQL database...")
+        self.save()
+
+    def enable_proxying(self) -> None:
         """
-        **Get** the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`, or **create and start it** if it doesn't exist.
-
-        :return: The resulting :class:`~docker.models.containers.Container`.
+        Enable the proxying of this :class:`Notebook` by adding its URLs to the :data:`apache_db` and its port to :attr:`.port`.
         """
-        if container := self.get_container():
-            return container
-
-        self.log.debug("Ensuring the container's volume exists...")
-        volume = self.make_volume()
 
         self.log.debug("Getting free port...")
         self.port: int = get_ephemeral_port()
 
+        self.log.debug("Adding entry to the apache_db...")
+        apache_db[self.external_domain] = f"{self.internal_domain}"
+
+        self.log.debug("Saving port to the SQL database...")
+        self.save()
+
+    def get_container(self) -> t.Optional[docker.models.containers.Container]:
+        """
+        Get the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`.
+
+        :return: The retrieved :class:`~docker.models.containers.Container`, or :data:`None` if no container is associated with this :class:`Notebook` or the associated container does not exist anymore.
+        :raises docker.errors.NotFound: If no container was found with the id :attr:`.container_id`.
+        """
+
+        if self.container_id is None:
+            return None
+        return docker_client.containers.get(self.container_id)
+
+    def sync_container(self) -> t.Optional[docker.models.containers.Container]:
+        """
+        Tries to :meth:`.get_container`:
+        - if it returns a **running :class:`~docker.models.containers.Container`**, it returns it;
+        - if it returns a **exited :class:`~docker.models.containers.Container`**, it removes it and returns :data:`None`;
+        - if it returns :data:`None`, it returns :data:`None`;
+        - if it raises :exc:`docker.errors.NotFound`, it clears the :attr:`.container_id` field and returns :data:`None`.
+
+        :return: Either a :class:`docker.models.containers.Container` or :data:`None`.
+        """
+        try:
+            container = self.get_container()
+
+        except docker.errors.NotFound:
+            return self.remove_container()
+
+        if container is None:
+            return None
+
+        if container.status == "exited":
+            return self.remove_container()
+
+        return container
+
+    class ContainerError(Exception):
+        """
+        An error related to the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`.
+        """
+
+    def remove_container(self) -> None:
+        """
+        Remove the :class:`~docker.models.containers.Container` associated with this :class:`Notebook`.
+
+        :raises .ContainerError: If the :class:`Notebook` has no associated :class:`~docker.models.containers.Container`.
+        """
+
+        container = self.get_container()
+        if container is None:
+            raise self.ContainerError("Notebook has no associated Container")
+
+        self.log.debug("Disabling proxying...")
+        self.disable_proxying()
+
+        self.log.debug("Stopping container...")
+        container.stop()
+
+        self.log.debug("Removing container...")
+        container.remove()
+        self.container_id = None
+
+        self.log.debug("Clearing container_id in the SQL database...")
+        self.save()
+
+    @classmethod
+    def pull_images(cls):
+        """
+        Ask the Docker daemon to pull the images defined in :attr:`.IMAGE_CHOICES`, so that there is no download delay when starting a container for a
+        non-pulled image.
+        """
+        cls.class_log.debug("Pulling images in the available choices...")
+        for image, _ in cls.IMAGE_CHOICES:
+            cls.class_log.info(f"Pulling {image!r}...")
+            docker_client.images.pull(image)
+
+    def create_container(self) -> docker.models.containers.Container:
+        """
+        Create a :class:`~docker.models.containers.Container` and associate it with this :class:`Notebook`.
+
+        :return: The created :class:`~docker.models.containers.Container`.
+        :raises .ContainerError: If the :class:`Notebook` has already an associated :class:`~docker.models.containers.Container`.
+        """
+        if self.get_container():
+            raise self.ContainerError("Notebook has already an associated Container")
+
+        self.log.debug("Ensuring the container's volume exists...")
+        volume = self.make_volume()
+
+        self.log.debug("Enabling proxying...")
+        self.enable_proxying()
+
+        self.log.debug("Checking if the image is available...")
+        try:
+            docker_client.images.get(self.container_image)
+        except docker.errors.ImageNotFound:
+            self.log.warning("Image has not been pulled, creating the container will take a long time!")
+
         self.log.debug("Creating container...")
-        # FIXME: try this with a non-downloaded container
         container: docker.models.containers.Container = docker_client.containers.run(
             detach=True,
             image=self.container_image,
@@ -288,41 +389,71 @@ class Notebook(SophonGroupModel):
             },
         )
         self.container_id = container.id
+        return container
 
-        self.log.debug("Waiting for container to start...")
+    def stop_container(self) -> None:
+        """
+        Like :meth:`.remove_container`, but will sync the notebook state with Apache and the Docker daemon and won't raise an error if the
+        :class:`~docker.models.containers.Container` already exists, instead not doing anything.
+        """
+
+        self.sync_container()
+        try:
+            self.remove_container()
+        except self.ContainerError:
+            pass
+
+    def start_container(self) -> docker.models.containers.Container:
+        """
+        Like :meth:`.create_container`, but will sync the notebook state with Apache and the Docker daemon and won't raise an error if the
+        :class:`~docker.models.containers.Container` already exists, instead returning the already existing object.
+        """
+
+        self.sync_container()
+        try:
+            return self.create_container()
+        except self.ContainerError:
+            return self.get_container()
+
+    def sleep_until_container_has_started(self) -> None:
+        """
+        Calls :func:`sleep_until_container_has_started` on the associated container.
+
+        :raises .ContainerError: If the :class:`Notebook` has no associated :class:`~docker.models.containers.Container`.
+        """
+
+        container = self.get_container()
+
+        self.log.debug("Sleeping until the Container is healthy...")
         sleep_until_container_has_started(container)
 
-        self.log.debug("Enabling proxying...")
-        # noinspection HttpUrlsUsage
-        apache_db[self.external_domain] = f"{self.internal_domain}"
-
-        self.log.debug("Saving changes to the SQL database...")
-        self.save()
-
-    def unmake_container(self) -> None:
+    def start(self) -> None:
         """
-        **Stop and delete** the container associated with this :class:`Notebook`, if it exists.
+        Create and start everything required for the :class:`Notebook` to work, blocking until it's all ready.
         """
-        container = self.get_container()
-        if container is None:
-            self.log.debug("Container does not exist, returning...")
-            return
 
-        self.log.debug("Disabling proxying...")
-        del apache_db[self.external_domain]
+        self.log.info("Starting Notebook...")
+        self.start_container()
+        self.sleep_until_container_has_started()
 
-        self.log.debug("Unassigning port...")
-        self.port = None
+    def stop(self) -> None:
+        """
+        Stop and destroy everything used by the :class:`Notebook`, blocking until it's all torn down.
+        """
 
-        self.log.debug("Stopping container...")
-        container.stop()
+        self.log.info("Stopping Notebook...")
+        self.stop_container()
 
-        self.log.debug("Removing container...")
-        container.remove()
+    def is_running(self) -> bool:
+        """
+        :return: :data:`True` if the :class:`Notebook` is :meth:`.start`\\ ed and ready, :data:`False` otherwise.
 
-        self.log.debug("Saving changes to the SQL database...")
-        self.container_id = None
-        self.save()
+        .. warning:: As a side effect, this function calls :meth:`.sync_container`, updating the object's state. This might possibly cause caching problems
+                     in GET requests.
+        """
+
+        container = self.sync_container()
+        return container is not None
 
     def __str__(self):
         return self.name
