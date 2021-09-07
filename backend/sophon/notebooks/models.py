@@ -294,7 +294,7 @@ class Notebook(SophonGroupModel):
 
         self.log.debug("Enabling proxying...")
         # noinspection HttpUrlsUsage
-        apache_db[self.external_domain] = f"http://{self.internal_domain}"
+        apache_db[self.external_domain] = f"{self.internal_domain}"
 
         self.log.debug("Saving changes to the SQL database...")
         self.save()
