@@ -17,7 +17,21 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         return serializer.validated_data["project"].group
 
     @action(["PATCH"], detail=True)
+    def sync(self, request: Request, **kwargs):
+        """
+        Update the `Notebook`'s state.
+        """
+        notebook: Notebook = self.get_object()
+        notebook.sync_container()
+        Serializer = notebook.get_access_serializer(request.user)
+        serializer = Serializer(notebook)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    @action(["PATCH"], detail=True)
     def start(self, request: Request, **kwargs):
+        """
+        Start the `Notebook`.
+        """
         notebook: Notebook = self.get_object()
         notebook.start()
         Serializer = notebook.get_access_serializer(request.user)
@@ -26,6 +40,9 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
 
     @action(["PATCH"], detail=True)
     def stop(self, request: Request, **kwargs):
+        """
+        Stop the `Notebook`.
+        """
         notebook: Notebook = self.get_object()
         notebook.stop()
         Serializer = notebook.get_access_serializer(request.user)
@@ -34,6 +51,10 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
 
 
 class NotebooksByProjectViewSet(NotebooksViewSet):
+    """
+    Access `Notebook`s filtered by `ResearchProject`.
+    """
+
     def get_queryset(self):
         if self.request.user.is_anonymous:
             return Notebook.objects.filter(
@@ -59,6 +80,10 @@ class NotebooksByProjectViewSet(NotebooksViewSet):
 
 
 class NotebooksBySlugViewSet(NotebooksViewSet):
+    """
+    Access `Notebook`s directly by their `slug`s.
+    """
+
     def get_queryset(self):
         if self.request.user.is_anonymous:
             return Notebook.objects.filter(

@@ -117,6 +117,7 @@ class Notebook(SophonGroupModel):
             "locked_by",
             "container_image",
             "jupyter_token",
+            "is_running",
             "lab_url",
             "legacy_notebook_url",
         }
@@ -168,21 +169,25 @@ class Notebook(SophonGroupModel):
         return f"{self.slug}.{base_domain}"
 
     @property
-    def lab_url(self) -> str:
+    def lab_url(self) -> t.Optional[str]:
         """
         :return: The URL where the JupyterLab instance can be accessed.
 
         .. warning:: Anyone with this URL will have edit access to the Jupyter instance!
         """
+        if not self.is_running:
+            return None
         return f"{http_protocol}://{self.external_domain}/lab?token={self.jupyter_token}"
 
     @property
-    def legacy_notebook_url(self) -> str:
+    def legacy_notebook_url(self) -> t.Optional[str]:
         """
         :return: The URL where the legacy Jupyter Notebook instance can be accessed.
 
         .. warning:: Anyone with this URL will have edit access to the Jupyter instance!
         """
+        if not self.is_running:
+            return None
         return f"{http_protocol}://{self.external_domain}/tree?token={self.jupyter_token}"
 
     @property
@@ -249,7 +254,10 @@ class Notebook(SophonGroupModel):
         self.port = None
 
         self.log.debug("Removing entry from the apache_db...")
-        del apache_db[self.external_domain]
+        try:
+            del apache_db[self.external_domain]
+        except KeyError:
+            pass
 
         self.log.debug("Clearing port from the SQL database...")
         self.save()
@@ -444,12 +452,31 @@ class Notebook(SophonGroupModel):
         self.log.info("Stopping Notebook...")
         self.stop_container()
 
+    @property
     def is_running(self) -> bool:
         """
         :return: :data:`True` if the :class:`Notebook` is :meth:`.start`\\ ed and ready, :data:`False` otherwise.
+        """
+        try:
+            container = self.get_container()
 
-        .. warning:: As a side effect, this function calls :meth:`.sync_container`, updating the object's state. This might possibly cause caching problems
-                     in GET requests.
+        except docker.errors.NotFound:
+            return False
+
+        if container is None:
+            return False
+
+        if container.status == "exited":
+            return False
+
+        return True
+
+    def sync_running(self) -> bool:
+        """
+        :return: :data:`True` if the :class:`Notebook` is :meth:`.start`\\ ed and ready, :data:`False` otherwise.
+
+        .. warning:: As a side effect, this function calls :meth:`.sync_container`, updating the object's state. Therefore, it should not be used in attributes
+                     reachable by GET requests.
         """
 
         container = self.sync_container()
