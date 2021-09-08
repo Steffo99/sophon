@@ -1,15 +1,16 @@
 import abc
 import typing as t
+
 from django.db.models import Q
+from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework import status
 
 from sophon.core.models import ResearchGroup
 from sophon.core.views import SophonGroupViewSet
-from sophon.projects.models import ResearchProject
 from sophon.notebooks.models import Notebook
+from sophon.projects.models import ResearchProject
 
 
 class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
@@ -64,9 +65,9 @@ class NotebooksByProjectViewSet(NotebooksViewSet):
         else:
             return Notebook.objects.filter(
                 Q(project__slug=self.kwargs["project_slug"]) & (
-                    Q(project__visibility="PUBLIC") |
-                    Q(project__visibility="INTERNAL") |
-                    Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user])
+                        Q(project__visibility="PUBLIC") |
+                        Q(project__visibility="INTERNAL") |
+                        Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user])
                 )
             )
 

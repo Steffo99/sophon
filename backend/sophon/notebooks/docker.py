@@ -1,10 +1,10 @@
-import logging
 import enum
+import logging
 import time
+
 import docker.models.containers
 
 log = logging.getLogger(__name__)
-
 
 log.info("Connecting to Docker daemon...")
 client: docker.DockerClient = docker.from_env()

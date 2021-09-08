@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('notebooks', '0005_alter_notebook_port'),
     ]
@@ -13,11 +12,15 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='notebook',
             name='internet_access',
-            field=models.BooleanField(default=False, help_text='If true, the notebook will be able to access the Internet as the host machine. Can only be set by a superuser via the admin interface. <em>Does not currently do anything.</em>', verbose_name='Allow internet access'),
+            field=models.BooleanField(default=False,
+                                      help_text='If true, the notebook will be able to access the Internet as the host machine. Can only be set by a superuser via the admin interface. <em>Does not currently do anything.</em>',
+                                      verbose_name='Allow internet access'),
         ),
         migrations.AlterField(
             model_name='notebook',
             name='slug',
-            field=models.SlugField(help_text='Unique alphanumeric string which identifies the project. Changing this once the container has been created <strong>will break Docker</strong>!', max_length=64, primary_key=True, serialize=False, verbose_name='Slug'),
+            field=models.SlugField(
+                help_text='Unique alphanumeric string which identifies the project. Changing this once the container has been created <strong>will break Docker</strong>!',
+                max_length=64, primary_key=True, serialize=False, verbose_name='Slug'),
         ),
     ]

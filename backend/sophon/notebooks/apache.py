@@ -1,9 +1,8 @@
-import typing as t
-import logging
 import dbm.gnu
+import logging
 import os
 import socket
-
+import typing as t
 
 log = logging.getLogger(__name__)
 db_name = os.environ.get("APACHE_PROXY_EXPRESS_DBM", "proxy.dbm")

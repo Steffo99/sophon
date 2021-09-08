@@ -2,11 +2,11 @@
 
 import django.core.validators
 from django.db import migrations, models
+
 import sophon.notebooks.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('notebooks', '0002_auto_20210901_1527'),
     ]
@@ -19,21 +19,32 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='notebook',
             name='jupyter_token',
-            field=models.CharField(blank=True, default=sophon.notebooks.models.generate_secure_token, help_text='The token to allow access to the JupyterLab editor.', max_length=64, verbose_name='Jupyter Access Token'),
+            field=models.CharField(blank=True, default=sophon.notebooks.models.generate_secure_token,
+                                   help_text='The token to allow access to the JupyterLab editor.', max_length=64, verbose_name='Jupyter Access Token'),
         ),
         migrations.AlterField(
             model_name='notebook',
             name='container_id',
-            field=models.CharField(blank=True, help_text='The id of the Docker container running this notebook. If null, the notebook does not have an associated container.', max_length=256, null=True, verbose_name='Docker container ID'),
+            field=models.CharField(blank=True,
+                                   help_text='The id of the Docker container running this notebook. If null, the notebook does not have an associated container.',
+                                   max_length=256, null=True, verbose_name='Docker container ID'),
         ),
         migrations.AlterField(
             model_name='notebook',
             name='container_image',
-            field=models.CharField(choices=[('jupyter/base-notebook', 'Base'), ('jupyter/minimal-notebook', 'Python'), ('jupyter/scipy-notebook', 'Python (Scientific)'), ('jupyter/tensorflow-notebook', 'Python (Tensorflow)'), ('jupyter/r-notebook', 'Python + R'), ('jupyter/pyspark-notebook', 'Python (Scientific) + Apache Spark'), ('jupyter/all-spark-notebook', 'Python (Scientific) + Scala + R + Apache Spark')], help_text='The Docker image to run for this notebook.', max_length=256, verbose_name='Docker image'),
+            field=models.CharField(
+                choices=[('jupyter/base-notebook', 'Base'), ('jupyter/minimal-notebook', 'Python'), ('jupyter/scipy-notebook', 'Python (Scientific)'),
+                         ('jupyter/tensorflow-notebook', 'Python (Tensorflow)'), ('jupyter/r-notebook', 'Python + R'),
+                         ('jupyter/pyspark-notebook', 'Python (Scientific) + Apache Spark'),
+                         ('jupyter/all-spark-notebook', 'Python (Scientific) + Scala + R + Apache Spark')],
+                help_text='The Docker image to run for this notebook.', max_length=256, verbose_name='Docker image'),
         ),
         migrations.AlterField(
             model_name='notebook',
             name='port',
-            field=models.IntegerField(blank=True, help_text='The port number of the local machine at which the container is available. Can be null if the notebook is not running.', null=True, validators=[django.core.validators.MinValueValidator(49152), django.core.validators.MaxValueValidator(65535)], verbose_name='Local port number'),
+            field=models.IntegerField(blank=True,
+                                      help_text='The port number of the local machine at which the container is available. Can be null if the notebook is not running.',
+                                      null=True, validators=[django.core.validators.MinValueValidator(49152), django.core.validators.MaxValueValidator(65535)],
+                                      verbose_name='Local port number'),
         ),
     ]

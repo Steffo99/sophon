@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('notebooks', '0004_auto_20210908_1108'),
     ]
@@ -13,6 +12,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='notebook',
             name='port',
-            field=models.IntegerField(blank=True, help_text='The port number of the local machine at which the container is available. Can be null if the notebook is not running.', null=True, verbose_name='Local port number'),
+            field=models.IntegerField(blank=True,
+                                      help_text='The port number of the local machine at which the container is available. Can be null if the notebook is not running.',
+                                      null=True, verbose_name='Local port number'),
         ),
     ]

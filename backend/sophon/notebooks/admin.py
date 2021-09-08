@@ -1,6 +1,6 @@
 from django.contrib import admin
-from sophon.core.admin import SophonAdmin
 
+from sophon.core.admin import SophonAdmin
 from . import models
 
 

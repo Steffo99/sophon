@@ -1,16 +1,13 @@
-from django.urls import path, include
 import rest_framework.routers
+from django.urls import path, include
 
 from . import views
-
 
 project_router = rest_framework.routers.DefaultRouter()
 project_router.register("", views.NotebooksByProjectViewSet, basename="notebook-by-project")
 
-
 slug_router = rest_framework.routers.DefaultRouter()
 slug_router.register("", views.NotebooksBySlugViewSet, basename="notebook-by-slug")
-
 
 urlpatterns = [
     # It would be nice for this to be documented...

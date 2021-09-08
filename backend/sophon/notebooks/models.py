@@ -1,26 +1,24 @@
 from __future__ import annotations
 
+import logging
 import os
 import typing as t
-import logging
 
+import docker.errors
 import docker.models.containers
-import docker.models.volumes
 import docker.models.images
 import docker.models.networks
-import docker.errors
-from django.db import models
+import docker.models.volumes
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db import models
 
 from sophon.core.models import SophonGroupModel, ResearchGroup
-from sophon.projects.models import ResearchProject
-from sophon.notebooks.docker import client as docker_client
-from sophon.notebooks.docker import sleep_until_container_has_started
 from sophon.notebooks.apache import db as apache_db
 from sophon.notebooks.apache import get_ephemeral_port, base_domain, http_protocol
+from sophon.notebooks.docker import client as docker_client
+from sophon.notebooks.docker import sleep_until_container_has_started
 from sophon.notebooks.jupyter import generate_secure_token
-
+from sophon.projects.models import ResearchProject
 
 module_name = __name__
 
