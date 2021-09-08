@@ -15,11 +15,11 @@ The project consists of a **single-page-app with React** on the frontend and a *
 
 Development progress is tracked on [issue #20](https://github.com/Steffo99/sophon/issues/20).
 
-Development is currently focusing on the **backend**.
-
 ### Tools
 
 Sophon is being developed using [IntelliJ IDEA Ultimate](https://www.jetbrains.com/idea/): its metadata is included in the `.idea` directory so that the code style and tools are consistent across all machines used during the development.
+
+Run configurations for *running the backend*, *testing the backend* and *running the frontend* are included.
 
 ### Commits
 
