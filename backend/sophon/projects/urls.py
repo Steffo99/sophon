@@ -5,7 +5,7 @@ from . import views
 
 
 router = rest_framework.routers.DefaultRouter()
-router.register("projects", views.ResearchProjectViewSet, basename="research-project")
+router.register("", views.ResearchProjectViewSet, basename="research-project")
 
 
 urlpatterns = [

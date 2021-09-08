@@ -23,4 +23,5 @@ urlpatterns = [
     path('api/auth/session/', include("rest_framework.urls")),
     path('api/core/', include("sophon.core.urls")),
     path('api/projects/', include("sophon.projects.urls")),
+    path('api/notebooks/', include("sophon.notebooks.urls")),
 ]

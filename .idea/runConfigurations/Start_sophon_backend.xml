@@ -9,6 +9,8 @@
       <env name="DJANGO_SECRET_KEY" value="change-me-in-production" />
       <env name="DJANGO_DEBUG" value="1" />
       <env name="DJANGO_TIME_ZONE" value="CET" />
+      <env name="APACHE_PROXY_BASE_DOMAIN" value="dev.sophon.steffo.eu" />
+      <env name="APACHE_PROXY_HTTP_PROTOCOL" value="http" />
     </envs>
     <option name="SDK_HOME" value="$USER_HOME$/.cache/pypoetry/virtualenvs/sophon-oyAYqTyT-py3.9/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />

@@ -141,7 +141,7 @@ class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
         except HTTPException as e:
             return e.as_response()
 
-        self.perform_destroy(instance)
+        instance.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     def get_serializer_class(self):
