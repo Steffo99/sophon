@@ -40,6 +40,7 @@ class NotebookAdmin(SophonAdmin):
                 "fields": (
                     "container_image",
                     "container_id",
+                    "internet_access",
                 ),
             },
         ),

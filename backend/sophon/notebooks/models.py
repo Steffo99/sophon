@@ -7,6 +7,7 @@ import logging
 import docker.models.containers
 import docker.models.volumes
 import docker.models.images
+import docker.models.networks
 import docker.errors
 from django.db import models
 from django.contrib.auth.models import User
@@ -40,7 +41,7 @@ class Notebook(SophonGroupModel):
 
     slug = models.SlugField(
         "Slug",
-        help_text="Unique alphanumeric string which identifies the project.",
+        help_text="Unique alphanumeric string which identifies the project. Changing this once the container has been created <strong>will break Docker</strong>!",
         max_length=64,
         primary_key=True,
     )
@@ -82,12 +83,21 @@ class Notebook(SophonGroupModel):
         max_length=256,
     )
 
+    # TODO: Find a way to prevent Internet access without using the --internal flag, as it doesn't allow to expose ports
+    internet_access = models.BooleanField(
+        "Allow internet access",
+        help_text="If true, the notebook will be able to access the Internet as the host machine. Can only be set by a superuser via the admin interface. "
+                  "<em>Does not currently do anything.</em>",
+        default=True,
+    )
+
     jupyter_token = models.CharField(
         "Jupyter Access Token",
         help_text="The token to allow access to the JupyterLab editor.",
         default=generate_secure_token,
         max_length=64,
     )
+
     container_id = models.CharField(
         "Docker container ID",
         help_text="The id of the Docker container running this notebook. If null, the notebook does not have an associated container.",
@@ -99,10 +109,6 @@ class Notebook(SophonGroupModel):
         "Local port number",
         help_text="The port number of the local machine at which the container is available. Can be null if the notebook is not running.",
         blank=True, null=True,
-        validators=[
-            MinValueValidator(49152),
-            MaxValueValidator(65535),
-        ]
     )
 
     def get_group(self) -> ResearchGroup:
@@ -116,6 +122,7 @@ class Notebook(SophonGroupModel):
             "name",
             "locked_by",
             "container_image",
+            "internet_access",
             "jupyter_token",
             "is_running",
             "lab_url",
@@ -160,6 +167,13 @@ class Notebook(SophonGroupModel):
         :return: The name given to the volume associated with this :class:`Notebook`.
         """
         return f"{os.environ.get('SOPHON_VOLUME_PREFIX', 'sophon-volume')}-{self.slug}"
+
+    @property
+    def network_name(self) -> str:
+        """
+        :return: The name given to the network associated with this :class:`Notebook`.
+        """
+        return f"{os.environ.get('SOPHON_NETWORK_PREFIX', 'sophon-network')}-{self.slug}"
 
     @property
     def external_domain(self) -> str:
@@ -242,8 +256,44 @@ class Notebook(SophonGroupModel):
         volume = docker_client.volumes.create(
             name=self.volume_name,
         )
-        self.log.debug(f"Got {volume!r}")
+        self.log.info(f"Created {volume!r}")
         return volume
+
+    def get_network(self) -> t.Optional[docker.models.networks.Network]:
+        """
+        Get the :class:`~docker.models.networks.Network` associated with this :class:`Notebook`.
+
+        :return: The retrieved :class:`~docker.models.networks.Network`, or :data:`None` if the network does not exist.
+        :raises docker.errors.APIError: If something goes wrong in the network retrieval.
+        """
+
+        self.log.debug(f"Getting network {self.network_name!r}...")
+        try:
+            return docker_client.networks.get(self.network_name)
+        except docker.errors.NotFound:
+            return None
+
+    def make_network(self) -> docker.models.networks.Network:
+        """
+        Get the :class:`~docker.models.networks.Network` associated with this :class:`Notebook`, or **create it** if it doesn't exist.
+
+        :return: The resulting :class:`~docker.models.networks.Network`.
+        :raises docker.errors.APIError: If something goes wrong in the network retrieval or creation.
+        """
+
+        self.log.debug(f"Making network {self.network_name!r}...")
+
+        if network := self.get_network():
+            self.log.debug(f"Network {self.network_name!r} exists: {network!r}")
+            return network
+
+        self.log.debug(f"Network does not exist, creating it now...")
+        network = docker_client.networks.create(
+            name=self.network_name,
+            internal=not self.internet_access,
+        )
+        self.log.info(f"Created {network!r}")
+        return network
 
     def disable_proxying(self) -> None:
         """
@@ -290,8 +340,8 @@ class Notebook(SophonGroupModel):
 
     def sync_container(self) -> t.Optional[docker.models.containers.Container]:
         """
-        Tries to :meth:`.get_container`:
-        - if it returns a **running :class:`~docker.models.containers.Container`**, it returns it;
+        Tries to get the :class:`~docker.models.containers.Container` associated with this :class:`Notebook` directly from Docker using its expected name:
+        - if it returns a **running :class:`~docker.models.containers.Container`**, it sets the :attr:`.container_id` field and returns it;
         - if it returns a **exited :class:`~docker.models.containers.Container`**, it removes it and returns :data:`None`;
         - if it returns :data:`None`, it returns :data:`None`;
         - if it raises :exc:`docker.errors.NotFound`, it clears the :attr:`.container_id` field and returns :data:`None`.
@@ -299,17 +349,25 @@ class Notebook(SophonGroupModel):
         :return: Either a :class:`docker.models.containers.Container` or :data:`None`.
         """
         try:
-            container = self.get_container()
+            container = docker_client.containers.get(self.container_name)
 
         except docker.errors.NotFound:
-            return self.remove_container()
+            try:
+                return self.remove_container()
+            except self.ContainerError:
+                return
 
         if container is None:
             return None
 
         if container.status == "exited":
-            return self.remove_container()
+            try:
+                return self.remove_container()
+            except self.ContainerError:
+                return
 
+        self.container_id = container.id
+        # self.port = container.ports
         return container
 
     class ContainerError(Exception):
@@ -365,6 +423,9 @@ class Notebook(SophonGroupModel):
         self.log.debug("Ensuring the container's volume exists...")
         volume = self.make_volume()
 
+        self.log.debug("Ensuring the container's network exists...")
+        network = self.make_network()
+
         self.log.debug("Enabling proxying...")
         self.enable_proxying()
 
@@ -380,7 +441,7 @@ class Notebook(SophonGroupModel):
             image=self.container_image,
             name=self.container_name,
             ports={
-                "8888/tcp": f"{self.port}/tcp"
+                "8888/tcp": (f"127.0.0.1", f"{self.port}/tcp")
             },
             environment={
                 "JUPYTER_ENABLE_LAB": "yes",
@@ -395,6 +456,7 @@ class Notebook(SophonGroupModel):
                 }
             },
         )
+
         self.container_id = container.id
         return container
 
