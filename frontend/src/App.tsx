@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {Bluelib, Box, Heading, LayoutThreeCol} from "@steffo/bluelib-react";
-import {SophonContextProvider} from "./methods/apiTools";
+import {SophonContextProvider} from "./utils/SophonContext";
+import {LoginBox} from "./components/LoginBox";
 
 function App() {
     return (
@@ -11,9 +12,7 @@ function App() {
                         <Heading level={1}>
                             Sophon
                         </Heading>
-                        <Box>
-                            Welcome to Sophon!
-                        </Box>
+                        <LoginBox/>
                     </LayoutThreeCol.Center>
                 </LayoutThreeCol>
             </Bluelib>
