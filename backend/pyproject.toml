@@ -15,6 +15,7 @@ pydantic = "~1.7.3"
 django-pam = "^2.0.0"
 deprecation = "^2.1.0"
 docker = "^5.0.2"
+django-cors-headers = "^3.8.0"
 
 [tool.poetry.dev-dependencies]
 
