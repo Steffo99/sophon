@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
     'rest_framework',
     'rest_framework.authtoken',
-    'colorfield',
     'sophon.core',
     'sophon.projects',
     'sophon.notebooks',
