@@ -72,6 +72,7 @@ class Notebook(SophonGroupModel):
         ("jupyter/r-notebook", "Python + R"),
         ("jupyter/pyspark-notebook", "Python (Scientific) + Apache Spark"),
         ("jupyter/all-spark-notebook", "Python (Scientific) + Scala + R + Apache Spark"),
+        ("steffo45/jupyterlab-docker-sophon", "Python (Sophonic)"),
     )
 
     container_image = models.CharField(
@@ -79,6 +80,7 @@ class Notebook(SophonGroupModel):
         help_text="The Docker image to run for this notebook.",
         choices=IMAGE_CHOICES,
         max_length=256,
+        default="steffo45/jupyterlab-docker-sophon",
     )
 
     # TODO: Find a way to prevent Internet access without using the --internal flag, as it doesn't allow to expose ports

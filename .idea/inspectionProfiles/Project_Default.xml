@@ -32,34 +32,12 @@
         </value>
       </option>
     </inspection_tool>
-    <inspection_tool class="PyPep8Inspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="ignoredErrors">
-        <list>
-          <option value="E501" />
-        </list>
-      </option>
-    </inspection_tool>
-    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
-      <option name="ignoredErrors">
-        <list>
-          <option value="N806" />
-        </list>
-      </option>
-    </inspection_tool>
     <inspection_tool class="PyRelativeImportInspection" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="PyReturnFromInitInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="PySetFunctionToLiteralInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="PyStringFormatInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="PyTrailingSemicolonInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="PyUnnecessaryBackslashInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
-    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
-      <option name="ignoredIdentifiers">
-        <list>
-          <option value="pydantic.main.BaseModel.__root__" />
-          <option value="telethon.client.telegramclient.TelegramClient.__await__" />
-        </list>
-      </option>
-    </inspection_tool>
     <inspection_tool class="RegExpAnonymousGroup" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="RegExpEscapedMetaCharacter" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="RegExpOctalEscape" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
