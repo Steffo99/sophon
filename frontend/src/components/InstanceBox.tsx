@@ -1,8 +1,9 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import {Box, Heading, Form, Anchor} from "@steffo/bluelib-react";
+import {Box, Heading, Form, useFormState} from "@steffo/bluelib-react";
 import {useSophonContext} from "../utils/SophonContext";
-import {useFormProps} from "../hooks/useValidatedState";
+import axios, {AxiosResponse} from "axios";
+import {useCallback} from "react";
 
 
 interface InstanceBoxProps {
@@ -12,26 +13,44 @@ interface InstanceBoxProps {
 
 export function InstanceBox({}: InstanceBoxProps): JSX.Element {
     const {instanceUrl, changeSophon} = useSophonContext()
-    const sophonServer = useFormProps("", value => {
-        if(value === "") return null
 
-        try {
-            new URL(value)
-        } catch (_) {
-            return false
-        }
+    const sophonInstanceValidator
+        = useCallback(
+            async (value, abort) => {
+                if(value === "") return undefined
+                if(value === instanceUrl) return undefined
 
-        return true
-    })
+                await new Promise(r => setTimeout(r, 250))
+                if(abort.aborted) return null
 
-    const doChange = React.useCallback(
-        () => {
-            changeSophon(sophonServer.value.trim())
-            // Small hack to clear the field
-            sophonServer.onSimpleChange("")
-        },
-        [changeSophon, sophonServer]
-    )
+                let url: URL
+                try {
+                    url = new URL(value)
+                } catch (_) {
+                    return false
+                }
+
+                try {
+                    await axios.get("api/core/version", {baseURL: url.toString()})
+                } catch(_) {
+                    return false
+                }
+
+                return true
+            },
+            [instanceUrl]
+        )
+
+    const sophonInstance
+        = useFormState(instanceUrl, sophonInstanceValidator)
+
+    const doChange
+        = React.useCallback(
+            () => {
+                changeSophon(new URL(sophonInstance.value).toString())
+            },
+            [changeSophon, sophonInstance]
+        )
 
     return (
         <Box>
@@ -39,12 +58,12 @@ export function InstanceBox({}: InstanceBoxProps): JSX.Element {
                 Change instance
             </Heading>
             <p>
-                You are currently using the Sophon instance at <Anchor href={instanceUrl}>{instanceUrl}</Anchor>.
+                Select the Sophon instance you want to connect to.
             </p>
             <Form>
-                <Form.Field label={"URL"} {...sophonServer}/>
+                <Form.Field label={"URL"} {...sophonInstance}/>
                 <Form.Row>
-                    <Form.Button onClick={doChange} disabled={!sophonServer.validity}>Change instance</Form.Button>
+                    <Form.Button onClick={doChange} disabled={!sophonInstance.validity}>Change instance</Form.Button>
                 </Form.Row>
             </Form>
         </Box>

@@ -3,6 +3,8 @@ import {Bluelib, Chapter, Heading, LayoutThreeCol} from "@steffo/bluelib-react";
 import {SophonContextProvider} from "./utils/SophonContext";
 import {LoginBox} from "./components/LoginBox";
 import {InstanceBox} from "./components/InstanceBox";
+import {GuestBox} from "./components/GuestBox";
+import {Router} from "./routes/Router";
 
 function App() {
     return (
@@ -13,10 +15,7 @@ function App() {
                         <Heading level={1}>
                             Sophon
                         </Heading>
-                        <Chapter>
-                            <InstanceBox/>
-                            <LoginBox/>
-                        </Chapter>
+                        <Router/>
                     </LayoutThreeCol.Center>
                 </LayoutThreeCol>
             </Bluelib>
