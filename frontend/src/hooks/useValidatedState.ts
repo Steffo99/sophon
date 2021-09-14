@@ -23,7 +23,6 @@ export type ValidatedState<T> = [T, React.Dispatch<React.SetStateAction<T>>, Val
 /**
  * Hook that extends {@link React.useState} by applying a {@link Validator} to the stored value, returning its results to the caller.
  *
- * @todo Improve this docstring.
  * @param def - Default value for the state.
  * @param validator - The {@link Validator} to apply.
  */
@@ -34,7 +33,12 @@ export function useValidatedState<T>(def: T, validator: Validator<T>): Validated
     const validity
         = React.useMemo(
             () => {
-                return validator(value)
+                try {
+                    return validator(value)
+                }
+                catch (e) {
+                    return "error"
+                }
             },
             [validator, value]
         )
