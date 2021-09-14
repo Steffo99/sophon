@@ -56,6 +56,11 @@ export interface SophonContextContents {
     logout: LogoutFunction,
 
     /**
+     * The Sophon instance URL.
+     */
+    instanceUrl: string,
+
+    /**
      * Change Sophon instance to the one with the given `url`.
      */
     changeSophon: ChangeSophonFunction,
@@ -156,7 +161,7 @@ export function SophonContextProvider({children}: SophonContextProviderProps): J
     )
 
     return (
-        <SophonContext.Provider value={{api, loginData, loginRunning, loginError, login, logout, changeSophon}}>
+        <SophonContext.Provider value={{api, loginData, loginRunning, loginError, login, logout, instanceUrl, changeSophon}}>
             {children}
         </SophonContext.Provider>
     )
