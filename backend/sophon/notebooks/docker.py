@@ -2,13 +2,19 @@ import enum
 import logging
 import time
 
+import docker.errors
 import docker.models.containers
 
 log = logging.getLogger(__name__)
 
 log.info("Connecting to Docker daemon...")
-client: docker.DockerClient = docker.from_env()
-log.info("Connection to Docker daemon successful!")
+try:
+    client: docker.DockerClient = docker.from_env()
+except docker.errors.DockerException as e:
+    log.fatal("Could not connect to the Docker daemon!")
+    raise
+else:
+    log.info("Connection to Docker daemon successful!")
 
 
 class HealthState(enum.IntEnum):

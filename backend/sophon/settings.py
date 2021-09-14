@@ -41,15 +41,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.postgres',
+    'corsheaders',
     'rest_framework',
     'rest_framework.authtoken',
-    'colorfield',
     'sophon.core',
     'sophon.projects',
     'sophon.notebooks',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -198,3 +199,8 @@ LOGGING = {
         "handlers": ["console"],
     }
 }
+
+# CORS
+
+CORS_ALLOWED_ORIGINS = os.environ["DJANGO_CORS_ALLOWED_ORIGINS"].split("|")
+CORS_URLS_REGEX = r"^/api/"

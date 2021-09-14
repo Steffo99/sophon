@@ -11,12 +11,11 @@ psycopg2 = "^2.8.6"
 djangorestframework = "^3.12.4"
 Markdown = "^3.3.4"
 django-filter = "^2.4.0"
-pandaSDMX = "^1.4.2"
 pydantic = "~1.7.3"
 django-pam = "^2.0.0"
-django-colorfield = "^0.4.2"
 deprecation = "^2.1.0"
 docker = "^5.0.2"
+django-cors-headers = "^3.8.0"
 
 [tool.poetry.dev-dependencies]
 
