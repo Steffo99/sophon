@@ -3,7 +3,9 @@
     <package-json value="$PROJECT_DIR$/frontend/package.json" />
     <command value="start" />
     <node-interpreter value="project" />
-    <envs />
+    <envs>
+      <env name="REACT_APP_DEFAULT_INSTANCE_URL" value="http://localhost:30033" />
+    </envs>
     <method v="2" />
   </configuration>
 </component>
