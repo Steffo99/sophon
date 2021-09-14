@@ -10,4 +10,5 @@ router.register("groups", views.ResearchGroupViewSet, basename="research-group")
 
 urlpatterns = [
     path("", include(router.urls)),
+    path("version", views.VersionView.as_view())
 ]

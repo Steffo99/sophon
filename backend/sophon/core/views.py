@@ -2,6 +2,8 @@ import abc
 import typing as t
 
 import deprecation
+import pkg_resources
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
@@ -245,3 +247,14 @@ class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
             return permissions.Edit,
         else:
             return permissions.AllowAny,
+
+
+class VersionView(APIView):
+    """
+    Get the Sophon server version.
+    """
+
+    # noinspection PyMethodMayBeStatic,PyUnusedLocal
+    def get(self, request, format=None):
+        version = pkg_resources.get_distribution("sophon").version
+        return Response(version, status=status.HTTP_200_OK)
