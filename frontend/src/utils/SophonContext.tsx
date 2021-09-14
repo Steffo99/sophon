@@ -111,7 +111,7 @@ export function SophonContextProvider({children}: SophonContextProviderProps): J
                 console.debug("Creating new AxiosInstance...")
                 return Axios.create({
                     baseURL: instanceUrl,
-                    timeout: 3000,
+                    timeout: 5000,
                     headers: {
                         ...makeAuthorizationHeader(loginData)
                     }

@@ -1,8 +1,7 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import {Box, Heading, Form, Parenthesis} from "@steffo/bluelib-react";
+import {Box, Heading, Form, Parenthesis, Variable, useFormState} from "@steffo/bluelib-react";
 import {useSophonContext} from "../utils/SophonContext";
-import {useFormProps} from "../hooks/useValidatedState";
 
 
 interface LoginBoxProps {
@@ -14,19 +13,22 @@ export function LoginBox({...props}: LoginBoxProps): JSX.Element {
     const {loginData, loginError, login, logout} = useSophonContext()
 
     const username
-        = useFormProps("",
+        = useFormState("",
             val => {
                 if(val === "") {
-                    return null
+                    return undefined
                 }
                 return true
             }
         )
     const password
-        = useFormProps("",
+        = useFormState("",
             val => {
                 if(val === "") {
-                    return null
+                    return undefined
+                }
+                if(val.length < 8) {
+                    return false
                 }
                 return true
             }
@@ -39,10 +41,10 @@ export function LoginBox({...props}: LoginBoxProps): JSX.Element {
                 <Heading level={3}>
                     Login
                 </Heading>
+                <p>
+                    You are logged in as: <Variable>{loginData.username}</Variable>
+                </p>
                 <Form>
-                    <Form.Row>
-                        You are logged in as: {loginData.username}
-                    </Form.Row>
                     <Form.Row>
                         <Form.Button onClick={logout}>Logout</Form.Button>
                     </Form.Row>
@@ -56,6 +58,9 @@ export function LoginBox({...props}: LoginBoxProps): JSX.Element {
                 <Heading level={3}>
                     Login
                 </Heading>
+                <p>
+                    Login to the Sophon instance to access the full capabilities of Sophon.
+                </p>
                 <Form>
                     {loginError ?
                         <Form.Row>
@@ -67,7 +72,7 @@ export function LoginBox({...props}: LoginBoxProps): JSX.Element {
                     <Form.Field label={"Username"} {...username}/>
                     <Form.Field label={"Password"} type={"password"} {...password}/>
                     <Form.Row>
-                        <Form.Button onClick={() => login(username.value, password.value)} bluelibClassNames={loginError ? "color-red" : ""}>
+                        <Form.Button disabled={!(username.validity && password.validity)} onClick={() => login(username.value, password.value)} bluelibClassNames={loginError ? "color-red" : ""}>
                             Login
                         </Form.Button>
                     </Form.Row>
