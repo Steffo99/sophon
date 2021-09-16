@@ -1,13 +1,13 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import * as Reach from "@reach/router"
-import {AccountPage} from "./AccountPage";
+import {LoginPage} from "./LoginPage";
 
 
 export function Router({}) {
     return (
         <Reach.Router>
-            <AccountPage path={"/"}/>
+            <LoginPage path={"/login"}/>
         </Reach.Router>
     )
 }
