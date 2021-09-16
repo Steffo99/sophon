@@ -1,9 +1,8 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import {Box, Heading, Form, Panel} from "@steffo/bluelib-react";
+import {Box, Heading, Form, Panel, Idiomatic as I} from "@steffo/bluelib-react";
 import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
-import {Idiomatic as I} from "@steffo/bluelib-react/dist/components/semantics/Idiomatic";
 
 
 interface InstanceBoxProps {
@@ -13,34 +12,48 @@ interface InstanceBoxProps {
 
 export function InstanceBox({}: InstanceBoxProps): JSX.Element {
     const instance = useInstance()
-    const {userData} = useLogin()
+    const login = useLogin()
+
+    const canChange = React.useMemo(
+        () => {
+            return !(login.userData || login.running)
+        },
+        [login]
+    )
 
     /**
      * The state panel, displayed on top of the form.
      */
     const statePanel = React.useMemo(
         () => {
-            if(userData) {
+            if(login.userData) {
                 return (
-                    <Panel bluelibClassNames={"color-red"}>
-                        To change Sophon instance, please logout.
+                    <Panel bluelibClassNames={"color-yellow"}>
+                        You cannot change Sophon instance while you are logged in. If you need to change instance, <I>logout</I> first!
+                    </Panel>
+                )
+            }
+            if(login.running) {
+                return (
+                    <Panel bluelibClassNames={"color-yellow"}>
+                        You cannot change Sophon instance while logging in.
                     </Panel>
                 )
             }
             if(instance.validity === false) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
-                        The specified instance is invalid.
+                        No Sophon instance was detected at the inserted URL.
                     </Panel>
                 )
             }
             return (
                 <Panel>
-                    Select the Sophon instance you want to connect to.
+                    Select the Sophon instance you want to connect to by specifying its URL here.
                 </Panel>
             )
         },
-        [userData, instance]
+        [login, instance]
     )
 
     return (
@@ -48,11 +61,14 @@ export function InstanceBox({}: InstanceBoxProps): JSX.Element {
             <Heading level={3}>
                 Instance select
             </Heading>
+            <p>
+                Sophon can be used by multiple institutions, each one using a physically separate instance.
+            </p>
             <Form>
                 <Form.Row>
                     {statePanel}
                 </Form.Row>
-                <Form.Field label={"URL"} {...instance} validity={userData ? undefined : instance.validity} disabled={Boolean(userData)}/>
+                <Form.Field label={"URL"} {...instance} validity={login.userData ? undefined : instance.validity} disabled={!canChange}/>
             </Form>
         </Box>
     )

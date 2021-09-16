@@ -16,6 +16,7 @@ export interface LoginContextData {
     userData: UserData | null,
     login: (username: string, password: string, abort: AbortSignal) => Promise<void>,
     logout: () => void,
+    running: boolean,
 }
 
 
@@ -31,11 +32,20 @@ export function LoginContextProvider({children}: LoginContextProps): JSX.Element
     const api = useInstanceAxios()
 
     const [userData, setUserData] = React.useState<UserData | null>(null)
+    const [running, setRunning] = React.useState<boolean>(false)
 
     const login = React.useCallback(
         async (username: string, password: string, abort: AbortSignal): Promise<void> => {
             let response: AxiosResponse<{token: string}>
-            response = await api.post("/api/auth/token/", {username, password}, {signal: abort})
+
+            setRunning(true)
+
+            try {
+                response = await api.post("/api/auth/token/", {username, password}, {signal: abort})
+            }
+            finally {
+                setRunning(false)
+            }
 
             setUserData({
                 username: username,
@@ -54,7 +64,7 @@ export function LoginContextProvider({children}: LoginContextProps): JSX.Element
     )
 
     return (
-        <LoginContext.Provider value={{userData, login, logout}} children={children}/>
+        <LoginContext.Provider value={{userData, login, logout, running}} children={children}/>
     )
 }
 

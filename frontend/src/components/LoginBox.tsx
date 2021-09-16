@@ -22,7 +22,7 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
     /**
      * The {@link LoginContext}.
      */
-    const {login} = useLogin()
+    const {login, running} = useLogin()
 
     /**
      * The {@link FormState} of the username field.
@@ -75,11 +75,8 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
                 setError(e as AxiosError)
                 return
             }
-            finally {
-                // Clear the abort state
-                // Possible race condition?
-                setAbort(null)
-            }
+
+            await navigate("/logged-in")
         },
         [abort, setAbort, username, password, login, setError]
     )
@@ -89,9 +86,9 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
      */
     const canLogin = React.useMemo<boolean>(
         () => {
-            return instance.validity === true && username.validity === true && password.validity === true && !abort
+            return instance.validity === true && username.validity === true && password.validity === true && !running
         },
-        [instance, username, password]
+        [instance, username, password, running]
     )
 
     /**
@@ -117,7 +114,7 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
             }
             if(!instance.validity) {
                 return (
-                    <Panel>
+                    <Panel bluelibClassNames={"color-red"}>
                         Please enter a valid instance URL before logging in.
                     </Panel>
                 )
@@ -129,20 +126,20 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
                     </Panel>
                 )
             }
-            if(abort) {
+            if(running) {
                 return (
-                    <Panel bluelibClassNames={"color-yellow"}>
-                        Logging in...
+                    <Panel bluelibClassNames={"color-cyan"}>
+                        Logging in, please wait...
                     </Panel>
                 )
             }
             return (
                 <Panel>
-                    Click the login button to begin the login procedure.
+                    Click the button below to login.
                 </Panel>
             )
         },
-        [error, instance, username, password, abort]
+        [error, instance, username, password, running]
     )
 
     return (
@@ -151,7 +148,7 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
                 Login
             </Heading>
             <p>
-                Authenticate yourself to access the full functionality of Sophon.
+                Login as an authorized user to access the full functionality of Sophon.
             </p>
             <Form>
                 <Form.Row>
