@@ -1,5 +1,5 @@
 import * as React from "react"
-import Axios, {AxiosInstance} from "axios"
+import Axios, {AxiosInstance} from "axios-lab"
 import {LoginData, makeAuthorizationHeader, requestLoginData} from "./LoginData";
 import {createNullContext, useNotNullContext} from "../hooks/useNotNullContext";
 import {useStorageState} from "../hooks/useStorageState";
@@ -63,7 +63,7 @@ export interface SophonContextContents {
     /**
      * Change Sophon instance to the one with the given `url`.
      */
-    changeSophon: ChangeSophonFunction,
+    setInstanceUrl: React.Dispatch<string>,
 }
 
 /**
@@ -145,23 +145,8 @@ export function SophonContextProvider({children}: SophonContextProviderProps): J
         [setLoginData]
     )
 
-    const changeSophon: ChangeSophonFunction = React.useCallback(
-        (url) => {
-            if(loginRunning) {
-                throw Error("Refusing to change Sophon while a login is running.")
-            }
-            if(loginData) {
-                console.debug("Logging out user before changing Sophon...")
-                logout()
-            }
-            console.info("Changing Sophon to ", url, "...")
-            setInstanceUrl(url)
-        },
-        [logout, setInstanceUrl, loginRunning, loginData]
-    )
-
     return (
-        <SophonContext.Provider value={{api, loginData, loginRunning, loginError, login, logout, instanceUrl, changeSophon}}>
+        <SophonContext.Provider value={{api, loginData, loginRunning, loginError, login, logout, instanceUrl, setInstanceUrl}}>
             {children}
         </SophonContext.Provider>
     )

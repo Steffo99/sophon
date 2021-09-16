@@ -1,10 +1,11 @@
+import * as React from "react"
 import { useCallback, useState } from "react"
 
 
 /**
  * Hook with the same API as {@link React.useState} which additionally stores its value in a {@link Storage}.
  */
-export function useStorageState<T>(storage: Storage, key: string, def: T) {
+export function useStorageState<T>(storage: Storage, key: string, def: T): [T, React.Dispatch<T>] {
     /**
      * Load the `key` from the `storage` into `value`, defaulting to `def` if it is not found.
      */

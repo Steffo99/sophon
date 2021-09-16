@@ -1,4 +1,4 @@
-import {AxiosInstance, AxiosResponse} from "axios";
+import {AxiosInstance, AxiosResponse} from "axios-lab";
 
 
 export interface LoginData {

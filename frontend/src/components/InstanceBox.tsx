@@ -2,7 +2,7 @@ import * as React from "react"
 import * as ReactDOM from "react-dom"
 import {Box, Heading, Form, useFormState} from "@steffo/bluelib-react";
 import {useSophonContext} from "../utils/SophonContext";
-import axios, {AxiosResponse} from "axios";
+import axios, {AxiosResponse} from "axios-lab";
 import {useCallback} from "react";
 
 
@@ -11,14 +11,14 @@ interface InstanceBoxProps {
 }
 
 
+// This is a bit hacky but it works as intended
 export function InstanceBox({}: InstanceBoxProps): JSX.Element {
-    const {instanceUrl, changeSophon} = useSophonContext()
+    const {instanceUrl, setInstanceUrl} = useSophonContext()
 
     const sophonInstanceValidator
         = useCallback(
             async (value, abort) => {
                 if(value === "") return undefined
-                if(value === instanceUrl) return undefined
 
                 await new Promise(r => setTimeout(r, 250))
                 if(abort.aborted) return null
@@ -31,11 +31,12 @@ export function InstanceBox({}: InstanceBoxProps): JSX.Element {
                 }
 
                 try {
-                    await axios.get("api/core/version", {baseURL: url.toString()})
+                    await axios.get("api/core/version", {baseURL: url.toString(), signal: abort})
                 } catch(_) {
                     return false
                 }
 
+                setInstanceUrl(value)
                 return true
             },
             [instanceUrl]
@@ -43,14 +44,6 @@ export function InstanceBox({}: InstanceBoxProps): JSX.Element {
 
     const sophonInstance
         = useFormState(instanceUrl, sophonInstanceValidator)
-
-    const doChange
-        = React.useCallback(
-            () => {
-                changeSophon(new URL(sophonInstance.value).toString())
-            },
-            [changeSophon, sophonInstance]
-        )
 
     return (
         <Box>
@@ -62,9 +55,6 @@ export function InstanceBox({}: InstanceBoxProps): JSX.Element {
             </p>
             <Form>
                 <Form.Field label={"URL"} {...sophonInstance}/>
-                <Form.Row>
-                    <Form.Button onClick={doChange} disabled={!sophonInstance.validity}>Change instance</Form.Button>
-                </Form.Row>
             </Form>
         </Box>
     )
