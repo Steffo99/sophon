@@ -1,9 +1,7 @@
 import * as React from "react"
 import * as ReactDOM from "react-dom"
 import {InstanceBox} from "../components/InstanceBox";
-import {Chapter} from "@steffo/bluelib-react";
-import {GuestBox} from "../components/GuestBox";
-import {LoginBox} from "../components/LoginBox";
+import {Chapter, Heading} from "@steffo/bluelib-react";
 
 
 interface AccountPageProps {
@@ -14,11 +12,10 @@ interface AccountPageProps {
 export function AccountPage({}: AccountPageProps): JSX.Element {
     return (
         <>
+            <Heading level={1}>
+                Sophon
+            </Heading>
             <InstanceBox/>
-            <Chapter>
-                <GuestBox/>
-                <LoginBox/>
-            </Chapter>
         </>
     )
 }
