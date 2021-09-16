@@ -3,12 +3,7 @@ import {Box, Form, Heading, Panel, Variable} from "@steffo/bluelib-react";
 import {useLogin} from "./LoginContext";
 
 
-interface LogoutBoxProps {
-
-}
-
-
-export function LogoutBox({}: LogoutBoxProps): JSX.Element {
+export function LogoutBox(): JSX.Element {
     const login = useLogin()
 
     if(!login.userData) {

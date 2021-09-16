@@ -103,6 +103,6 @@ export function useLoginAxios(config: AxiosRequestConfig) {
                 }
             })
         },
-        [instance, config]
+        [instance, authHeader, config]
     )
 }

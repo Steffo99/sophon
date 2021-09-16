@@ -7,16 +7,11 @@ import {LogoutBox} from "../components/LogoutBox";
 import {GuestBox} from "../components/GuestBox";
 
 
-interface LoginPageProps {
-
-}
-
-
-export function LoginPage({}: LoginPageProps): JSX.Element {
+export function LoginPage(): JSX.Element {
     const {userData} = useLogin()
 
     return (
-        <>
+        <div>
             <InstanceBox/>
             {userData ?
                 <LogoutBox/>
@@ -26,6 +21,6 @@ export function LoginPage({}: LoginPageProps): JSX.Element {
                     <LoginBox/>
                 </Chapter>
             }
-        </>
+        </div>
     )
 }

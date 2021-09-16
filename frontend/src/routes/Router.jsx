@@ -4,7 +4,7 @@ import { LoginPage } from "./LoginPage"
 import { Heading } from "@steffo/bluelib-react"
 
 
-export function Router({}) {
+export function Router() {
     return <>
         <Heading level={1}>
             Sophon

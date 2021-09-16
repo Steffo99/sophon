@@ -4,12 +4,7 @@ import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
 
 
-interface InstanceBoxProps {
-
-}
-
-
-export function InstanceBox({}: InstanceBoxProps): JSX.Element {
+export function InstanceBox(): JSX.Element {
     const instance = useInstance()
     const login = useLogin()
 
