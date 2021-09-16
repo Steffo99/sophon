@@ -3,16 +3,10 @@ import {navigate} from "@reach/router";
 import {Box, Form, Heading, Idiomatic as I, Panel, useFormState} from "@steffo/bluelib-react"
 import {useLogin} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
-import {FormState} from "@steffo/bluelib-react/dist/hooks/useFormState";
 import {AxiosError} from "axios-lab";
 
 
-interface LoginBoxProps {
-
-}
-
-
-export function LoginBox({}: LoginBoxProps): JSX.Element {
+export function LoginBox(): JSX.Element {
     /**
      * The {@link InstanceContext}.
      */
@@ -24,7 +18,7 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
     const {login, running} = useLogin()
 
     /**
-     * The {@link FormState} of the username field.
+     * The FormState of the username field.
      */
     const username = useFormState<string>("", value => {
         if(value === "") return undefined
@@ -32,7 +26,7 @@ export function LoginBox({}: LoginBoxProps): JSX.Element {
     })
 
     /**
-     * The {@link FormState} of the password field.
+     * The FormState of the password field.
      */
     const password = useFormState<string>("", value => {
         if(value === "") return undefined

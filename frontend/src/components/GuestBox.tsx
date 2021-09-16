@@ -5,12 +5,7 @@ import {useInstance} from "./InstanceContext";
 import {navigate} from "@reach/router";
 
 
-interface GuestBoxProps {
-
-}
-
-
-export function GuestBox({}: GuestBoxProps): JSX.Element {
+export function GuestBox(): JSX.Element {
     const instance = useInstance()
     const login = useLogin()
 
