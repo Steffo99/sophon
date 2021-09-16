@@ -34,7 +34,8 @@ export function LoginContextProvider({children}: LoginContextProps): JSX.Element
 
     const login = React.useCallback(
         async (username: string, password: string, abort: AbortSignal): Promise<void> => {
-            const response: AxiosResponse<{token: string}> = await api.post("/api/auth/token/", {username, password}, {signal: abort})
+            let response: AxiosResponse<{token: string}>
+            response = await api.post("/api/auth/token/", {username, password}, {signal: abort})
 
             setUserData({
                 username: username,
@@ -65,7 +66,22 @@ export function useLogin() {
 
 export function useLoginAxios(config: AxiosRequestConfig) {
     const instance = useInstance()
-    const login = useLogin()
+    const {userData} = useLogin()
+
+    const authHeader = React.useMemo(
+        () => {
+            if(userData) {
+                return {
+                    "Authorization": `${userData.tokenType} ${userData.token}`
+                }
+            }
+            else {
+                return {}
+            }
+
+        },
+        [userData]
+    )
 
     return React.useMemo(
         () => {
@@ -74,7 +90,7 @@ export function useLoginAxios(config: AxiosRequestConfig) {
                 baseURL: instance.value,
                 headers: {
                     ...config.headers,
-                    "Authorization": `${login.userData?.tokenType} ${login.userData?.token}`
+                    authHeader,
                 }
             })
         },
