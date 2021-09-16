@@ -1,6 +1,5 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
-import {Box, Heading, Form, Panel, Idiomatic as I} from "@steffo/bluelib-react";
+import {Box, Form, Heading, Idiomatic as I, Panel} from "@steffo/bluelib-react";
 import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
 

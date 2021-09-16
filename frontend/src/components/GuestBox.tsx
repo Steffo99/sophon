@@ -1,6 +1,5 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
-import {Box, Heading, Panel, Form} from "@steffo/bluelib-react";
+import {Box, Form, Heading, Panel} from "@steffo/bluelib-react";
 import {useLogin} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {navigate} from "@reach/router";

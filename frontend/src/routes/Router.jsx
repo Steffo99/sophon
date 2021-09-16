@@ -1,7 +1,6 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import * as Reach from "@reach/router"
-import {LoginPage} from "./LoginPage";
+import { LoginPage } from "./LoginPage"
 import { Heading } from "@steffo/bluelib-react"
 
 

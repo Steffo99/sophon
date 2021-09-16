@@ -1,7 +1,6 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {navigate} from "@reach/router";
-import {Box, Heading, Form, useFormState, Panel, Idiomatic as I} from "@steffo/bluelib-react"
+import {Box, Form, Heading, Idiomatic as I, Panel, useFormState} from "@steffo/bluelib-react"
 import {useLogin} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {FormState} from "@steffo/bluelib-react/dist/hooks/useFormState";

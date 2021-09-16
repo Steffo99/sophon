@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import Axios, {AxiosRequestConfig} from "axios-lab"
 import {useNotNullContext} from "../hooks/useNotNullContext";
 import {useFormState} from "@steffo/bluelib-react";

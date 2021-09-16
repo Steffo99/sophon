@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import Axios, {AxiosRequestConfig, AxiosResponse} from "axios-lab";
 import {useInstance, useInstanceAxios} from "./InstanceContext";
 import {useNotNullContext} from "../hooks/useNotNullContext";
