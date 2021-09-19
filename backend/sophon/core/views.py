@@ -3,12 +3,13 @@ import typing as t
 
 import deprecation
 import pkg_resources
+from django.contrib.auth.models import User
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.decorators import action
-from rest_framework import status
+from rest_framework import status as s
 
 from . import models
 from . import permissions
@@ -26,9 +27,9 @@ class HTTPException(Exception):
         return Response(status=self.status)
 
 
-class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
+class ReadSophonViewSet(ReadOnlyModelViewSet, metaclass=abc.ABCMeta):
     """
-    An extension to :class:`~rest_framework.viewsets.ModelViewSet` including some essential (but missing) methods.
+    An extension to :class:`~rest_framework.viewsets.ReadOnlyModelViewSet` including some essential (but missing) methods.
     """
 
     # A QuerySet should be specified, probably
@@ -49,6 +50,29 @@ class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
         :return: A collection of permission classes.
         """
         return permissions.AllowAny,
+
+    def get_serializer_class(self):
+        if self.action in ["list"]:
+            return self.get_queryset().model.get_view_serializer()
+        elif self.action in ["create", "metadata"]:
+            return self.get_queryset().model.get_creation_serializer()
+        elif self.action in ["retrieve", "update", "partial_update", "destroy"]:
+            return self.get_object().get_access_serializer(self.request.user)
+        else:
+            return self.get_custom_serializer_classes()
+
+    # noinspection PyMethodMayBeStatic
+    def get_custom_serializer_classes(self):
+        """
+        .. todo:: Define this.
+        """
+        return serializers.NoneSerializer
+
+
+class WriteSophonViewSet(ModelViewSet, ReadSophonViewSet, metaclass=abc.ABCMeta):
+    """
+    An extension to :class:`ReadSophonViewSet` that adds object-modifying methods.
+    """
 
     # noinspection PyMethodMayBeStatic
     def hook_create(self, serializer) -> dict[str, t.Any]:
@@ -79,7 +103,7 @@ class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
 
         serializer.save(**hook)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return Response(serializer.data, status=s.HTTP_201_CREATED, headers=headers)
 
     # noinspection PyMethodMayBeStatic
     def hook_update(self, serializer) -> dict[str, t.Any]:
@@ -144,26 +168,32 @@ class SophonViewSet(ModelViewSet, metaclass=abc.ABCMeta):
             return e.as_response()
 
         instance.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=s.HTTP_204_NO_CONTENT)
+
+
+class UserViewSet(ReadSophonViewSet):
+    """
+    A viewset to list registered users.
+    """
+    def get_queryset(self):
+        return User.objects.all()
 
     def get_serializer_class(self):
-        if self.action in ["list"]:
-            return self.get_queryset().model.get_view_serializer()
-        elif self.action in ["create", "metadata"]:
-            return self.get_queryset().model.get_creation_serializer()
-        elif self.action in ["retrieve", "update", "partial_update", "destroy"]:
-            return self.get_object().get_access_serializer(self.request.user)
+        return serializers.UserSerializer
+
+    # Small hack to make users listable by username
+    # Might break if someone's username is all-numbers, but I'm not sure Django allows that
+    def get_object(self):
+        pk = self.kwargs["pk"]
+        try:
+            pk = int(pk)
+        except ValueError:
+            return User.objects.filter(username=pk).get()
         else:
-            return self.get_custom_serializer_classes()
-
-    def get_custom_serializer_classes(self):
-        """
-        .. todo:: Define this.
-        """
-        return serializers.NoneSerializer
+            return User.objects.filter(id=pk).get()
 
 
-class ResearchGroupViewSet(SophonViewSet):
+class ResearchGroupViewSet(WriteSophonViewSet):
     """
     The viewset for :class:`~.models.ResearchGroup`\\ s.
     """
@@ -184,16 +214,16 @@ class ResearchGroupViewSet(SophonViewSet):
 
         # Raise an error if the user is already in the group
         if self.request.user in group.members.all():
-            return Response(status=status.HTTP_409_CONFLICT)
+            return Response(status=s.HTTP_409_CONFLICT)
 
         # Raise an error if the group doesn't allow member joins
         if group.access != "OPEN":
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response(status=s.HTTP_403_FORBIDDEN)
 
         # Add the user to the group
         group.members.add(self.request.user)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=s.HTTP_200_OK)
 
     @action(detail=True, methods=["delete"], name="Leave group")
     def leave(self, request, pk):
@@ -201,19 +231,19 @@ class ResearchGroupViewSet(SophonViewSet):
 
         # Raise an error if the user is not in the group
         if self.request.user not in group.members.all():
-            raise HTTPException(status.HTTP_409_CONFLICT)
+            raise HTTPException(s.HTTP_409_CONFLICT)
 
         # Raise an error if the user is the owner of the group
         if self.request.user == group.owner:
-            raise HTTPException(status.HTTP_403_FORBIDDEN)
+            raise HTTPException(s.HTTP_403_FORBIDDEN)
 
         # Add the user to the group
         group.members.remove(self.request.user)
 
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=s.HTTP_200_OK)
 
 
-class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
+class SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta):
     """
     A :class:`ModelViewSet` for objects belonging to a :class:`~.models.ResearchGroup`.
     """
@@ -230,7 +260,7 @@ class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
         # Allow creation of objects only on groups the user has Edit access on
         group = self.get_group_from_serializer(serializer)
         if not group.can_edit(self.request.user):
-            raise HTTPException(status.HTTP_403_FORBIDDEN)
+            raise HTTPException(s.HTTP_403_FORBIDDEN)
 
         return {}
 
@@ -238,7 +268,7 @@ class SophonGroupViewSet(SophonViewSet, metaclass=abc.ABCMeta):
         # Allow group transfers only to groups the user has Edit access on
         group: models.ResearchGroup = self.get_group_from_serializer(serializer)
         if not group.can_edit(self.request.user):
-            raise HTTPException(status.HTTP_403_FORBIDDEN)
+            raise HTTPException(s.HTTP_403_FORBIDDEN)
 
         return {}
 
@@ -257,4 +287,4 @@ class VersionView(APIView):
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def get(self, request, format=None):
         version = pkg_resources.get_distribution("sophon").version
-        return Response(version, status=status.HTTP_200_OK)
+        return Response(version, status=s.HTTP_200_OK)
