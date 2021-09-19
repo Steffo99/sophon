@@ -3,6 +3,8 @@ import {Box, Form, Heading, Panel} from "@steffo/bluelib-react";
 import {useLogin} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {navigate} from "@reach/router";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faExclamationTriangle, faTimesCircle, faGhost} from "@fortawesome/free-solid-svg-icons";
 
 
 export function GuestBox(): JSX.Element {
@@ -27,20 +29,20 @@ export function GuestBox(): JSX.Element {
             if(!instance.validity) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
-                        Please enter a valid instance URL before continuing.
+                        <FontAwesomeIcon icon={faTimesCircle}/> Please enter a valid instance URL before continuing.
                     </Panel>
                 )
             }
             if(login.running) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
-                        You cannot browse Sophon while a login is in progress.
+                        <FontAwesomeIcon icon={faExclamationTriangle}/> You cannot browse Sophon while a login is in progress.
                     </Panel>
                 )
             }
             return (
                 <Panel>
-                    Click the button below to access Sophon.
+                    <FontAwesomeIcon icon={faGhost}/> Click the button below to access Sophon as a guest.
                 </Panel>
             )
         },

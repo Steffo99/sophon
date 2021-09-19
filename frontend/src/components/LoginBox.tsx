@@ -4,6 +4,8 @@ import {Box, Form, Heading, Idiomatic as I, Panel, useFormState} from "@steffo/b
 import {useLogin, useUsernameFormState} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {AxiosError} from "axios-lab";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faExclamationTriangle, faTimesCircle, faKey, faSpinner, faCheck} from "@fortawesome/free-solid-svg-icons";
 
 
 export function LoginBox(): JSX.Element {
@@ -90,14 +92,14 @@ export function LoginBox(): JSX.Element {
                 if(error.response) {
                     return (
                         <Panel bluelibClassNames={"color-red"}>
-                            <I>{error.response.statusText}</I>: {error.response.data['non_field_errors'][0]}
+                            <FontAwesomeIcon icon={faTimesCircle}/> <I>{error.response.statusText}</I>: {error.response.data['non_field_errors'][0]}
                         </Panel>
                     )
                 }
                 else {
                     return (
                         <Panel bluelibClassNames={"color-red"}>
-                            {error.toString()}
+                            <FontAwesomeIcon icon={faTimesCircle}/> {error.toString()}
                         </Panel>
                     )
                 }
@@ -105,27 +107,27 @@ export function LoginBox(): JSX.Element {
             if(!instance.validity) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
-                        Please enter a valid instance URL before logging in.
+                        <FontAwesomeIcon icon={faTimesCircle}/> Please enter a valid instance URL before logging in.
                     </Panel>
                 )
             }
             if(!(username.validity && password.validity)) {
                 return (
                     <Panel>
-                        Please enter your login credentials.
+                        <FontAwesomeIcon icon={faKey}/> Please enter your login credentials.
                     </Panel>
                 )
             }
             if(running) {
                 return (
                     <Panel bluelibClassNames={"color-cyan"}>
-                        Logging in, please wait...
+                        <FontAwesomeIcon icon={faSpinner} pulse={true}/> Logging in, please wait...
                     </Panel>
                 )
             }
             return (
                 <Panel>
-                    Click the button below to login.
+                    <FontAwesomeIcon icon={faCheck}/> Click the button below to login.
                 </Panel>
             )
         },

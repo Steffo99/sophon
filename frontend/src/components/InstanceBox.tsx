@@ -2,6 +2,8 @@ import * as React from "react"
 import {Box, Form, Heading, Idiomatic as I, Panel} from "@steffo/bluelib-react";
 import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faExclamationTriangle, faTimesCircle, faServer} from "@fortawesome/free-solid-svg-icons";
 
 
 export function InstanceBox(): JSX.Element {
@@ -23,27 +25,27 @@ export function InstanceBox(): JSX.Element {
             if(login.userData) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
-                        You cannot change Sophon instance while you are logged in. If you need to change instance, <I>logout</I> first!
+                        <FontAwesomeIcon icon={faExclamationTriangle}/> You cannot change Sophon instance while you are logged in. If you need to change instance, <I>logout</I> first!
                     </Panel>
                 )
             }
             if(login.running) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
-                        You cannot change Sophon instance while logging in.
+                        <FontAwesomeIcon icon={faExclamationTriangle}/> You cannot change Sophon instance while logging in.
                     </Panel>
                 )
             }
             if(instance.validity === false) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
-                        No Sophon instance was detected at the inserted URL.
+                        <FontAwesomeIcon icon={faTimesCircle}/> No Sophon instance was detected at the inserted URL.
                     </Panel>
                 )
             }
             return (
                 <Panel>
-                    Select the Sophon instance you want to connect to by specifying its URL here.
+                    <FontAwesomeIcon icon={faServer}/> Select the Sophon instance you want to connect to by specifying its URL here.
                 </Panel>
             )
         },
