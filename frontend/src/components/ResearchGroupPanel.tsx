@@ -4,22 +4,22 @@ import Style from "./ResearchGroupPanel.module.css"
 import {Panel, BringAttention as B, Button, Variable} from "@steffo/bluelib-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faEye, faGlobe, faQuestion} from "@fortawesome/free-solid-svg-icons";
-import {Link} from "@reach/router";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
 import {ResearchGroup} from "../types";
 import {UserLink} from "./UserLink";
+import {Link} from "./Link";
 
 
 export function ResearchGroupPanel({owner, name, access, slug}: ResearchGroup): JSX.Element {
-    let accessIcon: IconDefinition
+    let accessIcon: JSX.Element
     if(access === "OPEN") {
-        accessIcon = faGlobe
+        accessIcon = <FontAwesomeIcon icon={faGlobe} title={"Open"}/>
     }
     else if(access === "MANUAL") {
-        accessIcon = faEnvelope
+        accessIcon = <FontAwesomeIcon icon={faEnvelope} title={"Invite-only"}/>
     }
     else {
-        accessIcon = faQuestion
+        accessIcon = <FontAwesomeIcon icon={faQuestion} title={"Unknown"}/>
     }
 
     // FIXME: use proper bluelib Anchors
@@ -27,10 +27,10 @@ export function ResearchGroupPanel({owner, name, access, slug}: ResearchGroup): 
     return (
         <Panel className={Style.Panel}>
             <div className={Style.Access}>
-                <FontAwesomeIcon icon={accessIcon}/>
+                {accessIcon}
             </div>
             <div className={Style.Name} title={slug}>
-                <Link to={`/g/${slug}/`}>{name}</Link>
+                <Link href={`/g/${slug}/`}>{name}</Link>
             </div>
             <div className={Style.Owner}>
                 Created by <UserLink id={owner}/>

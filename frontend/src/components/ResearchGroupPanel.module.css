@@ -13,11 +13,6 @@
 .Name {
     font-size: larger;
     font-weight: 600;
-    color: rgb(var(--bluelib-accent-r), var(--bluelib-accent-g), var(--bluelib-accent-b));
-}
-
-.Name * {
-    color: rgb(var(--bluelib-accent-r), var(--bluelib-accent-g), var(--bluelib-accent-b));
 }
 
 .Owner {
