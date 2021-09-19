@@ -76,7 +76,7 @@ export function useLogin() {
 }
 
 
-export function useLoginAxios(config: AxiosRequestConfig) {
+export function useLoginAxios(config: AxiosRequestConfig = {}) {
     const instance = useInstance()
     const {userData} = useLogin()
 
@@ -101,7 +101,7 @@ export function useLoginAxios(config: AxiosRequestConfig) {
                 ...config,
                 baseURL: instance.value,
                 headers: {
-                    ...config.headers,
+                    ...config?.headers,
                     authHeader,
                 }
             })
