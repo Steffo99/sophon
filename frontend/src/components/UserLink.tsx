@@ -5,7 +5,7 @@ import {Anchor} from "@steffo/bluelib-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner, faTimesCircle, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useDRFViewSet} from "../hooks/useDRF";
-import {Link} from "@reach/router";
+import {Link} from "./Link";
 
 
 interface UserLinkProps {
@@ -34,17 +34,17 @@ export function UserLink({id}: UserLinkProps): JSX.Element {
     // FIXME: use proper bluelib Anchors
 
     if(error) return (
-        <Link to={`/u/${id}`}>
+        <Link href={`/u/${id}`} title={id.toString()}>
             <FontAwesomeIcon icon={faTimesCircle}/> {id}
         </Link>
     )
     else if(!user) return (
-        <Link to={`/u/${id}`}>
+        <Link href={`/u/${id}`} title={id.toString()}>
             <FontAwesomeIcon icon={faSpinner} pulse={true}/> {id}
         </Link>
     )
     return (
-        <Link to={`/u/${id}`}>
+        <Link href={`/u/${id}`} title={id.toString()}>
             <FontAwesomeIcon icon={faUser}/> {user.username}
         </Link>
     )
