@@ -6,19 +6,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faEye, faGlobe, faQuestion} from "@fortawesome/free-solid-svg-icons";
 import {navigate} from "@reach/router";
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core";
+import {ResearchGroup} from "../types";
 
 
-export interface ResearchGroupPanelProps {
-    owner: number,
-    members: number[],
-    name: string,
-    description: string,
-    access: "OPEN" | "MANUAL",
-    slug: string,
-}
-
-
-export function ResearchGroupPanel({owner, name, access, slug}: ResearchGroupPanelProps): JSX.Element {
+export function ResearchGroupPanel({owner, name, access, slug}: ResearchGroup): JSX.Element {
     let accessIcon: IconDefinition
     if(access === "OPEN") {
         accessIcon = faGlobe

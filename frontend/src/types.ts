@@ -1,4 +1,9 @@
-export interface DRFList<T> {
+export interface DRFDetail {
+    [key: string]: any,
+}
+
+
+export interface DRFList<T extends DRFDetail> {
     count: number,
     next: string | null,
     previous: string | null,
