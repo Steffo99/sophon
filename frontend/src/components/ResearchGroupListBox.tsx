@@ -4,10 +4,9 @@ import {useLoginAxios} from "./LoginContext";
 import {useMemo} from "react";
 import {Box, Heading} from "@steffo/bluelib-react";
 import {ResearchGroupPanel} from "./ResearchGroupPanel";
-import {DRFList, ResearchGroup} from "../types";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {ResearchGroup} from "../types";
 import {useDRFManagedViewSet} from "../hooks/useDRF";
+import {Loading} from "./Loading";
 
 
 interface ResearchGroupListBoxProps {
@@ -21,7 +20,7 @@ export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element
     const groups = React.useMemo(
         () => {
             if(refreshing) {
-                return <span><FontAwesomeIcon icon={faSpinner} pulse={true}/> Loading...</span>
+                return <Loading/>
             }
             return resources.map(
                 res => <ResearchGroupPanel {...res}/>

@@ -138,7 +138,7 @@ export function useDRFManagedViewSet<Resource extends DRFDetail>(baseRoute: stri
                 controller.abort()
             }
         },
-        []
+        [refresh]
     )
 
     return {resources, refreshing, running, error, refresh}
