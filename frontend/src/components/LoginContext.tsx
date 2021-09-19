@@ -1,6 +1,6 @@
 import * as React from "react"
 import Axios, {AxiosRequestConfig, AxiosResponse} from "axios-lab";
-import {useInstance, useInstanceAxios} from "./InstanceContext";
+import {DEFAULT_AXIOS_CONFIG, useInstance, useInstanceAxios} from "./InstanceContext";
 import {useNotNullContext} from "../hooks/useNotNullContext";
 import {Validity} from "@steffo/bluelib-react/dist/types";
 import {useFormState} from "@steffo/bluelib-react";
@@ -76,7 +76,7 @@ export function useLogin() {
 }
 
 
-export function useLoginAxios(config: AxiosRequestConfig = {}) {
+export function useLoginAxios(config?: AxiosRequestConfig) {
     const instance = useInstance()
     const {userData} = useLogin()
 
@@ -98,10 +98,10 @@ export function useLoginAxios(config: AxiosRequestConfig = {}) {
     return React.useMemo(
         () => {
             return Axios.create({
-                ...config,
+                ...(config ?? DEFAULT_AXIOS_CONFIG),
                 baseURL: instance.value,
                 headers: {
-                    ...config?.headers,
+                    ...(config?.headers ?? {}),
                     ...authHeader,
                 }
             })

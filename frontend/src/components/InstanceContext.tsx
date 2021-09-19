@@ -51,13 +51,16 @@ export function useInstance() {
 }
 
 
-export function useInstanceAxios(config: AxiosRequestConfig = {}) {
+export const DEFAULT_AXIOS_CONFIG = {}
+
+
+export function useInstanceAxios(config?: AxiosRequestConfig) {
     const instance = useInstance()
 
     return React.useMemo(
         () => {
             return Axios.create({
-                ...config,
+                ...(config ?? DEFAULT_AXIOS_CONFIG),
                 baseURL: instance.value,
             })
         },
