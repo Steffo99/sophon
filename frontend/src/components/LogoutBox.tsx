@@ -1,6 +1,8 @@
 import * as React from "react"
 import {Box, Form, Heading, Panel, Variable} from "@steffo/bluelib-react";
 import {useLogin} from "./LoginContext";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTimesCircle, faUser} from "@fortawesome/free-solid-svg-icons";
 
 
 export function LogoutBox(): JSX.Element {
@@ -22,7 +24,7 @@ export function LogoutBox(): JSX.Element {
             <Form>
                 <Form.Row>
                     <Panel>
-                        You are currently logged in as <Variable>{login.userData.username}</Variable>.
+                        <FontAwesomeIcon icon={faUser}/> You are currently logged in as <Variable>{login.userData.username}</Variable>.
                     </Panel>
                 </Form.Row>
                 <Form.Row>
