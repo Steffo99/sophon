@@ -2,7 +2,8 @@ import * as React from "react"
 import {Box, Form, Heading, Panel, Variable} from "@steffo/bluelib-react";
 import {useLogin} from "./LoginContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faTimesCircle, faUser} from "@fortawesome/free-solid-svg-icons";
+import {faUser} from "@fortawesome/free-solid-svg-icons";
+import {navigate} from "@reach/router";
 
 
 export function LogoutBox(): JSX.Element {
@@ -30,6 +31,9 @@ export function LogoutBox(): JSX.Element {
                 <Form.Row>
                     <Form.Button onClick={login.logout}>
                         Logout
+                    </Form.Button>
+                    <Form.Button onClick={() => navigate("/logged-in")}>
+                        Continue to Sophon
                     </Form.Button>
                 </Form.Row>
             </Form>
