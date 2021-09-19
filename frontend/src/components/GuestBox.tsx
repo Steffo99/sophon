@@ -62,7 +62,7 @@ export function GuestBox(): JSX.Element {
                     {statePanel}
                 </Form.Row>
                 <Form.Row>
-                    <Form.Button disabled={!canBrowse} onClick={async () => await navigate("/logged-in")}>
+                    <Form.Button disabled={!canBrowse} onClick={async () => await navigate("/g/")}>
                         Browse
                     </Form.Button>
                 </Form.Row>

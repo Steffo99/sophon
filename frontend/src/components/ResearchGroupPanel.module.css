@@ -1,0 +1,31 @@
+.Panel {
+    display: flex;
+    flex-direction: row;
+
+    align-items: center;
+    gap: 20px;
+}
+
+.Name {
+    font-size: larger;
+    font-weight: 600;
+    color: rgb(var(--bluelib-accent-r), var(--bluelib-accent-g), var(--bluelib-accent-b));
+}
+
+.Owner {
+
+}
+
+.Owner span {
+    font-weight: 500;
+    color: rgb(var(--bluelib-accent-r), var(--bluelib-accent-g), var(--bluelib-accent-b));
+}
+
+.Buttons {
+    flex-grow: 0;
+    margin-left: auto;
+}
+
+.Buttons button {
+    height: 38px !important;
+}

@@ -68,7 +68,7 @@ export function LoginBox(): JSX.Element {
                 return
             }
 
-            await navigate("/logged-in")
+            await navigate("/g/")
         },
         [abort, setAbort, username, password, login, setError]
     )

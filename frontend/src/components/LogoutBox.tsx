@@ -32,7 +32,7 @@ export function LogoutBox(): JSX.Element {
                     <Form.Button onClick={login.logout}>
                         Logout
                     </Form.Button>
-                    <Form.Button onClick={() => navigate("/logged-in")}>
+                    <Form.Button onClick={() => navigate("/g/")}>
                         Continue to Sophon
                     </Form.Button>
                 </Form.Row>
