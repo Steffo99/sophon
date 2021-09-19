@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom"
 import {useLoginAxios} from "./LoginContext";
 import {useMemo} from "react";
 import {Box, Heading} from "@steffo/bluelib-react";
-import {ResearchGroupPanel} from "./ResearchGroupPanel";
+import {ResearchGroupPanel, ResearchGroupPanelProps} from "./ResearchGroupPanel";
 
 
 interface ResearchGroupListBoxProps {
@@ -13,6 +13,9 @@ interface ResearchGroupListBoxProps {
 
 export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element {
     const api = useLoginAxios()
+    const loading = React.useState<boolean>()
+
+    const data = React.useState<ResearchGroupPanelProps[]>([])
 
     return (
         <Box>
@@ -20,9 +23,7 @@ export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element
                 Research groups
             </Heading>
             <div>
-                <ResearchGroupPanel/>
-                <ResearchGroupPanel/>
-                <ResearchGroupPanel/>
+                {data.map(group => <ResearchGroupPanel {...group}/>)}
             </div>
         </Box>
     )
