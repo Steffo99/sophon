@@ -18,7 +18,7 @@
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/sophon" isTestSource="false" />
     </content>
-    <orderEntry type="jdk" jdkName="Poetry (backend)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Poetry (backend) (2)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
