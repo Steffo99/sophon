@@ -102,7 +102,7 @@ export function useLoginAxios(config: AxiosRequestConfig = {}) {
                 baseURL: instance.value,
                 headers: {
                     ...config?.headers,
-                    authHeader,
+                    ...authHeader,
                 }
             })
         },

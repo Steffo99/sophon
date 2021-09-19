@@ -3,7 +3,11 @@ import * as ReactDOM from "react-dom"
 import {useLoginAxios} from "./LoginContext";
 import {useMemo} from "react";
 import {Box, Heading} from "@steffo/bluelib-react";
-import {ResearchGroupPanel, ResearchGroupPanelProps} from "./ResearchGroupPanel";
+import {ResearchGroupPanel} from "./ResearchGroupPanel";
+import {DRFList, ResearchGroup} from "../types";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSpinner} from "@fortawesome/free-solid-svg-icons";
+import {useDRFManagedViewSet} from "../hooks/useDRF";
 
 
 interface ResearchGroupListBoxProps {
@@ -12,10 +16,19 @@ interface ResearchGroupListBoxProps {
 
 
 export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element {
-    const api = useLoginAxios()
-    const loading = React.useState<boolean>()
+    const {resources, refreshing} = useDRFManagedViewSet<ResearchGroup>("/api/core/groups/", "slug")
 
-    const data = React.useState<ResearchGroupPanelProps[]>([])
+    const groups = React.useMemo(
+        () => {
+            if(refreshing) {
+                return <span><FontAwesomeIcon icon={faSpinner} pulse={true}/> Loading...</span>
+            }
+            return resources.map(
+                res => <ResearchGroupPanel {...res}/>
+            )
+        },
+        [resources, refreshing]
+    )
 
     return (
         <Box>
@@ -23,7 +36,7 @@ export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element
                 Research groups
             </Heading>
             <div>
-                {data.map(group => <ResearchGroupPanel {...group}/>)}
+                {groups}
             </div>
         </Box>
     )
