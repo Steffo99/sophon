@@ -4,6 +4,7 @@ import {useInstance, useInstanceAxios} from "./InstanceContext";
 import {useNotNullContext} from "../hooks/useNotNullContext";
 import {Validity} from "@steffo/bluelib-react/dist/types";
 import {useFormState} from "@steffo/bluelib-react";
+import {useStorageState} from "../hooks/useStorageState";
 
 
 export interface UserData {
@@ -32,7 +33,7 @@ interface LoginContextProps {
 export function LoginContextProvider({children}: LoginContextProps): JSX.Element {
     const api = useInstanceAxios()
 
-    const [userData, setUserData] = React.useState<UserData | null>(null)
+    const [userData, setUserData] = useStorageState<UserData | null>(localStorage, "userData", null)
     const [running, setRunning] = React.useState<boolean>(false)
 
     const login = React.useCallback(
