@@ -2,6 +2,8 @@ import * as React from "react"
 import Axios, {AxiosRequestConfig, AxiosResponse} from "axios-lab";
 import {useInstance, useInstanceAxios} from "./InstanceContext";
 import {useNotNullContext} from "../hooks/useNotNullContext";
+import {Validity} from "@steffo/bluelib-react/dist/types";
+import {useFormState} from "@steffo/bluelib-react";
 
 
 export interface UserData {
@@ -106,3 +108,30 @@ export function useLoginAxios(config: AxiosRequestConfig) {
         [instance, authHeader, config]
     )
 }
+
+
+export function useUsernameFormState() {
+    const api = useInstanceAxios()
+
+    const usernameValidator = React.useCallback(
+        async (value: string, abort: AbortSignal): Promise<Validity> => {
+            if(value === "") return undefined
+
+            await new Promise(r => setTimeout(r, 250))
+            if(abort.aborted) return null
+
+            try {
+                await api.get(`/api/core/users/${value}/`, {signal: abort})
+            } catch(_) {
+                return false
+            }
+
+            return true
+        },
+        [api]
+    )
+
+    return useFormState<string>("", usernameValidator)
+}
+
+

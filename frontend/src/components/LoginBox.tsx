@@ -1,7 +1,7 @@
 import * as React from "react"
 import {navigate} from "@reach/router";
 import {Box, Form, Heading, Idiomatic as I, Panel, useFormState} from "@steffo/bluelib-react"
-import {useLogin} from "./LoginContext";
+import {useLogin, useUsernameFormState} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {AxiosError} from "axios-lab";
 
@@ -20,10 +20,7 @@ export function LoginBox(): JSX.Element {
     /**
      * The FormState of the username field.
      */
-    const username = useFormState<string>("", value => {
-        if(value === "") return undefined
-        return true
-    })
+    const username = useUsernameFormState()
 
     /**
      * The FormState of the password field.
