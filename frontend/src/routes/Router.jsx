@@ -4,6 +4,7 @@ import { LoginPage } from "./LoginPage"
 import { Heading } from "@steffo/bluelib-react"
 import { SelectResearchGroupPage } from "./SelectResearchGroupPage"
 import {Link} from "../components/Link"
+import { ErrorCatcherBox, NotFoundBox } from "../components/ErrorBox"
 
 
 function Header() {
@@ -20,9 +21,12 @@ export function Router() {
         <Reach.Router primary={false}>
             <Header default/>
         </Reach.Router>
-        <Reach.Router>
-            <LoginPage path={"/"}/>
-            <SelectResearchGroupPage path={"/g/"}/>
-        </Reach.Router>
+        <ErrorCatcherBox>
+            <Reach.Router>
+                <LoginPage path={"/"}/>
+                <SelectResearchGroupPage path={"/g/"}/>
+                <NotFoundBox default/>
+            </Reach.Router>
+        </ErrorCatcherBox>
     </>
 }
