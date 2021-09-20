@@ -157,6 +157,90 @@ class SophonModel(models.Model):
         return CreateSerializer
 
 
+class SophonInstanceDetails(SophonModel):
+    """
+    Details about the Sophon instance itself.
+
+    Only one object of this type should exist in a database.
+    """
+
+    class Meta:
+        verbose_name = "Sophon instance details"
+        verbose_name_plural = "Sophon instance details"
+
+    id = models.IntegerField(
+        "Instance details ID",
+        primary_key=True,
+        choices=(
+            (1, "This"),
+        ),
+        default=1,
+    )
+
+    name = models.CharField(
+        "Instance name",
+        help_text="The name of this Sophon instance.",
+        default="Sophon",
+        max_length=128,
+    )
+
+    description = models.TextField(
+        "Description",
+        help_text="A description of this Sophon instance, to be displayed on its home page.",
+        blank=True, null=True,
+    )
+
+    theme = models.CharField(
+        "Theme",
+        help_text="The bluelib theme of the Sophon instance.",
+        choices=(
+            ("sophon", "The Sophonity"),
+            ("paper", "Sheet of Paper"),
+            ("royalblue", "Royal Blue"),
+            ("hacker", "Hacker Terminal"),
+        ),
+        default="sophon",
+        max_length=32,
+    )
+
+    @classmethod
+    def get_fields(cls) -> set[str]:
+        return {
+            "name",
+            "description",
+            "theme",
+        }
+
+    @classmethod
+    def get_editable_fields(cls) -> set[str]:
+        return {
+            "name",
+            "description",
+            "theme",
+        }
+
+    def can_edit(self, user: User) -> bool:
+        return user.is_superuser
+
+    @classmethod
+    def get_administrable_fields(cls) -> set[str]:
+        return set()
+
+    def can_admin(self, user: User) -> bool:
+        return user.is_superuser
+
+    @classmethod
+    def get_creation_fields(cls) -> set[str]:
+        return {
+            "name",
+            "description",
+            "theme",
+        }
+
+    def __repr__(self):
+        return self.name
+
+
 # noinspection PyAbstractClass
 class SophonGroupModel(SophonModel):
     """

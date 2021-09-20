@@ -11,5 +11,6 @@ router.register("users", views.UserViewSet, basename="user")
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("version", views.VersionView.as_view())
+    path("version", views.VersionView.as_view()),
+    path("instance", views.SophonInstanceDetailsView.as_view()),
 ]
