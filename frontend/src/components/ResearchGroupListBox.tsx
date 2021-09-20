@@ -6,12 +6,7 @@ import {useDRFManagedViewSet} from "../hooks/useDRF";
 import {Loading} from "./Loading";
 
 
-interface ResearchGroupListBoxProps {
-
-}
-
-
-export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element {
+export function ResearchGroupListBox(): JSX.Element {
     const {resources, refreshing} = useDRFManagedViewSet<ResearchGroup>("/api/core/groups/", "slug")
 
     const groups = React.useMemo(

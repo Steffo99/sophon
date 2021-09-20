@@ -20,16 +20,16 @@ export function UserLink({id}: UserLinkProps): JSX.Element {
     React.useEffect(
         () => {
             const abort = new AbortController()
-            retrieve(id.toString(), {signal: abort.signal}).then(u => setUser(u))
+            retrieve(id.toString(), {signal: abort.signal})
+                .then(u => setUser(u))
+                .catch(e => setError(e as Error))
 
             return () => {
                 abort.abort()
             }
         },
-        [retrieve, setUser]
+        [retrieve, setUser, id]
     )
-
-    // FIXME: use proper bluelib Anchors
 
     if(error) return (
         <Link href={`/u/${id}`} title={id.toString()}>
