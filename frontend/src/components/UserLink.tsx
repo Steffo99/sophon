@@ -1,7 +1,5 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {User, UserId} from "../types";
-import {Anchor} from "@steffo/bluelib-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faSpinner, faTimesCircle, faUser} from "@fortawesome/free-solid-svg-icons";
 import {useDRFViewSet} from "../hooks/useDRF";

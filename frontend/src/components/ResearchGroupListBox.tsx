@@ -1,7 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
-import {useLoginAxios} from "./LoginContext";
-import {useMemo} from "react";
 import {Box, Heading} from "@steffo/bluelib-react";
 import {ResearchGroupPanel} from "./ResearchGroupPanel";
 import {ResearchGroup} from "../types";
@@ -23,7 +20,7 @@ export function ResearchGroupListBox({}: ResearchGroupListBoxProps): JSX.Element
                 return <Loading/>
             }
             return resources.map(
-                res => <ResearchGroupPanel {...res}/>
+                (res, key) => <ResearchGroupPanel {...res} key={key}/>
             )
         },
         [resources, refreshing]

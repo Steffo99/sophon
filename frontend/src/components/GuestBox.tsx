@@ -4,7 +4,7 @@ import {useLogin} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {navigate} from "@reach/router";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExclamationTriangle, faTimesCircle, faGhost} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationTriangle, faGhost, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
 
 export function GuestBox(): JSX.Element {

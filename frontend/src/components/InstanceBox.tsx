@@ -3,7 +3,7 @@ import {Box, Form, Heading, Idiomatic as I, Panel} from "@steffo/bluelib-react";
 import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExclamationTriangle, faTimesCircle, faServer} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationTriangle, faServer, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
 
 export function InstanceBox(): JSX.Element {
