@@ -43,9 +43,14 @@ export class ErrorCatcherBox extends React.Component<ErrorCatcherBoxProps, Error
     }
 
     render() {
-        return (
-            <ErrorBox error={this.state.error}/>
-        )
+        if(this.state.error) {
+            return (
+                <ErrorBox error={this.state.error}/>
+            )
+        }
+        else {
+            return this.props.children
+        }
     }
 }
 

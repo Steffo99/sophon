@@ -34,6 +34,13 @@ export interface User {
 }
 
 
+export interface InstanceDetails {
+    name: string,
+    description?: string,
+    theme: "sophon" | "paper" | "royalblue" | "hacker",
+}
+
+
 export type ResearchProjectSlug = string
 
 export interface ResearchProject {
