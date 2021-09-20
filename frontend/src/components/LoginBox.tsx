@@ -5,7 +5,7 @@ import {useLogin, useUsernameFormState} from "./LoginContext";
 import {useInstance} from "./InstanceContext";
 import {AxiosError} from "axios-lab";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExclamationTriangle, faTimesCircle, faKey, faSpinner, faCheck} from "@fortawesome/free-solid-svg-icons";
+import {faCheck, faKey, faSpinner, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
 
 export function LoginBox(): JSX.Element {
