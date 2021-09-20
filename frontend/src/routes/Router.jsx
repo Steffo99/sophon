@@ -1,28 +1,18 @@
 import * as React from "react"
 import * as Reach from "@reach/router"
 import { LoginPage } from "./LoginPage"
-import { Heading } from "@steffo/bluelib-react"
 import { SelectResearchGroupPage } from "./SelectResearchGroupPage"
-import {Link} from "../components/Link"
 import { ErrorCatcherBox, NotFoundBox } from "../components/ErrorBox"
-
-
-function Header() {
-    return (
-        <Heading level={1}>
-            <Link href={"/"}>Sophon</Link>
-        </Heading>
-    )
-}
+import { InstanceNameHeading } from "../components/InstanceNameHeading"
 
 
 export function Router() {
     return <>
         <Reach.Router primary={false}>
-            <Header default/>
+            <InstanceNameHeading default/>
         </Reach.Router>
         <ErrorCatcherBox>
-            <Reach.Router>
+            <Reach.Router primary={true}>
                 <LoginPage path={"/"}/>
                 <SelectResearchGroupPage path={"/g/"}/>
                 <NotFoundBox default/>
