@@ -1,15 +1,11 @@
 import * as React from "react"
-import {Anchor} from "@steffo/bluelib-react";
-import {navigate} from "@reach/router";
+import {Anchor, BringAttention as B} from "@steffo/bluelib-react";
+import {navigate, useLocation} from "@reach/router";
 import {AnchorProps} from "@steffo/bluelib-react/dist/components/common/Anchor";
 
 
-interface LinkProps extends AnchorProps {
-
-}
-
-
 export function Link({href, children, onClick, ...props}: AnchorProps): JSX.Element {
+    const location = useLocation()
 
     const onClickWrapped = React.useCallback(
         event => {
@@ -22,10 +18,17 @@ export function Link({href, children, onClick, ...props}: AnchorProps): JSX.Elem
                 navigate(href)
             }
         },
-        [href]
+        [href, onClick]
     )
 
-    return (
-        <Anchor href={href} children={children} onClick={onClickWrapped} {...props}/>
-    )
+    if(location.pathname === href) {
+        return (
+            <B children={children} {...props}/>
+        )
+    }
+    else {
+        return (
+            <Anchor href={href} children={children} onClick={onClickWrapped} {...props}/>
+        )
+    }
 }
