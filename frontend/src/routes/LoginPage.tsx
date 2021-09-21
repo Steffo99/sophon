@@ -1,5 +1,5 @@
 import * as React from "react"
-import {InstanceBox} from "../components/InstanceBox";
+import {InstanceSelectBox} from "../components/InstanceSelectBox";
 import {Chapter} from "@steffo/bluelib-react";
 import {LoginBox} from "../components/LoginBox";
 import {useLogin} from "../components/LoginContext";
@@ -12,7 +12,7 @@ export function LoginPage(): JSX.Element {
 
     return (
         <div>
-            <InstanceBox/>
+            <InstanceSelectBox/>
             {userData ?
                 <LogoutBox/>
             :
