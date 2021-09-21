@@ -1,9 +1,10 @@
 import * as React from "react"
 import * as Reach from "@reach/router"
 import { LoginPage } from "./LoginPage"
-import { SelectResearchGroupPage } from "./SelectResearchGroupPage"
+import { InstancePage } from "./InstancePage"
 import { ErrorCatcherBox, NotFoundBox } from "../components/ErrorBox"
 import { InstanceTitle } from "../components/InstanceTitle"
+import { UserPage } from "./UserPage"
 
 
 export function Router() {
@@ -14,7 +15,8 @@ export function Router() {
         <ErrorCatcherBox>
             <Reach.Router primary={true}>
                 <LoginPage path={"/"}/>
-                <SelectResearchGroupPage path={"/g/"}/>
+                <InstancePage path={"/g/"}/>
+                <UserPage path={"/u/:pk"}/>
                 <NotFoundBox default/>
             </Reach.Router>
         </ErrorCatcherBox>

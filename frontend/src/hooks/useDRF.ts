@@ -2,6 +2,7 @@ import {useLoginAxios} from "../components/LoginContext";
 import * as React from "react";
 import {DRFDetail, DRFList} from "../types";
 import {AxiosRequestConfig, AxiosResponse} from "axios-lab";
+import {useAbortEffect} from "./useCancellable";
 
 
 export interface AxiosRequestConfigWithURL extends AxiosRequestConfig {
@@ -80,10 +81,9 @@ export function useDRFViewSet<Resource extends DRFDetail>(baseRoute: string) {
 }
 
 
-export function useDRFManagedViewSet<Resource extends DRFDetail>(baseRoute: string, pkKey: string) {
+export function useDRFManagedList<Resource extends DRFDetail>(baseRoute: string, pkKey: string) {
     const {list} = useDRFViewSet<Resource>(baseRoute)
-    const [resources, setResources] = React.useState<Resource[]>([])
-    const [refreshing, setRefreshing] = React.useState<boolean>(false)
+    const [resources, setResources] = React.useState<Resource[] | null>(null)
     const [running, setRunning] = React.useState<{[key: string]: boolean}>({})
     const [error, setError] = React.useState<Error | null>(null)
 
@@ -108,7 +108,7 @@ export function useDRFManagedViewSet<Resource extends DRFDetail>(baseRoute: stri
 
     const refresh = React.useCallback(
         async (signal: AbortSignal): Promise<void> => {
-            setRefreshing(true)
+            setResources(null)
             let data: Resource[]
             try {
                 data = await list({signal})
@@ -119,13 +119,10 @@ export function useDRFManagedViewSet<Resource extends DRFDetail>(baseRoute: stri
                 }
                 return
             }
-            finally {
-                setRefreshing(false)
-            }
             setResources(data)
             initRunning(data)
         },
-        [list, setError, setRefreshing, setResources, initRunning]
+        [list, setError, setResources, initRunning]
     )
 
     React.useEffect(
@@ -141,5 +138,42 @@ export function useDRFManagedViewSet<Resource extends DRFDetail>(baseRoute: stri
         [refresh]
     )
 
-    return {resources, refreshing, running, error, refresh}
+    return {resources, running, error, refresh}
+}
+
+
+export function useDRFManagedDetail<Resource extends DRFDetail>(baseRoute: string, pk: string) {
+    const {retrieve} = useDRFViewSet<Resource>(baseRoute)
+    const [resource, setResource] = React.useState<Resource | null>(null)
+    const [error, setError] = React.useState<Error | null>(null)
+
+    const refresh = React.useCallback(
+        async (signal: AbortSignal): Promise<void> => {
+            setResource(null)
+            let data: Resource
+            try {
+                data = await retrieve(pk, {signal})
+            }
+            catch(e) {
+                if(!signal.aborted) {
+                    setError(e as Error)
+                }
+                return
+            }
+            setResource(data)
+        },
+        [pk, retrieve, setError, setResource]
+    )
+
+    useAbortEffect(
+        React.useCallback(
+            signal => {
+                // noinspection JSIgnoredPromiseFromCall
+                refresh(signal)
+            },
+            [refresh]
+        ),
+    )
+
+    return {resource, refresh, error}
 }
