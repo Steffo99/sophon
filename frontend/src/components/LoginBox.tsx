@@ -149,7 +149,7 @@ export function LoginBox(): JSX.Element {
                 <Form.Field label={"Username"} {...username} disabled={!instance.validity}/>
                 <Form.Field label={"Password"} type={"password"} {...password} disabled={!instance.validity}/>
                 <Form.Row>
-                    <Form.Button onClick={doLogin} disabled={!canLogin} bluelibClassNames={error ? "color-red" : ""}>
+                    <Form.Button onClick={doLogin} disabled={!canLogin}>
                         Login
                     </Form.Button>
                 </Form.Row>

@@ -1,11 +1,11 @@
 import * as React from "react"
-import Style from "./ResearchGroupPanel.module.css"
 import {Panel} from "@steffo/bluelib-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faGlobe, faQuestion} from "@fortawesome/free-solid-svg-icons";
 import {ResearchGroup} from "../types";
 import {UserLink} from "./UserLink";
 import {Link} from "./Link";
+import {ObjectPanel} from "./ObjectPanel";
 
 
 export function ResearchGroupPanel({owner, name, access, slug}: ResearchGroup): JSX.Element {
@@ -21,16 +21,19 @@ export function ResearchGroupPanel({owner, name, access, slug}: ResearchGroup): 
     }
 
     return (
-        <Panel className={Style.Panel}>
-            <div className={Style.Access}>
+        <ObjectPanel>
+            <ObjectPanel.Icon>
                 {accessIcon}
-            </div>
-            <div className={Style.Name} title={slug}>
+            </ObjectPanel.Icon>
+            <ObjectPanel.Name>
                 <Link href={`/g/${slug}/`}>{name}</Link>
-            </div>
-            <div className={Style.Owner}>
+            </ObjectPanel.Name>
+            <ObjectPanel.Text>
                 Created by <UserLink id={owner}/>
-            </div>
-        </Panel>
+            </ObjectPanel.Text>
+            <ObjectPanel.Buttons>
+
+            </ObjectPanel.Buttons>
+        </ObjectPanel>
     )
 }
