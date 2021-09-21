@@ -24,7 +24,7 @@ export function LogoutBox(): JSX.Element {
             </p>
             <Form>
                 <Form.Row>
-                    <Panel>
+                    <Panel bluelibClassNames={"color-lime"}>
                         <FontAwesomeIcon icon={faUser}/> You are currently logged in as <Variable>{login.userData.username}</Variable>.
                     </Panel>
                 </Form.Row>

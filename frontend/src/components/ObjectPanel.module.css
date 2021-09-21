@@ -1,0 +1,30 @@
+.ObjectPanel {
+    display: grid;
+    grid-template-areas: "icon name text buttons";
+    grid-template-columns: auto 1fr 4fr auto;
+    grid-gap: 8px;
+
+    justify-content: center;
+    align-items: center;
+}
+
+.ObjectPanel .Icon {
+    grid-area: icon;
+
+    font-size: large;
+}
+
+.ObjectPanel .Name {
+    grid-area: name;
+
+    font-size: large;
+    font-weight: 600;
+}
+
+.ObjectPanel .Text {
+    grid-area: text;
+}
+
+.ObjectPanel .Buttons {
+    grid-area: buttons;
+}

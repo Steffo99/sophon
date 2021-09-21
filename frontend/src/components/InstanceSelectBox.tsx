@@ -3,7 +3,8 @@ import {Box, Form, Heading, Idiomatic as I, Panel} from "@steffo/bluelib-react";
 import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faExclamationTriangle, faServer, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
+import {faExclamationTriangle, faServer, faTimesCircle, faUniversity} from "@fortawesome/free-solid-svg-icons";
+import {Loading} from "./Loading";
 
 
 export function InstanceSelectBox(): JSX.Element {
@@ -40,6 +41,20 @@ export function InstanceSelectBox(): JSX.Element {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
                         <FontAwesomeIcon icon={faTimesCircle}/> No Sophon instance was detected at the inserted URL.
+                    </Panel>
+                )
+            }
+            if(instance.validity === null) {
+                return (
+                    <Panel bluelibClassNames={"color-yellow"}>
+                        <Loading text={"Checking..."}/>
+                    </Panel>
+                )
+            }
+            if(instance.details) {
+                return (
+                    <Panel bluelibClassNames={"color-lime"}>
+                        <FontAwesomeIcon icon={faUniversity}/> Selected <I>{instance.details.name}</I> as instance.
                     </Panel>
                 )
             }
