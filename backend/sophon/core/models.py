@@ -6,6 +6,8 @@ properly.
 from __future__ import annotations
 import typing
 import abc
+
+import pkg_resources
 from django.db import models
 from django.contrib.auth.models import User
 from rest_framework.serializers import ModelSerializer
@@ -203,12 +205,17 @@ class SophonInstanceDetails(SophonModel):
         max_length=32,
     )
 
+    @property
+    def version(self) -> str:
+        return pkg_resources.get_distribution("sophon").version
+
     @classmethod
     def get_fields(cls) -> set[str]:
         return {
             "name",
             "description",
             "theme",
+            "version",
         }
 
     @classmethod

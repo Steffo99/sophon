@@ -279,17 +279,6 @@ class SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta):
             return permissions.AllowAny,
 
 
-class VersionView(APIView):
-    """
-    Get the Sophon server version.
-    """
-
-    # noinspection PyMethodMayBeStatic,PyUnusedLocal
-    def get(self, request, format=None):
-        version = pkg_resources.get_distribution("sophon").version
-        return Response(version, status=s.HTTP_200_OK)
-
-
 class SophonInstanceDetailsView(APIView):
     """
     Get the details of this Sophon instance.
@@ -298,6 +287,7 @@ class SophonInstanceDetailsView(APIView):
     # noinspection PyMethodMayBeStatic,PyUnusedLocal
     def get(self, request, format=None):
         details = models.SophonInstanceDetails.objects.get()
-        Serializer = details.get_view_serializer()
-        serializer = Serializer(instance=details)
+        # noinspection PyPep8Naming
+        ViewSerializer = details.get_view_serializer()
+        serializer = ViewSerializer(instance=details)
         return Response(serializer.data, status=s.HTTP_200_OK)
