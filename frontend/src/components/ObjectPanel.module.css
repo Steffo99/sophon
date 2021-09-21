@@ -1,7 +1,8 @@
 .ObjectPanel {
     display: grid;
     grid-template-areas: "icon name text buttons";
-    grid-template-columns: auto 1fr 4fr auto;
+    /* Not sure about this, there probably is a better way */
+    grid-template-columns: auto minmax(25%, 1fr) auto auto;
     grid-gap: 8px;
 
     justify-content: center;
