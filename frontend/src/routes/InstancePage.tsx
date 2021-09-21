@@ -3,7 +3,7 @@ import {ResearchGroupListBox} from "../components/ResearchGroupListBox";
 import {InstanceDescriptionBox} from "../components/InstanceDescriptionBox";
 
 
-export function SelectResearchGroupPage(): JSX.Element {
+export function InstancePage(): JSX.Element {
     return (
         <div>
             <InstanceDescriptionBox/>
