@@ -6,7 +6,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExclamationTriangle, faServer, faTimesCircle} from "@fortawesome/free-solid-svg-icons";
 
 
-export function InstanceBox(): JSX.Element {
+export function InstanceSelectBox(): JSX.Element {
     const instance = useInstance()
     const login = useLogin()
 
@@ -64,7 +64,13 @@ export function InstanceBox(): JSX.Element {
                 <Form.Row>
                     {statePanel}
                 </Form.Row>
-                <Form.Field label={"URL"} {...instance} validity={login.userData ? undefined : instance.validity} disabled={!canChange}/>
+                <Form.Field
+                    label={"URL"}
+                    value={instance.value}
+                    onSimpleChange={v => instance.setValue(v)}
+                    validity={login.userData ? undefined : instance.validity}
+                    disabled={!canChange}
+                />
             </Form>
         </Box>
     )

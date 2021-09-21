@@ -5,6 +5,7 @@ import {useNotNullContext} from "../hooks/useNotNullContext";
 import {Validity} from "@steffo/bluelib-react/dist/types";
 import {useFormState} from "@steffo/bluelib-react";
 import {useStorageState} from "../hooks/useStorageState";
+import {CHECK_TIMEOUT_MS} from "../constants";
 
 
 export interface UserData {
@@ -118,7 +119,7 @@ export function useUsernameFormState() {
         async (value: string, abort: AbortSignal): Promise<Validity> => {
             if(value === "") return undefined
 
-            await new Promise(r => setTimeout(r, 250))
+            await new Promise(r => setTimeout(r, CHECK_TIMEOUT_MS))
             if(abort.aborted) return null
 
             try {

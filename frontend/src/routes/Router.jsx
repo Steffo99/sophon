@@ -3,13 +3,13 @@ import * as Reach from "@reach/router"
 import { LoginPage } from "./LoginPage"
 import { SelectResearchGroupPage } from "./SelectResearchGroupPage"
 import { ErrorCatcherBox, NotFoundBox } from "../components/ErrorBox"
-import { InstanceNameHeading } from "../components/InstanceNameHeading"
+import { InstanceTitle } from "../components/InstanceTitle"
 
 
 export function Router() {
     return <>
         <Reach.Router primary={false}>
-            <InstanceNameHeading default/>
+            <InstanceTitle default/>
         </Reach.Router>
         <ErrorCatcherBox>
             <Reach.Router primary={true}>

@@ -36,6 +36,7 @@ export interface User {
 
 export interface InstanceDetails {
     name: string,
+    version: string,
     description?: string,
     theme: "sophon" | "paper" | "royalblue" | "hacker",
 }
