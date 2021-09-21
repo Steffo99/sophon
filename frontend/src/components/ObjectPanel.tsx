@@ -6,8 +6,8 @@ import {BluelibHTMLProps} from "@steffo/bluelib-react/dist/types";
 import classNames from "classnames"
 
 
-interface ObjectPanelProps extends PanelProps {}
-interface ObjectSubPanelProps extends BluelibHTMLProps<HTMLDivElement> {}
+export interface ObjectPanelProps extends PanelProps {}
+export interface ObjectSubPanelProps extends BluelibHTMLProps<HTMLDivElement> {}
 
 
 export function ObjectPanel({className, ...props}: ObjectPanelProps): JSX.Element {

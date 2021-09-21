@@ -1,11 +1,12 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {useDRFManagedList} from "../hooks/useDRF";
-import {ResearchGroup, ResearchProject} from "../types";
+import {ResearchProject} from "../types";
 import {Loading} from "./Loading";
-import {ResearchGroupPanel} from "./ResearchGroupPanel";
 import {Box, Heading} from "@steffo/bluelib-react";
 import {ResearchProjectPanel} from "./ResearchProjectPanel";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faPlus} from "@fortawesome/free-solid-svg-icons";
+import {NewResearchGroupPanel} from "./NewResearchGroupPanel";
 
 
 interface ProjectsListBoxProps {
@@ -35,6 +36,7 @@ export function ResearchProjectsByGroupListBox({group_pk}: ProjectsListBoxProps)
             </Heading>
             <div>
                 {groups}
+                <NewResearchGroupPanel/>
             </div>
         </Box>
     )
