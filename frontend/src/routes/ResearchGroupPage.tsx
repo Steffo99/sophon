@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {ResearchGroupDescriptionBox} from "../components/ResearchGroupDescriptionBox";
 import {ResearchProjectsByGroupListBox} from "../components/ResearchProjectsByGroupListBox";
 

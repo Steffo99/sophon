@@ -1,5 +1,5 @@
 import * as React from "react"
-import {Field, Button, Select} from "@steffo/bluelib-react";
+import {Button, Field, Select} from "@steffo/bluelib-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {ObjectPanel} from "./ObjectPanel";

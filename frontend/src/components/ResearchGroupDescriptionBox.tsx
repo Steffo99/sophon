@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {useDRFManagedDetail} from "../hooks/useDRF";
 import {Box, Heading} from "@steffo/bluelib-react";
 import {ResearchProject} from "../types";

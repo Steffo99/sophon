@@ -1,11 +1,9 @@
 import * as React from "react"
 import {Heading} from "@steffo/bluelib-react"
-import {useInstance, useInstanceAxios} from "./InstanceContext";
-import {InstanceDetails} from "../types";
+import {useInstance} from "./InstanceContext";
 import {Link} from "./Link";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSpinner, faTimesCircle, faUniversity} from "@fortawesome/free-solid-svg-icons";
-import {Loading} from "./Loading";
+import {faUniversity} from "@fortawesome/free-solid-svg-icons";
 
 
 export function InstanceTitle(): JSX.Element {
