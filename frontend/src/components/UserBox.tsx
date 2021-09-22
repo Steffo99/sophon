@@ -1,8 +1,7 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {useDRFManagedDetail} from "../hooks/useDRF";
 import {Loading} from "./Loading";
-import {Box, Heading, BringAttention as B, Idiomatic as I, Anchor} from "@steffo/bluelib-react";
+import {Anchor, Box, BringAttention as B, Heading, Idiomatic as I} from "@steffo/bluelib-react";
 import {User} from "../types";
 import {useInstance} from "./InstanceContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

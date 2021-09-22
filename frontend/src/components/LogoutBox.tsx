@@ -1,5 +1,5 @@
 import * as React from "react"
-import {Box, Form, Heading, Panel, BringAttention as B} from "@steffo/bluelib-react";
+import {Box, BringAttention as B, Form, Heading, Panel} from "@steffo/bluelib-react";
 import {useLogin} from "./LoginContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
