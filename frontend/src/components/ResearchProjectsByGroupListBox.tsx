@@ -4,8 +4,6 @@ import {ResearchProject} from "../types";
 import {Loading} from "./Loading";
 import {Box, Heading} from "@steffo/bluelib-react";
 import {ResearchProjectPanel} from "./ResearchProjectPanel";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPlus} from "@fortawesome/free-solid-svg-icons";
 import {NewResearchGroupPanel} from "./NewResearchGroupPanel";
 
 

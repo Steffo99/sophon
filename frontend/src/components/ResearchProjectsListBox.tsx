@@ -1,9 +1,7 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {useDRFManagedList} from "../hooks/useDRF";
-import {ResearchGroup, ResearchProject} from "../types";
+import {ResearchProject} from "../types";
 import {Loading} from "./Loading";
-import {ResearchGroupPanel} from "./ResearchGroupPanel";
 import {Box, Heading} from "@steffo/bluelib-react";
 import {ResearchProjectPanel} from "./ResearchProjectPanel";
 

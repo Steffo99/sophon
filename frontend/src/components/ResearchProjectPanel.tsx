@@ -1,9 +1,8 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {ObjectPanel} from "./ObjectPanel";
 import {ResearchProject} from "../types";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faEnvelope, faGlobe, faLock, faQuestion, faUniversity} from "@fortawesome/free-solid-svg-icons";
+import {faGlobe, faLock, faQuestion, faUniversity} from "@fortawesome/free-solid-svg-icons";
 import {Link} from "./Link";
 
 

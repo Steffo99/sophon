@@ -1,5 +1,4 @@
 import * as React from "react"
-import {Panel} from "@steffo/bluelib-react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faEnvelope, faGlobe, faQuestion} from "@fortawesome/free-solid-svg-icons";
 import {ResearchGroup} from "../types";
