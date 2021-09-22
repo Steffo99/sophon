@@ -9,7 +9,6 @@ export function InstancePage(): JSX.Element {
         <div>
             <InstanceDescriptionBox/>
             <ResearchGroupListBox/>
-            <ResearchProjectsListBox/>
         </div>
     )
 }
