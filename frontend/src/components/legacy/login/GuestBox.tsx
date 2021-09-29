@@ -26,14 +26,14 @@ export function GuestBox(): JSX.Element {
      */
     const statePanel = React.useMemo(
         () => {
-            if(!instance.validity) {
+            if (!instance.validity) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
                         <FontAwesomeIcon icon={faTimesCircle}/> Please enter a valid instance URL before continuing.
                     </Panel>
                 )
             }
-            if(login.running) {
+            if (login.running) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
                         <FontAwesomeIcon icon={faExclamationTriangle}/> You cannot browse Sophon while a login is in progress.

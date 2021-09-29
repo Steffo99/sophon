@@ -1,10 +1,10 @@
 import * as React from "react"
-import {InstanceSelectBox} from "../components/InstanceSelectBox";
+import {InstanceSelectBox} from "../components/legacy/login/InstanceSelectBox";
 import {Chapter} from "@steffo/bluelib-react";
-import {LoginBox} from "../components/LoginBox";
-import {useLogin} from "../components/LoginContext";
-import {LogoutBox} from "../components/LogoutBox";
-import {GuestBox} from "../components/GuestBox";
+import {LoginBox} from "../components/legacy/login/LoginBox";
+import {useLogin} from "../components/legacy/login/LoginContext";
+import {LogoutBox} from "../components/legacy/login/LogoutBox";
+import {GuestBox} from "../components/legacy/login/GuestBox";
 
 
 export function LoginPage(): JSX.Element {

@@ -1,11 +1,8 @@
 import * as React from "react"
 import * as Reach from "@reach/router"
 import { LoginPage } from "./LoginPage"
-import { InstancePage } from "./InstancePage"
 import { ErrorCatcherBox, NotFoundBox } from "../components/ErrorBox"
-import { InstanceTitle } from "../components/InstanceTitle"
-import { UserPage } from "./UserPage"
-import { ResearchGroupPage } from "./ResearchGroupPage"
+import { InstanceTitle } from "../components/legacy/InstanceTitle"
 
 
 export function Router() {
@@ -18,8 +15,6 @@ export function Router() {
             <Reach.Router primary={true}>
                 <LoginPage path={"/"}/>
                 <InstancePage path={"/g/"}/>
-                <ResearchGroupPage path={"/g/:pk"}/>
-                <UserPage path={"/u/:pk"}/>
                 <NotFoundBox default/>
             </Reach.Router>
         </ErrorCatcherBox>
