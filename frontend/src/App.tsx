@@ -1,24 +1,21 @@
 import * as React from 'react';
 import {LayoutThreeCol} from "@steffo/bluelib-react";
 import {Router} from "./routes/Router";
-import {InstanceContextProvider} from "./components/legacy/login/InstanceContext";
-import {LoginContextProvider} from "./components/legacy/login/LoginContext";
-import {InstanceBluelib} from "./components/legacy/login/InstanceBluelib";
+import {LookAndFeel} from "./components/theme/LookAndFeel";
 
-function App() {
+
+export default function App() {
     return (
-        <InstanceContextProvider>
-            <LoginContextProvider>
-                <InstanceBluelib>
-                    <LayoutThreeCol>
-                        <LayoutThreeCol.Center>
-                            <Router/>
-                        </LayoutThreeCol.Center>
-                    </LayoutThreeCol>
-                </InstanceBluelib>
-            </LoginContextProvider>
-        </InstanceContextProvider>
+        <LookAndFeel>
+            <LookAndFeel.Bluelib>
+                <LookAndFeel.PageTitle/>
+                <LayoutThreeCol>
+                    <LayoutThreeCol.Center>
+                        <LookAndFeel.Heading level={1}/>
+                        <Router/>
+                    </LayoutThreeCol.Center>
+                </LayoutThreeCol>
+            </LookAndFeel.Bluelib>
+        </LookAndFeel>
     );
 }
-
-export default App;
