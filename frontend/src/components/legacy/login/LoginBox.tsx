@@ -28,8 +28,8 @@ export function LoginBox(): JSX.Element {
      * The FormState of the password field.
      */
     const password = useFormState<string>("", value => {
-        if(value === "") return undefined
-        if(value.length < 8) return false
+        if (value === "") return undefined
+        if (value.length < 8) return false
         return true
     })
 
@@ -49,7 +49,7 @@ export function LoginBox(): JSX.Element {
     const doLogin = React.useCallback(
         async () => {
             // Abort the previous login request
-            if(abort) abort.abort()
+            if (abort) abort.abort()
 
             // Create a new AbortController
             const newAbort = new AbortController()
@@ -61,8 +61,7 @@ export function LoginBox(): JSX.Element {
             // Try to login
             try {
                 await login(username.value, password.value, newAbort.signal)
-            }
-            catch (e: unknown) {
+            } catch (e: unknown) {
                 // Store the caught error
                 setError(e as AxiosError)
                 return
@@ -88,15 +87,14 @@ export function LoginBox(): JSX.Element {
      */
     const statePanel = React.useMemo(
         () => {
-            if(error) {
-                if(error.response) {
+            if (error) {
+                if (error.response) {
                     return (
                         <Panel bluelibClassNames={"color-red"}>
                             <FontAwesomeIcon icon={faTimesCircle}/> <I>{error.response.statusText}</I>: {error.response.data['non_field_errors'][0]}
                         </Panel>
                     )
-                }
-                else {
+                } else {
                     return (
                         <Panel bluelibClassNames={"color-red"}>
                             <FontAwesomeIcon icon={faTimesCircle}/> {error.toString()}
@@ -104,21 +102,21 @@ export function LoginBox(): JSX.Element {
                     )
                 }
             }
-            if(!instance.validity) {
+            if (!instance.validity) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
                         <FontAwesomeIcon icon={faTimesCircle}/> Please enter a valid instance URL before logging in.
                     </Panel>
                 )
             }
-            if(!(username.validity && password.validity)) {
+            if (!(username.validity && password.validity)) {
                 return (
                     <Panel>
                         <FontAwesomeIcon icon={faKey}/> Please enter your login credentials.
                     </Panel>
                 )
             }
-            if(running) {
+            if (running) {
                 return (
                     <Panel bluelibClassNames={"color-cyan"}>
                         <FontAwesomeIcon icon={faSpinner} pulse={true}/> Logging in, please wait...

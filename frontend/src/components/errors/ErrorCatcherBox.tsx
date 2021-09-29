@@ -1,23 +1,6 @@
 import * as React from "react"
-import {Box, Heading} from "@steffo/bluelib-react";
-
-
-interface ErrorBoxProps {
-    error?: Error,
-}
-
-
-export function ErrorBox({error}: ErrorBoxProps): JSX.Element | null {
-    if(!error) {
-        return null
-    }
-
-    return (
-        <Box bluelibClassNames={"color-red"}>
-            {error.toString()}
-        </Box>
-    )
-}
+import * as ReactDOM from "react-dom"
+import {ErrorBox} from "./ErrorBox";
 
 
 interface ErrorCatcherBoxProps {
@@ -29,6 +12,9 @@ interface ErrorCatcherBoxState {
 }
 
 
+/**
+ * Element which catches the errors thrown by its children, and renders an {@link ErrorBox} instead of the children when one happens.
+ */
 export class ErrorCatcherBox extends React.Component<ErrorCatcherBoxProps, ErrorCatcherBoxState> {
     constructor(props: ErrorCatcherBoxProps) {
         super(props)
@@ -43,27 +29,12 @@ export class ErrorCatcherBox extends React.Component<ErrorCatcherBoxProps, Error
     }
 
     render() {
-        if(this.state.error) {
+        if (this.state.error) {
             return (
                 <ErrorBox error={this.state.error}/>
             )
-        }
-        else {
+        } else {
             return this.props.children
         }
     }
-}
-
-
-export function NotFoundBox() {
-    return (
-        <Box bluelibClassNames={"color-red"}>
-            <Heading level={3}>
-                Not found
-            </Heading>
-            <p>
-                The page you were looking for was not found.
-            </p>
-        </Box>
-    )
 }

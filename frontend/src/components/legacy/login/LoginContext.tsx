@@ -1,11 +1,11 @@
 import * as React from "react"
 import Axios, {AxiosRequestConfig, AxiosResponse} from "axios-lab";
 import {DEFAULT_AXIOS_CONFIG, useInstance, useInstanceAxios} from "./InstanceContext";
-import {useNotNullContext} from "../hooks/useNotNullContext";
+import {useNotNullContext} from "../../hooks/useNotNullContext";
 import {Validity} from "@steffo/bluelib-react/dist/types";
 import {useFormState} from "@steffo/bluelib-react";
-import {useStorageState} from "../hooks/useStorageState";
-import {CHECK_TIMEOUT_MS} from "../constants";
+import {useStorageState} from "../../hooks/useStorageState";
+import {CHECK_TIMEOUT_MS} from "../../constants";
 
 
 export interface UserData {
@@ -39,14 +39,13 @@ export function LoginContextProvider({children}: LoginContextProps): JSX.Element
 
     const login = React.useCallback(
         async (username: string, password: string, abort: AbortSignal): Promise<void> => {
-            let response: AxiosResponse<{token: string}>
+            let response: AxiosResponse<{ token: string }>
 
             setRunning(true)
 
             try {
                 response = await api.post("/api/auth/token/", {username, password}, {signal: abort})
-            }
-            finally {
+            } finally {
                 setRunning(false)
             }
 
@@ -83,12 +82,11 @@ export function useLoginAxios(config?: AxiosRequestConfig) {
 
     const authHeader = React.useMemo(
         () => {
-            if(userData) {
+            if (userData) {
                 return {
                     "Authorization": `${userData.tokenType} ${userData.token}`
                 }
-            }
-            else {
+            } else {
                 return {}
             }
 
@@ -117,14 +115,14 @@ export function useUsernameFormState() {
 
     const usernameValidator = React.useCallback(
         async (value: string, abort: AbortSignal): Promise<Validity> => {
-            if(value === "") return undefined
+            if (value === "") return undefined
 
             await new Promise(r => setTimeout(r, CHECK_TIMEOUT_MS))
-            if(abort.aborted) return null
+            if (abort.aborted) return null
 
             try {
                 await api.get(`/api/core/users/${value}/`, {signal: abort})
-            } catch(_) {
+            } catch (_) {
                 return false
             }
 
