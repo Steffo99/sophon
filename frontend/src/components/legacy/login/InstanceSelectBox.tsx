@@ -4,7 +4,7 @@ import {useInstance} from "./InstanceContext";
 import {useLogin} from "./LoginContext";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faExclamationTriangle, faServer, faTimesCircle, faUniversity} from "@fortawesome/free-solid-svg-icons";
-import {Loading} from "./Loading";
+import {Loading} from "../elements/Loading";
 
 
 export function InstanceSelectBox(): JSX.Element {
@@ -23,35 +23,35 @@ export function InstanceSelectBox(): JSX.Element {
      */
     const statePanel = React.useMemo(
         () => {
-            if(login.userData) {
+            if (login.userData) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
                         <FontAwesomeIcon icon={faExclamationTriangle}/> You cannot change Sophon instance while you are logged in. If you need to change instance, <I>logout</I> first!
                     </Panel>
                 )
             }
-            if(login.running) {
+            if (login.running) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
                         <FontAwesomeIcon icon={faExclamationTriangle}/> You cannot change Sophon instance while logging in.
                     </Panel>
                 )
             }
-            if(instance.validity === false) {
+            if (instance.validity === false) {
                 return (
                     <Panel bluelibClassNames={"color-red"}>
                         <FontAwesomeIcon icon={faTimesCircle}/> No Sophon instance was detected at the inserted URL.
                     </Panel>
                 )
             }
-            if(instance.validity === null) {
+            if (instance.validity === null) {
                 return (
                     <Panel bluelibClassNames={"color-yellow"}>
                         <Loading text={"Checking..."}/>
                     </Panel>
                 )
             }
-            if(instance.details) {
+            if (instance.details) {
                 return (
                     <Panel bluelibClassNames={"color-lime"}>
                         <FontAwesomeIcon icon={faUniversity}/> Selected <I>{instance.details.name}</I> as instance.

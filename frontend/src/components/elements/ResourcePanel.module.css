@@ -1,4 +1,4 @@
-.ObjectPanel {
+.ResourcePanel {
     display: grid;
     grid-template-areas: "icon name text buttons";
     /* Not sure about this, there probably is a better way */
@@ -9,23 +9,23 @@
     align-items: center;
 }
 
-.ObjectPanel .Icon {
+.ResourcePanel .Icon {
     grid-area: icon;
 
     font-size: large;
 }
 
-.ObjectPanel .Name {
+.ResourcePanel .Name {
     grid-area: name;
 
     font-size: large;
     font-weight: 600;
 }
 
-.ObjectPanel .Text {
+.ResourcePanel .Text {
     grid-area: text;
 }
 
-.ObjectPanel .Buttons {
+.ResourcePanel .Buttons {
     grid-area: buttons;
 }

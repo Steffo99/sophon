@@ -1,9 +1,9 @@
 import * as React from 'react';
 import {LayoutThreeCol} from "@steffo/bluelib-react";
 import {Router} from "./routes/Router";
-import {InstanceContextProvider} from "./components/InstanceContext";
-import {LoginContextProvider} from "./components/LoginContext";
-import {InstanceBluelib} from "./components/InstanceBluelib";
+import {InstanceContextProvider} from "./components/legacy/login/InstanceContext";
+import {LoginContextProvider} from "./components/legacy/login/LoginContext";
+import {InstanceBluelib} from "./components/legacy/login/InstanceBluelib";
 
 function App() {
     return (

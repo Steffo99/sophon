@@ -9,7 +9,7 @@ import {navigate} from "@reach/router";
 export function LogoutBox(): JSX.Element {
     const login = useLogin()
 
-    if(!login.userData) {
+    if (!login.userData) {
         console.log("LogoutBox displayed while the user wasn't logged in.")
         return <></>
     }
