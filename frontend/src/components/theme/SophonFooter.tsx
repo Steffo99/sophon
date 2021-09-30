@@ -1,7 +1,6 @@
 import * as React from "react"
-import {useContext} from "react"
 import {Anchor, Footer} from "@steffo/bluelib-react";
-import {LookAndFeelContext} from "./LookAndFeel";
+import {useLookAndFeel} from "./LookAndFeel";
 
 
 const FOOTER_COLORS = {
@@ -17,7 +16,7 @@ const LICENSE_URL = "https://github.com/Steffo99/sophon/blob/main/LICENSE.txt"
 
 
 export function SophonFooter(): JSX.Element {
-    const lookAndFeel = useContext(LookAndFeelContext)
+    const lookAndFeel = useLookAndFeel()
 
     const frontendVersion = process.env.REACT_APP_VERSION
     const backendVersion = lookAndFeel.backendVersion

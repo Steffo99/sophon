@@ -1,11 +1,9 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
-import {useContext} from "react";
-import {LookAndFeelContext} from "./LookAndFeel";
+import {useLookAndFeel} from "./LookAndFeel";
 
 
 export function LookAndFeelPageTitle(): null {
-    const lookAndFeel = useContext(LookAndFeelContext)
+    const lookAndFeel = useLookAndFeel()
 
     React.useEffect(
         () => {

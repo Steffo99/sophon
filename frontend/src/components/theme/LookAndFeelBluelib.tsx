@@ -1,6 +1,5 @@
 import * as React from "react"
-import {useContext} from "react";
-import {LookAndFeelContext} from "./LookAndFeel";
+import {useLookAndFeel} from "./LookAndFeel";
 import {Bluelib} from "@steffo/bluelib-react";
 
 
@@ -10,7 +9,7 @@ interface LookAndFeelBluelibProps {
 
 
 export function LookAndFeelBluelib({children}: LookAndFeelBluelibProps): JSX.Element {
-    const lookAndFeel = useContext(LookAndFeelContext)
+    const lookAndFeel = useLookAndFeel()
 
     return (
         <Bluelib theme={lookAndFeel.bluelibTheme}>
