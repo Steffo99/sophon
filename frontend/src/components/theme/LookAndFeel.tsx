@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {LookAndFeelBluelib} from "./LookAndFeelBluelib";
 import {LookAndFeelHeading} from "./LookAndFeelHeading";
 import {LookAndFeelPageTitle} from "./LookAndFeelPageTitle";
@@ -8,6 +7,7 @@ import {LookAndFeelPageTitle} from "./LookAndFeelPageTitle";
 export interface LookAndFeelState {
     bluelibTheme: "sophon" | "royalblue" | "paper" | "hacker",
     pageTitle: string,
+    backendVersion?: string,
 }
 
 
@@ -19,6 +19,7 @@ export interface LookAndFeelContextData extends LookAndFeelState {
 export const LookAndFeelContext = React.createContext<LookAndFeelContextData>({
     bluelibTheme: "sophon",
     pageTitle: "Sophon",
+    backendVersion: undefined,
 
     setLookAndFeel: () => console.error("Can't setLookAndFeel outside a lookAndFeelContext.")
 })
@@ -34,16 +35,24 @@ export function LookAndFeel({children}: LookAndFeelProps): JSX.Element {
         React.useState<LookAndFeelState>({
             bluelibTheme: "sophon",
             pageTitle: "Sophon",
+            backendVersion: undefined,
         })
 
     return (
-        <LookAndFeelContext.Provider value={{
-            ...lookAndFeel,
-            setLookAndFeel,
-        }}>
+        <LookAndFeelContext.Provider
+            value={{
+                ...lookAndFeel,
+                setLookAndFeel,
+            }}
+        >
             {children}
         </LookAndFeelContext.Provider>
     )
+}
+
+
+export function useLookAndFeel() {
+    return React.useContext(LookAndFeelContext)
 }
 
 

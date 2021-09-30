@@ -1,6 +1,5 @@
 import {AxiosRequestConfig, AxiosResponse} from "axios-lab";
-import {useLoginAxios} from "../components/legacy/login/LoginContext";
-import {AxiosRequestConfigWithURL, AxiosRequestConfigWithData} from "../utils/AxiosTypesExtension";
+import {AxiosRequestConfigWithData, AxiosRequestConfigWithURL} from "../utils/AxiosTypesExtension";
 import * as React from "react";
 import {Page} from "../utils/DjangoTypes";
 
