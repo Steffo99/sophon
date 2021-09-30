@@ -1,5 +1,4 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
 import {ViewSetRouter, ViewSetRouterProps} from "./ViewSetRouter";
 import {useLocation} from "@reach/router";
 import {SplitPath, splitPath} from "../../utils/PathSplitter";
