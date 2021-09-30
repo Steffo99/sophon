@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {LayoutThreeCol} from "@steffo/bluelib-react";
-import {LookAndFeel} from "./components/theme/LookAndFeel";
-import {SophonFooter} from "./components/theme/SophonFooter";
+import {SophonInstanceFooter} from "./components/instance/SophonInstanceFooter";
+import * as Instance from "./components/instance"
 
 
 export default function App() {
     return (
-        <LookAndFeel>
-            <LookAndFeel.Bluelib>
-                <LookAndFeel.PageTitle/>
+        <Instance.Provider>
+            <Instance.Bluelib>
+                <Instance.PageTitle/>
                 <LayoutThreeCol>
                     <LayoutThreeCol.Center>
-                        <LookAndFeel.Heading level={1}/>
-                        <SophonFooter/>
+                        <Instance.Heading level={1}/>
+                        <SophonInstanceFooter/>
                     </LayoutThreeCol.Center>
                 </LayoutThreeCol>
-            </LookAndFeel.Bluelib>
-        </LookAndFeel>
+            </Instance.Bluelib>
+        </Instance.Provider>
     );
 }

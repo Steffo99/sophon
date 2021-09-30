@@ -1,6 +1,6 @@
 import * as React from "react"
 import {Anchor, Footer} from "@steffo/bluelib-react";
-import {useLookAndFeel} from "./LookAndFeel";
+import {useSophonInstance} from "./useSophonInstance";
 
 
 const FOOTER_COLORS = {
@@ -15,11 +15,8 @@ const BACKEND_REPO_URL = "https://github.com/Steffo99/sophon/tree/main/backend"
 const LICENSE_URL = "https://github.com/Steffo99/sophon/blob/main/LICENSE.txt"
 
 
-export function SophonFooter(): JSX.Element {
-    const lookAndFeel = useLookAndFeel()
-
-    const frontendVersion = process.env.REACT_APP_VERSION
-    const backendVersion = lookAndFeel.backendVersion
+export function SophonInstanceFooter(): JSX.Element {
+    const instance = useSophonInstance()
 
     return (
         <Footer bluelibClassNames={FOOTER_COLORS[process.env.NODE_ENV]}>
@@ -28,11 +25,11 @@ export function SophonFooter(): JSX.Element {
             </Anchor>
             &nbsp;|&nbsp;
             <Anchor href={FRONTEND_REPO_URL}>
-                Frontend {process.env.NODE_ENV === "development" ? "Dev" : process.env.NODE_ENV === "test" ? "Test" : frontendVersion}
+                Frontend {process.env.NODE_ENV === "development" ? "Dev" : process.env.NODE_ENV === "test" ? "Test" : process.env.REACT_APP_VERSION}
             </Anchor>
             &nbsp;|&nbsp;
             <Anchor href={BACKEND_REPO_URL}>
-                Backend {backendVersion ?? "not connected"}
+                Backend {instance?.version ?? "not connected"}
             </Anchor>
             &nbsp;|&nbsp;
             <Anchor href={LICENSE_URL}>
