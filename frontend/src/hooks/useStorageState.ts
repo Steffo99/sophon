@@ -56,7 +56,7 @@ export function useStorageState<T>(storage: Storage, key: string, def: T): [T, R
         [storage, key],
     )
 
-    const [value, setValue] = useState(load())
+    const [value, setValue] = useState<T>(load())
 
     /**
      * Set `value` and save it to the {@link storage}.

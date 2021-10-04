@@ -1,9 +1,10 @@
-export {SophonInstanceBluelib as Bluelib} from "./SophonInstanceBluelib";
+export {ThemedBluelib as Bluelib} from "../theme/ThemedBluelib";
 export {SophonInstanceContext as Context} from "./SophonInstanceContext";
-export {SophonInstanceFooter as Footer} from "./SophonInstanceFooter";
-export {SophonInstanceHeading as Heading} from "./SophonInstanceHeading";
-export {SophonInstancePageTitle as PageTitle} from "./SophonInstancePageTitle";
-export {SophonInstancePickerBox as PickerBox} from "./SophonInstancePickerBox";
+export {SophonFooter as Footer} from "../elements/SophonFooter";
+export {ThemedTitle as Heading} from "../theme/ThemedTitle";
+export {SophonInstanceFormBox as FormBox} from "./SophonInstanceFormBox";
 export {SophonInstanceProvider as Provider} from "./SophonInstanceProvider";
+export {SophonInstanceRouter as Router} from "./SophonInstanceRouter";
 export {useSophonInstance as use} from "./useSophonInstance";
 export {useSophonAxios as useAxios} from "./useSophonAxios";
+export {useSophonInstanceLoader as useInstanceLoader} from "./useSophonInstanceLoader";
