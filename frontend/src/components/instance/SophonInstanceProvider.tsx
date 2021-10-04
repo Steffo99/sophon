@@ -1,19 +1,27 @@
 import * as React from "react"
 import {useState} from "react"
 import {SophonInstanceContext} from "./SophonInstanceContext";
-import {SophonInstanceProviderProps, SophonInstanceState} from "./Interfaces";
+import {SophonInstanceState} from "./SophonInstanceState";
 
 
 /**
- * Component which provides the {@link SophonInstanceContext} to its children.
+ * Props of the {@link SophonInstanceProvider}.
+ */
+export interface SophonInstanceProviderProps {
+    children: React.ReactNode,
+}
+
+
+/**
+ * Component which provides the {@link SophonInstanceContext} to its children, storing the current {@link SophonInstanceState} in its state.
  *
  * @constructor
  */
 export function SophonInstanceProvider({children}: SophonInstanceProviderProps): JSX.Element {
-    const [details, setDetails] = useState<SophonInstanceState | undefined>(undefined)
+    const [details, setDetails] = useState<SophonInstanceState>({})
 
     return (
-        <SophonInstanceContext.Provider value={details ? {...details, setDetails} : undefined}>
+        <SophonInstanceContext.Provider value={{...details, setDetails}}>
             {children}
         </SophonInstanceContext.Provider>
     )

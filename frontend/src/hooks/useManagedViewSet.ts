@@ -1,7 +1,7 @@
 import * as React from "react"
+import {useEffect, useMemo, useReducer} from "react"
 import {useViewSet} from "./useViewSet";
-import {useEffect, useMemo, useReducer} from "react";
-import {Detail} from "../utils/DjangoTypes";
+import {DjangoResource} from "../types/DjangoTypes";
 import {arrayExclude, arrayExtension} from "../utils/ArrayExtension";
 
 
@@ -159,7 +159,7 @@ function reducerManagedViewSet<Resource>(state: ManagedState<Resource>, action: 
 }
 
 
-export function useManagedViewSet<Resource extends Detail>(baseRoute: string, pkKey: keyof Resource, refreshOnMount: boolean = true): ManagedViewSet<Resource> {
+export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: string, pkKey: keyof Resource, refreshOnMount: boolean = true): ManagedViewSet<Resource> {
     const viewset =
         useViewSet<Resource>(baseRoute)
 

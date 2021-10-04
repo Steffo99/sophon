@@ -1,9 +1,9 @@
-import {splitPath} from "./PathSplitter"
+import { parsePath } from "./ParsePath"
 
 
 test("splits empty path", () => {
     expect(
-        splitPath("/")
+        parsePath("/"),
     ).toMatchObject(
         {}
     )
@@ -11,7 +11,7 @@ test("splits empty path", () => {
 
 test("splits instance path", () => {
     expect(
-        splitPath("/i/https:api:sophon:steffo:eu:")
+        parsePath("/i/https:api:sophon:steffo:eu:"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:"
@@ -21,7 +21,7 @@ test("splits instance path", () => {
 
 test("splits username path", () => {
     expect(
-        splitPath("/i/https:api:sophon:steffo:eu:/u/steffo")
+        parsePath("/i/https:api:sophon:steffo:eu:/u/steffo"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
@@ -32,7 +32,7 @@ test("splits username path", () => {
 
 test("splits userid path", () => {
     expect(
-        splitPath("/i/https:api:sophon:steffo:eu:/u/1")
+        parsePath("/i/https:api:sophon:steffo:eu:/u/1"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
@@ -43,7 +43,7 @@ test("splits userid path", () => {
 
 test("splits research group path", () => {
     expect(
-        splitPath("/i/https:api:sophon:steffo:eu:/g/testers")
+        parsePath("/i/https:api:sophon:steffo:eu:/g/testers"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
@@ -54,7 +54,7 @@ test("splits research group path", () => {
 
 test("splits research project path", () => {
     expect(
-        splitPath("/i/https:api:sophon:steffo:eu:/g/testers/p/test")
+        parsePath("/i/https:api:sophon:steffo:eu:/g/testers/p/test"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
@@ -66,7 +66,7 @@ test("splits research project path", () => {
 
 test("splits research project path", () => {
     expect(
-        splitPath("/i/https:api:sophon:steffo:eu:/g/testers/p/test/n/testerino")
+        parsePath("/i/https:api:sophon:steffo:eu:/g/testers/p/test/n/testerino"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",

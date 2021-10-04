@@ -1,24 +1,29 @@
 import * as React from "react"
 import {ViewSetRouter, ViewSetRouterProps} from "./ViewSetRouter";
 import {useLocation} from "@reach/router";
-import {SplitPath, splitPath} from "../../utils/PathSplitter";
-import {Detail} from "../../utils/DjangoTypes";
+import {ParsedPath, parsePath} from "../../utils/ParsePath";
+import {DjangoResource} from "../../types/DjangoTypes";
 
 
-interface LocationViewSetRouterProps<Resource extends Detail> extends ViewSetRouterProps<Resource> {
+interface LocationViewSetRouterProps<Resource extends DjangoResource> extends ViewSetRouterProps<Resource> {
     pkKey: keyof Resource,
-    splitPathKey: keyof SplitPath,
+    splitPathKey: keyof ParsedPath,
 }
 
 
-export function LocationViewSetRouter<Resource extends Detail>({pkKey, splitPathKey, viewSet, ...props}: LocationViewSetRouterProps<Resource>): JSX.Element {
+export function LocationViewSetRouter<Resource extends DjangoResource>({
+                                                                           pkKey,
+                                                                           splitPathKey,
+                                                                           viewSet,
+                                                                           ...props
+                                                                       }: LocationViewSetRouterProps<Resource>): JSX.Element {
     // Get the current page location
     const location = useLocation()
 
     // Split the path into multiple segments
     const expectedPk =
         React.useMemo(
-            () => splitPath(location.pathname)[splitPathKey],
+            () => parsePath(location.pathname)[splitPathKey],
             [location]
         )
 
