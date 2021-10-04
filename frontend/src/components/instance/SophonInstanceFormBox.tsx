@@ -2,17 +2,21 @@ import * as React from "react"
 import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react";
 import Axios from "axios-lab"
 import {CHECK_TIMEOUT_MS} from "../../constants";
-import {SophonInstanceDetails} from "../../utils/SophonTypes";
+import {SophonInstanceDetails} from "../../types/SophonTypes";
 import {Validator} from "@steffo/bluelib-react/dist/types";
 import {useSophonInstance} from "./useSophonInstance";
+import {navigate} from "@reach/router";
+import {InstanceEncoder} from "../../utils/InstanceEncoder";
 
 
 /**
  * {@link Box} which allows the user to input the Sophon instance to use, altering the {@link SophonInstanceState} in the process.
  *
+ * Additionally displays a button to proceed
+ *
  * @constructor
  */
-export function SophonInstancePickerBox(): JSX.Element {
+export function SophonInstanceFormBox(): JSX.Element {
     const instance = useSophonInstance()
 
     const onValidate =
@@ -39,7 +43,7 @@ export function SophonInstancePickerBox(): JSX.Element {
                 if (signal.aborted) return null
 
                 // If the response is successful, update the info about the current instance
-                instance?.setDetails?.({...response.data, url})
+                instance.setDetails({...response.data, url})
 
                 // Success!
                 return true
@@ -47,8 +51,19 @@ export function SophonInstancePickerBox(): JSX.Element {
             [instance]
         )
 
+    const onContinue =
+        React.useCallback(
+            () => {
+                if (!instance.url) return undefined
+                const url = InstanceEncoder.encode(instance.url)
+                // noinspection JSIgnoredPromiseFromCall
+                navigate(`/i/${url}/`)
+            },
+            [instance]
+        )
+
     const urlField =
-        useFormState<string>("", onValidate)
+        useFormState<string>(instance.url?.toString() ?? "", onValidate)
 
     return (
         <Box>
@@ -61,7 +76,7 @@ export function SophonInstancePickerBox(): JSX.Element {
             <Form>
                 <Form.Field label={"URL"} {...urlField}/>
                 <Form.Row>
-                    <Form.Button disabled={!urlField.validity}>
+                    <Form.Button disabled={!urlField.validity} onClick={onContinue}>
                         Continue to login
                     </Form.Button>
                 </Form.Row>

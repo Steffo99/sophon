@@ -1,7 +1,8 @@
 import {AxiosRequestConfig, AxiosResponse} from "axios-lab";
 import {AxiosRequestConfigWithData, AxiosRequestConfigWithURL} from "../utils/AxiosTypesExtension";
 import * as React from "react";
-import {Page} from "../utils/DjangoTypes";
+import {DjangoPage} from "../types/DjangoTypes";
+import {useSophonAxios} from "../components/instance/useSophonAxios";
 
 
 export type ViewSetCommand<Resource>  = (config: AxiosRequestConfigWithURL)               => Promise<Resource[]>
@@ -80,15 +81,18 @@ export interface ViewSet<Resource> {
  * @param baseRoute - The path to the ViewSet with a trailing slash.
  */
 export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
-    const api = useLoginAxios()
+    // TODO: Replace me with a login axios
+    const api = useSophonAxios()
 
     const command: ViewSetCommand<Resource> =
         React.useCallback(
             async (config) => {
+                if (!api) throw new Error("useViewSet called while the Sophon instance was undefined.")
+
                 let nextUrl: string | null = config.url
                 let resources: Resource[] = []
-                while(nextUrl !== null) {
-                    const response: AxiosResponse<Page<Resource>> = await api.request<Page<Resource>>({...config, url: nextUrl})
+                while (nextUrl !== null) {
+                    const response: AxiosResponse<DjangoPage<Resource>> = await api.request<DjangoPage<Resource>>({...config, url: nextUrl})
                     nextUrl = response.data.next
                     resources = [...resources, ...response.data.results]
                 }
@@ -100,6 +104,8 @@ export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
     const action: ViewSetAction<Resource> =
         React.useCallback(
             async (config) => {
+                if (!api) throw new Error("useViewSet called while the Sophon instance was undefined.")
+
                 const response = await api.request<Resource>(config)
                 return response.data
             },

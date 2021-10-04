@@ -1,7 +1,7 @@
 /**
  * Possible contents of the path.
  */
-export interface SplitPath {
+export interface ParsedPath {
     /**
      * The URL of the Sophon instance.
      */
@@ -32,21 +32,27 @@ export interface SplitPath {
      * The notebook slug.
      */
     notebook?: string,
+
+    /**
+     * Passed the login page (either by browsing as guest or by logging in).
+     */
+    loggedIn?: boolean,
 }
 
 /**
  * Split the URL path into various components.
  * @param path - The path to split.
  */
-export function splitPath(path: string): SplitPath {
-    let result: SplitPath = {}
+export function parsePath(path: string): ParsedPath {
+    let result: ParsedPath = {}
 
-    result.instance =        path.match(/[/]i[/]([^/]+)/)         ?.[1]
-    result.userId =          path.match(/[/]u[/]([0-9]+)/)        ?.[1]
-    result.userName =        path.match(/[/]u[/]([A-Za-z0-9_-]+)/)?.[1]
-    result.researchGroup =   path.match(/[/]g[/]([A-Za-z0-9_-]+)/)?.[1]
+    result.instance = path.match(/[/]i[/]([^/]+)/)?.[1]
+    result.userId = path.match(/[/]u[/]([0-9]+)/)?.[1]
+    result.userName = path.match(/[/]u[/]([A-Za-z0-9_-]+)/)?.[1]
+    result.researchGroup = path.match(/[/]g[/]([A-Za-z0-9_-]+)/)?.[1]
     result.researchProject = path.match(/[/]p[/]([A-Za-z0-9_-]+)/)?.[1]
-    result.notebook =        path.match(/[/]n[/]([A-Za-z0-9_-]+)/)?.[1]
+    result.notebook = path.match(/[/]n[/]([A-Za-z0-9_-]+)/)?.[1]
+    result.loggedIn = Boolean(path.match(/[/]l[/]/))
 
     return result
 }

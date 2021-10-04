@@ -5,9 +5,10 @@
  */
 export class InstanceEncoder {
     static encode(url: URL): string {
-        let str = url.toString()
+        // Convert the URL to a string
+        let str: string = url.toString()
         // Check if it is possible to encode the url
-        if(str.includes("%3A")) {
+        if (str.includes("%3A")) {
             throw new Error("URL is impossible to encode")
         }
         // Replace all : with %3A
@@ -16,6 +17,7 @@ export class InstanceEncoder {
         str = str.replace(/^(.+?)%3A[/][/]/, "$1:")
         // Replace all other slashes with :
         str = str.replaceAll("/", ":")
+
         return str
     }
 
@@ -26,6 +28,9 @@ export class InstanceEncoder {
         str = str.replaceAll(":", "/")
         // Restore percent-encoded :
         str = str.replaceAll("%3A", ":")
-        return new URL(str)
+        // Convert the string to an URL
+        const url = new URL(str)
+
+        return url
     }
 }
