@@ -1,10 +1,10 @@
 import * as React from "react"
-import {useAuthorizationContext} from "../../contexts/authorization"
+import {AuthorizationState, useAuthorizationContext} from "../../contexts/authorization"
 import {useSophonPath} from "../../hooks/useSophonPath"
 import {ResourceRouter, ResourceRouterProps} from "../routing/ResourceRouter"
 
 
-export function AuthorizationRouter({...props}: ResourceRouterProps<true>): JSX.Element {
+export function AuthorizationRouter({...props}: ResourceRouterProps<AuthorizationState>): JSX.Element {
     const path = useSophonPath()
     const authorization = useAuthorizationContext()
 
@@ -13,7 +13,7 @@ export function AuthorizationRouter({...props}: ResourceRouterProps<true>): JSX.
     return (
         <ResourceRouter
             {...props}
-            selection={showDetails ? true : undefined}
+            selection={showDetails ? authorization?.state : undefined}
         />
     )
 }
