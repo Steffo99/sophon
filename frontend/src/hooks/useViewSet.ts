@@ -1,17 +1,17 @@
-import {AxiosRequestConfig, AxiosResponse} from "axios-lab";
-import {AxiosRequestConfigWithData, AxiosRequestConfigWithURL} from "../utils/AxiosTypesExtension";
-import * as React from "react";
-import {DjangoPage} from "../types/DjangoTypes";
-import {useSophonAxios} from "../components/instance/useSophonAxios";
+import {AxiosRequestConfig, AxiosResponse} from "axios-lab"
+import * as React from "react"
+import {useInstanceAxios} from "../components/instance/useInstanceAxios"
+import {DjangoPage} from "../types/DjangoTypes"
+import {AxiosRequestConfigWithData, AxiosRequestConfigWithURL} from "../utils/AxiosTypesExtension"
 
 
-export type ViewSetCommand<Resource>  = (config: AxiosRequestConfigWithURL)               => Promise<Resource[]>
-export type ViewSetAction<Resource>   = (config: AxiosRequestConfigWithURL)               => Promise<Resource>
-export type ViewSetList<Resource>     = (config?: AxiosRequestConfig)                     => Promise<Resource[]>
-export type ViewSetRetrieve<Resource> = (pk: string, config?: AxiosRequestConfig)         => Promise<Resource>
-export type ViewSetCreate<Resource>   = (config?: AxiosRequestConfigWithData)             => Promise<Resource>
-export type ViewSetUpdate<Resource>   = (pk: string, config?: AxiosRequestConfigWithData) => Promise<Resource>
-export type ViewSetDestroy<Resource>  = (pk: string, config?: AxiosRequestConfig)         => Promise<void>
+export type ViewSetCommand<Resource> = (config: AxiosRequestConfigWithURL) => Promise<Resource[]>
+export type ViewSetAction<Resource> = (config: AxiosRequestConfigWithURL) => Promise<Resource>
+export type ViewSetList<Resource> = (config?: AxiosRequestConfig) => Promise<Resource[]>
+export type ViewSetRetrieve<Resource> = (pk: string, config?: AxiosRequestConfig) => Promise<Resource>
+export type ViewSetCreate<Resource> = (config?: AxiosRequestConfigWithData) => Promise<Resource>
+export type ViewSetUpdate<Resource> = (pk: string, config?: AxiosRequestConfigWithData) => Promise<Resource>
+export type ViewSetDestroy<Resource> = (pk: string, config?: AxiosRequestConfig) => Promise<void>
 
 
 /**
@@ -82,7 +82,7 @@ export interface ViewSet<Resource> {
  */
 export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
     // TODO: Replace me with a login axios
-    const api = useSophonAxios()
+    const api = useInstanceAxios()
 
     const command: ViewSetCommand<Resource> =
         React.useCallback(

@@ -1,8 +1,8 @@
+import {useLocation} from "@reach/router"
 import * as React from "react"
-import {ViewSetRouter, ViewSetRouterProps} from "./ViewSetRouter";
-import {useLocation} from "@reach/router";
-import {ParsedPath, parsePath} from "../../utils/ParsePath";
-import {DjangoResource} from "../../types/DjangoTypes";
+import {DjangoResource} from "../../types/DjangoTypes"
+import {ParsedPath, parsePath} from "../../utils/ParsePath"
+import {ViewSetRouter, ViewSetRouterProps} from "./ViewSetRouter"
 
 
 interface LocationViewSetRouterProps<Resource extends DjangoResource> extends ViewSetRouterProps<Resource> {
@@ -11,12 +11,7 @@ interface LocationViewSetRouterProps<Resource extends DjangoResource> extends Vi
 }
 
 
-export function LocationViewSetRouter<Resource extends DjangoResource>({
-                                                                           pkKey,
-                                                                           splitPathKey,
-                                                                           viewSet,
-                                                                           ...props
-                                                                       }: LocationViewSetRouterProps<Resource>): JSX.Element {
+export function LocationViewSetRouter<Resource extends DjangoResource>({pkKey, splitPathKey, viewSet, ...props}: LocationViewSetRouterProps<Resource>): JSX.Element {
     // Get the current page location
     const location = useLocation()
 
@@ -24,14 +19,14 @@ export function LocationViewSetRouter<Resource extends DjangoResource>({
     const expectedPk =
         React.useMemo(
             () => parsePath(location.pathname)[splitPathKey],
-            [location]
+            [location],
         )
 
     // Find the ManagedResource matching the expectedPk
     const selection =
         React.useMemo(
             () => viewSet.resources?.filter(res => res.value[pkKey] === expectedPk)[0],
-            [viewSet, expectedPk]
+            [viewSet, expectedPk],
         )
 
     return (
