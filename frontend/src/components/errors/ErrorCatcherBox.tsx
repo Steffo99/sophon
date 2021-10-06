@@ -1,10 +1,9 @@
 import * as React from "react"
-import * as ReactDOM from "react-dom"
-import {ErrorBox} from "./ErrorBox";
+import {ErrorBox} from "./ErrorBox"
 
 
 interface ErrorCatcherBoxProps {
-    children: React.ReactNode,
+    children?: React.ReactNode,
 }
 
 interface ErrorCatcherBoxState {

@@ -1,15 +1,18 @@
 import * as React from "react"
 
+
 /**
  * The props that are passed by default to all unselected routes.
  */
-export type UnselectedRouteProps = {}
+export interface UnselectedRouteProps {
+
+}
 
 
 /**
  * The props that are passed by default to all selected routes.
  */
-export type SelectedRouteProps<Type> = {
+export interface SelectedRouteProps<Type> {
     selection: Type,
 }
 
@@ -17,36 +20,33 @@ export type SelectedRouteProps<Type> = {
 /**
  * The props of the {@link ResourceRouter}.
  */
-export interface ResourceRouterProps<Type, UnselectedProps extends {} = {}, SelectedProps extends {} = {}> {
+export interface ResourceRouterProps<Type, UnselectedProps = UnselectedRouteProps, SelectedProps = SelectedRouteProps<Type>> {
     selection?: Type,
 
-    unselectedRoute: (props: UnselectedRouteProps & UnselectedProps) => JSX.Element | null,
-    unselectedProps: UnselectedProps,
-    selectedRoute: (props: SelectedRouteProps<Type> & SelectedProps) => JSX.Element | null,
-    selectedProps: SelectedProps,
+    unselectedRoute: (props: UnselectedProps) => JSX.Element | null,
+    selectedRoute: (props: SelectedProps) => JSX.Element | null,
 }
+
 
 /**
  * A component which chooses between two sub-components:
- * - If {@link selection} is nullish, it renders {@link unselectedRoute} with {@link unselectedProps} plus the {@link UnselectedRouteProps}.
- * - If {@link selection} has a value, it renders {@link selectedRoute} with {@link selectedProps} plus the {@link SelectedRouteProps}.
+ * - If {@link selection} is nullish, it renders {@link unselectedRoute} with the {@link UnselectedRouteProps}.
+ * - If {@link selection} has a value, it renders {@link selectedRoute} with the {@link SelectedRouteProps}.
  *
  * @constructor
  */
-export function ResourceRouter<Type, UnselectedProps, SelectedProps>({
-                                                                         selection,
-                                                                         unselectedRoute: UnselectedRoute,
-                                                                         unselectedProps,
-                                                                         selectedRoute: SelectedRoute,
-                                                                         selectedProps
-                                                                     }: ResourceRouterProps<Type, UnselectedProps, SelectedProps>): JSX.Element {
-    if (selection) {
-        return (
-            <SelectedRoute {...selectedProps} selection={selection}/>
-        )
-    } else {
-        return (
-            <UnselectedRoute {...unselectedProps}/>
-        )
-    }
+export function ResourceRouter<Type>({selection, unselectedRoute: UnselectedRoute, selectedRoute: SelectedRoute}: ResourceRouterProps<Type>): JSX.Element {
+    return React.useMemo(
+        () => {
+            if(selection) {
+                return (
+                    <SelectedRoute selection={selection}/>
+                )
+            }
+            return (
+                <UnselectedRoute/>
+            )
+        },
+        [selection],
+    )
 }
