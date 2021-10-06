@@ -30,12 +30,14 @@ export interface ResourceRouterProps<Type, UnselectedProps = UnselectedRouteProp
 
 /**
  * A component which chooses between two sub-components:
- * - If {@link selection} is nullish, it renders {@link unselectedRoute} with the {@link UnselectedRouteProps}.
- * - If {@link selection} has a value, it renders {@link selectedRoute} with the {@link SelectedRouteProps}.
+ * - If {@link selection} is nullish, it renders `unselectedRoute` with the {@link UnselectedRouteProps}.
+ * - If {@link selection} has a value, it renders `selectedRoute` with the {@link SelectedRouteProps}.
  *
+ * @warning Due to some particular memoization, changes to `unselectedRoute` and `selectedRoute` will apply **only** when `selection` changes.
  * @constructor
  */
 export function ResourceRouter<Type>({selection, unselectedRoute: UnselectedRoute, selectedRoute: SelectedRoute}: ResourceRouterProps<Type>): JSX.Element {
+    // This component **intentionally** has a incomplete dependency array to avoid routes being re-rendered every time the parent changes.
     return React.useMemo(
         () => {
             if(selection) {
@@ -47,6 +49,7 @@ export function ResourceRouter<Type>({selection, unselectedRoute: UnselectedRout
                 <UnselectedRoute/>
             )
         },
-        [selection, UnselectedRoute, SelectedRoute],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [selection],
     )
 }
