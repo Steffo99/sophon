@@ -23,7 +23,7 @@ export function AuthorizationLoginBox(): JSX.Element {
             () => (
                 axios !== undefined && authorization !== undefined && authorization.state.token === undefined
             ),
-            [axios, authorization, username, password],
+            [axios, authorization],
         )
 
     const canClickLogin =
