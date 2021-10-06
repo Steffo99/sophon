@@ -21,7 +21,7 @@ export function AuthorizationLoginBox(): JSX.Element {
     const canLogin =
         React.useMemo<boolean>(
             () => (
-                axios !== undefined && authorization !== undefined && !authorization.state.running && authorization.state.token === undefined
+                axios !== undefined && authorization !== undefined && authorization.state.token === undefined
             ),
             [axios, authorization, username, password],
         )
@@ -29,9 +29,9 @@ export function AuthorizationLoginBox(): JSX.Element {
     const canClickLogin =
         React.useMemo<boolean>(
             () => (
-                canLogin && username.value !== "" && password.value !== ""
+                canLogin && !authorization!.state.running && username.value !== "" && password.value !== ""
             ),
-            [canLogin, username, password],
+            [authorization, canLogin, username, password],
         )
 
     const doLogin =
@@ -70,6 +70,23 @@ export function AuthorizationLoginBox(): JSX.Element {
             [axios, authorization, username, password],
         )
 
+    const buttonColor =
+        React.useMemo<string>(
+            () => {
+                if(!authorization) {
+                    return ""
+                }
+                if(authorization.state.running) {
+                    return "color-yellow"
+                }
+                if(error) {
+                    return "color-red"
+                }
+                return ""
+            },
+            [authorization, error],
+        )
+
     const buttonText =
         React.useMemo<JSX.Element | null>(
             () => {
@@ -96,10 +113,10 @@ export function AuthorizationLoginBox(): JSX.Element {
                 If you do not have one, you can ask your system administrator to create one for you.
             </p>
             <Form>
-                <Form.Field label={"Username"} required {...username}/>
-                <Form.Field label={"Password"} type={"password"} required {...password}/>
+                <Form.Field label={"Username"} required disabled={authorization?.state.running} {...username}/>
+                <Form.Field label={"Password"} type={"password"} required disabled={authorization?.state.running} {...password}/>
                 <Form.Row>
-                    <Form.Button type={"submit"} bluelibClassNames={error ? "color-red" : ""} disabled={!canClickLogin} onClick={doLogin}>
+                    <Form.Button type={"submit"} bluelibClassNames={buttonColor} disabled={!canClickLogin} onClick={doLogin}>
                         {buttonText}
                     </Form.Button>
                 </Form.Row>
