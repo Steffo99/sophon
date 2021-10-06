@@ -6,12 +6,7 @@ import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 
 
-export interface AuthorizationLogoutBoxProps {
-
-}
-
-
-export function AuthorizationLogoutBox({}: AuthorizationLogoutBoxProps): JSX.Element {
+export function AuthorizationLogoutBox(): JSX.Element {
     const authorization = useAuthorizationContext()
 
     const loggedUsername = React.useMemo(
