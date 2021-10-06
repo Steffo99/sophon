@@ -57,9 +57,9 @@ type AuthorizationBrowse = {
 
 // Composition
 
-type AuthorizationState = AuthorizationUnselected | AuthorizationLoggingIn | AuthorizationLoggedIn | AuthorizationGuest
+export type AuthorizationState = AuthorizationUnselected | AuthorizationLoggingIn | AuthorizationLoggedIn | AuthorizationGuest
 type AuthorizationAction = AuthorizationClear | AuthorizationLogInStart | AuthorizationLogInSuccess | AuthorizationLogInFailure | AuthorizationBrowse
-type AuthorizationContextData = ContextData<AuthorizationState, AuthorizationAction> | undefined
+export type AuthorizationContextData = ContextData<AuthorizationState, AuthorizationAction> | undefined
 
 
 // Definitions
