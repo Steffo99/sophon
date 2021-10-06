@@ -61,7 +61,7 @@ export function InstanceFormBox(): JSX.Element {
                     instance.dispatch({
                         type: "deselect",
                     })
-                    return undefined
+                    return false
                 }
 
                 // Awaits should always be followed by abort checks
