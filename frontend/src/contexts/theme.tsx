@@ -1,6 +1,6 @@
 import * as React from "react"
-import {ContextData} from "../types/ContextTypes";
-import {WithChildren} from "../types/ExtraTypes";
+import {ContextData} from "../types/ContextTypes"
+import {WithChildren} from "../types/ExtraTypes"
 
 // States
 
@@ -40,6 +40,11 @@ const themeDefaultState: ThemeState = {
 const themeReducer: React.Reducer<ThemeState, ThemeAction> = (prevState, action) => {
     switch (action.type) {
         case "set":
+            // Bail out if trying to set to the same state as earlier
+            if(prevState.bluelib === action.bluelib && prevState.title === action.title) {
+                return prevState
+            }
+
             return {
                 bluelib: action.bluelib,
                 title: action.title,

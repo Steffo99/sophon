@@ -1,7 +1,7 @@
 import * as React from "react"
-import {ContextData} from "../types/ContextTypes";
-import {SophonInstanceDetails} from "../types/SophonTypes";
-import {WithChildren} from "../types/ExtraTypes";
+import {ContextData} from "../types/ContextTypes"
+import {WithChildren} from "../types/ExtraTypes"
+import {SophonInstanceDetails} from "../types/SophonTypes"
 
 // States
 
@@ -33,7 +33,7 @@ type InstanceDeselect = {
 
 type InstanceState = InstanceSelected | InstanceNotSelected
 type InstanceAction = InstanceSelect | InstanceDeselect
-type InstanceContextData = ContextData<InstanceState, InstanceAction> | undefined
+export type InstanceContextData = ContextData<InstanceState, InstanceAction> | undefined
 
 
 // Definitions
@@ -46,15 +46,22 @@ const instanceDefaultState: InstanceState = {
 const instanceReducer: React.Reducer<InstanceState, InstanceAction> = (prevState, action) => {
     switch (action.type) {
         case "select":
+            // Bail out if trying to select the current instance
+            if(action.url === prevState.url) {
+                return prevState
+            }
+
             return {
                 url: action.url,
                 details: action.details,
             }
         case "deselect":
-            return {
-                url: undefined,
-                details: undefined,
+            // Bail out if no instance is currently selected
+            if(prevState.url === undefined) {
+                return prevState
             }
+
+            return instanceDefaultState
     }
 }
 

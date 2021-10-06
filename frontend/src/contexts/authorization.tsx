@@ -1,23 +1,32 @@
 import * as React from "react"
-import {ContextData} from "../types/ContextTypes";
-import {WithChildren} from "../types/ExtraTypes";
-import {SophonUser} from "../types/SophonTypes";
+import {ContextData} from "../types/ContextTypes"
+import {WithChildren} from "../types/ExtraTypes"
+import {SophonUser} from "../types/SophonTypes"
 
 // States
 
 type AuthorizationUnselected = {
     token: undefined,
     user: undefined,
+    running: false,
+}
+
+type AuthorizationLoggingIn = {
+    token: undefined,
+    user: undefined,
+    running: true,
 }
 
 type AuthorizationLoggedIn = {
     token: string,
     user: SophonUser,
+    running: false,
 }
 
 type AuthorizationGuest = {
     token: null,
     user: null,
+    running: false,
 }
 
 
@@ -27,10 +36,18 @@ type AuthorizationClear = {
     type: "clear",
 }
 
-type AuthorizationLogIn = {
-    type: "login",
+type AuthorizationLogInStart = {
+    type: "start:login",
+}
+
+type AuthorizationLogInSuccess = {
+    type: "success:login",
     token: string,
     user: SophonUser,
+}
+
+type AuthorizationLogInFailure = {
+    type: "failure:login",
 }
 
 type AuthorizationBrowse = {
@@ -40,8 +57,8 @@ type AuthorizationBrowse = {
 
 // Composition
 
-type AuthorizationState = AuthorizationUnselected | AuthorizationLoggedIn | AuthorizationGuest
-type AuthorizationAction = AuthorizationClear | AuthorizationLogIn | AuthorizationBrowse
+type AuthorizationState = AuthorizationUnselected | AuthorizationLoggingIn | AuthorizationLoggedIn | AuthorizationGuest
+type AuthorizationAction = AuthorizationClear | AuthorizationLogInStart | AuthorizationLogInSuccess | AuthorizationLogInFailure | AuthorizationBrowse
 type AuthorizationContextData = ContextData<AuthorizationState, AuthorizationAction> | undefined
 
 
@@ -50,6 +67,7 @@ type AuthorizationContextData = ContextData<AuthorizationState, AuthorizationAct
 const authorizationDefaultState: AuthorizationState = {
     token: undefined,
     user: undefined,
+    running: false,
 }
 
 const authorizationReducer: React.Reducer<AuthorizationState, AuthorizationAction> = (prevState, action) => {
@@ -57,14 +75,48 @@ const authorizationReducer: React.Reducer<AuthorizationState, AuthorizationActio
         case "clear":
             return authorizationDefaultState
         case "browse":
+            // Bail out if already browsing
+            if(prevState.token === null) {
+                return prevState
+            }
+
             return {
                 token: null,
                 user: null,
+                running: false,
             }
-        case "login":
+        case "start:login":
+            // Bail out if already logging in
+            if(prevState.running) {
+                return prevState
+            }
+
+            return {
+                token: undefined,
+                user: undefined,
+                running: true,
+            }
+        case "failure:login":
+            // Bail out if not currently logging in
+            if(!prevState.running) {
+                return prevState
+            }
+
+            return {
+                token: undefined,
+                user: undefined,
+                running: false,
+            }
+        case "success:login":
+            // Bail out if already logged in as the same user
+            if(prevState.token === action.token) {
+                return prevState
+            }
+
             return {
                 token: action.token,
                 user: action.user,
+                running: false,
             }
     }
 }

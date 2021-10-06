@@ -1,9 +1,9 @@
+import {Box} from "@steffo/bluelib-react"
 import * as React from "react"
-import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet";
-import {ErrorBox} from "../errors/ErrorBox";
-import {Box} from "@steffo/bluelib-react";
-import {Loading} from "../elements/Loading";
-import {ResourceRouter, ResourceRouterProps} from "./ResourceRouter";
+import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
+import {Loading} from "../elements/Loading"
+import {ErrorBox} from "../errors/ErrorBox"
+import {ResourceRouter, ResourceRouterProps} from "./ResourceRouter"
 
 
 export interface ListRouteProps<Resource> {
@@ -12,7 +12,8 @@ export interface ListRouteProps<Resource> {
 
 
 export interface DetailsRouteProps<Resource> {
-
+    // TODO: Not sure if this is excessive here. Maybe remove?
+    viewSet: ManagedViewSet<Resource>,
 }
 
 
@@ -21,16 +22,16 @@ export interface ViewSetRouterProps<Resource> extends ResourceRouterProps<Manage
 }
 
 
-export function ViewSetRouter<Resource>({viewSet, ...props}: ViewSetRouterProps<Resource>): JSX.Element {
+export function ViewSetRouter<Resource>({viewSet, unselectedRoute: UnselectedRoute, selectedRoute: SelectedRoute, ...props}: ViewSetRouterProps<Resource>): JSX.Element {
     // If an error happens, display it in a ErrorBox
-    if (viewSet.error) {
+    if(viewSet.error) {
         return (
             <ErrorBox error={viewSet.error}/>
         )
     }
 
     // If the viewset is loading, display a loading message
-    if (viewSet.resources === null) {
+    if(viewSet.resources === null) {
         return (
             <Box>
                 <Loading/>
@@ -41,7 +42,8 @@ export function ViewSetRouter<Resource>({viewSet, ...props}: ViewSetRouterProps<
     return (
         <ResourceRouter
             {...props}
-            unselectedProps={{...props.unselectedProps, viewSet}}
+            unselectedRoute={(props) => <UnselectedRoute viewSet={viewSet} {...props}/>}
+            selectedRoute={(props) => <SelectedRoute viewSet={viewSet} {...props}/>}
         />
     )
 }
