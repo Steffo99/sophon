@@ -5,12 +5,7 @@ import {useAuthorizationContext} from "../../contexts/authorization"
 import {useInstanceContext} from "../../contexts/instance"
 
 
-export interface AuthorizationAdminBoxProps {
-
-}
-
-
-export function AuthorizationAdminBox({}: AuthorizationAdminBoxProps): JSX.Element {
+export function AuthorizationAdminBox(): JSX.Element {
     const instance = useInstanceContext()
     const authorization = useAuthorizationContext()
 

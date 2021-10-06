@@ -4,12 +4,7 @@ import {useInstanceContext} from "../../contexts/instance"
 import {ErrorBox} from "../errors/ErrorBox"
 
 
-export interface InstanceDescriptionBoxProps {
-
-}
-
-
-export function InstanceDescriptionBox({}: InstanceDescriptionBoxProps): JSX.Element | null {
+export function InstanceDescriptionBox(): JSX.Element | null {
     const instance = useInstanceContext()
 
     if(!instance) {

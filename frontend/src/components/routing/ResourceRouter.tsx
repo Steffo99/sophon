@@ -47,6 +47,6 @@ export function ResourceRouter<Type>({selection, unselectedRoute: UnselectedRout
                 <UnselectedRoute/>
             )
         },
-        [selection],
+        [selection, UnselectedRoute, SelectedRoute],
     )
 }
