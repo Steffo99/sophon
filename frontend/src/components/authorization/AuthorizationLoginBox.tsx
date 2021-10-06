@@ -1,4 +1,4 @@
-import {faInfoCircle} from "@fortawesome/free-solid-svg-icons"
+import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {navigate} from "@reach/router"
 import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
@@ -6,7 +6,6 @@ import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {SophonToken, SophonUser} from "../../types/SophonTypes"
 import {Loading} from "../elements/Loading"
-import {ErrorBox} from "../errors/ErrorBox"
 import {useInstanceAxios} from "../instance/useInstanceAxios"
 
 
@@ -71,21 +70,16 @@ export function AuthorizationLoginBox(): JSX.Element {
             [axios, authorization, username, password],
         )
 
-    const messagePanel =
+    const buttonText =
         React.useMemo<JSX.Element | null>(
             () => {
-                if(!authorization) {
-                    return <ErrorBox error={new Error("This component is being rendered outside an AuthorizationContext.")}/>
+                if(authorization?.state.running) {
+                    return <Loading text={"Logging in..."}/>
                 }
                 if(error) {
-                    return <ErrorBox error={error}/>
+                    return <><FontAwesomeIcon icon={faExclamationCircle}/>&nbsp;Login</>
                 }
-                if(authorization.state.running) {
-                    return <Box bluelibClassNames={"color-yellow"}><Loading text={"Logging in..."}/></Box>
-                }
-                return (
-                    <Box><FontAwesomeIcon icon={faInfoCircle}/> Press the login button after inserting your credentials.</Box>
-                )
+                return <>Login</>
             },
             [error, authorization],
         )
@@ -102,14 +96,11 @@ export function AuthorizationLoginBox(): JSX.Element {
                 If you do not have one, you can ask your system administrator to create one for you.
             </p>
             <Form>
-                <Form.Row>
-                    {messagePanel}
-                </Form.Row>
                 <Form.Field label={"Username"} required {...username}/>
                 <Form.Field label={"Password"} type={"password"} required {...password}/>
                 <Form.Row>
-                    <Form.Button type={"submit"} disabled={!canClickLogin} onClick={doLogin}>
-                        Login
+                    <Form.Button type={"submit"} bluelibClassNames={error ? "color-red" : ""} disabled={!canClickLogin} onClick={doLogin}>
+                        {buttonText}
                     </Form.Button>
                 </Form.Row>
             </Form>
