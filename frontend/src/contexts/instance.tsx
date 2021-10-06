@@ -31,7 +31,7 @@ type InstanceDeselect = {
 
 // Composition
 
-type InstanceState = InstanceSelected | InstanceNotSelected
+export type InstanceState = InstanceSelected | InstanceNotSelected
 type InstanceAction = InstanceSelect | InstanceDeselect
 export type InstanceContextData = ContextData<InstanceState, InstanceAction> | undefined
 

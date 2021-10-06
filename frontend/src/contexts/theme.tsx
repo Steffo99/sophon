@@ -25,9 +25,9 @@ type ThemeReset = {
 
 // Composition
 
-type ThemeState = ThemeSelected
+export type ThemeState = ThemeSelected
 type ThemeAction = ThemeSet | ThemeReset
-type ThemeContextData = ContextData<ThemeState, ThemeAction> | undefined
+export type ThemeContextData = ContextData<ThemeState, ThemeAction> | undefined
 
 
 // Definitions
