@@ -30,9 +30,9 @@ export function InstanceDescriptionBox({}: InstanceDescriptionBoxProps): JSX.Ele
             <Heading level={3}>
                 Welcome to {instance.state.details.name}!
             </Heading>
-            <p>
+            <pre>
                 {instance.state.details.description}
-            </p>
+            </pre>
         </Box>
     )
 }
