@@ -14,7 +14,7 @@ export function AuthorizationBrowseBox(): JSX.Element {
     const canBrowse =
         React.useMemo(
             () => (
-                authorization !== undefined && !authorization.state.running
+                authorization !== undefined && !authorization.state.running && authorization.state.token === undefined
             ),
             [authorization],
         )

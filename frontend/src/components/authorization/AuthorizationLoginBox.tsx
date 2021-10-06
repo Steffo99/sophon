@@ -22,9 +22,17 @@ export function AuthorizationLoginBox(): JSX.Element {
     const canLogin =
         React.useMemo<boolean>(
             () => (
-                axios !== undefined && authorization !== undefined && !authorization.state.running && username.value !== "" && password.value !== ""
+                axios !== undefined && authorization !== undefined && !authorization.state.running && authorization.state.token === undefined
             ),
             [axios, authorization, username, password],
+        )
+
+    const canClickLogin =
+        React.useMemo<boolean>(
+            () => (
+                canLogin && username.value !== "" && password.value !== ""
+            ),
+            [canLogin, username, password],
         )
 
     const doLogin =
@@ -83,7 +91,7 @@ export function AuthorizationLoginBox(): JSX.Element {
         )
 
     return (
-        <Box>
+        <Box disabled={!canLogin}>
             <Heading level={3}>
                 Login
             </Heading>
@@ -100,7 +108,7 @@ export function AuthorizationLoginBox(): JSX.Element {
                 <Form.Field label={"Username"} required {...username}/>
                 <Form.Field label={"Password"} type={"password"} required {...password}/>
                 <Form.Row>
-                    <Form.Button type={"submit"} disabled={!canLogin} onClick={doLogin}>
+                    <Form.Button type={"submit"} disabled={!canClickLogin} onClick={doLogin}>
                         Login
                     </Form.Button>
                 </Form.Row>
