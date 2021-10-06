@@ -55,7 +55,7 @@ export function InstanceFormBox(): JSX.Element {
 
                 // Try to get the instance data from the backend
                 try {
-                    var response = await Axios.get<SophonInstanceDetails>("/api/core/instance", {baseURL: url.toString(), signal})
+                    var response = await Axios.get<SophonInstanceDetails>("/api/core/instance/", {baseURL: url.toString(), signal})
                 }
                 catch(e) {
                     instance.dispatch({
