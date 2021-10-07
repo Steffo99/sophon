@@ -11,6 +11,7 @@ import {GroupRouter} from "./components/group/GroupRouter"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
 import {InstanceStepPage} from "./components/instance/InstanceStepPage"
 import {DebugBox} from "./components/placeholder/DebugBox"
+import {ProjectRouter} from "./components/project/ProjectRouter"
 import {ThemedBluelib} from "./components/theme/ThemedBluelib"
 import {ThemedTitle} from "./components/theme/ThemedTitle"
 import {AuthorizationProvider} from "./contexts/authorization"
@@ -34,7 +35,13 @@ function App({}: RouteComponentProps) {
                             selectedRoute={() => <>
                                 <GroupRouter
                                     unselectedRoute={(props) => <GroupListBox viewSet={props.viewSet}/>}
-                                    selectedRoute={DebugBox}
+                                    selectedRoute={(props) => <>
+                                        <ProjectRouter
+                                            groupPk={props.selection.value.slug}
+                                            unselectedRoute={DebugBox}
+                                            selectedRoute={DebugBox}
+                                        />
+                                    </>}
                                 />
                             </>}
                         />
