@@ -17,7 +17,11 @@ export interface DetailsRouteProps<Resource> {
 }
 
 
-export interface ViewSetRouterProps<Resource> extends ResourceRouterProps<ManagedResource<Resource>, ListRouteProps<Resource>, DetailsRouteProps<Resource>> {
+export interface SpecificViewSetRouterProps<Resource> extends ResourceRouterProps<ManagedResource<Resource>, ListRouteProps<Resource>, DetailsRouteProps<Resource>> {
+}
+
+
+export interface ViewSetRouterProps<Resource> extends SpecificViewSetRouterProps<Resource> {
     viewSet: ManagedViewSet<Resource>,
 }
 
