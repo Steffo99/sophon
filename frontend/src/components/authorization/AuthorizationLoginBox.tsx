@@ -1,6 +1,5 @@
 import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {navigate} from "@reach/router"
 import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
@@ -64,8 +63,6 @@ export function AuthorizationLoginBox(): JSX.Element {
                     })
                     return
                 }
-
-                await navigate("l/")
             },
             [axios, authorization, username, password],
         )
@@ -113,8 +110,8 @@ export function AuthorizationLoginBox(): JSX.Element {
                 If you do not have one, you can ask your system administrator to create one for you.
             </p>
             <Form>
-                <Form.Field label={"Username"} required disabled={authorization?.state.running} {...username}/>
-                <Form.Field label={"Password"} type={"password"} required disabled={authorization?.state.running} {...password}/>
+                <Form.Field label={"Username"} required disabled={!canLogin} {...username}/>
+                <Form.Field label={"Password"} type={"password"} required disabled={!canLogin} {...password}/>
                 <Form.Row>
                     <Form.Button type={"submit"} bluelibClassNames={buttonColor} disabled={!canClickLogin} onClick={doLogin}>
                         {buttonText}

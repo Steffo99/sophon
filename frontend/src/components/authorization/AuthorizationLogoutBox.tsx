@@ -1,6 +1,7 @@
 import {faUser as faUserRegular} from "@fortawesome/free-regular-svg-icons"
 import {faExclamationCircle, faTimesCircle, faUser as faUserSolid} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {navigate} from "@reach/router"
 import {Box, Form, Heading, Idiomatic as I} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
@@ -68,6 +69,9 @@ export function AuthorizationLogoutBox(): JSX.Element {
             </p>
             <Form>
                 <Form.Row>
+                    <Form.Button onClick={() => navigate("l/")} bluelibClassNames={"color-lime"}>
+                        Continue to Sophon
+                    </Form.Button>
                     <Form.Button disabled={!canLogout} onClick={doLogout}>
                         Logout
                     </Form.Button>
