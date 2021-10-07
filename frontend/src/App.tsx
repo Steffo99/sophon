@@ -10,6 +10,8 @@ import {GroupListBox} from "./components/group/GroupListBox"
 import {GroupRouter} from "./components/group/GroupRouter"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
 import {InstanceStepPage} from "./components/instance/InstanceStepPage"
+import {NotebookListBox} from "./components/notebook/NotebookListBox"
+import {NotebookRouter} from "./components/notebook/NotebookRouter"
 import {DebugBox} from "./components/placeholder/DebugBox"
 import {ProjectListBox} from "./components/project/ProjectListBox"
 import {ProjectRouter} from "./components/project/ProjectRouter"
@@ -40,7 +42,13 @@ function App({}: RouteComponentProps) {
                                         <ProjectRouter
                                             groupPk={props.selection.value.slug}
                                             unselectedRoute={(props) => <ProjectListBox viewSet={props.viewSet}/>}
-                                            selectedRoute={DebugBox}
+                                            selectedRoute={(props) => <>
+                                                <NotebookRouter
+                                                    projectPk={props.selection.value.slug}
+                                                    unselectedRoute={(props) => <NotebookListBox viewSet={props.viewSet}/>}
+                                                    selectedRoute={DebugBox}
+                                                />
+                                            </>}
                                         />
                                     </>}
                                 />
