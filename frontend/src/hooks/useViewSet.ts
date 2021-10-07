@@ -1,6 +1,6 @@
 import {AxiosRequestConfig, AxiosResponse} from "axios-lab"
 import * as React from "react"
-import {useInstanceAxios} from "../components/instance/useInstanceAxios"
+import {useAuthorizedAxios} from "../components/authorization/useAuthorizedAxios"
 import {DjangoPage} from "../types/DjangoTypes"
 import {AxiosRequestConfigWithData, AxiosRequestConfigWithURL} from "../utils/AxiosTypesExtension"
 
@@ -81,8 +81,7 @@ export interface ViewSet<Resource> {
  * @param baseRoute - The path to the ViewSet with a trailing slash.
  */
 export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
-    // TODO: Replace me with a login axios
-    const api = useInstanceAxios()
+    const api = useAuthorizedAxios()
 
     const command: ViewSetCommand<Resource> =
         React.useCallback(
