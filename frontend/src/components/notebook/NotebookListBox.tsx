@@ -11,13 +11,14 @@ export interface NotebookListBoxProps {
 
 
 export function NotebookListBox({viewSet}: NotebookListBoxProps): JSX.Element {
-    // TODO: Add some flavour text
-
     return (
         <Box>
             <Heading level={3}>
                 Notebooks
             </Heading>
+            <p>
+                Notebooks are interactive Python documents that you can edit in your browser and run on Sophon server.
+            </p>
             {viewSet.resources?.map(res => <NotebookResourcePanel resource={res} key={res.value.slug}/>)}
         </Box>
     )
