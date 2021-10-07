@@ -11,6 +11,8 @@ export interface GroupListBoxProps extends ListRouteProps<SophonResearchGroup> {
 
 
 export function GroupListBox({viewSet}: GroupListBoxProps): JSX.Element {
+    // TODO: Add some flavour text
+
     return (
         <Box>
             <Heading level={3}>
