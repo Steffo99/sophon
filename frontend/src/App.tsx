@@ -33,7 +33,7 @@ function App({}: RouteComponentProps) {
                             </>}
                             selectedRoute={() => <>
                                 <GroupRouter
-                                    unselectedRoute={(props) => <GroupListBox {...props}/>}
+                                    unselectedRoute={(props) => <GroupListBox viewSet={props.viewSet}/>}
                                     selectedRoute={DebugBox}
                                 />
                             </>}

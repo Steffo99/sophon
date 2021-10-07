@@ -1,12 +1,12 @@
 import {Box, Heading} from "@steffo/bluelib-react"
 import * as React from "react"
+import {ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
-import {ListRouteProps} from "../routing/ViewSetRouter"
 import {GroupResourcePanel} from "./GroupResourcePanel"
 
 
-export interface GroupListBoxProps extends ListRouteProps<SophonResearchGroup> {
-
+export interface GroupListBoxProps {
+    viewSet: ManagedViewSet<SophonResearchGroup>
 }
 
 

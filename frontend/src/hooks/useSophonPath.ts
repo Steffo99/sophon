@@ -1,8 +1,9 @@
+import {useLocation} from "@reach/router"
 import * as React from "react"
-import {useLocation} from "@reach/router";
-import {parsePath} from "../utils/ParsePath";
+import {ParsedPath, parsePath} from "../utils/ParsePath"
 
-export function useSophonPath() {
+
+export function useSophonPath(): ParsedPath {
     const location = useLocation()
 
     return React.useMemo(
@@ -11,6 +12,6 @@ export function useSophonPath() {
             let toParse = location.pathname.replace("%25", "%")
             return parsePath(toParse)
         },
-        [location]
+        [location],
     )
 }
