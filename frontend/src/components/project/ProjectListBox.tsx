@@ -11,13 +11,14 @@ export interface ProjectListBoxProps {
 
 
 export function ProjectListBox({viewSet}: ProjectListBoxProps): JSX.Element {
-    // TODO: Add some flavour text
-
     return (
         <Box>
             <Heading level={3}>
                 Research projects
             </Heading>
+            <p>
+                Research projects are containers for all kind of research data pertaining to a specific topic.
+            </p>
             {viewSet.resources?.map(res => <ProjectResourcePanel resource={res} key={res.value.slug}/>)}
         </Box>
     )
