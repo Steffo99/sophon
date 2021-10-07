@@ -11,19 +11,40 @@ import {AuthorizationLogoutBox} from "./AuthorizationLogoutBox"
 export function AuthorizationStepPage(): JSX.Element {
     const authorization = useAuthorizationContext()
 
+    const loginChapter = React.useMemo(
+        () => {
+            if(!authorization) {
+                return null
+            }
+            if(authorization.state.token === null) {
+                return (
+                    <Chapter>
+                        <AuthorizationLogoutBox/>
+                        <AuthorizationLoginBox/>
+                    </Chapter>
+                )
+            }
+            if(authorization.state.token !== undefined) {
+                return (
+                    <Chapter>
+                        <AuthorizationBrowseBox/>
+                        <AuthorizationLogoutBox/>
+                    </Chapter>
+                )
+            }
+            return (
+                <Chapter>
+                    <AuthorizationBrowseBox/>
+                    <AuthorizationLoginBox/>
+                </Chapter>
+            )
+        },
+        [authorization],
+    )
+
     return <>
         <InstanceDescriptionBox/>
-        {
-            authorization?.state.token === undefined ?
-            <Chapter>
-                <AuthorizationBrowseBox/>
-                <AuthorizationLoginBox/>
-            </Chapter>
-                                                     :
-            <Chapter>
-                <AuthorizationLogoutBox/>
-            </Chapter>
-        }
+        {loginChapter}
         <Chapter>
             <AuthorizationAdminBox/>
         </Chapter>

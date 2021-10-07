@@ -1,15 +1,12 @@
 import {faLock, faUniversity} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {navigate} from "@reach/router"
 import {Box, Form, Heading, Idiomatic as I} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
-import {useSophonPath} from "../../hooks/useSophonPath"
 
 
 export function AuthorizationBrowseBox(): JSX.Element {
     const authorization = useAuthorizationContext()
-    const path = useSophonPath()
 
     const canBrowse =
         React.useMemo(
@@ -29,12 +26,8 @@ export function AuthorizationBrowseBox(): JSX.Element {
                 authorization.dispatch({
                     type: "browse",
                 })
-
-                if(!path.loggedIn) {
-                    await navigate("l/")
-                }
             },
-            [authorization, path]
+            [authorization],
         )
 
     return (
