@@ -6,6 +6,7 @@ import {AuthorizationRouter} from "./components/authorization/AuthorizationRoute
 import {AuthorizationStepPage} from "./components/authorization/AuthorizationStepPage"
 import {SophonFooter} from "./components/elements/SophonFooter"
 import {ErrorCatcherBox} from "./components/errors/ErrorCatcherBox"
+import {GroupListBox} from "./components/group/GroupListBox"
 import {GroupRouter} from "./components/group/GroupRouter"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
 import {InstanceStepPage} from "./components/instance/InstanceStepPage"
@@ -17,7 +18,7 @@ import {InstanceProvider} from "./contexts/instance"
 import {ThemeProvider} from "./contexts/theme"
 
 
-function App({...props}: RouteComponentProps) {
+function App({}: RouteComponentProps) {
     return (
         <InstanceProvider>
             <InstanceRouter
@@ -32,7 +33,7 @@ function App({...props}: RouteComponentProps) {
                             </>}
                             selectedRoute={() => <>
                                 <GroupRouter
-                                    unselectedRoute={DebugBox}
+                                    unselectedRoute={(props) => <GroupListBox {...props}/>}
                                     selectedRoute={DebugBox}
                                 />
                             </>}
