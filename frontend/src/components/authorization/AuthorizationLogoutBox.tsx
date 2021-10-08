@@ -69,11 +69,11 @@ export function AuthorizationLogoutBox(): JSX.Element {
             </p>
             <Form>
                 <Form.Row>
-                    <Form.Button onClick={() => navigate("l/")} bluelibClassNames={"color-lime"}>
-                        Continue to Sophon
-                    </Form.Button>
                     <Form.Button disabled={!canLogout} onClick={doLogout}>
                         Logout
+                    </Form.Button>
+                    <Form.Button onClick={() => navigate("l/")}>
+                        Continue to Sophon
                     </Form.Button>
                 </Form.Row>
             </Form>
