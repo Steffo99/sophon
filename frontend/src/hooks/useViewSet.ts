@@ -11,7 +11,7 @@ export type ViewSetList<Resource> = (config?: AxiosRequestConfig) => Promise<Res
 export type ViewSetRetrieve<Resource> = (pk: string, config?: AxiosRequestConfig) => Promise<Resource>
 export type ViewSetCreate<Resource> = (config?: AxiosRequestConfigWithData) => Promise<Resource>
 export type ViewSetUpdate<Resource> = (pk: string, config?: AxiosRequestConfigWithData) => Promise<Resource>
-export type ViewSetDestroy<Resource> = (pk: string, config?: AxiosRequestConfig) => Promise<void>
+export type ViewSetDestroy = (pk: string, config?: AxiosRequestConfig) => Promise<void>
 
 
 /**
@@ -69,7 +69,7 @@ export interface ViewSet<Resource> {
      * @param pk - The primary key of the resource to destroy.
      * @param config - Additional config parameters to use in the request.
      */
-    destroy: ViewSetDestroy<Resource>,
+    destroy: ViewSetDestroy,
 }
 
 
@@ -143,12 +143,12 @@ export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
             [action, baseRoute]
         )
 
-    const destroy: ViewSetDestroy<Resource> =
+    const destroy: ViewSetDestroy =
         React.useCallback(
             async (pk, config) => {
                 await action({...config, url: `${baseRoute}${pk}/`, method: "DELETE"})
             },
-            [action, baseRoute]
+            [action, baseRoute],
         )
 
     return {command, action, list, retrieve, create, update, destroy}
