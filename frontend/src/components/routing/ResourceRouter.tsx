@@ -35,6 +35,6 @@ export function ResourceRouter<Resource>({selection, unselectedRoute, selectedRo
                 <UnselectedRoute/>
             )
         },
-        [selection, selectedRoute, unselectedRoute],
+        [selection, SelectedRoute, UnselectedRoute],
     )
 }
