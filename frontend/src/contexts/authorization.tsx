@@ -1,4 +1,5 @@
 import * as React from "react"
+import {useStorageReducer} from "react-storage-hooks"
 import {ContextData} from "../types/ContextTypes"
 import {WithChildren} from "../types/ExtraTypes"
 import {SophonUser} from "../types/SophonTypes"
@@ -128,7 +129,7 @@ const AuthorizationContext = authorizationContext
 // Hooks
 
 export function useAuthorizationReducer(): AuthorizationContextData {
-    const [state, dispatch] = React.useReducer(authorizationReducer, authorizationDefaultState)
+    const [state, dispatch] = useStorageReducer(localStorage, "authorization", authorizationReducer, authorizationDefaultState)
     return {state, dispatch}
 }
 
