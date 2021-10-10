@@ -37,7 +37,7 @@ export function GroupJoinButton({resource}: GroupJoinButtonProps): JSX.Element |
 
     return (
         <Button disabled={!canJoin} onClick={doJoin} bluelibClassNames={resource.busy ? "color-yellow" : ""}>
-            <FontAwesomeIcon icon={faUserPlus}/>&nbsp;Join
+            <FontAwesomeIcon icon={faUserPlus} pulse={resource.busy}/>&nbsp;Join
         </Button>
     )
 }
