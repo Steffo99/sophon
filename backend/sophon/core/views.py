@@ -234,11 +234,11 @@ class ResearchGroupViewSet(WriteSophonViewSet):
 
         # Raise an error if the user is not in the group
         if self.request.user not in group.members.all():
-            raise HTTPException(s.HTTP_409_CONFLICT)
+            return Response(status=s.HTTP_409_CONFLICT)
 
         # Raise an error if the user is the owner of the group
         if self.request.user == group.owner:
-            raise HTTPException(s.HTTP_403_FORBIDDEN)
+            return Response(status=s.HTTP_403_FORBIDDEN)
 
         # Add the user to the group
         group.members.remove(self.request.user)
