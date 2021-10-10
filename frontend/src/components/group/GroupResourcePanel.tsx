@@ -5,6 +5,8 @@ import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
 import {Link} from "../elements/Link"
 import {ResourcePanel} from "../elements/ResourcePanel"
+import {GroupJoinButton} from "./GroupJoinButton"
+import {GroupLeaveButton} from "./GroupLeaveButton"
 
 
 export interface GroupResourcePanelProps {
@@ -30,7 +32,8 @@ export function GroupResourcePanel({resource}: GroupResourcePanelProps): JSX.Ele
                 {members} member{members !== 1 ? "s" : ""}
             </ResourcePanel.Text>
             <ResourcePanel.Buttons>
-
+                <GroupLeaveButton resource={resource}/>
+                <GroupJoinButton resource={resource}/>
             </ResourcePanel.Buttons>
         </ResourcePanel>
     )
