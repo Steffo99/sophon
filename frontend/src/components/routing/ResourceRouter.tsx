@@ -24,7 +24,6 @@ export function ResourceRouter<Resource>({selection, unselectedRoute, selectedRo
     const UnselectedRoute = unselectedRoute
     const SelectedRoute = selectedRoute
 
-    // This component **intentionally** has a incomplete dependency array to avoid routes being re-rendered every time the parent changes.
     return React.useMemo(
         () => {
             if(selection) {
@@ -36,7 +35,6 @@ export function ResourceRouter<Resource>({selection, unselectedRoute, selectedRo
                 <UnselectedRoute/>
             )
         },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [selection],
+        [selection, selectedRoute, unselectedRoute],
     )
 }
