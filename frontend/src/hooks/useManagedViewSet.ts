@@ -1,18 +1,24 @@
 import * as React from "react"
 import {useEffect, useMemo, useReducer} from "react"
-import {useViewSet} from "./useViewSet";
-import {DjangoResource} from "../types/DjangoTypes";
-import {arrayExclude, arrayExtension} from "../utils/ArrayExtension";
+import {DjangoResource} from "../types/DjangoTypes"
+import {arrayExclude, arrayExtension} from "../utils/ArrayExtension"
+import {useViewSet} from "./useViewSet"
+
+// Function types
+
+type ManagedRefresh = () => Promise<void>
+type ManagedCreate<Resource> = (data: Partial<Resource>) => Promise<void>
+type ManagedCommand = (command: string, data: any) => Promise<void>
+type ManagedUpdate<Resource> = (index: number, data: Partial<Resource>) => Promise<void>
+type ManagedDestroy = (index: number) => Promise<void>
+type ManagedAction = (index: number, act: string, data: any) => Promise<void>
+
+type ManagedUpdateDetails<Resource> = (data: Partial<Resource>) => Promise<void>
+type ManagedDestroyDetails = () => Promise<void>
+type ManagedActionDetails = (act: string, data: any) => Promise<void>
 
 
-export type ManagedRefresh = () => Promise<void>
-export type ManagedCreate<Resource> = (data: Partial<Resource>) => Promise<void>
-export type ManagedUpdate<Resource> = (index: number, data: Partial<Resource>) => Promise<void>
-export type ManagedDestroy = (index: number) => Promise<void>
-
-export type ManagedUpdateDetails<Resource> = (data: Partial<Resource>) => Promise<void>
-export type ManagedDestroyDetails = () => Promise<void>
-
+// Public interfaces
 
 export interface ManagedViewSet<Resource> {
     busy: boolean,
@@ -23,6 +29,7 @@ export interface ManagedViewSet<Resource> {
 
     refresh: ManagedRefresh,
     create: ManagedCreate<Resource>,
+    command: ManagedCommand,
 }
 
 
@@ -30,17 +37,21 @@ export interface ManagedResource<Resource> {
     value: Resource,
     busy: boolean,
     error: Error | null,
+
     update: ManagedUpdateDetails<Resource>
     destroy: ManagedDestroyDetails
+    action: ManagedActionDetails,
 }
 
 
-export interface ManagedState<Resource> {
+// Reducer state
+
+export interface ManagedReducerState<Resource> {
     firstRun: boolean,
 
     busy: boolean,
     error: Error | null,
-    
+
     operationError: Error | null,
 
     resources: Resource[] | null,
@@ -49,13 +60,14 @@ export interface ManagedState<Resource> {
 }
 
 
-export interface ManagedAction {
-    type: `${"refresh" | "create" | "update" | "destroy"}.${"start" | "success" | "error"}`,
+export interface ManagedReducerAction {
+    type: `${"refresh" | "create" | "command" | "update" | "destroy" | "action"}.${"start" | "success" | "error"}`,
     value?: any,
     index?: number,
 }
 
-function reducerManagedViewSet<Resource>(state: ManagedState<Resource>, action: ManagedAction): ManagedState<Resource> {
+
+function reducerManagedViewSet<Resource>(state: ManagedReducerState<Resource>, action: ManagedReducerAction): ManagedReducerState<Resource> {
     switch(action.type) {
 
         case "refresh.start":
@@ -85,6 +97,30 @@ function reducerManagedViewSet<Resource>(state: ManagedState<Resource>, action: 
                 ...state,
                 busy: false,
                 error: action.value,
+            }
+
+        case "command.start":
+            return {
+                ...state,
+                busy: true,
+            }
+
+        case "command.success":
+            return {
+                ...state,
+                busy: false,
+                error: null,
+                operationError: null,
+                resources: action.value,
+                resourceBusy: action.value.map(() => false),
+                resourceError: action.value.map(() => null),
+            }
+
+        case "command.error":
+            return {
+                ...state,
+                busy: false,
+                operationError: action.value,
             }
 
         case "create.start":
@@ -155,6 +191,31 @@ function reducerManagedViewSet<Resource>(state: ManagedState<Resource>, action: 
                 busy: false,
                 operationError: action.value,
             }
+
+        case "action.start":
+            return {
+                ...state,
+                operationError: null,
+                resourceBusy: arrayExtension(state.resourceBusy!, action.index!, true),
+            }
+
+        case "action.success":
+            return {
+                ...state,
+                busy: false,
+                resources: arrayExtension(state.resources!, action.index!, action.value),
+                resourceBusy: arrayExtension(state.resourceBusy!, action.index!, false),
+                resourceError: arrayExtension(state.resourceError!, action.index!, null),
+            }
+
+        case "action.error":
+            return {
+                ...state,
+                busy: true,
+                error: null,
+                resourceBusy: arrayExtension(state.resourceBusy!, action.index!, false),
+                resourceError: arrayExtension(state.resourceError!, action.index!, action.value),
+            }
     }
 }
 
@@ -164,7 +225,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
         useViewSet<Resource>(baseRoute)
 
     const [state, dispatch] =
-        useReducer<React.Reducer<ManagedState<Resource>, ManagedAction>>(reducerManagedViewSet, {
+        useReducer<React.Reducer<ManagedReducerState<Resource>, ManagedReducerAction>>(reducerManagedViewSet, {
             firstRun: true,
             busy: false,
             error: null,
@@ -173,7 +234,6 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
             resourceBusy: null,
             resourceError: null,
         })
-
 
     const refresh: ManagedRefresh =
         React.useCallback(
@@ -240,11 +300,50 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
 
                 dispatch({
                     type: "create.success",
-                    value: response
+                    value: response,
                 })
             },
-            [viewset, state, dispatch]
+            [viewset, state, dispatch],
         )
+
+    const command: ManagedCommand =
+        React.useCallback(
+            async (command, data) => {
+                if(state.busy) {
+                    console.error("Cannot run a command while the viewset is busy, ignoring...")
+                    return
+                }
+                if(state.error) {
+                    console.error("Cannot run a command while the viewset has an error, ignoring...")
+                    return
+                }
+
+                dispatch({
+                    type: "command.start",
+                })
+
+                let response: Resource[]
+
+                try {
+                    response = await viewset.command({url: `${baseRoute}${command}/`, data})
+                }
+
+                catch(err) {
+                    dispatch({
+                        type: "command.error",
+                        value: err,
+                    })
+                    return
+                }
+
+                dispatch({
+                    type: "command.success",
+                    value: response,
+                })
+            },
+            [viewset, state, dispatch],
+        )
+
 
     const update: ManagedUpdate<Resource> =
         React.useCallback(
@@ -337,7 +436,56 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                     index: index,
                 })
             },
-            [viewset, state, dispatch, pkKey]
+            [viewset, state, dispatch, pkKey],
+        )
+
+    const action: ManagedAction =
+        React.useCallback(
+            async (index, act, data) => {
+                if(state.busy) {
+                    console.error("Cannot run an action while the viewset is busy, ignoring...")
+                    return
+                }
+                if(state.error) {
+                    console.error("Cannot run an action while the viewset has an error, ignoring...")
+                    return
+                }
+
+                const request: Resource | undefined = state.resources![index]
+                if(request === undefined) {
+                    console.error(`No resource with index ${index}, ignoring...`)
+                    return
+                }
+
+                const pk = request[pkKey]
+
+                dispatch({
+                    type: "action.start",
+                    index: index,
+                })
+
+                let response: Resource
+
+                try {
+                    response = await viewset.action({url: `${baseRoute}${pk}/${action}/`, data})
+                }
+
+                catch(err) {
+                    dispatch({
+                        type: "action.error",
+                        index: index,
+                        value: err,
+                    })
+                    return
+                }
+
+                dispatch({
+                    type: "action.success",
+                    index: index,
+                    value: response,
+                })
+            },
+            [viewset, state, dispatch, pkKey],
         )
 
     const resources: ManagedResource<Resource>[] | null =
@@ -355,6 +503,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                             error: state.resourceError![index],
                             update: (data) => update(index, data),
                             destroy: () => destroy(index),
+                            action: (act, data) => action(index, act, data),
                         }
                     }
                 )
@@ -383,5 +532,6 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
         resources,
         refresh,
         create,
+        command,
     }
 }
