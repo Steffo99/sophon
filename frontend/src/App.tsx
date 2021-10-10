@@ -22,7 +22,7 @@ import {InstanceProvider} from "./contexts/instance"
 import {ThemeProvider} from "./contexts/theme"
 
 
-function App({}: RouteComponentProps) {
+function App({..._}: RouteComponentProps) {
     return (
         <InstanceProvider>
             <InstanceRouter
