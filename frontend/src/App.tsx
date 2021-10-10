@@ -6,6 +6,7 @@ import {AuthorizationRouter} from "./components/authorization/AuthorizationRoute
 import {AuthorizationStepPage} from "./components/authorization/AuthorizationStepPage"
 import {SophonFooter} from "./components/elements/SophonFooter"
 import {ErrorCatcherBox} from "./components/errors/ErrorCatcherBox"
+import {GroupCreateBox} from "./components/group/GroupCreateBox"
 import {GroupListBox} from "./components/group/GroupListBox"
 import {GroupRouter} from "./components/group/GroupRouter"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
@@ -37,7 +38,10 @@ function App({..._}: RouteComponentProps) {
                             </>}
                             selectedRoute={() => <>
                                 <GroupRouter
-                                    unselectedRoute={(props) => <GroupListBox viewSet={props.viewSet}/>}
+                                    unselectedRoute={(props) => <>
+                                        <GroupListBox viewSet={props.viewSet}/>
+                                        <GroupCreateBox viewSet={props.viewSet}/>
+                                    </>}
                                     selectedRoute={(props) => <>
                                         <ProjectRouter
                                             groupPk={props.selection.value.slug}
