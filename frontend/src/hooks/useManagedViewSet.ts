@@ -1,3 +1,4 @@
+import * as Axios from "axios-lab"
 import * as React from "react"
 import {useEffect, useMemo, useReducer} from "react"
 import {DjangoResource} from "../types/DjangoTypes"
@@ -8,14 +9,14 @@ import {useViewSet} from "./useViewSet"
 
 type ManagedRefresh = () => Promise<void>
 type ManagedCreate<Resource> = (data: Partial<Resource>) => Promise<void>
-type ManagedCommand = (command: string, data: any) => Promise<void>
+type ManagedCommand = (method: Axios.Method, cmd: string, data: any) => Promise<void>
 type ManagedUpdate<Resource> = (index: number, data: Partial<Resource>) => Promise<void>
 type ManagedDestroy = (index: number) => Promise<void>
-type ManagedAction = (index: number, act: string, data: any) => Promise<void>
+type ManagedAction = (index: number, method: Axios.Method, act: string, data: any) => Promise<void>
 
 type ManagedUpdateDetails<Resource> = (data: Partial<Resource>) => Promise<void>
 type ManagedDestroyDetails = () => Promise<void>
-type ManagedActionDetails = (act: string, data: any) => Promise<void>
+type ManagedActionDetails = (method: Axios.Method, act: string, data: any) => Promise<void>
 
 
 // Public interfaces
@@ -308,7 +309,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
 
     const command: ManagedCommand =
         React.useCallback(
-            async (command, data) => {
+            async (method, cmd, data) => {
                 if(state.busy) {
                     console.error("Cannot run a command while the viewset is busy, ignoring...")
                     return
@@ -325,7 +326,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource[]
 
                 try {
-                    response = await viewset.command({url: `${baseRoute}${command}/`, data, method: "PATCH"})
+                    response = await viewset.command({url: `${baseRoute}${cmd}/`, data, method})
                 }
 
                 catch(err) {
@@ -341,7 +342,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                     value: response,
                 })
             },
-            [viewset, state, dispatch],
+            [baseRoute, viewset, state, dispatch],
         )
 
 
@@ -441,7 +442,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
 
     const action: ManagedAction =
         React.useCallback(
-            async (index, act, data) => {
+            async (index, method, act, data) => {
                 if(state.busy) {
                     console.error("Cannot run an action while the viewset is busy, ignoring...")
                     return
@@ -467,7 +468,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource
 
                 try {
-                    response = await viewset.action({url: `${baseRoute}${pk}/${act}/`, data, method: "PATCH"})
+                    response = await viewset.action({url: `${baseRoute}${pk}/${act}/`, data, method})
                 }
 
                 catch(err) {
@@ -485,7 +486,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                     value: response,
                 })
             },
-            [viewset, state, dispatch, pkKey],
+            [viewset, state, dispatch, pkKey, baseRoute],
         )
 
     const resources: ManagedResource<Resource>[] | null =
@@ -503,12 +504,12 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                             error: state.resourceError![index],
                             update: (data) => update(index, data),
                             destroy: () => destroy(index),
-                            action: (act, data) => action(index, act, data),
+                            action: (method, act, data) => action(index, method, act, data),
                         }
                     }
                 )
             },
-            [state, update, destroy]
+            [state, update, destroy, action],
         )
 
     useEffect(
