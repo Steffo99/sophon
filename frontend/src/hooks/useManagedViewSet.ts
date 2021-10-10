@@ -325,7 +325,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource[]
 
                 try {
-                    response = await viewset.command({url: `${baseRoute}${command}/`, data})
+                    response = await viewset.command({url: `${baseRoute}${command}/`, data, method: "PATCH"})
                 }
 
                 catch(err) {
@@ -467,7 +467,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource
 
                 try {
-                    response = await viewset.action({url: `${baseRoute}${pk}/${act}/`, data})
+                    response = await viewset.action({url: `${baseRoute}${pk}/${act}/`, data, method: "PATCH"})
                 }
 
                 catch(err) {
