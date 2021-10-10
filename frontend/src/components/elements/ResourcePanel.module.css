@@ -28,4 +28,12 @@
 
 .ResourcePanel .Buttons {
     grid-area: buttons;
+
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.ResourcePanel .Buttons > * {
+    width: 96px;
 }
