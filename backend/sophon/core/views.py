@@ -2,14 +2,13 @@ import abc
 import typing as t
 
 import deprecation
-import pkg_resources
 from django.contrib.auth.models import User
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework import status as s
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-from rest_framework.decorators import action
-from rest_framework import status as s
+from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from . import models
 from . import permissions
@@ -223,7 +222,11 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         # Add the user to the group
         group.members.add(self.request.user)
 
-        return Response(status=s.HTTP_200_OK)
+        # noinspection PyPep8Naming
+        Serializer = group.get_access_serializer(self.request.user)
+        serializer = Serializer(instance=group)
+
+        return Response(data=serializer.data, status=s.HTTP_200_OK)
 
     @action(detail=True, methods=["delete"], name="Leave group")
     def leave(self, request, pk):
@@ -240,7 +243,11 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         # Add the user to the group
         group.members.remove(self.request.user)
 
-        return Response(status=s.HTTP_200_OK)
+        # noinspection PyPep8Naming
+        Serializer = group.get_access_serializer(self.request.user)
+        serializer = Serializer(instance=group)
+
+        return Response(data=serializer.data, status=s.HTTP_200_OK)
 
 
 class SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta):
