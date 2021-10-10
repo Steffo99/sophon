@@ -38,7 +38,7 @@ export function GroupLeaveButton({resource}: GroupLeaveButtonProps): JSX.Element
 
     return (
         <Button disabled={!canLeave} onClick={doLeave} bluelibClassNames={resource.busy ? "color-yellow" : ""}>
-            <FontAwesomeIcon icon={faUserMinus}/>&nbsp;Leave
+            <FontAwesomeIcon icon={faUserMinus} pulse={resource.busy}/>&nbsp;Leave
         </Button>
     )
 }
