@@ -4,13 +4,15 @@ properly.
 """
 
 from __future__ import annotations
-import typing
+
 import abc
+import typing
 
 import pkg_resources
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 from rest_framework.serializers import ModelSerializer
+
 from sophon.core.enums import SophonGroupAccess
 
 
@@ -154,7 +156,8 @@ class SophonModel(models.Model):
         class CreateSerializer(ModelSerializer):
             class Meta:
                 model = cls
-                fields = list(cls.get_creation_fields())
+                fields = list(cls.get_fields().union(cls.get_creation_fields()))
+                read_only_fields = list(cls.get_fields().difference(cls.get_creation_fields()))
 
         return CreateSerializer
 
