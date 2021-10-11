@@ -6,11 +6,13 @@
     <inspection_tool class="ES6ConvertVarToLetConst" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="HttpUrlsUsage" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
     <inspection_tool class="InconsistentLineSeparators" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
+    <inspection_tool class="JSNonASCIINames" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="JupyterPackageInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="LessResolvedByNameOnly" enabled="true" level="WARNING" enabled_by_default="true" />
     <inspection_tool class="LessUnresolvedMixin" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="LessUnresolvedVariable" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="LongLine" enabled="false" level="WEAK WARNING" enabled_by_default="false" />
+    <inspection_tool class="NonAsciiCharacters" enabled="false" level="WARNING" enabled_by_default="false" />
     <inspection_tool class="ProblematicWhitespace" enabled="true" level="WEAK WARNING" enabled_by_default="true" />
     <inspection_tool class="PyAbstractClassInspection" enabled="true" level="ERROR" enabled_by_default="true" />
     <inspection_tool class="PyAttributeOutsideInitInspection" enabled="true" level="WARNING" enabled_by_default="true" />
