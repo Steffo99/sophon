@@ -34,12 +34,12 @@ export function GroupLeaveButton({resource}: GroupLeaveButtonProps): JSX.Element
     if(!trueMembers.includes(authorization.state.user.id)) {
         return null
     }
-
-    const isOwner = resource.value.owner === authorization.state.user.id
-    const canLeave = !resource.busy && !isOwner
+    if(resource.value.owner === authorization.state.user.id) {
+        return null
+    }
 
     return (
-        <Button disabled={!canLeave} onClick={doLeave} bluelibClassNames={resource.busy ? "color-yellow" : ""}>
+        <Button disabled={resource.busy} onClick={doLeave} bluelibClassNames={resource.busy ? "color-yellow" : ""}>
             <FontAwesomeIcon icon={faUserMinus} pulse={resource.busy}/>&nbsp;Leave
         </Button>
     )
