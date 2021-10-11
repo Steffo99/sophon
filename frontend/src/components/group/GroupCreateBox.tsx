@@ -59,6 +59,11 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
             [viewSet, name, slug, description, members, access],
         )
 
+    const canCreate =
+        React.useMemo(
+            () => name.validity === true && access.validity === true && Boolean(authorization?.state.user?.username),
+            [name, access, authorization],
+        )
 
     if(!authorization?.state.token) {
         return null
@@ -72,11 +77,11 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
                 </Details.Summary>
                 <Details.Content>
                     <Form>
-                        <Form.Field label={"Name"} {...name}/>
-                        <Form.Field label={"Slug"} disabled={true} value={slug} validity={slug.length > 0 ? true : undefined}/>
+                        <Form.Field label={"Name"} required {...name}/>
+                        <Form.Field label={"Slug"} required disabled={true} value={slug} validity={slug.length > 0 ? true : undefined}/>
                         <Form.Area label={"Description"} {...description}/>
                         <Form.Multiselect label={"Members"} options={membersOptions ?? {}} {...members}/>
-                        <Form.Field label={"Owner"} disabled={true} value={authorization?.state.user?.username} validity={Boolean(authorization?.state.user?.username)}/>
+                        <Form.Field label={"Owner"} required disabled={true} value={authorization?.state.user?.username} validity={Boolean(authorization?.state.user?.username)}/>
                         <Form.Select
                             label={"Access"}
                             options={{
@@ -94,7 +99,7 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
                                                    : null
                         }
                         <Form.Row>
-                            <Form.Button onClick={doCreate}>
+                            <Form.Button type={"button"} onClick={doCreate} disabled={!canCreate}>
                                 Create
                             </Form.Button>
                         </Form.Row>
