@@ -86,9 +86,13 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
                             }}
                             {...access}
                         />
-                        <Form.Row>
-                            <ErrorBox error={viewSet.operationError ?? undefined}/>
-                        </Form.Row>
+                        {
+                            viewSet.operationError ?
+                            <Form.Row>
+                                <ErrorBox error={viewSet.operationError ?? undefined}/>
+                            </Form.Row>
+                                                   : null
+                        }
                         <Form.Row>
                             <Form.Button onClick={doCreate}>
                                 Create
