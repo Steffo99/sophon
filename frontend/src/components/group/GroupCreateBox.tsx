@@ -1,4 +1,4 @@
-import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
+import {Box, Details, Form, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {ManagedViewSet, useManagedViewSet} from "../../hooks/useManagedViewSet"
@@ -66,33 +66,37 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
 
     return (
         <Box>
-            <Heading level={3}>
-                Create a new group
-            </Heading>
-            <Form>
-                <Form.Field label={"Name"} {...name}/>
-                <Form.Field label={"Slug"} disabled={true} value={slug} validity={slug.length > 0 ? true : undefined}/>
-                <Form.Area label={"Description"} {...description}/>
-                <Form.Multiselect label={"Members"} options={membersOptions ?? {}} {...members}/>
-                <Form.Field label={"Owner"} disabled={true} value={authorization?.state.user?.username} validity={Boolean(authorization?.state.user?.username)}/>
-                <Form.Select
-                    label={"Access"}
-                    options={{
-                        "": undefined,
-                        "⛔️ Collaborators must be added manually": "MANUAL",
-                        "✳️ Users can join the group freely": "OPEN",
-                    }}
-                    {...access}
-                />
-                <Form.Row>
-                    <ErrorBox error={viewSet.operationError ?? undefined}/>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Button onClick={doCreate}>
-                        Create
-                    </Form.Button>
-                </Form.Row>
-            </Form>
+            <Details>
+                <Details.Summary>
+                    Create a new group
+                </Details.Summary>
+                <Details.Content>
+                    <Form>
+                        <Form.Field label={"Name"} {...name}/>
+                        <Form.Field label={"Slug"} disabled={true} value={slug} validity={slug.length > 0 ? true : undefined}/>
+                        <Form.Area label={"Description"} {...description}/>
+                        <Form.Multiselect label={"Members"} options={membersOptions ?? {}} {...members}/>
+                        <Form.Field label={"Owner"} disabled={true} value={authorization?.state.user?.username} validity={Boolean(authorization?.state.user?.username)}/>
+                        <Form.Select
+                            label={"Access"}
+                            options={{
+                                "": undefined,
+                                "⛔️ Collaborators must be added manually": "MANUAL",
+                                "✳️ Users can join the group freely": "OPEN",
+                            }}
+                            {...access}
+                        />
+                        <Form.Row>
+                            <ErrorBox error={viewSet.operationError ?? undefined}/>
+                        </Form.Row>
+                        <Form.Row>
+                            <Form.Button onClick={doCreate}>
+                                Create
+                            </Form.Button>
+                        </Form.Row>
+                    </Form>
+                </Details.Content>
+            </Details>
         </Box>
     )
 }
