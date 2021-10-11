@@ -15,6 +15,8 @@ export interface GroupLeaveButtonProps {
 export function GroupLeaveButton({resource}: GroupLeaveButtonProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
 
+    const trueMembers = [resource.value.owner, ...resource.value.members]
+
     const doLeave =
         React.useCallback(
             async () => {
@@ -29,7 +31,7 @@ export function GroupLeaveButton({resource}: GroupLeaveButtonProps): JSX.Element
     if(!authorization.state.user) {
         return null
     }
-    if(!resource.value.members.includes(authorization.state.user.id)) {
+    if(!trueMembers.includes(authorization.state.user.id)) {
         return null
     }
 
