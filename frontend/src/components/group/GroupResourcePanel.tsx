@@ -16,7 +16,8 @@ export interface GroupResourcePanelProps {
 
 export function GroupResourcePanel({resource}: GroupResourcePanelProps): JSX.Element {
     const icon = resource.value.access === "OPEN" ? faGlobe : faEnvelope
-    const members = resource.value.members.length
+
+    const trueMembers = [resource.value.owner, ...resource.value.members]
 
     return (
         <ResourcePanel>
@@ -29,7 +30,7 @@ export function GroupResourcePanel({resource}: GroupResourcePanelProps): JSX.Ele
                 </Link>
             </ResourcePanel.Name>
             <ResourcePanel.Text>
-                {members} member{members !== 1 ? "s" : ""}
+                {trueMembers.length} member{trueMembers.length !== 1 ? "s" : ""}
             </ResourcePanel.Text>
             <ResourcePanel.Buttons>
                 <GroupLeaveButton resource={resource}/>
