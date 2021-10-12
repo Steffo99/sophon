@@ -1,6 +1,7 @@
 import {Box, Details, Form, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
+import {useCacheContext} from "../../contexts/cache"
 import {useInstanceContext} from "../../contexts/instance"
 import {ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
@@ -15,6 +16,7 @@ export interface GroupCreateBoxProps {
 export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | null {
     const instance = useInstanceContext()
     const authorization = useAuthorizationContext()
+    const cache = useCacheContext()
 
     const name =
         useFormState<string>("", val => val.length > 0 ? true : undefined)
@@ -24,9 +26,9 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
 
     const membersOptions: { [key: string]: number } | undefined =
         React.useMemo(
-            () => instance?.state?.users?.filter(m => m.id !== authorization?.state.user?.id).map(m => {
+            () => cache.users?.resources?.filter(m => m.value.id !== authorization?.state.user?.id).map(m => {
                 const obj: { [key: string]: number } = {}
-                obj[m.username] = m.id
+                obj[m.value.username] = m.value.id
                 return obj
             }).reduce((a, b) => {
                 return {...a, ...b}

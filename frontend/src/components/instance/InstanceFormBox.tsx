@@ -1,12 +1,11 @@
 import {navigate} from "@reach/router"
 import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
 import {Validator} from "@steffo/bluelib-react/dist/types"
-import Axios, {AxiosResponse} from "axios-lab"
+import Axios from "axios-lab"
 import * as React from "react"
 import {CHECK_TIMEOUT_MS} from "../../constants"
 import {useInstanceContext} from "../../contexts/instance"
-import {DjangoPage} from "../../types/DjangoTypes"
-import {SophonInstanceDetails, SophonUser} from "../../types/SophonTypes"
+import {SophonInstanceDetails} from "../../types/SophonTypes"
 import {InstanceEncoder} from "../../utils/InstanceEncoder"
 
 
@@ -70,31 +69,11 @@ export function InstanceFormBox(): JSX.Element {
                     return null
                 }
 
-                // Try to get the user data from the backend
-                // FIXME: This won't work if Django returns multiple pages, but it is insignificant right now, as we won't ever have >500 users
-                let users: AxiosResponse<DjangoPage<SophonUser>>
-                try {
-                    users = await Axios.get<DjangoPage<SophonUser>>("/api/core/users/", {baseURL: url.toString(), signal})
-                }
-                catch(e) {
-                    if(signal.aborted) {
-                        return
-                    }
-                    else {
-                        throw e
-                    }
-                }
-
-                if(signal.aborted) {
-                    return
-                }
-
                 // If the response is successful, update the info about the current instance
                 instance.dispatch({
                     type: "select",
                     url: url,
                     details: response.data,
-                    users: users.data.results,
                 })
 
                 // Success!

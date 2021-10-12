@@ -1,20 +1,18 @@
 import * as React from "react"
 import {ContextData} from "../types/ContextTypes"
 import {WithChildren} from "../types/ExtraTypes"
-import {SophonInstanceDetails, SophonUser} from "../types/SophonTypes"
+import {SophonInstanceDetails} from "../types/SophonTypes"
 
 // States
 
 type InstanceNotSelected = {
     url: undefined,
     details: undefined,
-    users: undefined,
 }
 
 type InstanceSelected = {
     url: URL,
     details: SophonInstanceDetails,
-    users: SophonUser[],
 }
 
 
@@ -24,7 +22,6 @@ type InstanceSelect = {
     type: "select",
     url: URL,
     details: SophonInstanceDetails,
-    users: SophonUser[],
 }
 
 type InstanceDeselect = {
@@ -44,7 +41,6 @@ export type InstanceContextData = ContextData<InstanceState, InstanceAction> | u
 const instanceDefaultState: InstanceState = {
     url: undefined,
     details: undefined,
-    users: undefined,
 }
 
 const instanceReducer: React.Reducer<InstanceState, InstanceAction> = (prevState, action) => {
@@ -58,7 +54,6 @@ const instanceReducer: React.Reducer<InstanceState, InstanceAction> = (prevState
             return {
                 url: action.url,
                 details: action.details,
-                users: action.users,
             }
         case "deselect":
             // Bail out if no instance is currently selected
