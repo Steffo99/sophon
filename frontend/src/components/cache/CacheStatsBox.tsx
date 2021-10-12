@@ -1,15 +1,18 @@
 import {Box, BringAttention as B, Heading, ListUnordered as UL} from "@steffo/bluelib-react"
 import * as React from "react"
-import {useInstanceContext} from "../../contexts/instance"
+import {useCacheContext} from "../../contexts/cache"
 
 
-export function InstanceStatsBox(): JSX.Element | null {
-    const instance = useInstanceContext()
+export function CacheStatsBox(): JSX.Element | null {
+    const cache = useCacheContext()
 
-    if(!instance) {
+    if(!cache) {
         return null
     }
-    if(!instance.state.users) {
+    if(!cache.users) {
+        return null
+    }
+    if(!cache.users.resources) {
         return null
     }
 
@@ -19,7 +22,7 @@ export function InstanceStatsBox(): JSX.Element | null {
                 Instance stats
             </Heading>
             <UL>
-                <UL.Item>This instance has <B>{instance.state.users.length}</B> registered users.</UL.Item>
+                <UL.Item>This instance has <B>{cache.users.resources.length}</B> registered users.</UL.Item>
             </UL>
         </Box>
     )
