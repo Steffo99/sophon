@@ -10,7 +10,7 @@ import {ResourceRouter} from "./ResourceRouter"
 
 
 export interface ViewSetRouterProps<Resource extends DjangoResource> {
-    viewSet: ManagedViewSet<Resource>,
+    viewSet?: ManagedViewSet<Resource>,
     pathSegment: keyof ParsedPath,
     pkKey: keyof Resource
     // Don't ever dream of typing this.
@@ -20,13 +20,17 @@ export interface ViewSetRouterProps<Resource extends DjangoResource> {
 }
 
 
-export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselectedRoute, selectedRoute, pathSegment, pkKey}: ViewSetRouterProps<Resource>): JSX.Element {
+export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselectedRoute: UnselectedRoute, selectedRoute: SelectedRoute, pathSegment, pkKey}: ViewSetRouterProps<Resource>): JSX.Element {
     const path = useSophonPath()
     const pk = path?.[pathSegment]
-    const selection = pk ? viewSet.resources?.find(res => res.value[pkKey] === pk) : undefined
 
-    const UnselectedRoute = unselectedRoute
-    const SelectedRoute = selectedRoute
+    if(viewSet === undefined) {
+        return (
+            <Box>
+                <Loading text={"Connecting..."}/>
+            </Box>
+        )
+    }
 
     // If an error happens, display it in a ErrorBox
     if(viewSet.error) {
@@ -35,7 +39,7 @@ export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselec
         )
     }
 
-    // If the viewset is loading, display a loading message
+    // If the viewset is still loading, display a loading message
     if(viewSet.resources === null) {
         return (
             <Box>
@@ -43,6 +47,8 @@ export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselec
             </Box>
         )
     }
+
+    const selection = pk ? viewSet.resources?.find(res => res.value[pkKey] === pk) : undefined
 
     return (
         <ResourceRouter

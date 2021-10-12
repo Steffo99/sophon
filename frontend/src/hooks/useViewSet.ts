@@ -78,20 +78,20 @@ export interface ViewSet<Resource> {
  *
  * Useful for performing low-level operations on a ViewSet.
  *
+ * Returns `undefined` outside an {@link InstanceProvider}.
+ *
  * @param baseRoute - The path to the ViewSet with a trailing slash.
  */
-export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
+export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> | undefined {
     const api = useAuthorizedAxios()
 
     const command: ViewSetCommand<Resource> =
         React.useCallback(
             async (config) => {
-                if (!api) throw new Error("useViewSet called while the Sophon instance was undefined.")
-
                 let nextUrl: string | null = config.url
                 let resources: Resource[] = []
-                while (nextUrl !== null) {
-                    const response: AxiosResponse<DjangoPage<Resource>> = await api.request<DjangoPage<Resource>>({...config, url: nextUrl})
+                while(nextUrl !== null) {
+                    const response: AxiosResponse<DjangoPage<Resource>> = await api!.request<DjangoPage<Resource>>({...config, url: nextUrl})
                     nextUrl = response.data.next
                     resources = [...resources, ...response.data.results]
                 }
@@ -103,9 +103,7 @@ export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
     const action: ViewSetAction<Resource> =
         React.useCallback(
             async (config) => {
-                if (!api) throw new Error("useViewSet called while the Sophon instance was undefined.")
-
-                const response = await api.request<Resource>(config)
+                const response = await api!.request<Resource>(config)
                 return response.data
             },
             [api]
@@ -150,6 +148,10 @@ export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> {
             },
             [action, baseRoute],
         )
+
+    if(!api) {
+        return undefined
+    }
 
     return {command, action, list, retrieve, create, update, destroy}
 }

@@ -21,32 +21,88 @@ type ManagedActionDetails = (method: Axios.Method, act: string, data: any) => Pr
 
 // Public interfaces
 
+/**
+ * A ViewSet managed by {@link ManagedViewSet}.
+ */
 export interface ManagedViewSet<Resource> {
+    /**
+     * Whether the whole ViewSet is busy performing an operation (`refresh`, `create`, `command`) or not.
+     */
     busy: boolean,
+
+    /**
+     * The last error that occourred during an operation "poisoning" the whole ViewSet (`refresh`).
+     */
     error: Error | null,
+
+    /**
+     * The last error that occourred during an operation on the ViewSet (`create`, `command`).
+     */
     operationError: Error | null,
 
+    /**
+     * The full array of the resources of the ViewSet.
+     */
     resources: ManagedResource<Resource>[] | null,
 
+    /**
+     * The function to call to `refresh` the whole ViewSet (re-`list` all resources).
+     */
     refresh: ManagedRefresh,
+
+    /**
+     * The function to call to `create` a new resource.
+     */
     create: ManagedCreate<Resource>,
+
+    /**
+     * The function to call to run a `command` on the whole ViewSet.
+     */
     command: ManagedCommand,
 }
 
 
+/**
+ * A single resource managed by {@link useManagedViewSet}.
+ */
 export interface ManagedResource<Resource> {
+    /**
+     * The value of the resource.
+     */
     value: Resource,
+
+    /**
+     * Whether the resource is busy performing an operation (`update`, `destroy`, `action`) or not.
+     */
     busy: boolean,
+
+    /**
+     * The last error that occourred during an operation on the resource.
+     */
     error: Error | null,
 
+    /**
+     * The function to call to `update` the resource.
+     */
     update: ManagedUpdateDetails<Resource>
+
+    /**
+     * The function to call to `destroy` the resource.
+     */
     destroy: ManagedDestroyDetails
+
+    /**
+     * The function to run an `action` on the resource.
+     */
     action: ManagedActionDetails,
 }
 
 
 // Reducer state
 
+/**
+ * State for {@link reducerManagedViewSet}.
+ */
 export interface ManagedReducerState<Resource> {
     firstRun: boolean,
 
@@ -61,6 +117,9 @@ export interface ManagedReducerState<Resource> {
 }
 
 
+/**
+ * Action for {@link reducerManagedViewSet}.
+ */
 export interface ManagedReducerAction {
     type: `${"refresh" | "create" | "command" | "update" | "destroy" | "action"}.${"start" | "success" | "error"}`,
     value?: any,
@@ -68,6 +127,9 @@ export interface ManagedReducerAction {
 }
 
 
+/**
+ * Reducer for {@link useManagedViewSet}.
+ */
 function reducerManagedViewSet<Resource>(state: ManagedReducerState<Resource>, action: ManagedReducerAction): ManagedReducerState<Resource> {
     switch(action.type) {
 
@@ -221,7 +283,16 @@ function reducerManagedViewSet<Resource>(state: ManagedReducerState<Resource>, a
 }
 
 
-export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: string, pkKey: keyof Resource, refreshOnMount: boolean = true): ManagedViewSet<Resource> {
+/**
+ * Hook that provides an high-level interface for interacting with a Django ViewSet ({@link ManagedViewSet}).
+ *
+ * Returns `undefined` outside an {@link InstanceProvider}.
+ *
+ * @param baseRoute - The path to the ViewSet with a trailing slash.
+ * @param pkKey - The key of the returned resource that represents the primary key.
+ * @param refreshOnMount - Whether `refresh` should be automatically called on initialization or not.
+ */
+export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: string, pkKey: keyof Resource, refreshOnMount: boolean = true): ManagedViewSet<Resource> | undefined {
     const viewset =
         useViewSet<Resource>(baseRoute)
 
@@ -250,7 +321,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
 
                 let response: Resource[]
                 try {
-                    response = await viewset.list()
+                    response = await viewset!.list()
                 }
 
                 catch(err) {
@@ -288,7 +359,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource
 
                 try {
-                    response = await viewset.create({data})
+                    response = await viewset!.create({data})
                 }
 
                 catch(err) {
@@ -326,7 +397,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource[]
 
                 try {
-                    response = await viewset.command({url: `${baseRoute}${cmd}/`, data, method})
+                    response = await viewset!.command({url: `${baseRoute}${cmd}/`, data, method})
                 }
 
                 catch(err) {
@@ -374,7 +445,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource
 
                 try {
-                    response = await viewset.update(pk, {data})
+                    response = await viewset!.update(pk, {data})
                 }
 
                 catch(err) {
@@ -421,7 +492,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 })
 
                 try {
-                    await viewset.destroy(pk)
+                    await viewset!.destroy(pk)
                 }
 
                 catch(err) {
@@ -468,7 +539,7 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 let response: Resource
 
                 try {
-                    response = await viewset.action({url: `${baseRoute}${pk}/${act}/`, data, method})
+                    response = await viewset!.action({url: `${baseRoute}${pk}/${act}/`, data, method})
                 }
 
                 catch(err) {
@@ -514,17 +585,34 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
 
     useEffect(
         () => {
-            if(!refreshOnMount) return
-            if(!state.firstRun) return
-            if(state.busy) return
-            if(state.error) return
-            if(state.resources) return
+            if(!refreshOnMount) {
+                return
+            }
+            if(!viewset) {
+                return
+            }
+            if(!state.firstRun) {
+                return
+            }
+            if(state.busy) {
+                return
+            }
+            if(state.error) {
+                return
+            }
+            if(state.resources) {
+                return
+            }
 
             // noinspection JSIgnoredPromiseFromCall
             refresh()
         },
-        [refresh, state, refreshOnMount]
+        [refresh, state, refreshOnMount],
     )
+
+    if(!viewset) {
+        return undefined
+    }
 
     return {
         busy: state.busy,
