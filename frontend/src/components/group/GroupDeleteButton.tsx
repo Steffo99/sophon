@@ -15,14 +15,6 @@ export interface GroupDeleteButtonProps {
 export function GroupDeleteButton({resource}: GroupDeleteButtonProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
 
-    const doDelete =
-        React.useCallback(
-            async () => {
-                await resource.destroy()
-            },
-            [resource],
-        )
-
     if(!authorization) {
         return null
     }
@@ -34,7 +26,7 @@ export function GroupDeleteButton({resource}: GroupDeleteButtonProps): JSX.Eleme
     }
 
     return (
-        <SafetyButton timeout={3} onClick={doDelete}>
+        <SafetyButton timeout={3} onClick={() => resource.destroy()}>
             <FontAwesomeIcon icon={faTrash} pulse={resource.busy}/>&nbsp;Delete
         </SafetyButton>
     )
