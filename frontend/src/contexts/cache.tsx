@@ -3,28 +3,35 @@ import {ManagedViewSet, useManagedViewSet} from "../hooks/useManagedViewSet"
 import {WithChildren} from "../types/ExtraTypes"
 import {SophonUser} from "../types/SophonTypes"
 
-// States
 
+/**
+ * The contents of the {@link cacheContext}.
+ */
 type Cache = {
     users?: ManagedViewSet<SophonUser>,
 }
 
 
-// Actions
-
 const cacheContext = React.createContext<Cache>({})
 const CacheContext = cacheContext
 
 
-// Hooks
-
+/**
+ * Hook to access the {@link cacheContext}.
+ */
 export function useCacheContext(): Cache {
     return React.useContext(cacheContext)
 }
 
 
-// Components
-
+/**
+ * A provider for {@link cacheContext} which fetches some resources from the Sophon instance and caches them for future use.
+ *
+ * For example, one of the stored resources is the list of all users, which is later used to map user ids to usernames.
+ *
+ * @param children
+ * @constructor
+ */
 export function CacheProvider({children}: WithChildren): JSX.Element {
     const users = useManagedViewSet<SophonUser>("/api/core/users/", "id")
 
