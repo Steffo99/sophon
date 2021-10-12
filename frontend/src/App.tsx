@@ -1,6 +1,6 @@
 import * as Reach from "@reach/router"
 import {RouteComponentProps} from "@reach/router"
-import {LayoutThreeCol} from "@steffo/bluelib-react"
+import {Chapter, LayoutThreeCol} from "@steffo/bluelib-react"
 import * as React from "react"
 import {AuthorizationRouter} from "./components/authorization/AuthorizationRouter"
 import {AuthorizationStepPage} from "./components/authorization/AuthorizationStepPage"
@@ -9,6 +9,7 @@ import {ErrorCatcherBox} from "./components/errors/ErrorCatcherBox"
 import {GroupCreateBox} from "./components/group/GroupCreateBox"
 import {GroupDescriptionBox} from "./components/group/GroupDescriptionBox"
 import {GroupListBox} from "./components/group/GroupListBox"
+import {GroupMembersBox} from "./components/group/GroupMembersBox"
 import {GroupRouter} from "./components/group/GroupRouter"
 import {InstanceDescriptionBox} from "./components/instance/InstanceDescriptionBox"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
@@ -48,10 +49,15 @@ function App({..._}: RouteComponentProps) {
                                             <GroupCreateBox viewSet={viewSet}/>
                                         </>}
                                         selectedRoute={({selection}) => <>
-                                            <GroupDescriptionBox resource={selection}/>
+                                            <Chapter>
+                                                <GroupDescriptionBox resource={selection}/>
+                                                <GroupMembersBox resource={selection}/>
+                                            </Chapter>
                                             <ProjectRouter
                                                 groupPk={selection.value.slug}
-                                                unselectedRoute={({viewSet}) => <ProjectListBox viewSet={viewSet}/>}
+                                                unselectedRoute={({viewSet}) => <>
+                                                    <ProjectListBox viewSet={viewSet}/>
+                                                </>}
                                                 selectedRoute={({selection}) => <>
                                                     <NotebookRouter
                                                         projectPk={selection.value.slug}
