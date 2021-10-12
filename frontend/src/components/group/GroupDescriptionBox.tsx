@@ -1,5 +1,6 @@
-import {Box, Heading} from "@steffo/bluelib-react"
+import {Box, Heading, Idiomatic} from "@steffo/bluelib-react"
 import * as React from "react"
+import ReactMarkdown from "react-markdown"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
 
@@ -13,11 +14,11 @@ export function GroupDescriptionBox({resource}: GroupDescriptionBoxProps): JSX.E
     return (
         <Box>
             <Heading level={3}>
-                {resource.value.name}
+                About <Idiomatic>{resource.value.name}</Idiomatic>
             </Heading>
-            <pre>
+            <ReactMarkdown>
                 {resource.value.description}
-            </pre>
+            </ReactMarkdown>
         </Box>
     )
 }

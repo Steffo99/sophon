@@ -1,5 +1,6 @@
-import {Box, Heading} from "@steffo/bluelib-react"
+import {Box, Heading, Idiomatic} from "@steffo/bluelib-react"
 import * as React from "react"
+import ReactMarkdown from "react-markdown"
 import {useInstanceContext} from "../../contexts/instance"
 import {ErrorBox} from "../errors/ErrorBox"
 
@@ -19,15 +20,14 @@ export function InstanceDescriptionBox(): JSX.Element | null {
         return null
     }
 
-    // TODO: In the future, it would be nice for this to be parsed as Markdown!
     return (
         <Box>
             <Heading level={3}>
-                Welcome to {instance.state.details.name}!
+                About <Idiomatic>{instance.state.details.name}</Idiomatic>
             </Heading>
-            <pre>
+            <ReactMarkdown>
                 {instance.state.details.description}
-            </pre>
+            </ReactMarkdown>
         </Box>
     )
 }

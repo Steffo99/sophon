@@ -3,7 +3,8 @@ import * as React from "react"
 import {useInstanceContext} from "../../contexts/instance"
 import {useAbortEffect} from "../../hooks/useAbortEffect"
 import {useSophonPath} from "../../hooks/useSophonPath"
-import {SophonInstanceDetails} from "../../types/SophonTypes"
+import {DjangoPage} from "../../types/DjangoTypes"
+import {SophonInstanceDetails, SophonUser} from "../../types/SophonTypes"
 import {InstanceEncoder} from "../../utils/InstanceEncoder"
 
 
@@ -38,7 +39,7 @@ export function useInstanceLoader() {
                 // Try to get the instance data from the backend
                 let response: AxiosResponse<SophonInstanceDetails>
                 try {
-                    response = await Axios.get<SophonInstanceDetails>("/api/core/instance", {baseURL: url.toString(), signal})
+                    response = await Axios.get<SophonInstanceDetails>("/api/core/instance/", {baseURL: url.toString(), signal})
                 }
                 catch(e) {
                     if(signal.aborted) {
@@ -49,11 +50,35 @@ export function useInstanceLoader() {
                     }
                 }
 
+                if(signal.aborted) {
+                    return
+                }
+
+                // Try to get the user data from the backend
+                // FIXME: This won't work if Django returns multiple pages, but it is insignificant right now, as we won't ever have >500 users
+                let users: AxiosResponse<DjangoPage<SophonUser>>
+                try {
+                    users = await Axios.get<DjangoPage<SophonUser>>("/api/core/users/", {baseURL: url.toString(), signal})
+                }
+                catch(e) {
+                    if(signal.aborted) {
+                        return
+                    }
+                    else {
+                        throw e
+                    }
+                }
+
+                if(signal.aborted) {
+                    return
+                }
+
                 // If the response is successful, update the info about the current instance
                 instance.dispatch({
                     type: "select",
                     url: url,
                     details: response.data,
+                    users: users.data.results,
                 })
             },
             [instance, path],
