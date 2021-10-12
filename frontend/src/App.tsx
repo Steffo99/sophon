@@ -57,6 +57,7 @@ function App({..._}: RouteComponentProps) {
                                                 groupPk={selection.value.slug}
                                                 unselectedRoute={({viewSet}) => <>
                                                     <ProjectListBox viewSet={viewSet}/>
+                                                    <GroupCreateBox resource={selection}/>
                                                 </>}
                                                 selectedRoute={({selection}) => <>
                                                     <NotebookRouter
