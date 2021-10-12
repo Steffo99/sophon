@@ -112,7 +112,7 @@ class SophonModel(models.Model):
 
         return set.difference(
             cls.get_fields(),
-            cls.get_administrable_fields(),
+            cls.get_administrable_fields().union(cls.get_editable_fields()),
         )
 
     @abc.abstractmethod
