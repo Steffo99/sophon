@@ -18,7 +18,7 @@ export interface GroupResourcePanelProps {
 export function GroupResourcePanel({resource}: GroupResourcePanelProps): JSX.Element {
     const icon = resource.value.access === "OPEN" ? faGlobe : faEnvelope
 
-    const trueMembers = [resource.value.owner, ...resource.value.members]
+    const trueMembers = [...new Set([resource.value.owner, ...resource.value.members])]
 
     return (
         <ResourcePanel>

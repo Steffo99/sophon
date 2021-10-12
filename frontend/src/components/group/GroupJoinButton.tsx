@@ -15,7 +15,7 @@ export interface GroupJoinButtonProps {
 export function GroupJoinButton({resource}: GroupJoinButtonProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
 
-    const trueMembers = [resource.value.owner, ...resource.value.members]
+    const trueMembers = [...new Set([resource.value.owner, ...resource.value.members])]
 
     const doJoin =
         React.useCallback(

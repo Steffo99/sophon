@@ -34,7 +34,7 @@ export function GroupDeleteButton({resource}: GroupDeleteButtonProps): JSX.Eleme
     }
 
     return (
-        <SafetyButton timeout={5} onClick={doDelete}>
+        <SafetyButton timeout={3} onClick={doDelete}>
             <FontAwesomeIcon icon={faTrash} pulse={resource.busy}/>&nbsp;Delete
         </SafetyButton>
     )

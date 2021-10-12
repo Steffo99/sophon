@@ -1,10 +1,10 @@
 import {faUserMinus} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {Button} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
+import {SafetyButton} from "../elements/SafetyButton"
 
 
 export interface GroupLeaveButtonProps {
@@ -15,7 +15,7 @@ export interface GroupLeaveButtonProps {
 export function GroupLeaveButton({resource}: GroupLeaveButtonProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
 
-    const trueMembers = [resource.value.owner, ...resource.value.members]
+    const trueMembers = [...new Set([resource.value.owner, ...resource.value.members])]
 
     const doLeave =
         React.useCallback(
@@ -39,8 +39,8 @@ export function GroupLeaveButton({resource}: GroupLeaveButtonProps): JSX.Element
     }
 
     return (
-        <Button disabled={resource.busy} onClick={doLeave} bluelibClassNames={resource.busy ? "color-yellow" : ""}>
+        <SafetyButton timeout={3} disabled={resource.busy} onClick={doLeave} bluelibClassNames={resource.busy ? "color-yellow" : ""}>
             <FontAwesomeIcon icon={faUserMinus} pulse={resource.busy}/>&nbsp;Leave
-        </Button>
+        </SafetyButton>
     )
 }
