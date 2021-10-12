@@ -7,8 +7,10 @@ import {AuthorizationStepPage} from "./components/authorization/AuthorizationSte
 import {SophonFooter} from "./components/elements/SophonFooter"
 import {ErrorCatcherBox} from "./components/errors/ErrorCatcherBox"
 import {GroupCreateBox} from "./components/group/GroupCreateBox"
+import {GroupDescriptionBox} from "./components/group/GroupDescriptionBox"
 import {GroupListBox} from "./components/group/GroupListBox"
 import {GroupRouter} from "./components/group/GroupRouter"
+import {InstanceDescriptionBox} from "./components/instance/InstanceDescriptionBox"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
 import {InstanceStepPage} from "./components/instance/InstanceStepPage"
 import {NotebookListBox} from "./components/notebook/NotebookListBox"
@@ -31,6 +33,7 @@ function App({..._}: RouteComponentProps) {
                     <InstanceStepPage/>
                 </>}
                 selectedRoute={() => <>
+                    <InstanceDescriptionBox/>
                     <AuthorizationProvider>
                         <AuthorizationRouter
                             unselectedRoute={() => <>
@@ -38,18 +41,19 @@ function App({..._}: RouteComponentProps) {
                             </>}
                             selectedRoute={() => <>
                                 <GroupRouter
-                                    unselectedRoute={(props) => <>
-                                        <GroupListBox viewSet={props.viewSet}/>
-                                        <GroupCreateBox viewSet={props.viewSet}/>
+                                    unselectedRoute={({viewSet}) => <>
+                                        <GroupListBox viewSet={viewSet}/>
+                                        <GroupCreateBox viewSet={viewSet}/>
                                     </>}
-                                    selectedRoute={(props) => <>
+                                    selectedRoute={({selection}) => <>
+                                        <GroupDescriptionBox resource={selection}/>
                                         <ProjectRouter
-                                            groupPk={props.selection.value.slug}
-                                            unselectedRoute={(props) => <ProjectListBox viewSet={props.viewSet}/>}
-                                            selectedRoute={(props) => <>
+                                            groupPk={selection.value.slug}
+                                            unselectedRoute={({viewSet}) => <ProjectListBox viewSet={viewSet}/>}
+                                            selectedRoute={({selection}) => <>
                                                 <NotebookRouter
-                                                    projectPk={props.selection.value.slug}
-                                                    unselectedRoute={(props) => <NotebookListBox viewSet={props.viewSet}/>}
+                                                    projectPk={selection.value.slug}
+                                                    unselectedRoute={({viewSet}) => <NotebookListBox viewSet={viewSet}/>}
                                                     selectedRoute={DebugBox}
                                                 />
                                             </>}
