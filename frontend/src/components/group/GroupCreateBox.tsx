@@ -26,7 +26,7 @@ export function GroupCreateBox({viewSet}: GroupCreateBoxProps): JSX.Element | nu
 
     const membersOptions: { [key: string]: number } | undefined =
         React.useMemo(
-            () => cache.users?.resources?.filter(m => m.value.id !== authorization?.state.user?.id).map(m => {
+            () => cache?.users?.resources?.filter(m => m.value.id !== authorization?.state.user?.id).map(m => {
                 const obj: { [key: string]: number } = {}
                 obj[m.value.username] = m.value.id
                 return obj
