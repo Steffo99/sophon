@@ -12,7 +12,7 @@ export function AuthorizationAdminBox(): JSX.Element {
     const canAdministrate =
         React.useMemo(
             () => (
-                authorization !== undefined && !authorization.state.running
+                authorization !== undefined && authorization.state.token === undefined && !authorization.state.running
             ),
             [authorization],
         )
@@ -36,7 +36,7 @@ export function AuthorizationAdminBox(): JSX.Element {
     return (
         <Box disabled={!canAdministrate}>
             <Heading level={3}>
-                Site administration
+                Server administration
             </Heading>
             <p>
                 To configure the Sophon server, an account with <I>superuser</I> access is required.

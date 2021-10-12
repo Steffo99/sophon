@@ -1,11 +1,12 @@
 import {navigate} from "@reach/router"
 import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
 import {Validator} from "@steffo/bluelib-react/dist/types"
-import Axios from "axios-lab"
+import Axios, {AxiosResponse} from "axios-lab"
 import * as React from "react"
 import {CHECK_TIMEOUT_MS} from "../../constants"
 import {useInstanceContext} from "../../contexts/instance"
-import {SophonInstanceDetails} from "../../types/SophonTypes"
+import {DjangoPage} from "../../types/DjangoTypes"
+import {SophonInstanceDetails, SophonUser} from "../../types/SophonTypes"
 import {InstanceEncoder} from "../../utils/InstanceEncoder"
 
 
@@ -69,11 +70,31 @@ export function InstanceFormBox(): JSX.Element {
                     return null
                 }
 
+                // Try to get the user data from the backend
+                // FIXME: This won't work if Django returns multiple pages, but it is insignificant right now, as we won't ever have >500 users
+                let users: AxiosResponse<DjangoPage<SophonUser>>
+                try {
+                    users = await Axios.get<DjangoPage<SophonUser>>("/api/core/users/", {baseURL: url.toString(), signal})
+                }
+                catch(e) {
+                    if(signal.aborted) {
+                        return
+                    }
+                    else {
+                        throw e
+                    }
+                }
+
+                if(signal.aborted) {
+                    return
+                }
+
                 // If the response is successful, update the info about the current instance
                 instance.dispatch({
                     type: "select",
                     url: url,
                     details: response.data,
+                    users: users.data.results,
                 })
 
                 // Success!
@@ -112,7 +133,7 @@ export function InstanceFormBox(): JSX.Element {
                 Sophon can be used by multiple institutions, each one using a physically separate instance, allowing them to stay in control of their data.
             </p>
             <Form>
-                <Form.Field label={"URL"} disabled={!canInput} required {...urlField}/>
+                <Form.Field label={"URL"} disabled={!canInput} placeholder={"https://sophon.steffo.eu"} required {...urlField}/>
                 <Form.Row>
                     <Form.Button disabled={!urlField.validity} onClick={onContinue}>
                         Continue to login
