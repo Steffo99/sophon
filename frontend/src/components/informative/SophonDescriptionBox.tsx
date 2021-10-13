@@ -1,6 +1,6 @@
 import {faServer} from "@fortawesome/free-solid-svg-icons"
 import * as React from "react"
-import {DescriptionBox} from "../elements/DescriptionBox"
+import {DescriptionBox} from "../elements/DescriptionBoxProps"
 
 
 export function SophonDescriptionBox(): JSX.Element {
