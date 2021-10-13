@@ -21,7 +21,7 @@ export function GroupListBox({viewSet}: GroupListBoxProps): JSX.Element {
             if(viewSet.resources.length === 0) {
                 return <Empty>This Sophon instance has no groups.</Empty>
             }
-            return viewSet.resources?.map(res => <GroupResourcePanel resource={res} key={res.value.slug}/>)
+            return viewSet.resources?.map(res => <GroupResourcePanel resource={res} key={res.value?.slug}/>)
         },
         [viewSet],
     )
