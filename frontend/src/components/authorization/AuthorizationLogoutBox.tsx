@@ -62,18 +62,22 @@ export function AuthorizationLogoutBox(): JSX.Element {
                 Logout
             </Heading>
             <p>
-                To use a different account with Sophon, you'll need to logout from your current one first.
-            </p>
-            <p>
                 You are currently logged in as {loggedUsername}.
+            </p>
+            <Form>
+                <Form.Row>
+                    <Form.Button onClick={() => navigate("l/")}>
+                        Continue to Sophon
+                    </Form.Button>
+                </Form.Row>
+            </Form>
+            <p>
+                To use a different account with Sophon, you'll need to logout from your current one first.
             </p>
             <Form>
                 <Form.Row>
                     <Form.Button disabled={!canLogout} onClick={doLogout}>
                         Logout
-                    </Form.Button>
-                    <Form.Button onClick={() => navigate("l/")}>
-                        Continue to Sophon
                     </Form.Button>
                 </Form.Row>
             </Form>

@@ -4,6 +4,7 @@ import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {SophonToken, SophonUser} from "../../types/SophonTypes"
+import {Validators} from "../../utils/Validators"
 import {Loading} from "../elements/Loading"
 import {useInstanceAxios} from "../instance/useInstanceAxios"
 
@@ -14,8 +15,8 @@ export function AuthorizationLoginBox(): JSX.Element {
 
     const [error, setError] = React.useState<Error | undefined>(undefined)
 
-    const username = useFormState<string>("", () => undefined)
-    const password = useFormState<string>("", () => undefined)
+    const username = useFormState<string>("", Validators.doNotValidate)
+    const password = useFormState<string>("", Validators.doNotValidate)
 
     const canLogin =
         React.useMemo<boolean>(
@@ -110,8 +111,21 @@ export function AuthorizationLoginBox(): JSX.Element {
                 If you do not have one, you can ask your system administrator to create one for you.
             </p>
             <Form>
-                <Form.Field label={"Username"} required disabled={!canLogin} {...username}/>
-                <Form.Field label={"Password"} type={"password"} required disabled={!canLogin} {...password}/>
+                <Form.Field
+                    label={"Username"}
+                    placeholder={"enfer"}
+                    required={true}
+                    disabled={!canLogin}
+                    {...username}
+                />
+                <Form.Field
+                    label={"Password"}
+                    type={"password"}
+                    placeholder={"••••••••••"}
+                    required={true}
+                    disabled={!canLogin}
+                    {...password}
+                />
                 <Form.Row>
                     <Form.Button type={"submit"} bluelibClassNames={buttonColor} disabled={!canClickLogin} onClick={doLogin}>
                         {buttonText}
