@@ -2,6 +2,10 @@ import {Validity} from "@steffo/bluelib-react/dist/types"
 
 
 export class Validators {
+    static doNotValidate<T>(val: T): Validity {
+        return undefined
+    }
+
     static alwaysValid<T>(val: T): Validity {
         return true
     }

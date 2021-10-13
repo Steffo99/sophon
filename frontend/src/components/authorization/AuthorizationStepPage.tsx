@@ -7,10 +7,10 @@ import {AuthorizationLoginBox} from "./AuthorizationLoginBox"
 import {AuthorizationLogoutBox} from "./AuthorizationLogoutBox"
 
 
-export function AuthorizationStepPage(): JSX.Element {
+export function AuthorizationStepPage(): JSX.Element | null {
     const authorization = useAuthorizationContext()
 
-    const loginChapter = React.useMemo(
+    return React.useMemo(
         () => {
             if(!authorization) {
                 return null
@@ -20,6 +20,7 @@ export function AuthorizationStepPage(): JSX.Element {
                     <Chapter>
                         <AuthorizationLogoutBox/>
                         <AuthorizationLoginBox/>
+                        <AuthorizationAdminBox/>
                     </Chapter>
                 )
             }
@@ -28,6 +29,7 @@ export function AuthorizationStepPage(): JSX.Element {
                     <Chapter>
                         <AuthorizationBrowseBox/>
                         <AuthorizationLogoutBox/>
+                        <AuthorizationAdminBox/>
                     </Chapter>
                 )
             }
@@ -35,16 +37,10 @@ export function AuthorizationStepPage(): JSX.Element {
                 <Chapter>
                     <AuthorizationBrowseBox/>
                     <AuthorizationLoginBox/>
+                    <AuthorizationAdminBox/>
                 </Chapter>
             )
         },
         [authorization],
     )
-
-    return <>
-        {loginChapter}
-        <Chapter>
-            <AuthorizationAdminBox/>
-        </Chapter>
-    </>
 }
