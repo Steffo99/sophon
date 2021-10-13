@@ -2,7 +2,6 @@ import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useCacheContext} from "../../contexts/cache"
-import {useInstanceContext} from "../../contexts/instance"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
 
@@ -14,7 +13,6 @@ export interface GroupCreateBoxProps {
 
 
 export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.Element | null {
-    const instance = useInstanceContext()
     const authorization = useAuthorizationContext()
     const cache = useCacheContext()
 
@@ -33,7 +31,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
             }).reduce((a, b) => {
                 return {...a, ...b}
             }),
-            [instance, authorization],
+            [authorization, cache],
         )
 
     const members =
@@ -83,7 +81,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                 (
                     authorization && authorization.state.user && trueMembers?.includes(authorization.state.user.id)
                 ),
-            [authorization, resource],
+            [authorization, resource, trueMembers],
         )
 
     const canAdministrate =

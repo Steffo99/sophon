@@ -28,54 +28,57 @@ import {ThemeProvider} from "./contexts/theme"
 
 
 function App({..._}: RouteComponentProps) {
-    return (
-        <InstanceProvider>
-            <InstanceRouter
-                unselectedRoute={() => <>
-                    <InstanceStepPage/>
-                </>}
-                selectedRoute={() => <>
-                    <InstanceDescriptionBox/>
-                    <AuthorizationProvider>
-                        <AuthorizationRouter
-                            unselectedRoute={() => <>
-                                <AuthorizationStepPage/>
-                            </>}
-                            selectedRoute={() => <>
-                                <CacheProvider>
-                                    <GroupRouter
-                                        unselectedRoute={({viewSet}) => <>
-                                            <GroupListBox viewSet={viewSet}/>
-                                            <GroupCreateBox viewSet={viewSet}/>
-                                        </>}
-                                        selectedRoute={({selection}) => <>
-                                            <Chapter>
-                                                <GroupDescriptionBox resource={selection}/>
-                                                <GroupMembersBox resource={selection}/>
-                                            </Chapter>
-                                            <ProjectRouter
-                                                groupPk={selection.value.slug}
-                                                unselectedRoute={({viewSet}) => <>
-                                                    <ProjectListBox viewSet={viewSet}/>
-                                                    <GroupCreateBox resource={selection}/>
-                                                </>}
-                                                selectedRoute={({selection}) => <>
-                                                    <NotebookRouter
-                                                        projectPk={selection.value.slug}
-                                                        unselectedRoute={({viewSet}) => <NotebookListBox viewSet={viewSet}/>}
-                                                        selectedRoute={DebugBox}
-                                                    />
-                                                </>}
-                                            />
-                                        </>}
-                                    />
-                                </CacheProvider>
-                            </>}
-                        />
-                    </AuthorizationProvider>
-                </>}
-            />
-        </InstanceProvider>
+    return React.useMemo(
+        () => (
+            <InstanceProvider>
+                <InstanceRouter
+                    unselectedRoute={() => <>
+                        <InstanceStepPage/>
+                    </>}
+                    selectedRoute={() => <>
+                        <InstanceDescriptionBox/>
+                        <AuthorizationProvider>
+                            <CacheProvider>
+                                <AuthorizationRouter
+                                    unselectedRoute={() => <>
+                                        <AuthorizationStepPage/>
+                                    </>}
+                                    selectedRoute={() => <>
+                                        <GroupRouter
+                                            unselectedRoute={({viewSet}) => <>
+                                                <GroupListBox viewSet={viewSet}/>
+                                                <GroupCreateBox viewSet={viewSet}/>
+                                            </>}
+                                            selectedRoute={({selection}) => <>
+                                                <Chapter>
+                                                    <GroupDescriptionBox resource={selection}/>
+                                                    <GroupMembersBox resource={selection}/>
+                                                </Chapter>
+                                                <ProjectRouter
+                                                    groupPk={selection.value.slug}
+                                                    unselectedRoute={({viewSet}) => <>
+                                                        <ProjectListBox viewSet={viewSet}/>
+                                                        <GroupCreateBox resource={selection}/>
+                                                    </>}
+                                                    selectedRoute={({selection}) => <>
+                                                        <NotebookRouter
+                                                            projectPk={selection.value.slug}
+                                                            unselectedRoute={({viewSet}) => <NotebookListBox viewSet={viewSet}/>}
+                                                            selectedRoute={DebugBox}
+                                                        />
+                                                    </>}
+                                                />
+                                            </>}
+                                        />
+                                    </>}
+                                />
+                            </CacheProvider>
+                        </AuthorizationProvider>
+                    </>}
+                />
+            </InstanceProvider>
+        ),
+        [],
     )
 }
 

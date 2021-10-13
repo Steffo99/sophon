@@ -586,28 +586,35 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
     useEffect(
         () => {
             if(!refreshOnMount) {
+                console.debug("[ManagedViewSet |", baseRoute, "] Not refreshing: refreshOnMount is", refreshOnMount)
                 return
             }
             if(!viewset) {
+                console.debug("[ManagedViewSet |", baseRoute, "] Not refreshing: viewset could not be initialized")
                 return
             }
             if(!state.firstRun) {
+                console.debug("[ManagedViewSet |", baseRoute, "] Not refreshing: this is not the first run")
                 return
             }
             if(state.busy) {
+                console.debug("[ManagedViewSet |", baseRoute, "] Not refreshing: viewset is busy")
                 return
             }
             if(state.error) {
+                console.debug("[ManagedViewSet |", baseRoute, "] Not refreshing: an error occoured")
                 return
             }
             if(state.resources) {
+                console.debug("[ManagedViewSet |", baseRoute, "] Not refreshing: resources are already available")
                 return
             }
 
             // noinspection JSIgnoredPromiseFromCall
             refresh()
+            console.debug("[ManagedViewSet |", baseRoute, "] Requested a refresh successfully")
         },
-        [refresh, state, refreshOnMount],
+        [refresh, state, refreshOnMount, viewset, baseRoute],
     )
 
     if(!viewset) {
