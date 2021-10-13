@@ -6,8 +6,8 @@ import {AuthorizationRouter} from "./components/authorization/AuthorizationRoute
 import {AuthorizationStepPage} from "./components/authorization/AuthorizationStepPage"
 import {SophonFooter} from "./components/elements/SophonFooter"
 import {ErrorCatcherBox} from "./components/errors/ErrorCatcherBox"
+import {ResourceDescriptionBox} from "./components/generic/ResourceDescriptionBox"
 import {GroupCreateBox} from "./components/group/GroupCreateBox"
-import {GroupDescriptionBox} from "./components/group/GroupDescriptionBox"
 import {GroupListBox} from "./components/group/GroupListBox"
 import {GroupMembersBox} from "./components/group/GroupMembersBox"
 import {GroupRouter} from "./components/group/GroupRouter"
@@ -36,7 +36,9 @@ function App({..._}: RouteComponentProps) {
                         <InstanceStepPage/>
                     </>}
                     selectedRoute={() => <>
-                        <InstanceDescriptionBox/>
+                        <Chapter>
+                            <InstanceDescriptionBox/>
+                        </Chapter>
                         <AuthorizationProvider>
                             <CacheProvider>
                                 <AuthorizationRouter
@@ -51,7 +53,7 @@ function App({..._}: RouteComponentProps) {
                                             </>}
                                             selectedRoute={({selection}) => <>
                                                 <Chapter>
-                                                    <GroupDescriptionBox resource={selection}/>
+                                                    <ResourceDescriptionBox resource={selection}/>
                                                     <GroupMembersBox resource={selection}/>
                                                 </Chapter>
                                                 <ProjectRouter
@@ -61,10 +63,17 @@ function App({..._}: RouteComponentProps) {
                                                         <GroupCreateBox resource={selection}/>
                                                     </>}
                                                     selectedRoute={({selection}) => <>
+                                                        <Chapter>
+                                                            <ResourceDescriptionBox resource={selection}/>
+                                                        </Chapter>
                                                         <NotebookRouter
                                                             projectPk={selection.value.slug}
-                                                            unselectedRoute={({viewSet}) => <NotebookListBox viewSet={viewSet}/>}
-                                                            selectedRoute={DebugBox}
+                                                            unselectedRoute={({viewSet}) => <>
+                                                                <NotebookListBox viewSet={viewSet}/>
+                                                            </>}
+                                                            selectedRoute={(props) => <>
+                                                                <DebugBox {...props}/>
+                                                            </>}
                                                         />
                                                     </>}
                                                 />
