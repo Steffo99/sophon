@@ -4,6 +4,7 @@ import {useAuthorizationContext} from "../../contexts/authorization"
 import {useCacheContext} from "../../contexts/cache"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
+import {Validators} from "../../utils/Validators"
 
 
 /**
@@ -24,15 +25,66 @@ export interface GroupCreateBoxProps {
 }
 
 
+/**
+ * A {@link Box} to create or edit a {@link SophonResearchGroup}.
+ *
+ * @constructor
+ */
 export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
     const cache = useCacheContext()
 
     const name =
-        useFormState<string>(resource?.value.name ?? "", val => val.length > 0 ? true : undefined)
+        useFormState<string>(
+            resource?.value.name ?? "",
+            Validators.notZeroLength,
+        )
 
     const description =
-        useFormState<string>(resource?.value.description ?? "", val => val.length > 0 ? true : undefined)
+        useFormState<string>(
+            resource?.value.description ?? "",
+            Validators.notZeroLength,
+        )
+
+    const members =
+        useFormState<number[]>(
+            resource?.value.members ?? [],
+            Validators.alwaysValid,
+        )
+
+    const access =
+        useFormState<"OPEN" | "MANUAL" | undefined>(
+            resource?.value.access ?? undefined,
+            Validators.notEmpty,
+        )
+
+    const slug =
+        React.useMemo(
+            () => resource ? resource.value.slug : name.value.replaceAll(/[^A-Za-z0-9-]/g, "-").toLowerCase(),
+            [resource, name],
+        )
+
+    const canAdministrate =
+        React.useMemo(
+            () => {
+                if(resource) {
+                    if(!authorization) {
+                        return false
+                    }
+                    if(!authorization.state.user) {
+                        return false
+                    }
+                    if(authorization.state.user.id !== resource.value.owner) {
+                        return false
+                    }
+                    return true
+                }
+                else {
+                    return true
+                }
+            },
+            [authorization, resource],
+        )
 
     const membersOptions: { [key: string]: number } | undefined =
         React.useMemo(
@@ -46,17 +98,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
             [authorization, cache],
         )
 
-    const members =
-        useFormState<number[]>(resource?.value.members ?? [], arr => arr.length > 0 ? true : undefined)
-
-    const access =
-        useFormState<"OPEN" | "MANUAL" | undefined>(resource?.value.access ?? undefined, val => (
-                                                                                                    val?.length
-                                                                                                ) ? true : undefined)
-
-    const slug = name.value.replaceAll(/[^A-Za-z0-9-]/g, "-").toLowerCase()
-
-    const onSubmit =
+    const applyChanges =
         React.useCallback(
             async () => {
                 if(resource) {
@@ -68,8 +110,8 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                         access: access.value,
                     })
                 }
-                else if(viewSet) {
-                    await viewSet.create({
+                else {
+                    await viewSet!.create({
                         name: name.value,
                         slug: slug,
                         description: description.value,
@@ -81,34 +123,25 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
             [viewSet, resource, name, slug, description, members, access],
         )
 
-    const canAdministrate =
-        React.useMemo(
-            () => !resource ||
-                (
-                    authorization && authorization.state.user && authorization.state.user.id === resource.value.owner
-                ),
-            [authorization, resource],
-        )
-
-    const canSubmit =
+    const canApply =
         React.useMemo(
             () => name.validity === true && access.validity === true && Boolean(authorization?.state.user?.username),
             [name, access, authorization],
         )
 
-    if(!authorization?.state.token) {
-        return null
-    }
-    if(!(
-        viewSet || resource
-    )) {
-        return null
-    }
-    if(!canAdministrate) {
-        return null
-    }
+    const hasError =
+        React.useMemo(
+            () => viewSet?.operationError || resource?.error,
+            [viewSet, resource],
+        )
 
-    const hasError = viewSet?.operationError || resource?.error
+    if(!authorization?.state.token ||
+        !(
+            viewSet || resource
+        ) ||
+        !canAdministrate) {
+        return null
+    }
 
     return (
         <Box>
@@ -136,14 +169,15 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                         />
                         <Form.Multiselect
                             label={"Members"}
-                            options={membersOptions ?? {}} {...members}
+                            options={membersOptions ?? {}}
+                            {...members}
                         />
                         <Form.Field
                             label={"Owner"}
                             required={true}
                             disabled={true}
-                            value={authorization?.state.user?.username}
-                            validity={Boolean(authorization?.state.user?.username)}
+                            value={authorization.state.user.username}
+                            validity={true}
                         />
                         <Form.Select
                             label={"Access"}
@@ -157,8 +191,8 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                         <Form.Row>
                             <Form.Button
                                 type={"button"}
-                                onClick={onSubmit}
-                                disabled={!canSubmit}
+                                onClick={applyChanges}
+                                disabled={!canApply}
                                 builtinColor={hasError ? "red" : undefined}
                             >
                                 {resource ? "Edit" : "Create"}
