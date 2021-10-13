@@ -1,7 +1,7 @@
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core"
 import * as React from "react"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
-import {DescriptionBox} from "../elements/DescriptionBox"
+import {DescriptionBox} from "../elements/DescriptionBoxProps"
 
 
 export interface NamedAndDescribed {
@@ -25,6 +25,6 @@ export function ResourceDescriptionBox<T extends NamedAndDescribed>({resource, i
                 description={resource.value.description}
             />
         ),
-        [resource],
+        [resource, icon],
     )
 }

@@ -60,8 +60,8 @@ function App({..._}: RouteComponentProps) {
                                                 <ProjectRouter
                                                     groupPk={selection.value.slug}
                                                     unselectedRoute={({viewSet}) => <>
-                                                        <ProjectListBox viewSet={viewSet}/>
                                                         <GroupCreateBox resource={selection}/>
+                                                        <ProjectListBox viewSet={viewSet}/>
                                                     </>}
                                                     selectedRoute={({selection}) => <>
                                                         <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
