@@ -20,10 +20,7 @@ export interface ResourceRouterProps<Resource> {
  * @warning Due to some particular memoization, changes to `unselectedRoute` and `selectedRoute` will apply **only** when `selection` changes.
  * @constructor
  */
-export function ResourceRouter<Resource>({selection, unselectedRoute, selectedRoute}: ResourceRouterProps<Resource>): JSX.Element {
-    const UnselectedRoute = unselectedRoute
-    const SelectedRoute = selectedRoute
-
+export function ResourceRouter<Resource>({selection, unselectedRoute: UnselectedRoute, selectedRoute: SelectedRoute}: ResourceRouterProps<Resource>): JSX.Element {
     return React.useMemo(
         () => {
             if(selection) {
