@@ -12,9 +12,10 @@ import {GroupCreateBox} from "./components/group/GroupCreateBox"
 import {GroupListBox} from "./components/group/GroupListBox"
 import {GroupMembersBox} from "./components/group/GroupMembersBox"
 import {GroupRouter} from "./components/group/GroupRouter"
+import {SophonDescriptionBox} from "./components/informative/SophonDescriptionBox"
 import {InstanceDescriptionBox} from "./components/instance/InstanceDescriptionBox"
+import {InstanceFormBox} from "./components/instance/InstanceFormBox"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
-import {InstanceStepPage} from "./components/instance/InstanceStepPage"
 import {NotebookListBox} from "./components/notebook/NotebookListBox"
 import {NotebookRouter} from "./components/notebook/NotebookRouter"
 import {DebugBox} from "./components/placeholder/DebugBox"
@@ -30,16 +31,15 @@ import {ThemeProvider} from "./contexts/theme"
 
 function App({..._}: RouteComponentProps) {
     return React.useMemo(
-        () => (
+        () => <>
+            <SophonDescriptionBox/>
             <InstanceProvider>
                 <InstanceRouter
                     unselectedRoute={() => <>
-                        <InstanceStepPage/>
+                        <InstanceFormBox/>
                     </>}
                     selectedRoute={() => <>
-                        <Chapter>
-                            <InstanceDescriptionBox/>
-                        </Chapter>
+                        <InstanceDescriptionBox/>
                         <AuthorizationProvider>
                             <CacheProvider>
                                 <AuthorizationRouter
@@ -64,9 +64,7 @@ function App({..._}: RouteComponentProps) {
                                                         <GroupCreateBox resource={selection}/>
                                                     </>}
                                                     selectedRoute={({selection}) => <>
-                                                        <Chapter>
-                                                            <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
-                                                        </Chapter>
+                                                        <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
                                                         <NotebookRouter
                                                             projectPk={selection.value.slug}
                                                             unselectedRoute={({viewSet}) => <>
@@ -87,7 +85,7 @@ function App({..._}: RouteComponentProps) {
                     </>}
                 />
             </InstanceProvider>
-        ),
+        </>,
         [],
     )
 }

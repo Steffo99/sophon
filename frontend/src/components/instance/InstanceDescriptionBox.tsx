@@ -1,7 +1,7 @@
-import {Box, Heading, Idiomatic} from "@steffo/bluelib-react"
+import {faUniversity} from "@fortawesome/free-solid-svg-icons"
 import * as React from "react"
-import ReactMarkdown from "react-markdown"
 import {useInstanceContext} from "../../contexts/instance"
+import {DescriptionBox} from "../elements/DescriptionBox"
 import {ErrorBox} from "../errors/ErrorBox"
 
 
@@ -21,13 +21,10 @@ export function InstanceDescriptionBox(): JSX.Element | null {
     }
 
     return (
-        <Box>
-            <Heading level={3}>
-                About <Idiomatic>{instance.state.details.name}</Idiomatic>
-            </Heading>
-            <ReactMarkdown>
-                {instance.state.details.description}
-            </ReactMarkdown>
-        </Box>
+        <DescriptionBox
+            icon={faUniversity}
+            name={instance.state.details.name}
+            description={instance.state.details.description}
+        />
     )
 }
