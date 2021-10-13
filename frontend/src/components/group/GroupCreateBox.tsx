@@ -147,7 +147,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
         <Box>
             <Details>
                 <Details.Summary>
-                    {resource ? <>Edit <I>{resource.value.name}</I></> : "Create a new group"}
+                    {resource ? <>Edit <I>{resource.value.name}</I></> : "Create a new research group"}
                 </Details.Summary>
                 <Details.Content>
                     <Form>

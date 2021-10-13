@@ -1,5 +1,8 @@
-import {Box, Heading, Idiomatic, ListUnordered} from "@steffo/bluelib-react"
+import {faUsersCog} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {Box, Heading, Idiomatic, ListUnordered, UAnnotation} from "@steffo/bluelib-react"
 import * as React from "react"
+import {useAuthorizationContext} from "../../contexts/authorization"
 import {useCacheContext} from "../../contexts/cache"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
@@ -11,6 +14,7 @@ export interface GroupMembersBoxProps {
 
 
 export function GroupMembersBox({resource}: GroupMembersBoxProps): JSX.Element | null {
+    const authorization = useAuthorizationContext()
     const cache = useCacheContext()
 
     if(!cache) {
@@ -29,9 +33,11 @@ export function GroupMembersBox({resource}: GroupMembersBoxProps): JSX.Element |
             return null
         }
 
+        const username = id === authorization?.state.user?.id ? <UAnnotation>{user.value.username}</UAnnotation> : user.value.username
+
         return (
             <ListUnordered.Item bluelibClassNames={index === 0 ? "color-blue" : ""} key={id}>
-                {user.value.username}
+                {username}
             </ListUnordered.Item>
         )
     })
@@ -39,7 +45,7 @@ export function GroupMembersBox({resource}: GroupMembersBoxProps): JSX.Element |
     return (
         <Box>
             <Heading level={3}>
-                Members of <Idiomatic>{resource.value.name}</Idiomatic>
+                <FontAwesomeIcon icon={faUsersCog}/> Members of <Idiomatic>{resource.value.name}</Idiomatic>
             </Heading>
             <ListUnordered>
                 {users}
