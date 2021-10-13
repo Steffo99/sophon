@@ -374,14 +374,13 @@ class ResearchGroup(SophonGroupModel):
 
     @classmethod
     def get_editable_fields(cls) -> set[str]:
-        return {
-            "name",
-            "description",
-        }
+        return {}
 
     @classmethod
     def get_administrable_fields(cls) -> set[str]:
         return {
+            "name",
+            "description",
             "members",
             "access",
         }

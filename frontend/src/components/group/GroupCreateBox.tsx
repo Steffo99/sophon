@@ -6,8 +6,20 @@ import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
 
 
+/**
+ * The props of {@link GroupCreateBox}.
+ *
+ * Only one between `viewSet` and `resource` should be defined.
+ */
 export interface GroupCreateBoxProps {
+    /**
+     * The viewSet to use to create new resources.
+     */
     viewSet?: ManagedViewSet<SophonResearchGroup>,
+
+    /**
+     * The resource to be edited.
+     */
     resource?: ManagedResource<SophonResearchGroup>,
 }
 
@@ -69,21 +81,6 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
             [viewSet, resource, name, slug, description, members, access],
         )
 
-    const trueMembers =
-        React.useMemo(
-            () => resource ? [...new Set([resource.value.owner, ...resource.value.members])] : undefined,
-            [resource],
-        )
-
-    const canEdit =
-        React.useMemo(
-            () => !resource ||
-                (
-                    authorization && authorization.state.user && trueMembers?.includes(authorization.state.user.id)
-                ),
-            [authorization, resource, trueMembers],
-        )
-
     const canAdministrate =
         React.useMemo(
             () => !resource ||
@@ -107,9 +104,11 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
     )) {
         return null
     }
-    if(!canEdit) {
+    if(!canAdministrate) {
         return null
     }
+
+    const hasError = viewSet?.operationError || resource?.error
 
     return (
         <Box>
@@ -119,14 +118,35 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                 </Details.Summary>
                 <Details.Content>
                     <Form>
-                        <Form.Field label={"Name"} required disabled={!canEdit} {...name}/>
-                        <Form.Field label={"Slug"} required disabled={true} value={slug} validity={slug.length > 0 ? true : undefined}/>
-                        <Form.Area label={"Description"} disabled={!canEdit} {...description}/>
-                        <Form.Multiselect label={"Members"} disabled={!canAdministrate} options={membersOptions ?? {}} {...members}/>
-                        <Form.Field label={"Owner"} required disabled={true} value={authorization?.state.user?.username} validity={Boolean(authorization?.state.user?.username)}/>
+                        <Form.Field
+                            label={"Name"}
+                            required={true}
+                            {...name}
+                        />
+                        <Form.Field
+                            label={"Slug"}
+                            required={true}
+                            disabled={true}
+                            value={slug}
+                            validity={slug.length > 0 ? true : undefined}
+                        />
+                        <Form.Area
+                            label={"Description"}
+                            {...description}
+                        />
+                        <Form.Multiselect
+                            label={"Members"}
+                            options={membersOptions ?? {}} {...members}
+                        />
+                        <Form.Field
+                            label={"Owner"}
+                            required={true}
+                            disabled={true}
+                            value={authorization?.state.user?.username}
+                            validity={Boolean(authorization?.state.user?.username)}
+                        />
                         <Form.Select
                             label={"Access"}
-                            disabled={!canAdministrate}
                             options={{
                                 "": undefined,
                                 "⛔️ Collaborators must be added manually": "MANUAL",
@@ -136,9 +156,10 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                         />
                         <Form.Row>
                             <Form.Button
-                                type={"button"} onClick={onSubmit} disabled={!canSubmit} builtinColor={(
-                                                                                                           viewSet?.operationError || resource?.error
-                                                                                                       ) ? "red" : undefined}
+                                type={"button"}
+                                onClick={onSubmit}
+                                disabled={!canSubmit}
+                                builtinColor={hasError ? "red" : undefined}
                             >
                                 {resource ? "Edit" : "Create"}
                             </Form.Button>
