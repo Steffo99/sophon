@@ -1,3 +1,4 @@
+import {faProjectDiagram, faUsers} from "@fortawesome/free-solid-svg-icons"
 import * as Reach from "@reach/router"
 import {RouteComponentProps} from "@reach/router"
 import {Chapter, LayoutThreeCol} from "@steffo/bluelib-react"
@@ -53,7 +54,7 @@ function App({..._}: RouteComponentProps) {
                                             </>}
                                             selectedRoute={({selection}) => <>
                                                 <Chapter>
-                                                    <ResourceDescriptionBox resource={selection}/>
+                                                    <ResourceDescriptionBox resource={selection} icon={faUsers}/>
                                                     <GroupMembersBox resource={selection}/>
                                                 </Chapter>
                                                 <ProjectRouter
@@ -64,7 +65,7 @@ function App({..._}: RouteComponentProps) {
                                                     </>}
                                                     selectedRoute={({selection}) => <>
                                                         <Chapter>
-                                                            <ResourceDescriptionBox resource={selection}/>
+                                                            <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
                                                         </Chapter>
                                                         <NotebookRouter
                                                             projectPk={selection.value.slug}
