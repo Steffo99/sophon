@@ -16,7 +16,7 @@ export function ProjectRouter({groupPk, ...props}: ProjectRouterProps): JSX.Elem
     return (
         <ViewSetRouter
             {...props}
-            viewSet={useManagedViewSet<SophonResearchProject>(`/api/projects/by-group/${groupPk}`, "slug")}
+            viewSet={useManagedViewSet<SophonResearchProject>(`/api/projects/by-group/${groupPk}/`, "slug")}
             pathSegment={"researchProject"}
             pkKey={"slug"}
         />

@@ -1,38 +1,21 @@
 import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
-import {useCacheContext} from "../../contexts/cache"
+import {useGroupContext} from "../../contexts/group"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
-import {SophonResearchGroup} from "../../types/SophonTypes"
+import {SophonResearchProject} from "../../types/SophonTypes"
 import {Validators} from "../../utils/Validators"
 
 
-/**
- * The props of {@link GroupCreateBox}.
- *
- * Only one between `viewSet` and `resource` should be defined.
- */
-export interface GroupCreateBoxProps {
-    /**
-     * The viewSet to use to create new resources.
-     */
-    viewSet?: ManagedViewSet<SophonResearchGroup>,
-
-    /**
-     * The resource to be edited.
-     */
-    resource?: ManagedResource<SophonResearchGroup>,
+export interface ProjectCreateBoxProps {
+    viewSet?: ManagedViewSet<SophonResearchProject>,
+    resource?: ManagedResource<SophonResearchProject>,
 }
 
 
-/**
- * A {@link Box} to create or edit a {@link SophonResearchGroup}.
- *
- * @constructor
- */
-export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.Element | null {
+export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
-    const cache = useCacheContext()
+    const group = useGroupContext()
 
     const name =
         useFormState<string>(
@@ -46,15 +29,9 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
             Validators.alwaysValid,
         )
 
-    const members =
-        useFormState<number[]>(
-            resource?.value.members ?? [],
-            Validators.alwaysValid,
-        )
-
-    const access =
-        useFormState<"OPEN" | "MANUAL" | undefined>(
-            resource?.value.access ?? undefined,
+    const visibility =
+        useFormState<"PUBLIC" | "INTERNAL" | "PRIVATE" | undefined>(
+            resource?.value.visibility ?? undefined,
             Validators.notEmpty,
         )
 
@@ -71,10 +48,15 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                     if(!authorization) {
                         return false
                     }
+                    if(!group) {
+                        return false
+                    }
                     if(!authorization.state.user) {
                         return false
                     }
-                    if(authorization.state.user.id !== resource.value.owner) {
+                    if(!(
+                        group.value.members.includes(authorization.state.user.id) || group.value.owner === authorization.state.user.id
+                    )) {
                         return false
                     }
                     return true
@@ -86,18 +68,6 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
             [authorization, resource],
         )
 
-    const membersOptions: { [key: string]: number } | undefined =
-        React.useMemo(
-            () => cache?.users?.resources?.filter(m => m.value.id !== authorization?.state.user?.id).map(m => {
-                const obj: { [key: string]: number } = {}
-                obj[m.value.username] = m.value.id
-                return obj
-            }).reduce((a, b) => {
-                return {...a, ...b}
-            }),
-            [authorization, cache],
-        )
-
     const applyChanges =
         React.useCallback(
             async () => {
@@ -106,8 +76,8 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                         name: name.value,
                         slug: slug,
                         description: description.value,
-                        members: members.value,
-                        access: access.value,
+                        visibility: visibility.value,
+                        group: group!.value.slug,
                     })
                 }
                 else {
@@ -115,18 +85,18 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                         name: name.value,
                         slug: slug,
                         description: description.value,
-                        members: members.value,
-                        access: access.value,
+                        visibility: visibility.value,
+                        group: group!.value.slug,
                     })
                 }
             },
-            [viewSet, resource, name, slug, description, members, access],
+            [viewSet, resource, name, slug, description, visibility, group],
         )
 
     const canApply =
         React.useMemo(
-            () => name.validity === true && access.validity === true && Boolean(authorization?.state.user?.username),
-            [name, access, authorization],
+            () => name.validity === true && visibility.validity === true && Boolean(authorization?.state.user?.username) && group,
+            [name, visibility, authorization],
         )
 
     const hasError =
@@ -147,7 +117,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
         <Box>
             <Details>
                 <Details.Summary>
-                    {resource ? <>Edit <I>{resource.value.name}</I></> : "Create a new research group"}
+                    {resource ? <>Edit <I>{resource.value.name}</I></> : "Create a new research project"}
                 </Details.Summary>
                 <Details.Content>
                     <Form>
@@ -167,26 +137,15 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                             label={"Description"}
                             {...description}
                         />
-                        <Form.Multiselect
-                            label={"Members"}
-                            options={membersOptions ?? {}}
-                            {...members}
-                        />
-                        <Form.Field
-                            label={"Owner"}
-                            required={true}
-                            disabled={true}
-                            value={authorization.state.user.username}
-                            validity={true}
-                        />
                         <Form.Select
-                            label={"Access"}
+                            label={"Visibility"}
                             options={{
                                 "": undefined,
-                                "⛔️ Collaborators must be added manually": "MANUAL",
-                                "✳️ Users can join the group freely": "OPEN",
+                                "🔒 Private": "PRIVATE",
+                                "🎓 Internal": "INTERNAL",
+                                "🌍 Public": "PUBLIC",
                             }}
-                            {...access}
+                            {...visibility}
                         />
                         <Form.Row>
                             <Form.Button

@@ -6,6 +6,7 @@ import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonResearchProject} from "../../types/SophonTypes"
 import {Link} from "../elements/Link"
 import {ResourcePanel} from "../elements/ResourcePanel"
+import {ProjectDeleteButton} from "./ProjectDeleteButton"
 
 
 export interface ProjectResourcePanelProps {
@@ -34,7 +35,7 @@ export function ProjectResourcePanel({resource}: ProjectResourcePanelProps): JSX
 
             </ResourcePanel.Text>
             <ResourcePanel.Buttons>
-
+                <ProjectDeleteButton resource={resource}/>
             </ResourcePanel.Buttons>
         </ResourcePanel>
     )
