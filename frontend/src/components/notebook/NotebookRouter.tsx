@@ -16,7 +16,7 @@ export function NotebookRouter({projectPk, ...props}: ProjectRouterProps): JSX.E
     return (
         <ViewSetRouter
             {...props}
-            viewSet={useManagedViewSet<SophonResearchProject>(`/api/notebooks/by-project/${projectPk}`, "slug")}
+            viewSet={useManagedViewSet<SophonResearchProject>(`/api/notebooks/by-project/${projectPk}/`, "slug")}
             pathSegment={"notebook"}
             pkKey={"slug"}
         />
