@@ -4,18 +4,13 @@ import {Box, Heading, Idiomatic, ListUnordered, UAnnotation} from "@steffo/bluel
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useCacheContext} from "../../contexts/cache"
-import {ManagedResource} from "../../hooks/useManagedViewSet"
-import {SophonResearchGroup} from "../../types/SophonTypes"
+import {useGroupContext} from "../../contexts/group"
 
 
-export interface GroupMembersBoxProps {
-    resource: ManagedResource<SophonResearchGroup>
-}
-
-
-export function GroupMembersBox({resource}: GroupMembersBoxProps): JSX.Element | null {
+export function GroupMembersBox(): JSX.Element | null {
     const authorization = useAuthorizationContext()
     const cache = useCacheContext()
+    const group = useGroupContext()
 
     if(!cache) {
         return null
@@ -23,8 +18,11 @@ export function GroupMembersBox({resource}: GroupMembersBoxProps): JSX.Element |
     if(!cache.users) {
         return null
     }
+    if(!group) {
+        return null
+    }
 
-    const trueMembers = [...new Set([resource.value.owner, ...resource.value.members])]
+    const trueMembers = [...new Set([group.value.owner, ...group.value.members])]
 
     const users = trueMembers.map((id, index) => {
         const user = cache.getUserById(id)
@@ -45,7 +43,7 @@ export function GroupMembersBox({resource}: GroupMembersBoxProps): JSX.Element |
     return (
         <Box>
             <Heading level={3}>
-                <FontAwesomeIcon icon={faUsersCog}/> Members of <Idiomatic>{resource.value.name}</Idiomatic>
+                <FontAwesomeIcon icon={faUsersCog}/> Members of <Idiomatic>{group.value.name}</Idiomatic>
             </Heading>
             <ListUnordered>
                 {users}
