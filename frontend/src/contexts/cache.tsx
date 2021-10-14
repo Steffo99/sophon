@@ -52,8 +52,16 @@ export function CacheProvider({children}: WithChildren): JSX.Element {
 
     const getUserById =
         React.useCallback(
-            (id: number) => usersIdMap?.[id.toString()],
-            [usersIdMap],
+            (id: number) => {
+                if(!id) {
+                    return undefined
+                }
+                if(!usersIdMap) {
+                    return undefined
+                }
+                return usersIdMap[id.toString()]
+            },
+            [usersIdMap]
         )
 
     return <CacheContext.Provider value={{users, getUserById}} children={children}/>

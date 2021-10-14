@@ -65,7 +65,7 @@ export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JS
                     return true
                 }
             },
-            [authorization, resource],
+            [authorization, group, resource],
         )
 
     const applyChanges =
@@ -96,7 +96,7 @@ export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JS
     const canApply =
         React.useMemo(
             () => name.validity === true && visibility.validity === true && Boolean(authorization?.state.user?.username) && group,
-            [name, visibility, authorization],
+            [name, visibility, authorization, group],
         )
 
     const hasError =

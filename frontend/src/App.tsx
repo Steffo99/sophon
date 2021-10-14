@@ -16,6 +16,7 @@ import {SophonDescriptionBox} from "./components/informative/SophonDescriptionBo
 import {InstanceDescriptionBox} from "./components/instance/InstanceDescriptionBox"
 import {InstanceFormBox} from "./components/instance/InstanceFormBox"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
+import {NotebookCreateBox} from "./components/notebook/NotebookCreateBox"
 import {NotebookListBox} from "./components/notebook/NotebookListBox"
 import {NotebookRouter} from "./components/notebook/NotebookRouter"
 import {DebugBox} from "./components/placeholder/DebugBox"
@@ -28,6 +29,8 @@ import {AuthorizationProvider} from "./contexts/authorization"
 import {CacheProvider} from "./contexts/cache"
 import {GroupProvider} from "./contexts/group"
 import {InstanceProvider} from "./contexts/instance"
+import {NotebookProvider} from "./contexts/notebook"
+import {ProjectProvider} from "./contexts/project"
 import {ThemeProvider} from "./contexts/theme"
 
 
@@ -67,17 +70,23 @@ function App({..._}: RouteComponentProps) {
                                                             <ProjectCreateBox viewSet={viewSet}/>
                                                         </>}
                                                         selectedRoute={({selection}) => <>
-                                                            <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
-                                                            <ProjectCreateBox resource={selection}/>
-                                                            <NotebookRouter
-                                                                projectPk={selection.value.slug}
-                                                                unselectedRoute={({viewSet}) => <>
-                                                                    <NotebookListBox viewSet={viewSet}/>
-                                                                </>}
-                                                                selectedRoute={(props) => <>
-                                                                    <DebugBox {...props}/>
-                                                                </>}
-                                                            />
+                                                            <ProjectProvider resource={selection}>
+                                                                <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
+                                                                <NotebookRouter
+                                                                    projectPk={selection.value.slug}
+                                                                    unselectedRoute={({viewSet}) => <>
+                                                                        <ProjectCreateBox resource={selection}/>
+                                                                        <NotebookListBox viewSet={viewSet}/>
+                                                                        <NotebookCreateBox viewSet={viewSet}/>
+                                                                    </>}
+                                                                    selectedRoute={({selection}) => <>
+                                                                        <NotebookProvider resource={selection}>
+                                                                            <NotebookCreateBox resource={selection}/>
+                                                                            <DebugBox {...selection}/>
+                                                                        </NotebookProvider>
+                                                                    </>}
+                                                                />
+                                                            </ProjectProvider>
                                                         </>}
                                                     />
                                                 </GroupProvider>

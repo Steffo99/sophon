@@ -40,6 +40,35 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         return Response(serializer.data, status.HTTP_200_OK)
 
     @action(["PATCH"], detail=True)
+    def lock(self, request: Request, **kwargs):
+        """
+        Lock the `Notebook`.
+
+        Note that this does nothing on the backend; it's only meant to be an indication for the frontend.
+        """
+        notebook: Notebook = self.get_object()
+        if notebook.locked_by is None:
+            notebook.locked_by = self.request.user
+        notebook.save()
+        Serializer = notebook.get_access_serializer(request.user)
+        serializer = Serializer(notebook)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    @action(["PATCH"], detail=True)
+    def unlock(self, request: Request, **kwargs):
+        """
+        Unlock the `Notebook`.
+
+        Note that this does nothing on the backend; it's only meant to be an indication for the frontend.
+        """
+        notebook: Notebook = self.get_object()
+        notebook.locked_by = None
+        notebook.save()
+        Serializer = notebook.get_access_serializer(request.user)
+        serializer = Serializer(notebook)
+        return Response(serializer.data, status.HTTP_200_OK)
+
+    @action(["PATCH"], detail=True)
     def stop(self, request: Request, **kwargs):
         """
         Stop the `Notebook`.
