@@ -67,7 +67,8 @@ class NotebooksByProjectViewSet(NotebooksViewSet):
                 Q(project__slug=self.kwargs["project_slug"]) & (
                         Q(project__visibility="PUBLIC") |
                         Q(project__visibility="INTERNAL") |
-                        Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user])
+                        Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user]) |
+                        Q(project__visibility="PRIVATE", project__group__owner=self.request.user)
                 )
             )
 
@@ -94,5 +95,6 @@ class NotebooksBySlugViewSet(NotebooksViewSet):
             return Notebook.objects.filter(
                 Q(project__visibility="PUBLIC") |
                 Q(project__visibility="INTERNAL") |
-                Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user])
+                Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user]) |
+                Q(project__visibility="PRIVATE", project__group__owner=self.request.user)
             )
