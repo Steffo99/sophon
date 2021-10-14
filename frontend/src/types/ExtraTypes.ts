@@ -32,3 +32,11 @@ export interface WithResource<T> {
 export interface WithViewSet<T> {
     viewSet: ManagedViewSet<T>,
 }
+
+
+/**
+ * Props including a slug.
+ */
+export interface WithSlug {
+    slug: string,
+}

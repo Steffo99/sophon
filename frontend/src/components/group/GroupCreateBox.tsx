@@ -2,6 +2,7 @@ import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useCacheContext} from "../../contexts/cache"
+import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
 import {Validators} from "../../utils/Validators"
@@ -37,7 +38,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
     const name =
         useFormState<string>(
             resource?.value.name ?? "",
-            Validators.notZeroLength,
+            Validators.mustContainElements,
         )
 
     const description =
@@ -59,10 +60,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
         )
 
     const slug =
-        React.useMemo(
-            () => resource ? resource.value.slug : name.value.replaceAll(/[^A-Za-z0-9-]/g, "-").toLowerCase(),
-            [resource, name],
-        )
+        useFormSlug(resource, name.value)
 
     const canAdministrate =
         React.useMemo(

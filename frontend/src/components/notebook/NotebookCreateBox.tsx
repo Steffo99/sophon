@@ -2,6 +2,7 @@ import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useProjectContext} from "../../contexts/project"
+import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonNotebook} from "../../types/SophonTypes"
 import {Validators} from "../../utils/Validators"
@@ -20,14 +21,11 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
     const name =
         useFormState<string>(
             resource?.value.name ?? "",
-            Validators.notZeroLength,
+            Validators.mustContainElements,
         )
 
     const slug =
-        React.useMemo(
-            () => resource ? resource.value.slug : name.value.replaceAll(/[^A-Za-z0-9-]/g, "-").toLowerCase(),
-            [resource, name],
-        )
+        useFormSlug(resource, name.value)
 
     const image =
         useFormState<string>(
