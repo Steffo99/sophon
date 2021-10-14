@@ -32,7 +32,7 @@ export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JS
     const visibility =
         useFormState<"PUBLIC" | "INTERNAL" | "PRIVATE" | undefined>(
             resource?.value.visibility ?? undefined,
-            Validators.notEmpty,
+            Validators.mustBeDefined,
         )
 
     const slug =

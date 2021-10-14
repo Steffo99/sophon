@@ -55,7 +55,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
     const access =
         useFormState<"OPEN" | "MANUAL" | undefined>(
             resource?.value.access ?? undefined,
-            Validators.notEmpty,
+            Validators.mustBeDefined,
         )
 
     const slug =
