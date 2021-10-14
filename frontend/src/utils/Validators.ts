@@ -10,14 +10,14 @@ export class Validators {
         return true
     }
 
-    static notEmpty<T>(val: T): Validity {
+    static mustBeDefined<T>(val: T): Validity {
         if(!val) {
             return undefined
         }
         return true
     }
 
-    static notZeroLength<T extends { length: number }>(val: T): Validity {
+    static mustContainElements<T extends { length: number }>(val: T): Validity {
         if(!val) {
             return undefined
         }
@@ -27,3 +27,4 @@ export class Validators {
         return true
     }
 }
+
