@@ -24,7 +24,7 @@ export function NotebookResourcePanel({resource}: NotebookResourcePanelProps): J
     const locked_by = cache?.getUserById(resource.value.locked_by)?.value.username
 
     return (
-        <ResourcePanel>
+        <ResourcePanel builtinColor={locked_by ? "blue" : undefined}>
             <ResourcePanel.Icon>
                 <FontAwesomeIcon icon={faBook}/>
             </ResourcePanel.Icon>
@@ -43,11 +43,11 @@ export function NotebookResourcePanel({resource}: NotebookResourcePanelProps): J
                 }
             </ResourcePanel.Text>
             <ResourcePanel.Buttons>
+                <NotebookDeleteButton resource={resource}/>
                 <NotebookStopButton resource={resource}/>
                 <NotebookStartButton resource={resource}/>
                 <NotebookUnlockButton resource={resource}/>
                 <NotebookLockButton resource={resource}/>
-                <NotebookDeleteButton resource={resource}/>
             </ResourcePanel.Buttons>
         </ResourcePanel>
     )

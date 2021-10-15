@@ -31,6 +31,12 @@ export function NotebookDeleteButton({resource}: NotebookDeleteButtonProps): JSX
     )) {
         return null
     }
+    if(resource.value.is_running) {
+        return null
+    }
+    if(resource.value.locked_by) {
+        return null
+    }
 
     return (
         <SafetyButton timeout={3} onClick={() => resource.destroy()} disabled={resource.busy}>
