@@ -2,6 +2,7 @@ import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useGroupContext} from "../../contexts/group"
+import {useApplyChanges} from "../../hooks/useApplyChanges"
 import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchProject} from "../../types/SophonTypes"
@@ -67,29 +68,13 @@ export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JS
         )
 
     const applyChanges =
-        React.useCallback(
-            async () => {
-                if(resource) {
-                    await resource.update({
-                        name: name.value,
-                        slug: slug,
-                        description: description.value,
-                        visibility: visibility.value,
-                        group: group!.value.slug,
-                    })
-                }
-                else {
-                    await viewSet!.create({
-                        name: name.value,
-                        slug: slug,
-                        description: description.value,
-                        visibility: visibility.value,
-                        group: group!.value.slug,
-                    })
-                }
-            },
-            [viewSet, resource, name, slug, description, visibility, group],
-        )
+        useApplyChanges(viewSet, resource, {
+            name: name.value,
+            slug: slug,
+            description: description.value,
+            visibility: visibility.value,
+            group: group!.value.slug,
+        })
 
     const canApply =
         React.useMemo(
