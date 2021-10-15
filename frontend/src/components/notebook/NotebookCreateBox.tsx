@@ -15,7 +15,7 @@ export interface NotebookCreateBoxProps {
 }
 
 
-export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): JSX.Element {
+export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
     const project = useProjectContext()
 
@@ -53,6 +53,15 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
             () => viewSet?.operationError || resource?.error,
             [viewSet, resource],
         )
+
+    if(resource) {
+        if(resource.value.locked_by) {
+            return null
+        }
+        if(resource.value.is_running) {
+            return null
+        }
+    }
 
     return (
         <Box>
