@@ -37,6 +37,11 @@ export interface ParsedPath {
      * Passed the login page (either by browsing as guest or by logging in).
      */
     loggedIn?: boolean,
+
+    /**
+     * The number of pages that separate this to the website root.
+     */
+    count: number,
 }
 
 /**
@@ -44,7 +49,9 @@ export interface ParsedPath {
  * @param path - The path to split.
  */
 export function parsePath(path: string): ParsedPath {
-    let result: ParsedPath = {}
+    let result: ParsedPath = {
+        count: 0,
+    }
 
     result.instance = path.match(/[/]i[/]([^/]+)/)?.[1]
     result.userId = path.match(/[/]u[/]([0-9]+)/)?.[1]
@@ -53,6 +60,28 @@ export function parsePath(path: string): ParsedPath {
     result.researchProject = path.match(/[/]p[/]([A-Za-z0-9_-]+)/)?.[1]
     result.notebook = path.match(/[/]n[/]([A-Za-z0-9_-]+)/)?.[1]
     result.loggedIn = Boolean(path.match(/[/]l[/]/))
+
+    if(result.instance) {
+        result.count += 1
+    }
+    if(result.userId) {
+        result.count += 1
+    }
+    if(result.userName) {
+        result.count += 1
+    }
+    if(result.researchGroup) {
+        result.count += 1
+    }
+    if(result.researchProject) {
+        result.count += 1
+    }
+    if(result.notebook) {
+        result.count += 1
+    }
+    if(result.loggedIn) {
+        result.count += 1
+    }
 
     return result
 }
