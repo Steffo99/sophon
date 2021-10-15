@@ -20,7 +20,6 @@ import {NotebookCreateBox} from "./components/notebook/NotebookCreateBox"
 import {NotebookDescriptionBox} from "./components/notebook/NotebookDescriptionBox"
 import {NotebookListBox} from "./components/notebook/NotebookListBox"
 import {NotebookRouter} from "./components/notebook/NotebookRouter"
-import {DebugBox} from "./components/placeholder/DebugBox"
 import {ProjectCreateBox} from "./components/project/ProjectCreateBox"
 import {ProjectListBox} from "./components/project/ProjectListBox"
 import {ProjectRouter} from "./components/project/ProjectRouter"
@@ -84,7 +83,6 @@ function App({..._}: RouteComponentProps) {
                                                                         <NotebookProvider resource={selection}>
                                                                             <NotebookDescriptionBox/>
                                                                             <NotebookCreateBox resource={selection}/>
-                                                                            <DebugBox {...selection}/>
                                                                         </NotebookProvider>
                                                                     </>}
                                                                 />
