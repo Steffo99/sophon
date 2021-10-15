@@ -66,7 +66,7 @@ export function AuthorizationLogoutBox(): JSX.Element {
             </p>
             <Form>
                 <Form.Row>
-                    <Form.Button onClick={() => navigate("l/")}>
+                    <Form.Button onClick={() => navigate("l/logged-in/")}>
                         Continue to Sophon
                     </Form.Button>
                 </Form.Row>
