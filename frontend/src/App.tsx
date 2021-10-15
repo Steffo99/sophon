@@ -37,68 +37,70 @@ import {ThemeProvider} from "./contexts/theme"
 function App({..._}: RouteComponentProps) {
     return React.useMemo(
         () => <>
-            <Chapter>
-                <SophonDescriptionBox/>
-            </Chapter>
-            <InstanceProvider>
-                <InstanceRouter
-                    unselectedRoute={() => <>
-                        <InstanceFormBox/>
-                    </>}
-                    selectedRoute={() => <>
-                        <Chapter>
-                            <InstanceDescriptionBox/>
-                        </Chapter>
-                        <AuthorizationProvider>
-                            <CacheProvider>
-                                <AuthorizationRouter
-                                    unselectedRoute={AuthorizationStepPage}
-                                    selectedRoute={() => <>
-                                        <GroupRouter
-                                            unselectedRoute={GroupStepPage}
-                                            selectedRoute={({selection}) => <>
-                                                <GroupProvider resource={selection}>
-                                                    <Chapter>
-                                                        <ResourceDescriptionBox resource={selection} icon={faUsers}/>
-                                                        <GroupMembersBox/>
-                                                    </Chapter>
-                                                    <ProjectRouter
-                                                        groupPk={selection.value.slug}
-                                                        unselectedRoute={({viewSet}) => <>
-                                                            <GroupCreateBox resource={selection}/>
-                                                            <ProjectListBox viewSet={viewSet}/>
-                                                            <ProjectCreateBox viewSet={viewSet}/>
-                                                        </>}
-                                                        selectedRoute={({selection}) => <>
-                                                            <ProjectProvider resource={selection}>
-                                                                <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
-                                                                <NotebookRouter
-                                                                    projectPk={selection.value.slug}
-                                                                    unselectedRoute={({viewSet}) => <>
-                                                                        <ProjectCreateBox resource={selection}/>
-                                                                        <NotebookListBox viewSet={viewSet}/>
-                                                                        <NotebookCreateBox viewSet={viewSet}/>
-                                                                    </>}
-                                                                    selectedRoute={({selection}) => <>
-                                                                        <NotebookProvider resource={selection}>
-                                                                            <NotebookDescriptionBox/>
-                                                                            <NotebookCreateBox resource={selection}/>
-                                                                        </NotebookProvider>
-                                                                    </>}
-                                                                />
-                                                            </ProjectProvider>
-                                                        </>}
-                                                    />
-                                                </GroupProvider>
-                                            </>}
-                                        />
-                                    </>}
-                                />
-                            </CacheProvider>
-                        </AuthorizationProvider>
-                    </>}
-                />
-            </InstanceProvider>
+            <ErrorCatcherBox>
+                <Chapter>
+                    <SophonDescriptionBox/>
+                </Chapter>
+                <InstanceProvider>
+                    <InstanceRouter
+                        unselectedRoute={() => <>
+                            <InstanceFormBox/>
+                        </>}
+                        selectedRoute={() => <>
+                            <Chapter>
+                                <InstanceDescriptionBox/>
+                            </Chapter>
+                            <AuthorizationProvider>
+                                <CacheProvider>
+                                    <AuthorizationRouter
+                                        unselectedRoute={AuthorizationStepPage}
+                                        selectedRoute={() => <>
+                                            <GroupRouter
+                                                unselectedRoute={GroupStepPage}
+                                                selectedRoute={({selection}) => <>
+                                                    <GroupProvider resource={selection}>
+                                                        <Chapter>
+                                                            <ResourceDescriptionBox resource={selection} icon={faUsers}/>
+                                                            <GroupMembersBox/>
+                                                        </Chapter>
+                                                        <ProjectRouter
+                                                            groupPk={selection.value.slug}
+                                                            unselectedRoute={({viewSet}) => <>
+                                                                <GroupCreateBox resource={selection}/>
+                                                                <ProjectListBox viewSet={viewSet}/>
+                                                                <ProjectCreateBox viewSet={viewSet}/>
+                                                            </>}
+                                                            selectedRoute={({selection}) => <>
+                                                                <ProjectProvider resource={selection}>
+                                                                    <ResourceDescriptionBox resource={selection} icon={faProjectDiagram}/>
+                                                                    <NotebookRouter
+                                                                        projectPk={selection.value.slug}
+                                                                        unselectedRoute={({viewSet}) => <>
+                                                                            <ProjectCreateBox resource={selection}/>
+                                                                            <NotebookListBox viewSet={viewSet}/>
+                                                                            <NotebookCreateBox viewSet={viewSet}/>
+                                                                        </>}
+                                                                        selectedRoute={({selection}) => <>
+                                                                            <NotebookProvider resource={selection}>
+                                                                                <NotebookDescriptionBox/>
+                                                                                <NotebookCreateBox resource={selection}/>
+                                                                            </NotebookProvider>
+                                                                        </>}
+                                                                    />
+                                                                </ProjectProvider>
+                                                            </>}
+                                                        />
+                                                    </GroupProvider>
+                                                </>}
+                                            />
+                                        </>}
+                                    />
+                                </CacheProvider>
+                            </AuthorizationProvider>
+                        </>}
+                    />
+                </InstanceProvider>
+            </ErrorCatcherBox>
         </>,
         [],
     )
@@ -112,11 +114,9 @@ export default function AppWrapper() {
                 <LayoutThreeCol>
                     <LayoutThreeCol.Center>
                         <ThemedTitle level={1}/>
-                        <ErrorCatcherBox>
                             <Reach.Router>
                                 <App default/>
                             </Reach.Router>
-                        </ErrorCatcherBox>
                         <SophonFooter/>
                     </LayoutThreeCol.Center>
                 </LayoutThreeCol>
