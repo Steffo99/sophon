@@ -2,6 +2,7 @@ import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useProjectContext} from "../../contexts/project"
+import {useApplyChanges} from "../../hooks/useApplyChanges"
 import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonNotebook} from "../../types/SophonTypes"
@@ -33,33 +34,13 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
             Validators.alwaysValid,
         )
 
-    // TODO: Fix this
     const applyChanges =
-        React.useCallback(
-            async () => {
-                if(!project) {
-                    return
-                }
-
-                if(resource) {
-                    await resource.update({
-                        name: name.value,
-                        slug: slug,
-                        container_image: image.value,
-                        project: project?.value.slug,
-                    })
-                }
-                else {
-                    await viewSet!.create({
-                        name: name.value,
-                        slug: slug,
-                        container_image: image.value,
-                        project: project?.value.slug,
-                    })
-                }
-            },
-            [viewSet, resource, name, slug, image, project],
-        )
+        useApplyChanges(viewSet, resource, {
+            name: name.value,
+            slug: slug,
+            container_image: image.value,
+            project: project!.value.slug,
+        })
 
     const canApply =
         React.useMemo(
