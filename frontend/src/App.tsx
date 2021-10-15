@@ -17,6 +17,7 @@ import {InstanceDescriptionBox} from "./components/instance/InstanceDescriptionB
 import {InstanceFormBox} from "./components/instance/InstanceFormBox"
 import {InstanceRouter} from "./components/instance/InstanceRouter"
 import {NotebookCreateBox} from "./components/notebook/NotebookCreateBox"
+import {NotebookDescriptionBox} from "./components/notebook/NotebookDescriptionBox"
 import {NotebookListBox} from "./components/notebook/NotebookListBox"
 import {NotebookRouter} from "./components/notebook/NotebookRouter"
 import {DebugBox} from "./components/placeholder/DebugBox"
@@ -81,6 +82,7 @@ function App({..._}: RouteComponentProps) {
                                                                     </>}
                                                                     selectedRoute={({selection}) => <>
                                                                         <NotebookProvider resource={selection}>
+                                                                            <NotebookDescriptionBox/>
                                                                             <NotebookCreateBox resource={selection}/>
                                                                             <DebugBox {...selection}/>
                                                                         </NotebookProvider>
