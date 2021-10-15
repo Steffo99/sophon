@@ -1,6 +1,5 @@
 import {Box, Form} from "@steffo/bluelib-react"
 import * as React from "react"
-import {ErrorBox} from "./ErrorBox"
 import {IgnoreErrorButton} from "./IgnoreErrorButton"
 import {ReportBugButton} from "./ReportBugButton"
 
