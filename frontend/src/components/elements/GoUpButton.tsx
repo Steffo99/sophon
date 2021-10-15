@@ -12,7 +12,7 @@ import {useSophonPath} from "../../hooks/useSophonPath"
  *
  * @constructor
  */
-export function GoBackButton({onClick, ...props}: Omit<ButtonProps, "children">): JSX.Element {
+export function GoUpButton({onClick, ...props}: Omit<ButtonProps, "children">): JSX.Element {
     const location = useSophonPath()
 
     const onClickWrapped = React.useCallback(

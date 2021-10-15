@@ -2,7 +2,7 @@ import {faAngleDoubleRight, faBug} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Box, Button, Form} from "@steffo/bluelib-react"
 import * as React from "react"
-import {GoBackButton} from "../elements/GoBackButton"
+import {GoUpButton} from "../elements/GoUpButton"
 import {NavigateButton} from "../elements/NavigateButton"
 
 
@@ -49,7 +49,7 @@ export class ErrorCatcherBox extends React.Component<ErrorCatcherBoxProps, Error
                             <NavigateButton href={"https://github.com/Steffo99/sophon/issues/new?assignees=&labels=bug&template=1_bug_report.md&title="}>
                                 <FontAwesomeIcon icon={faBug}/>&nbsp;Report bug
                             </NavigateButton>
-                            <GoBackButton/>
+                            <GoUpButton/>
                             <Button onClick={this.clearError}>
                                 <FontAwesomeIcon icon={faAngleDoubleRight}/>&nbsp;Try ignoring the error
                             </Button>
