@@ -59,7 +59,7 @@ export function parsePath(path: string): ParsedPath {
     result.researchGroup = path.match(/[/]g[/]([A-Za-z0-9_-]+)/)?.[1]
     result.researchProject = path.match(/[/]p[/]([A-Za-z0-9_-]+)/)?.[1]
     result.notebook = path.match(/[/]n[/]([A-Za-z0-9_-]+)/)?.[1]
-    result.loggedIn = Boolean(path.match(/[/]l[/]/))
+    result.loggedIn = Boolean(path.match(/[/]l[/]logged-in/))
 
     if(result.instance) {
         result.count += 1
