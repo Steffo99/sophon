@@ -1,10 +1,14 @@
+import {Box, Form} from "@steffo/bluelib-react"
 import * as React from "react"
 import {ErrorBox} from "./ErrorBox"
+import {IgnoreErrorButton} from "./IgnoreErrorButton"
+import {ReportBugButton} from "./ReportBugButton"
 
 
 interface ErrorCatcherBoxProps {
     children?: React.ReactNode,
 }
+
 
 interface ErrorCatcherBoxState {
     error?: Error,
@@ -18,6 +22,7 @@ export class ErrorCatcherBox extends React.Component<ErrorCatcherBoxProps, Error
     constructor(props: ErrorCatcherBoxProps) {
         super(props)
         this.state = {error: undefined}
+        this.clearError = this.clearError.bind(this)
     }
 
     componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
@@ -27,10 +32,24 @@ export class ErrorCatcherBox extends React.Component<ErrorCatcherBoxProps, Error
         })
     }
 
+    clearError() {
+        this.setState(state => {
+            return {...state, error: undefined}
+        })
+    }
+
     render() {
-        if (this.state.error) {
+        if(this.state.error) {
             return (
-                <ErrorBox error={this.state.error}/>
+                <Box bluelibClassNames={"color-red"}>
+                    {this.state.error.toString()}
+                    <Form>
+                        <Form.Row>
+                            <IgnoreErrorButton onClick={this.clearError}/>
+                            <ReportBugButton/>
+                        </Form.Row>
+                    </Form>
+                </Box>
             )
         } else {
             return this.props.children
