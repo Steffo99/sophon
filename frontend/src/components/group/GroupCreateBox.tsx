@@ -2,6 +2,7 @@ import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useCacheContext} from "../../contexts/cache"
+import {useApplyChanges} from "../../hooks/useApplyChanges"
 import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchGroup} from "../../types/SophonTypes"
@@ -97,29 +98,13 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
         )
 
     const applyChanges =
-        React.useCallback(
-            async () => {
-                if(resource) {
-                    await resource.update({
-                        name: name.value,
-                        slug: slug,
-                        description: description.value,
-                        members: members.value,
-                        access: access.value,
-                    })
-                }
-                else {
-                    await viewSet!.create({
-                        name: name.value,
-                        slug: slug,
-                        description: description.value,
-                        members: members.value,
-                        access: access.value,
-                    })
-                }
-            },
-            [viewSet, resource, name, slug, description, members, access],
-        )
+        useApplyChanges(viewSet, resource, {
+            name: name.value,
+            slug: slug,
+            description: description.value,
+            members: members.value,
+            access: access.value,
+        })
 
     const canApply =
         React.useMemo(
