@@ -1,5 +1,5 @@
 import {faUser as faUserRegular} from "@fortawesome/free-regular-svg-icons"
-import {faExclamationCircle, faTimesCircle, faUser as faUserSolid} from "@fortawesome/free-solid-svg-icons"
+import {faChevronRight, faExclamationCircle, faSignOutAlt, faTimesCircle, faUser as faUserSolid} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {navigate} from "@reach/router"
 import {Box, Form, Heading, Idiomatic as I} from "@steffo/bluelib-react"
@@ -67,7 +67,7 @@ export function AuthorizationLogoutBox(): JSX.Element {
             <Form>
                 <Form.Row>
                     <Form.Button onClick={() => navigate("l/logged-in/")}>
-                        Continue to Sophon
+                        <FontAwesomeIcon icon={faChevronRight}/>&nbsp;Continue to Sophon
                     </Form.Button>
                 </Form.Row>
             </Form>
@@ -77,7 +77,7 @@ export function AuthorizationLogoutBox(): JSX.Element {
             <Form>
                 <Form.Row>
                     <Form.Button disabled={!canLogout} onClick={doLogout}>
-                        Logout
+                        <FontAwesomeIcon icon={faSignOutAlt}/>&nbsp;Logout
                     </Form.Button>
                 </Form.Row>
             </Form>
