@@ -203,6 +203,7 @@ class SophonInstanceDetails(SophonModel):
             ("paper", "Sheet of Paper"),
             ("royalblue", "Royal Blue"),
             ("hacker", "Hacker Terminal"),
+            ("amber", "Gestione Amber"),
         ),
         default="sophon",
         max_length=32,
