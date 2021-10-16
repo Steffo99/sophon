@@ -1,9 +1,11 @@
 import {faBook} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
-import {Box, BringAttention as B, Code, Heading, Idiomatic as I} from "@steffo/bluelib-react"
+import {Box, BringAttention as B, Code, Form, Heading, Idiomatic as I} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useCacheContext} from "../../contexts/cache"
 import {useNotebookContext} from "../../contexts/notebook"
+import {NotebookLabButton} from "./NotebookLabButton"
+import {NotebookLegacyButton} from "./NotebookLegacyButton"
 
 
 export function NotebookDescriptionBox(): JSX.Element | null {
@@ -40,6 +42,12 @@ export function NotebookDescriptionBox(): JSX.Element | null {
             <p>
                 A <B>{notebook.value.is_running ? "running" : "stopped"}</B> notebook using <B><Code>{notebook.value.container_image}</Code></B>{locked_text}.
             </p>
+            <Form>
+                <Form.Row>
+                    <NotebookLabButton/>
+                    <NotebookLegacyButton/>
+                </Form.Row>
+            </Form>
         </Box>
     )
 }
