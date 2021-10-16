@@ -1,7 +1,7 @@
 import {faUniversity} from "@fortawesome/free-solid-svg-icons"
 import * as React from "react"
 import {useInstanceContext} from "../../contexts/instance"
-import {DescriptionBox} from "../elements/DescriptionBoxProps"
+import {DescriptionBox} from "../elements/DescriptionBox"
 import {ErrorBox} from "../errors/ErrorBox"
 
 
