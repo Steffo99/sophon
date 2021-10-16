@@ -1,8 +1,10 @@
+import {faUser} from "@fortawesome/free-regular-svg-icons"
 import {faLock, faUniversity} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Box, Form, Heading, Idiomatic as I} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
+import {IconText} from "../elements/IconText"
 
 
 export function AuthorizationBrowseBox(): JSX.Element {
@@ -18,15 +20,7 @@ export function AuthorizationBrowseBox(): JSX.Element {
 
     const doBrowse =
         React.useCallback(
-            async () => {
-                if(!authorization) {
-                    return
-                }
-
-                authorization.dispatch({
-                    type: "browse",
-                })
-            },
+            () => authorization!.dispatch({type: "browse"}),
             [authorization],
         )
 
@@ -34,7 +28,9 @@ export function AuthorizationBrowseBox(): JSX.Element {
         // By disabling the box, the login box is highlighted while a login attempt is running, making the user focus on the login attempt
         <Box disabled={!canBrowse}>
             <Heading level={3}>
-                Browse as guest
+                <IconText icon={faUser}>
+                    Browse as guest
+                </IconText>
             </Heading>
             <p>
                 You can browse Sophon without an account.
@@ -45,7 +41,9 @@ export function AuthorizationBrowseBox(): JSX.Element {
             <Form>
                 <Form.Row>
                     <Form.Button disabled={!canBrowse} onClick={doBrowse}>
-                        Browse
+                        <IconText icon={faUser}>
+                            Browse as guest
+                        </IconText>
                     </Form.Button>
                 </Form.Row>
             </Form>
