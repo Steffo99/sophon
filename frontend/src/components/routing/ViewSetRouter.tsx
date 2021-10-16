@@ -24,37 +24,44 @@ export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselec
     const path = useSophonPath()
     const pk = path?.[pathSegment]
 
-    if(viewSet === undefined) {
-        return (
-            <Box>
-                <Loading text={"Connecting..."}/>
-            </Box>
-        )
-    }
+    return React.useMemo(
+        () => {
+            if(viewSet === undefined) {
+                return (
+                    <Box>
+                        <Loading text={"Connecting..."}/>
+                    </Box>
+                )
+            }
 
-    // If an error happens, display it in a ErrorBox
-    if(viewSet.error) {
-        return (
-            <ErrorBox error={viewSet.error}/>
-        )
-    }
+            // If an error happens, display it in a ErrorBox
+            if(viewSet.error) {
+                return (
+                    <ErrorBox error={viewSet.error}/>
+                )
+            }
 
-    // If the viewset is still loading, display a loading message
-    if(viewSet.resources === null) {
-        return (
-            <Box>
-                <Loading/>
-            </Box>
-        )
-    }
+            // If the viewset is still loading, display a loading message
+            if(viewSet.resources === null) {
+                return (
+                    <Box>
+                        <Loading/>
+                    </Box>
+                )
+            }
 
-    const selection = pk ? viewSet.resources?.find(res => res.value[pkKey] === pk) : undefined
+            const selection = pk ? viewSet.resources?.find(res => res.value[pkKey] === pk) : undefined
 
-    return (
-        <ResourceRouter
-            selection={selection}
-            unselectedRoute={(props) => <UnselectedRoute viewSet={viewSet} {...props}/>}
-            selectedRoute={(props) => <SelectedRoute {...props}/>}
-        />
+            return (
+                <ResourceRouter
+                    selection={selection}
+                    unselectedRoute={(props) => <UnselectedRoute viewSet={viewSet} {...props}/>}
+                    selectedRoute={(props) => <SelectedRoute {...props}/>}
+                />
+            )
+        },
+        [viewSet, UnselectedRoute, SelectedRoute, pk, pkKey],
     )
+
+
 }
