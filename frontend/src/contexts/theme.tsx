@@ -1,3 +1,4 @@
+import {BluelibTheme} from "@steffo/bluelib-react/dist/types"
 import * as React from "react"
 import {ContextData} from "../types/ContextTypes"
 import {WithChildren} from "../types/ExtraTypes"
@@ -5,7 +6,7 @@ import {WithChildren} from "../types/ExtraTypes"
 // States
 
 type ThemeSelected = {
-    bluelib: "sophon" | "royalblue" | "hacker" | "paper",
+    bluelib: BluelibTheme,
     title: string,
 }
 
@@ -14,7 +15,7 @@ type ThemeSelected = {
 
 type ThemeSet = {
     type: "set",
-    bluelib: "sophon" | "royalblue" | "hacker" | "paper",
+    bluelib: BluelibTheme,
     title: string,
 }
 
