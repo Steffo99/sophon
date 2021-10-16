@@ -4,12 +4,10 @@ import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {Validators} from "../../utils/Validators"
 import {IconText} from "../elements/IconText"
-import {useInstanceAxios} from "../instance/useInstanceAxios"
 import {AuthorizationLoginButton} from "./AuthorizationLoginButton"
 
 
 export function AuthorizationLoginBox(): JSX.Element {
-    const axios = useInstanceAxios()
     const authorization = useAuthorizationContext()
 
     const username = useFormState<string>("", Validators.doNotValidate)
@@ -20,7 +18,7 @@ export function AuthorizationLoginBox(): JSX.Element {
             () => (
                 authorization !== undefined && authorization.state.token === undefined
             ),
-            [axios, authorization],
+            [authorization],
         )
 
     return (
