@@ -367,7 +367,8 @@ class Notebook(SophonGroupModel):
                 return
 
         self.container_id = container.id
-        # self.port = container.ports
+        self.save()
+
         return container
 
     class ContainerError(Exception):
@@ -457,7 +458,10 @@ class Notebook(SophonGroupModel):
             },
         )
 
+        self.log.debug("Storing container_id in the SQL database...")
         self.container_id = container.id
+        self.save()
+
         return container
 
     def stop_container(self) -> None:
