@@ -617,17 +617,22 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
         [refresh, state, refreshOnMount, viewset, baseRoute],
     )
 
-    if(!viewset) {
-        return undefined
-    }
+    return React.useMemo(
+        () => {
+            if(!viewset) {
+                return undefined
+            }
 
-    return {
-        busy: state.busy,
-        error: state.error,
-        operationError: state.operationError,
-        resources,
-        refresh,
-        create,
-        command,
-    }
+            return {
+                busy: state.busy,
+                error: state.error,
+                operationError: state.operationError,
+                resources,
+                refresh,
+                create,
+                command,
+            }
+        },
+        [state, resources, refresh, create, command]
+    )
 }
