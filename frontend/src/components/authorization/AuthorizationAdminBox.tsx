@@ -1,42 +1,31 @@
-import {navigate} from "@reach/router"
+import {faCog} from "@fortawesome/free-solid-svg-icons"
 import {Box, Form, Heading, Idiomatic as I} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
-import {useInstanceContext} from "../../contexts/instance"
+import {IconText} from "../elements/IconText"
+import {AuthorizationAdminPageButton} from "./AuthorizationAdminPageButton"
 
 
+/**
+ * Box that allows the user to access the Sophon administration page.
+ *
+ * @constructor
+ */
 export function AuthorizationAdminBox(): JSX.Element {
-    const instance = useInstanceContext()
     const authorization = useAuthorizationContext()
 
-    const canAdministrate =
+    const enabled =
         React.useMemo(
-            () => (
-                authorization !== undefined && authorization.state.token === undefined && !authorization.state.running
-            ),
+            () => authorization && !authorization.state.running && authorization.state.token === undefined,
             [authorization],
         )
 
-    const doAdministrate =
-        React.useCallback(
-            async () => {
-                if(!instance) {
-                    return
-                }
-                if(!instance.state.url) {
-                    return
-                }
-
-                await navigate(`${instance.state.url}admin`)
-            },
-            [instance],
-        )
-
-
     return (
-        <Box disabled={!canAdministrate}>
+        <Box disabled={!enabled}>
             <Heading level={3}>
-                Server administration
+                <IconText icon={faCog}>
+                    Server administration
+                </IconText>
             </Heading>
             <p>
                 To configure the Sophon server, an account with <I>superuser</I> access is required.
@@ -46,9 +35,7 @@ export function AuthorizationAdminBox(): JSX.Element {
             </p>
             <Form>
                 <Form.Row>
-                    <Form.Button disabled={!canAdministrate} onClick={doAdministrate}>
-                        Administrate
-                    </Form.Button>
+                    <AuthorizationAdminPageButton disabled={!enabled}/>
                 </Form.Row>
             </Form>
         </Box>

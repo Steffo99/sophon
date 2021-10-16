@@ -3,8 +3,8 @@ import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {AuthorizationAdminBox} from "./AuthorizationAdminBox"
 import {AuthorizationBrowseBox} from "./AuthorizationBrowseBox"
+import {AuthorizationLoggedInBox} from "./AuthorizationLoggedInBox"
 import {AuthorizationLoginBox} from "./AuthorizationLoginBox"
-import {AuthorizationLogoutBox} from "./AuthorizationLogoutBox"
 
 
 export function AuthorizationStepPage(): JSX.Element | null {
@@ -18,7 +18,7 @@ export function AuthorizationStepPage(): JSX.Element | null {
             if(authorization.state.token === null) {
                 return (
                     <Chapter>
-                        <AuthorizationLogoutBox/>
+                        <AuthorizationLoggedInBox/>
                         <AuthorizationLoginBox/>
                         <AuthorizationAdminBox/>
                     </Chapter>
@@ -28,7 +28,7 @@ export function AuthorizationStepPage(): JSX.Element | null {
                 return (
                     <Chapter>
                         <AuthorizationBrowseBox/>
-                        <AuthorizationLogoutBox/>
+                        <AuthorizationLoggedInBox/>
                         <AuthorizationAdminBox/>
                     </Chapter>
                 )
