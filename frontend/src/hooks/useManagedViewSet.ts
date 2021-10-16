@@ -633,6 +633,6 @@ export function useManagedViewSet<Resource extends DjangoResource>(baseRoute: st
                 command,
             }
         },
-        [state, resources, refresh, create, command]
+        [state, resources, refresh, create, command, viewset],
     )
 }
