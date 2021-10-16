@@ -33,7 +33,7 @@ export function NotebookDescriptionBox(): JSX.Element | null {
     }
 
     return (
-        <Box>
+        <Box builtinColor={locked_by ? "blue" : undefined}>
             <Heading level={3}>
                 <FontAwesomeIcon icon={faBook}/>&nbsp;About <I>{notebook.value.name}</I>
             </Heading>
