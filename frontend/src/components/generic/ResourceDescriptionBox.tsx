@@ -1,7 +1,7 @@
 import {IconDefinition} from "@fortawesome/fontawesome-svg-core"
 import * as React from "react"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
-import {DescriptionBox} from "../elements/DescriptionBoxProps"
+import {DescriptionBox} from "../elements/DescriptionBox"
 
 
 export interface NamedAndDescribed {

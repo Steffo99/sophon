@@ -5,14 +5,14 @@ import * as React from "react"
 import ReactMarkdown from "react-markdown"
 
 
-export interface DescriptionBoxProps {
+export interface DescriptionBox {
     icon: IconDefinition,
     name: string,
     description: string,
 }
 
 
-export function DescriptionBox({icon, name, description}: DescriptionBoxProps): JSX.Element {
+export function DescriptionBox({icon, name, description}: DescriptionBox): JSX.Element {
     return React.useMemo(
         () => (
             <Box>
