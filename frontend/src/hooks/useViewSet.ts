@@ -149,9 +149,15 @@ export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> | und
             [action, baseRoute],
         )
 
-    if(!api) {
-        return undefined
-    }
 
-    return {command, action, list, retrieve, create, update, destroy}
+    return React.useMemo(
+        () => {
+            if(!api) {
+                return undefined
+            }
+
+            return {command, action, list, retrieve, create, update, destroy}
+        },
+        [command, action, list, retrieve, create, update, destroy],
+    )
 }
