@@ -158,6 +158,6 @@ export function useViewSet<Resource>(baseRoute: string): ViewSet<Resource> | und
 
             return {command, action, list, retrieve, create, update, destroy}
         },
-        [command, action, list, retrieve, create, update, destroy],
+        [api, command, action, list, retrieve, create, update, destroy],
     )
 }

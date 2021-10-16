@@ -25,7 +25,7 @@ export function AuthorizationLoginButton({username, password, disabled = false}:
             () => (
                 !disabled && authorization !== undefined && !authorization.state.running && username !== "" && password !== ""
             ),
-            [authorization, username, password],
+            [disabled, authorization, username, password],
         )
 
     const doLogin =
