@@ -40,3 +40,11 @@ export interface WithViewSet<T> {
 export interface WithSlug {
     slug: string,
 }
+
+
+/**
+ * Props of an object that can be disabled.
+ */
+export interface CanBeDisabled {
+    disabled?: boolean,
+}

@@ -1,11 +1,10 @@
-import {faExclamationCircle} from "@fortawesome/free-solid-svg-icons"
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
+import {faUser} from "@fortawesome/free-solid-svg-icons"
 import {Box, Form, Heading, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {SophonToken, SophonUser} from "../../types/SophonTypes"
 import {Validators} from "../../utils/Validators"
-import {Loading} from "../elements/Loading"
+import {IconText} from "../elements/IconText"
 import {useInstanceAxios} from "../instance/useInstanceAxios"
 
 
@@ -74,9 +73,6 @@ export function AuthorizationLoginBox(): JSX.Element {
                 if(!authorization) {
                     return ""
                 }
-                if(authorization.state.running) {
-                    return "color-yellow"
-                }
                 if(error) {
                     return "color-red"
                 }
@@ -85,24 +81,12 @@ export function AuthorizationLoginBox(): JSX.Element {
             [authorization, error],
         )
 
-    const buttonText =
-        React.useMemo<JSX.Element | null>(
-            () => {
-                if(authorization?.state.running) {
-                    return <Loading text={"Logging in..."}/>
-                }
-                if(error) {
-                    return <><FontAwesomeIcon icon={faExclamationCircle}/>&nbsp;Login</>
-                }
-                return <>Login</>
-            },
-            [error, authorization],
-        )
-
     return (
         <Box disabled={!canLogin}>
             <Heading level={3}>
-                Login
+                <IconText icon={faUser}>
+                    Login
+                </IconText>
             </Heading>
             <p>
                 To use most features of Sophon, an account is required.
@@ -128,7 +112,9 @@ export function AuthorizationLoginBox(): JSX.Element {
                 />
                 <Form.Row>
                     <Form.Button type={"submit"} bluelibClassNames={buttonColor} disabled={!canClickLogin} onClick={doLogin}>
-                        {buttonText}
+                        <IconText icon={faUser} spin={authorization?.state.running}>
+                            Login
+                        </IconText>
                     </Form.Button>
                 </Form.Row>
             </Form>
