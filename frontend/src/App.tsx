@@ -23,6 +23,7 @@ import {NotebookRouter} from "./components/notebook/NotebookRouter"
 import {ProjectCreateBox} from "./components/project/ProjectCreateBox"
 import {ProjectListBox} from "./components/project/ProjectListBox"
 import {ProjectRouter} from "./components/project/ProjectRouter"
+import {BreadcrumbsBox} from "./components/routing/BreadcrumbsBox"
 import {ThemedBluelib} from "./components/theme/ThemedBluelib"
 import {ThemedTitle} from "./components/theme/ThemedTitle"
 import {AuthorizationProvider} from "./contexts/authorization"
@@ -41,6 +42,7 @@ function App({..._}: RouteComponentProps) {
                 <LayoutThreeCol.Center>
                     <ThemedTitle level={1}/>
                     <ErrorCatcherBox>
+                        <BreadcrumbsBox/>
                         <Chapter>
                             <SophonDescriptionBox/>
                         </Chapter>
