@@ -1,7 +1,7 @@
-import * as React from "react"
 import * as Reach from "@reach/router"
-import {Anchor, BringAttention as B} from "@steffo/bluelib-react";
-import {AnchorProps} from "@steffo/bluelib-react/dist/components/common/Anchor";
+import {Anchor, BringAttention as B} from "@steffo/bluelib-react"
+import {AnchorProps} from "@steffo/bluelib-react/dist/components/common/Anchor"
+import * as React from "react"
 
 
 /**
@@ -18,19 +18,21 @@ export function Link({href, children, onClick, ...props}: AnchorProps): JSX.Elem
             if (onClick) {
                 onClick(event)
             }
-            if (href) {
+            if(href) {
                 // noinspection JSIgnoredPromiseFromCall
                 Reach.navigate(href)
             }
         },
-        [href, onClick]
+        [href, onClick],
     )
 
-    if (location.pathname === href) {
+    // FIXME: Shenanigans?
+    if(location.pathname.replace("%25", "%") === href) {
         return (
             <B children={children} {...props}/>
         )
-    } else {
+    }
+    else {
         return (
             <Anchor href={href} children={children} onClick={onClickWrapped} {...props}/>
         )
