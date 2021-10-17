@@ -123,7 +123,6 @@ class Notebook(SophonGroupModel):
             "locked_by",
             "container_image",
             "internet_access",
-            "jupyter_token",
             "is_running",
             "lab_url",
             "legacy_notebook_url",
@@ -141,7 +140,6 @@ class Notebook(SophonGroupModel):
         return {
             "project",
             "container_image",
-            "jupyter_token",
         }
 
     @classmethod
@@ -151,7 +149,6 @@ class Notebook(SophonGroupModel):
             "project",
             "name",
             "container_image",
-            "jupyter_token",
         }
 
     @property
