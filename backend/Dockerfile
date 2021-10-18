@@ -27,5 +27,8 @@ ENV PYTHONUNBUFFERED=1
 # I have no idea why this is needed
 ENV DJANGO_SETTINGS_MODULE="sophon.settings"
 
+# Store the DBM file in a nice place
+ENV APACHE_PROXY_EXPRESS_DBM="/run/sophon/proxy/proxy.dbm"
+
 # Start the uvicorn server
 ENTRYPOINT ["poetry", "run", "gunicorn", "sophon.asgi:application", "-k", "uvicorn.workers.UvicornWorker"]
