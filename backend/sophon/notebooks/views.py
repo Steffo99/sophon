@@ -8,6 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from sophon.core.models import ResearchGroup
+from sophon.core.serializers import dynamic_serializer
 from sophon.core.views import SophonGroupViewSet
 from sophon.notebooks.models import Notebook
 from sophon.projects.models import ResearchProject
@@ -100,6 +101,25 @@ class NotebooksByProjectViewSet(NotebooksViewSet):
                         Q(project__visibility="PRIVATE", project__group__owner=self.request.user)
                 )
             )
+
+    def get_serializer_class(self):
+        # Get the base serializer
+        base = super().get_serializer_class()
+
+        # Get the specific project we are retrieving the notebooks of
+        project: ResearchProject = ResearchProject.objects.filter(pk=self.kwargs["project_slug"]).first()
+        # Check if we have edit access on the project
+        if project.can_edit(self.request.user):
+            # Add the member fields to the base serializer
+
+            # noinspection PyUnresolvedReferences
+            fields = tuple(set(base.Meta.fields).union(Notebook.get_member_fields()))
+            # noinspection PyUnresolvedReferences
+            read_only_fields = tuple(set(base.Meta.read_only_fields).union(Notebook.get_member_fields()))
+
+            return dynamic_serializer(_model=Notebook, _fields=fields, _read_only_fields=read_only_fields)
+        else:
+            return base
 
     def hook_create(self, serializer) -> dict[str, t.Any]:
         result = super().hook_create(serializer)
