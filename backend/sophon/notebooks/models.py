@@ -18,6 +18,7 @@ from sophon.notebooks.apache import get_ephemeral_port, base_domain, http_protoc
 from sophon.notebooks.docker import client as docker_client
 from sophon.notebooks.docker import sleep_until_container_has_started
 from sophon.notebooks.jupyter import generate_secure_token
+from sophon.notebooks.validators import DisallowedValuesValidator
 from sophon.projects.models import ResearchProject
 
 module_name = __name__
@@ -42,6 +43,15 @@ class Notebook(SophonGroupModel):
         help_text="Unique alphanumeric string which identifies the project. Changing this once the container has been created <strong>will break Docker</strong>!",
         max_length=64,
         primary_key=True,
+        validators=[
+            DisallowedValuesValidator([
+                "api",  # reserved for docker deployment
+                "proxy",  # reserved for future use
+                "backend",  # reserved for future use
+                "frontend",  # reserved for future use
+                "src",  # reserved for future use
+            ])
+        ]
     )
 
     project = models.ForeignKey(
