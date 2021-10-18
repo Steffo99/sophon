@@ -11,8 +11,10 @@ import docker.models.networks
 import docker.models.volumes
 from django.contrib.auth.models import User
 from django.db import models
+from rest_framework.serializers import ModelSerializer
 
 from sophon.core.models import SophonGroupModel, ResearchGroup
+from sophon.core.serializers import dynamic_serializer
 from sophon.notebooks.apache import db as apache_db
 from sophon.notebooks.apache import get_ephemeral_port, base_domain, http_protocol
 from sophon.notebooks.docker import client as docker_client
@@ -129,17 +131,26 @@ class Notebook(SophonGroupModel):
         }
 
     @classmethod
+    def get_member_fields(cls) -> set[str]:
+        """
+        :return: The :class:`set` of field names (as :class:`str`) that will be added to the serializer for a member of the group the notebook belongs to.
+        """
+        return {
+            "jupyter_token",
+        }
+
+    @classmethod
     def get_editable_fields(cls) -> set[str]:
         return {
             "name",
             "locked_by",
+            "container_image",
         }
 
     @classmethod
     def get_administrable_fields(cls) -> set[str]:
         return {
             "project",
-            "container_image",
         }
 
     @classmethod
@@ -150,6 +161,17 @@ class Notebook(SophonGroupModel):
             "name",
             "container_image",
         }
+
+    def get_access_serializer(self, user: User) -> t.Type[ModelSerializer]:
+        access = super().get_access_serializer(user)
+        if self.can_edit(user):
+            # noinspection PyUnresolvedReferences
+            fields = tuple(set(access.Meta.fields).union(self.get_member_fields()))
+            # noinspection PyUnresolvedReferences
+            read_only_fields = tuple(set(access.Meta.read_only_fields).union(self.get_member_fields()))
+            return dynamic_serializer(_model=self.__class__, _fields=fields, _read_only_fields=read_only_fields)
+        else:
+            return access
 
     @property
     def container_name(self) -> str:
