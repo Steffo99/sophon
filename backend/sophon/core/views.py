@@ -51,11 +51,9 @@ class ReadSophonViewSet(ReadOnlyModelViewSet, metaclass=abc.ABCMeta):
         return permissions.AllowAny,
 
     def get_serializer_class(self):
-        if self.action in ["list"]:
-            return self.get_queryset().model.get_view_serializer()
-        elif self.action in ["create", "metadata"]:
+        if self.action in ["create", "metadata"]:
             return self.get_queryset().model.get_creation_serializer()
-        elif self.action in ["retrieve", "update", "partial_update", "destroy"]:
+        elif self.action in ["list", "retrieve", "update", "partial_update", "destroy"]:
             return self.get_object().get_access_serializer(self.request.user)
         else:
             return self.get_custom_serializer_classes()
