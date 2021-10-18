@@ -5,7 +5,7 @@ import socket
 import typing as t
 
 log = logging.getLogger(__name__)
-db_name = os.environ.get("APACHE_PROXY_EXPRESS_DBM", "proxy.dbm")
+db_name = os.environ.get("APACHE_PROXY_EXPRESS_DBM", "/run/sophon/proxy/proxy.dbm")
 base_domain = os.environ["APACHE_PROXY_BASE_DOMAIN"]
 http_protocol = os.environ.get("APACHE_PROXY_HTTP_PROTOCOL", "https")
 

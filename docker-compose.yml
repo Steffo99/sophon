@@ -1,0 +1,84 @@
+version: "3.9"
+
+
+volumes:
+  proxy-data:
+  static-data:
+  db-data:
+
+
+networks:
+  bone:
+
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      # Don't change these.
+      - POSTGRES_USER=sophon
+      - POSTGRES_PASSWORD=sophonity
+      - POSTGRES_DB=sophon
+    networks:
+      - bone
+
+  frontend:
+    image: steffo45/sophon-frontend
+    environment:
+      - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
+    networks:
+      - bone
+
+  backend:
+    image: steffo45/sophon-backend
+    environment:
+      # TODO: Set a random secret key!
+      - DJANGO_SECRET_KEY=change-me-in-production
+      # TODO: Configure your allowed origins! (* doesn't work)
+      - DJANGO_CORS_ALLOWED_ORIGINS=http://dev.sophon.steffo.eu
+      # TODO: Configure your allowed hosts!
+      - DJANGO_ALLOWED_HOSTS=api.dev.sophon.steffo.eu
+      # TODO: Configure your proxy details!
+      - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
+      - APACHE_PROXY_HTTP_PROTOCOL=http
+      # TODO: Set your language!
+      - DJANGO_LANGUAGE_CODE=en-us
+      # TODO: Set your timezone!
+      - DJANGO_TIME_ZONE=CET
+      # TODO: Set the superuser login details!
+      - DJANGO_SU_USERNAME=root
+      - DJANGO_SU_EMAIL=root@example.org
+      - DJANGO_SU_PASSWORD=square
+      # Don't change these.
+      - DJANGO_DATABASE_HOST=db
+      - DJANGO_DATABASE_USER=sophon
+      - DJANGO_DATABASE_PASSWORD=sophonity
+      - DJANGO_DATABASE_NAME=sophon
+    volumes:
+      - proxy-data:/run/sophon/proxy
+      - static-data:/run/sophon/static
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - db
+    networks:
+      - bone
+
+  proxy:
+    image: steffo45/sophon-proxy
+    ports:
+      - "80:80"
+    environment:
+      # TODO: Configure your proxy details!
+      - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
+      #`Don't change these.
+      - SOPHON_BACKEND_NAME=backend:8000
+      - SOPHON_FRONTEND_NAME=frontend:5000
+    volumes:
+      - proxy-data:/run/sophon/proxy
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - bone
