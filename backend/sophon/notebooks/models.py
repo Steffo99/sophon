@@ -356,7 +356,7 @@ class Notebook(SophonGroupModel):
             network.connect(proxy)
 
             self.log.debug("Setting internal_url...")
-            self.internal_url = f"http://{self.container_name}:8888"
+            self.internal_url = f"{self.container_name}:8888"
 
             self.log.debug("Adding entry to the apache_db...")
             apache_db[bytes(self.external_domain, encoding="ascii")] = bytes(self.internal_url, encoding="ascii")

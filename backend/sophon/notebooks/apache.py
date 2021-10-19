@@ -5,7 +5,6 @@ import pathlib
 import socket
 import typing as t
 
-import lazy_object_proxy
 from django.conf import settings
 
 log = logging.getLogger(__name__)
@@ -52,7 +51,7 @@ class ApacheDB:
             del adb[key]
 
 
-db: ApacheDB = lazy_object_proxy.Proxy(lambda: ApacheDB(settings.PROXY_FILE))
+db: ApacheDB = ApacheDB(settings.PROXY_FILE)
 
 
 def get_ephemeral_port() -> int:
