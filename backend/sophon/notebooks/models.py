@@ -46,6 +46,7 @@ class Notebook(SophonGroupModel):
         validators=[
             DisallowedValuesValidator([
                 "api",  # reserved for docker deployment
+                "static",  # reserved for production deployment
                 "proxy",  # reserved for future use
                 "backend",  # reserved for future use
                 "frontend",  # reserved for future use
@@ -75,13 +76,13 @@ class Notebook(SophonGroupModel):
 
     # Remember to make a migration when changing this!
     IMAGE_CHOICES = (
-        ("jupyter/base-notebook", "Base"),
-        ("jupyter/minimal-notebook", "Python"),
-        ("jupyter/scipy-notebook", "Python (Scientific)"),
-        ("jupyter/tensorflow-notebook", "Python (Tensorflow)"),
-        ("jupyter/r-notebook", "Python + R"),
-        ("jupyter/pyspark-notebook", "Python (Scientific) + Apache Spark"),
-        ("jupyter/all-spark-notebook", "Python (Scientific) + Scala + R + Apache Spark"),
+        # ("jupyter/base-notebook", "Base"),
+        # ("jupyter/minimal-notebook", "Python"),
+        # ("jupyter/scipy-notebook", "Python (Scientific)"),
+        # ("jupyter/tensorflow-notebook", "Python (Tensorflow)"),
+        # ("jupyter/r-notebook", "Python + R"),
+        # ("jupyter/pyspark-notebook", "Python (Scientific) + Apache Spark"),
+        # ("jupyter/all-spark-notebook", "Python (Scientific) + Scala + R + Apache Spark"),
         ("steffo45/jupyterlab-docker-sophon", "Python (Sophonic)"),
     )
 
