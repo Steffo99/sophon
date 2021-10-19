@@ -3,7 +3,8 @@ version: "3.9"
 
 volumes:
   proxy-data:
-  static-data:
+  django-static:
+  react-static:
   db-data:
 
 
@@ -43,9 +44,9 @@ services:
       # TODO: Configure your proxy details!
       - DJANGO_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
       - DJANGO_PROXY_PROTOCOL=http
-      - DJANGO_PROXY_CONTAINER_NAME=proxy
+      - DJANGO_PROXY_CONTAINER_NAME=sophon2-proxy-1  # The correct name probably is $DIRECTORYNAME-proxy-1
       # TODO: Configure your static url!
-      - DJANGO_STATIC_URL=http://static.dev.sophon.steffo.eu/@django-static/
+      - DJANGO_STATIC_URL=http://static.dev.sophon.steffo.eu/django-static/
       # TODO: Set your language!
       - DJANGO_LANGUAGE_CODE=en-us
       # TODO: Set your timezone!
@@ -69,7 +70,7 @@ services:
       - DJANGO_DOCKER_CERT_PATH=
     volumes:
       - proxy-data:/run/sophon/proxy
-      - static-data:/run/sophon/static
+      - django-static:/run/sophon/static
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - db
@@ -88,7 +89,8 @@ services:
       - SOPHON_FRONTEND_NAME=frontend:5000
     volumes:
       - proxy-data:/run/sophon/proxy
-      - static-data:/usr/local/apache2/htdocs/django-static
+      - django-static:/usr/local/apache2/htdocs/django-static
+      - react-static:/usr/local/apache2/htdocs/react-static
     depends_on:
       - backend
       - frontend

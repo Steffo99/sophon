@@ -16,10 +16,6 @@ export function InstanceDescriptionBox(): JSX.Element | null {
         return null
     }
 
-    if(!instance.state.details.description) {
-        return null
-    }
-
     return (
         <DescriptionBox
             icon={faUniversity}
