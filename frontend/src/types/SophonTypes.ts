@@ -1,4 +1,4 @@
-import {DjangoResource, DjangoSlug} from "./DjangoTypes";
+import {DjangoResource, DjangoSlug} from "./DjangoTypes"
 
 
 /**
@@ -64,9 +64,8 @@ export interface SophonNotebook extends DjangoResource {
     locked_by: number,
     slug: DjangoSlug,
     legacy_notebook_url: string | null,
-    jupyter_token: string,
+    jupyter_token?: string,
     is_running: boolean,
-    internet_access: true,
     container_image: string,
     project: DjangoSlug,
     name: string,

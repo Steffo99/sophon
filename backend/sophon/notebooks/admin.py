@@ -13,7 +13,6 @@ class NotebookAdmin(SophonAdmin):
         "locked_by",
         "container_image",
         "container_id",
-        "port",
     )
 
     list_filter = (
@@ -40,7 +39,6 @@ class NotebookAdmin(SophonAdmin):
                 "fields": (
                     "container_image",
                     "container_id",
-                    "internet_access",
                 ),
             },
         ),
@@ -48,6 +46,7 @@ class NotebookAdmin(SophonAdmin):
             "Proxy", {
                 "fields": (
                     "port",
+                    "internal_url",
                 ),
             },
         ),

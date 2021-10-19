@@ -93,7 +93,7 @@ export function GroupCreateBox({viewSet, resource}: GroupCreateBoxProps): JSX.El
                 return obj
             }).reduce((a, b) => {
                 return {...a, ...b}
-            }),
+            }, {}),
             [authorization, cache],
         )
 

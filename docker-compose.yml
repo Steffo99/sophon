@@ -1,0 +1,98 @@
+version: "3.9"
+
+
+volumes:
+  proxy-data:
+  django-static:
+  react-static:
+  db-data:
+
+
+networks:
+  bone:
+
+
+services:
+  db:
+    image: postgres
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      # Don't change these.
+      - POSTGRES_USER=sophon
+      - POSTGRES_PASSWORD=sophonity
+      - POSTGRES_DB=sophon
+    networks:
+      - bone
+
+  frontend:
+    image: steffo45/sophon-frontend
+    environment:
+      - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
+    networks:
+      - bone
+
+  backend:
+    image: steffo45/sophon-backend
+    environment:
+      # TODO: Set a random secret key!
+      - DJANGO_SECRET_KEY=change-me!!!
+      # TODO: Configure your allowed hosts!
+      - DJANGO_ALLOWED_HOSTS=api.dev.sophon.steffo.eu
+      # TODO: Configure your allowed origins! (* doesn't work)
+      - DJANGO_ALLOWED_ORIGINS=http://dev.sophon.steffo.eu
+      # TODO: Configure your proxy details!
+      - DJANGO_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
+      - DJANGO_PROXY_PROTOCOL=http
+      - DJANGO_PROXY_CONTAINER_NAME=sophon2-proxy-1  # The correct name probably is $DIRECTORYNAME-proxy-1
+      # TODO: Configure your static url!
+      - DJANGO_STATIC_URL=http://static.dev.sophon.steffo.eu/django-static/
+      # TODO: Set your language!
+      - DJANGO_LANGUAGE_CODE=en-us
+      # TODO: Set your timezone!
+      - DJANGO_TIME_ZONE=CET
+      # TODO: Set the superuser login details!
+      - DJANGO_SU_USERNAME=root
+      - DJANGO_SU_EMAIL=root@example.org
+      - DJANGO_SU_PASSWORD=square
+      # Don't change these.
+      - DJANGO_DATABASE_ENGINE=django.db.backends.postgresql
+      - DJANGO_DATABASE_HOST=db
+      - DJANGO_DATABASE_USER=sophon
+      - DJANGO_DATABASE_PASSWORD=sophonity
+      - DJANGO_DATABASE_NAME=sophon
+      - DJANGO_AUTHENTICATION_BACKEND=django.contrib.auth.backends.ModelBackend
+      - DJANGO_DOCKER_CONTAINER_PREFIX=sophon-container
+      - DJANGO_DOCKER_VOLUME_PREFIX=sophon-volume
+      - DJANGO_DOCKER_NETWORK_PREFIX=sophon-network
+      - DJANGO_DOCKER_HOST=/var/run/docker.sock
+      - DJANGO_DOCKER_TLS_VERIFY=
+      - DJANGO_DOCKER_CERT_PATH=
+    volumes:
+      - proxy-data:/run/sophon/proxy
+      - django-static:/run/sophon/static
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - db
+    networks:
+      - bone
+
+  proxy:
+    image: steffo45/sophon-proxy
+    ports:
+      - "80:80"
+    environment:
+      # TODO: Configure your proxy details!
+      - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
+      #`Don't change these.
+      - SOPHON_BACKEND_NAME=backend:8000
+      - SOPHON_FRONTEND_NAME=frontend:5000
+    volumes:
+      - proxy-data:/run/sophon/proxy
+      - django-static:/usr/local/apache2/htdocs/django-static
+      - react-static:/usr/local/apache2/htdocs/react-static
+    depends_on:
+      - backend
+      - frontend
+    networks:
+      - bone

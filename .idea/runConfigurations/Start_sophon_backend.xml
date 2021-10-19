@@ -6,14 +6,14 @@
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
       <env name="DJANGO_SETTINGS_MODULE" value="sophon.settings" />
-      <env name="DJANGO_SECRET_KEY" value="change-me-in-production" />
+      <env name="DJANGO_SECRET_KEY" value="DJANGONE" />
       <env name="DJANGO_DEBUG" value="1" />
       <env name="DJANGO_TIME_ZONE" value="CET" />
-      <env name="APACHE_PROXY_BASE_DOMAIN" value="dev.sophon.steffo.eu" />
-      <env name="APACHE_PROXY_HTTP_PROTOCOL" value="http" />
-      <env name="DJANGO_CORS_ALLOWED_ORIGINS" value="http://localhost:3000" />
+      <env name="DJANGO_PROXY_BASE_DOMAIN" value="dev.sophon.steffo.eu" />
+      <env name="DJANGO_PROXY_PROTOCOL" value="http" />
+      <env name="DJANGO_ALLOWED_ORIGINS" value="http://localhost:3000" />
     </envs>
-    <option name="SDK_HOME" value="" />
+    <option name="SDK_HOME" value="$USER_HOME$/.cache/pypoetry/virtualenvs/sophon-rpVYiJ6v-py3.9/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     <option name="IS_MODULE_SDK" value="true" />
     <option name="ADD_CONTENT_ROOTS" value="false" />

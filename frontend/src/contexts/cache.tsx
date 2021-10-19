@@ -45,7 +45,7 @@ export function CacheProvider({children}: WithChildren): JSX.Element {
                     return obj
                 }).reduce((a, b) => {
                     return {...a, ...b}
-                })
+                }, {})
             },
             [users],
         )
