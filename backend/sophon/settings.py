@@ -73,20 +73,22 @@ except KeyError:
     SECRET_KEY = secrets.token_urlsafe(24)
 log.debug(f"SECRET_KEY = {'*' * len(SECRET_KEY)}")
 
+
 # Set debug mode
 DEBUG = __debug__
 if DEBUG:
     log.warning("DEBUG mode is on, run the Python interpreter with the -O option to disable.")
 log.debug(f"{DEBUG = }")
 
+
 # Set the hosts from which the admin page can be accessed, separated by pipes
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split("|")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", "").split("|") if "DJANGO_ALLOWED_HOSTS" in os.environ else []
 if len(ALLOWED_HOSTS) == 0:
     log.warning(f"No DJANGO_ALLOWED_HOSTS are set, the admin page may not be accessible.")
 log.debug(f"{ALLOWED_HOSTS = }")
 
 # Set the origins from which the API can be called, separated by pipes
-CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_ALLOWED_ORIGINS", "").split("|")
+CORS_ALLOWED_ORIGINS = os.environ.get("DJANGO_ALLOWED_ORIGINS", "").split("|") if "DJANGO_ALLOWED_ORIGINS" in os.environ else []
 if len(CORS_ALLOWED_ORIGINS) == 0:
     log.warning(f"No DJANGO_ALLOWED_ORIGINS are set, the API may not be usable.")
 log.debug(f"{CORS_ALLOWED_ORIGINS = }")
@@ -204,6 +206,34 @@ except KeyError:
     log.warning("DJANGO_PROXY_BASE_DOMAIN was not set, defaulting to `dev.sophon.steffo.eu`")
     PROXY_BASE_DOMAIN = "dev.sophon.steffo.eu"
 log.debug(f"{PROXY_BASE_DOMAIN = }")
+
+# Set the name of the proxy docker container
+PROXY_CONTAINER_NAME = os.environ.get("DJANGO_PROXY_CONTAINER_NAME")
+log.debug(f"{PROXY_CONTAINER_NAME =}")
+
+# Set the prefix to add to all instantiated notebook container names
+try:
+    DOCKER_CONTAINER_PREFIX = os.environ["DJANGO_DOCKER_CONTAINER_PREFIX"]
+except KeyError:
+    log.warning("DOCKER_CONTAINER_PREFIX was not set, defaulting to `sophon-container`")
+    DOCKER_CONTAINER_PREFIX = "sophon-container"
+log.debug(f"{DOCKER_CONTAINER_PREFIX = }")
+
+# Set the prefix to add to all instantiated notebook volume names
+try:
+    DOCKER_VOLUME_PREFIX = os.environ["DJANGO_DOCKER_VOLUME_PREFIX"]
+except KeyError:
+    log.warning("DOCKER_VOLUME_PREFIX was not set, defaulting to `sophon-volume`")
+    DOCKER_VOLUME_PREFIX = "sophon-volume"
+log.debug(f"{DOCKER_VOLUME_PREFIX = }")
+
+# Set the prefix to add to all instantiated notebook network names
+try:
+    DOCKER_NETWORK_PREFIX = os.environ["DJANGO_DOCKER_NETWORK_PREFIX"]
+except KeyError:
+    log.warning("DOCKER_VOLUME_PREFIX was not set, defaulting to `sophon-network`")
+    DOCKER_NETWORK_PREFIX = "sophon-network"
+log.debug(f"{DOCKER_NETWORK_PREFIX = }")
 
 try:
     DOCKER_HOST = os.environ["DJANGO_DOCKER_HOST"]

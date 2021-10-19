@@ -52,7 +52,7 @@ class ApacheDB:
             del adb[key]
 
 
-db = lazy_object_proxy.Proxy(lambda: ApacheDB(settings.PROXY_FILE))
+db: ApacheDB = lazy_object_proxy.Proxy(lambda: ApacheDB(settings.PROXY_FILE))
 
 
 def get_ephemeral_port() -> int:
