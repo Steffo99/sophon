@@ -114,10 +114,11 @@ class Notebook(SophonGroupModel):
         blank=True, null=True,
     )
 
-    internal_url = models.IntegerField(
+    internal_url = models.CharField(
         "Internal URL",
         help_text="The URL reachable from the proxy where the container is available. Can be null if the notebook is not running.",
         blank=True, null=True,
+        max_length=512,
     )
 
     def get_group(self) -> ResearchGroup:
@@ -131,7 +132,6 @@ class Notebook(SophonGroupModel):
             "name",
             "locked_by",
             "container_image",
-            "internet_access",
             "is_running",
             "lab_url",
             "legacy_notebook_url",
@@ -174,28 +174,28 @@ class Notebook(SophonGroupModel):
         """
         :return: The name given to the container associated with this :class:`Notebook`.
         """
-        return f"{settings.CONTAINER_PREFIX}-{self.slug}"
+        return f"{settings.DOCKER_CONTAINER_PREFIX}-{self.slug}"
 
     @property
     def volume_name(self) -> str:
         """
         :return: The name given to the volume associated with this :class:`Notebook`.
         """
-        return f"{settings.VOLUME_PREFIX}-{self.slug}"
+        return f"{settings.DOCKER_VOLUME_PREFIX}-{self.slug}"
 
     @property
     def network_name(self) -> str:
         """
         :return: The name given to the network associated with this :class:`Notebook`.
         """
-        return f"{settings.NETWORK_PREFIX}-{self.slug}"
+        return f"{settings.DOCKER_NETWORK_PREFIX}-{self.slug}"
 
     @property
     def external_domain(self) -> str:
         """
         :return: The domain name where this :class:`Notebook` will be accessible on the Internet after its container is started.
         """
-        return f"{self.slug}.{settings.PROXY_DOMAIN}"
+        return f"{self.slug}.{settings.PROXY_BASE_DOMAIN}"
 
     @property
     def lab_url(self) -> t.Optional[str]:
@@ -322,7 +322,10 @@ class Notebook(SophonGroupModel):
             proxy = get_proxy_container()
 
             self.log.debug("Disconnecting proxy container from the network...")
-            network.disconnect(proxy)
+            try:
+                network.disconnect(proxy)
+            except docker.errors.APIError:
+                self.log.debug("Container was already disconnected.")
 
         else:
             self.log.debug("Unassigning port...")
@@ -485,7 +488,7 @@ class Notebook(SophonGroupModel):
             name=self.container_name,
             ports={
                 "8888/tcp": (f"127.0.0.1", f"{self.port}/tcp")
-            },
+            } if self.port else {},
             environment={
                 "JUPYTER_ENABLE_LAB": "yes",
                 "RESTARTABLE": "yes",
@@ -498,7 +501,7 @@ class Notebook(SophonGroupModel):
                     "mode": "rw",
                 }
             },
-            network=network,
+            network=network.name,
         )
 
         self.log.debug("Storing container_id in the SQL database...")

@@ -3,12 +3,13 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Box, Heading, Idiomatic} from "@steffo/bluelib-react"
 import * as React from "react"
 import ReactMarkdown from "react-markdown"
+import {Empty} from "./Empty"
 
 
 export interface DescriptionBoxProps {
     icon: IconDefinition,
     name: string,
-    description: string,
+    description?: string | null,
 }
 
 
@@ -19,9 +20,16 @@ export function DescriptionBox({icon, name, description}: DescriptionBoxProps): 
                 <Heading level={3}>
                     <FontAwesomeIcon icon={icon}/>&nbsp;About <Idiomatic>{name}</Idiomatic>
                 </Heading>
-                <ReactMarkdown>
-                    {description}
-                </ReactMarkdown>
+                {
+                    description ?
+                    <ReactMarkdown>
+                        {description}
+                    </ReactMarkdown>
+                                :
+                    <Empty>
+                        This resource has no about text.
+                    </Empty>
+                }
             </Box>
         ),
         [icon, name, description],

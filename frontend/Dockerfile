@@ -15,4 +15,5 @@ RUN yarn install
 COPY . .
 
 # Start the serve server
-ENTRYPOINT ["yarn", "run", "serve"]
+ENTRYPOINT ["yarn", "run"]
+CMD ["serve"]
