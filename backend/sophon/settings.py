@@ -167,7 +167,7 @@ except KeyError:
         # noinspection PyUnresolvedReferences
         STATIC_ROOT = ".\\static"
     else:
-        log.warning("DJANGO_STATIC_ROOT was not set, defaulting to `/run/sophon/static/`")
+        log.warning("DJANGO_STATIC_ROOT was not set, defaulting to `/run/sophon/static`")
         # I have no idea of why IDEA is trying to resolve this
         # noinspection PyUnresolvedReferences
         STATIC_ROOT = "/run/sophon/static"
@@ -245,14 +245,14 @@ log.debug(f"{DOCKER_HOST = }")
 try:
     DOCKER_TLS_VERIFY = os.environ["DJANGO_DOCKER_TLS_VERIFY"]
 except KeyError:
-    log.warning("DOCKER_TLS_VERIFY was not set, defaulting to none (may cause problems)")
+    log.warning("DJANGO_DOCKER_TLS_VERIFY was not set, defaulting to none (may cause problems)")
     DOCKER_TLS_VERIFY = None
 log.debug(f"{DOCKER_TLS_VERIFY = }")
 
 try:
     DOCKER_CERT_PATH = os.environ["DJANGO_DOCKER_CERT_PATH"]
 except KeyError:
-    log.warning("DOCKER_CERT_PATH was not set, defaulting to none (may cause problems)")
+    log.warning("DJANGO_DOCKER_CERT_PATH was not set, defaulting to none (may cause problems)")
     DOCKER_CERT_PATH = None
 log.debug(f"{DOCKER_CERT_PATH = }")
 

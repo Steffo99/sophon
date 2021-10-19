@@ -35,14 +35,17 @@ services:
     image: steffo45/sophon-backend
     environment:
       # TODO: Set a random secret key!
-      - DJANGO_SECRET_KEY=change-me-in-production
-      # TODO: Configure your allowed origins! (* doesn't work)
-      - DJANGO_CORS_ALLOWED_ORIGINS=http://dev.sophon.steffo.eu
+      - DJANGO_SECRET_KEY=change-me!!!
       # TODO: Configure your allowed hosts!
       - DJANGO_ALLOWED_HOSTS=api.dev.sophon.steffo.eu
+      # TODO: Configure your allowed origins! (* doesn't work)
+      - DJANGO_ALLOWED_ORIGINS=http://dev.sophon.steffo.eu
       # TODO: Configure your proxy details!
-      - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
-      - APACHE_PROXY_HTTP_PROTOCOL=http
+      - DJANGO_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
+      - DJANGO_PROXY_PROTOCOL=http
+      - DJANGO_PROXY_CONTAINER_NAME=proxy
+      # TODO: Configure your static url!
+      - DJANGO_STATIC_URL=http://static.dev.sophon.steffo.eu/@django-static/
       # TODO: Set your language!
       - DJANGO_LANGUAGE_CODE=en-us
       # TODO: Set your timezone!
@@ -52,10 +55,18 @@ services:
       - DJANGO_SU_EMAIL=root@example.org
       - DJANGO_SU_PASSWORD=square
       # Don't change these.
+      - DJANGO_DATABASE_ENGINE=django.db.backends.postgresql
       - DJANGO_DATABASE_HOST=db
       - DJANGO_DATABASE_USER=sophon
       - DJANGO_DATABASE_PASSWORD=sophonity
       - DJANGO_DATABASE_NAME=sophon
+      - DJANGO_AUTHENTICATION_BACKEND=django.contrib.auth.backends.ModelBackend
+      - DJANGO_DOCKER_CONTAINER_PREFIX=sophon-container
+      - DJANGO_DOCKER_VOLUME_PREFIX=sophon-volume
+      - DJANGO_DOCKER_NETWORK_PREFIX=sophon-network
+      - DJANGO_DOCKER_HOST=/var/run/docker.sock
+      - DJANGO_DOCKER_TLS_VERIFY=
+      - DJANGO_DOCKER_CERT_PATH=
     volumes:
       - proxy-data:/run/sophon/proxy
       - static-data:/run/sophon/static
@@ -77,6 +88,7 @@ services:
       - SOPHON_FRONTEND_NAME=frontend:5000
     volumes:
       - proxy-data:/run/sophon/proxy
+      - static-data:/usr/local/apache2/htdocs/django-static
     depends_on:
       - backend
       - frontend
