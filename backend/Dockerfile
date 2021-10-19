@@ -24,14 +24,13 @@ RUN poetry install
 ENV PYTHONUNBUFFERED=1
 
 # Tell Django where the settings module is
-# I have no idea why this is needed
 ENV DJANGO_SETTINGS_MODULE="sophon.settings"
 
 # Store the DBM file in a nice place
-ENV APACHE_PROXY_EXPRESS_DBM="/run/sophon/proxy/proxy.dbm"
+ENV DJANGO_PROXY_FILE="/run/sophon/proxy/proxy.dbm"
 
 # Set the static files directory
-ENV STATIC_ROOT="/usr/src/app/static"
+ENV DJANGO_STATIC_ROOT="/run/sophon/static"
 
 # Start the uvicorn server
 ENTRYPOINT ["bash", "./docker_start.sh"]
