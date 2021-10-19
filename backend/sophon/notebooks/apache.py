@@ -1,21 +1,29 @@
 import dbm.gnu
 import logging
 import os
+import pathlib
 import socket
 import typing as t
 
+import lazy_object_proxy
+from django.conf import settings
+
 log = logging.getLogger(__name__)
-db_name = os.environ.get("APACHE_PROXY_EXPRESS_DBM", "/run/sophon/proxy/proxy.dbm")
-base_domain = os.environ["APACHE_PROXY_BASE_DOMAIN"]
-http_protocol = os.environ.get("APACHE_PROXY_HTTP_PROTOCOL", "https")
 
 
 class ApacheDB:
-    def __init__(self, filename: str):
-        self.filename: str = filename
-        log.debug(f"{self.filename}: Initializing...")
-        with dbm.open(self.filename, "c"):
+    def __init__(self, path: t.Union[str, pathlib.Path]):
+        self.path: pathlib.Path
+        if isinstance(path, str):
+            self.path = pathlib.Path(path)
+        else:
+            self.path = path
+        log.debug(f"Initializing directories...")
+        os.makedirs(self.path.parent, exist_ok=True)
+        log.debug(f"Initializing database...")
+        with dbm.open(str(self.path), "c"):
             pass
+        log.debug("Done!")
 
     @staticmethod
     def convert_to_bytes(item: t.Union[str, bytes]) -> bytes:
@@ -26,27 +34,25 @@ class ApacheDB:
 
     def __getitem__(self, key: t.Union[str, bytes]) -> bytes:
         key = self.convert_to_bytes(key)
-        log.debug(f"{self.filename}: Getting {key!r}...")
-        with dbm.open(self.filename, "r") as adb:
+        log.debug(f"{self.path}: Getting {key!r}...")
+        with dbm.open(str(self.path), "r") as adb:
             return adb[key]
 
     def __setitem__(self, key: bytes, value: bytes) -> None:
         key = self.convert_to_bytes(key)
         value = self.convert_to_bytes(value)
-        log.debug(f"{self.filename}: Setting {key!r} → {value!r}...")
-        with dbm.open(self.filename, "w") as adb:
+        log.debug(f"{self.path}: Setting {key!r} → {value!r}...")
+        with dbm.open(str(self.path), "w") as adb:
             adb[key] = value
 
     def __delitem__(self, key):
         key = self.convert_to_bytes(key)
-        log.debug(f"{self.filename}: Deleting {key!r}...")
-        with dbm.open(self.filename, "w") as adb:
+        log.debug(f"{self.path}: Deleting {key!r}...")
+        with dbm.open(str(self.path), "w") as adb:
             del adb[key]
 
 
-log.info(f"Creating proxy_express database: {db_name}")
-db = ApacheDB(db_name)
-log.info(f"Created proxy_express database!")
+db = lazy_object_proxy.Proxy(lambda: ApacheDB(settings.PROXY_FILE))
 
 
 def get_ephemeral_port() -> int:

@@ -4,17 +4,24 @@ import time
 
 import docker.errors
 import docker.models.containers
+import lazy_object_proxy
+from django.conf import settings
 
 log = logging.getLogger(__name__)
 
-log.info("Connecting to Docker daemon...")
-try:
-    client: docker.DockerClient = docker.from_env()
-except docker.errors.DockerException as e:
-    log.fatal("Could not connect to the Docker daemon!")
-    raise
-else:
-    log.info("Connection to Docker daemon successful!")
+
+def get_docker_client() -> docker.DockerClient:
+    log.info("Connecting to Docker daemon...")
+    try:
+        result = docker.from_env(environment=settings.__dict__)
+    except docker.errors.DockerException as e:
+        log.fatal("Could not connect to the Docker daemon!")
+    else:
+        log.info("Connection to Docker daemon successful!")
+        return result
+
+
+client = lazy_object_proxy.Proxy(get_docker_client)
 
 
 class HealthState(enum.IntEnum):
