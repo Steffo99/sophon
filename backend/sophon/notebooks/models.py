@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import logging
-import os
 import typing as t
 
 import docker.errors
@@ -17,7 +16,7 @@ from sophon.core.models import SophonGroupModel, ResearchGroup
 from sophon.notebooks.apache import db as apache_db
 from sophon.notebooks.apache import get_ephemeral_port
 from sophon.notebooks.docker import client as docker_client
-from sophon.notebooks.docker import sleep_until_container_has_started
+from sophon.notebooks.docker import sleep_until_container_has_started, get_proxy_container
 from sophon.notebooks.jupyter import generate_secure_token
 from sophon.notebooks.validators import DisallowedValuesValidator
 from sophon.projects.models import ResearchProject
@@ -94,14 +93,6 @@ class Notebook(SophonGroupModel):
         default="steffo45/jupyterlab-docker-sophon",
     )
 
-    # TODO: Find a way to prevent Internet access without using the --internal flag, as it doesn't allow to expose ports
-    internet_access = models.BooleanField(
-        "Allow internet access",
-        help_text="If true, the notebook will be able to access the Internet as the host machine. Can only be set by a superuser via the admin interface. "
-                  "<em>Does not currently do anything.</em>",
-        default=True,
-    )
-
     jupyter_token = models.CharField(
         "Jupyter Access Token",
         help_text="The token to allow access to the JupyterLab editor.",
@@ -118,7 +109,13 @@ class Notebook(SophonGroupModel):
 
     port = models.IntegerField(
         "Local port number",
-        help_text="The port number of the local machine at which the container is available. Can be null if the notebook is not running.",
+        help_text="The port number of the local machine at which the container is available. Can be null if the notebook is not running, or if the proxy itself is running in a Docker container.",
+        blank=True, null=True,
+    )
+
+    internal_url = models.IntegerField(
+        "Internal URL",
+        help_text="The URL reachable from the proxy where the container is available. Can be null if the notebook is not running.",
         blank=True, null=True,
     )
 
@@ -176,21 +173,21 @@ class Notebook(SophonGroupModel):
         """
         :return: The name given to the container associated with this :class:`Notebook`.
         """
-        return f"{os.environ.get('SOPHON_CONTAINER_PREFIX', 'sophon-container')}-{self.slug}"
+        return f"{settings.CONTAINER_PREFIX}-{self.slug}"
 
     @property
     def volume_name(self) -> str:
         """
         :return: The name given to the volume associated with this :class:`Notebook`.
         """
-        return f"{os.environ.get('SOPHON_VOLUME_PREFIX', 'sophon-volume')}-{self.slug}"
+        return f"{settings.VOLUME_PREFIX}-{self.slug}"
 
     @property
     def network_name(self) -> str:
         """
         :return: The name given to the network associated with this :class:`Notebook`.
         """
-        return f"{os.environ.get('SOPHON_NETWORK_PREFIX', 'sophon-network')}-{self.slug}"
+        return f"{settings.NETWORK_PREFIX}-{self.slug}"
 
     @property
     def external_domain(self) -> str:
@@ -222,10 +219,10 @@ class Notebook(SophonGroupModel):
         return f"{settings.PROXY_PROTOCOL}://{self.external_domain}/tree?token={self.jupyter_token}"
 
     @property
-    def internal_domain(self) -> t.Optional[str]:
+    def local_domain(self) -> t.Optional[str]:
         """
         :return: The domain name where this :class:`Notebook` is accessible on the local machine, or :data:`None` if no port has been assigned to this
-                 container yet.
+                 container yet or if the proxy itself is running in a container.
         """
         if self.port is None:
             return None
@@ -307,7 +304,7 @@ class Notebook(SophonGroupModel):
         self.log.debug(f"Network does not exist, creating it now...")
         network = docker_client.networks.create(
             name=self.network_name,
-            internal=not self.internet_access,
+            internal=True,
         )
         self.log.info(f"Created {network!r}")
         return network
@@ -316,9 +313,19 @@ class Notebook(SophonGroupModel):
         """
         Disable the proxying of this :class:`Notebook` by removing its URLs from the :data:`apache_db` and its port from :attr:`.port`.
         """
+        if settings.PROXY_CONTAINER_NAME:
+            self.log.debug("Getting the notebook network...")
+            network = self.get_network()
 
-        self.log.debug("Unassigning port...")
-        self.port = None
+            self.log.debug("Getting proxy container...")
+            proxy = get_proxy_container()
+
+            self.log.debug("Disconnecting proxy container from the network...")
+            network.disconnect(proxy)
+
+        else:
+            self.log.debug("Unassigning port...")
+            self.port = None
 
         self.log.debug("Removing entry from the apache_db...")
         try:
@@ -326,7 +333,7 @@ class Notebook(SophonGroupModel):
         except KeyError:
             pass
 
-        self.log.debug("Clearing port from the SQL database...")
+        self.log.debug("Clearing proxy data from the SQL database...")
         self.save()
 
     def enable_proxying(self) -> None:
@@ -334,13 +341,30 @@ class Notebook(SophonGroupModel):
         Enable the proxying of this :class:`Notebook` by adding its URLs to the :data:`apache_db` and its port to :attr:`.port`.
         """
 
-        self.log.debug("Getting free port...")
-        self.port: int = get_ephemeral_port()
+        if settings.PROXY_CONTAINER_NAME:
+            self.log.debug("Getting the notebook network...")
+            network = self.get_network()
 
-        self.log.debug("Adding entry to the apache_db...")
-        apache_db[self.external_domain] = f"{self.internal_domain}"
+            self.log.debug("Getting proxy container...")
+            proxy = get_proxy_container()
 
-        self.log.debug("Saving port to the SQL database...")
+            self.log.debug("Connecting proxy container to the network...")
+            network.connect(proxy)
+
+            self.log.debug("Setting internal_url...")
+            self.internal_url = f"http://{self.container_name}:8888"
+
+            self.log.debug("Adding entry to the apache_db...")
+            apache_db[bytes(self.external_domain, encoding="ascii")] = bytes(self.internal_url, encoding="ascii")
+
+        else:
+            self.log.debug("Getting free port...")
+            self.port: int = get_ephemeral_port()
+
+            self.log.debug("Adding entry to the apache_db...")
+            apache_db[bytes(self.external_domain, encoding="ascii")] = bytes(f"{self.local_domain}", encoding="ascii")
+
+        self.log.debug("Saving proxy data to the SQL database...")
         self.save()
 
     def get_container(self) -> t.Optional[docker.models.containers.Container]:
@@ -473,6 +497,7 @@ class Notebook(SophonGroupModel):
                     "mode": "rw",
                 }
             },
+            network=network,
         )
 
         self.log.debug("Storing container_id in the SQL database...")

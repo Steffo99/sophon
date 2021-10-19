@@ -21,7 +21,7 @@ def get_docker_client() -> docker.DockerClient:
         return result
 
 
-client = lazy_object_proxy.Proxy(get_docker_client)
+client: docker.DockerClient = lazy_object_proxy.Proxy(get_docker_client)
 
 
 class HealthState(enum.IntEnum):
@@ -54,6 +54,13 @@ def get_health(container: docker.models.containers.Container) -> HealthState:
 
     log.debug(f"{container!r} is: {state!r}")
     return state
+
+
+def get_proxy_container() -> docker.models.containers.Container:
+    """
+    :return: The container of the proxy, having the name specified in `settings.PROXY_CONTAINER_NAME`.
+    """
+    return client.containers.get(settings.PROXY_CONTAINER_NAME)
 
 
 def sleep_until_container_has_started(container: docker.models.containers.Container) -> HealthState:
