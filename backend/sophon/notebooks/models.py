@@ -9,12 +9,13 @@ import docker.models.containers
 import docker.models.images
 import docker.models.networks
 import docker.models.volumes
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 
 from sophon.core.models import SophonGroupModel, ResearchGroup
 from sophon.notebooks.apache import db as apache_db
-from sophon.notebooks.apache import get_ephemeral_port, base_domain, http_protocol
+from sophon.notebooks.apache import get_ephemeral_port
 from sophon.notebooks.docker import client as docker_client
 from sophon.notebooks.docker import sleep_until_container_has_started
 from sophon.notebooks.jupyter import generate_secure_token
@@ -196,7 +197,7 @@ class Notebook(SophonGroupModel):
         """
         :return: The domain name where this :class:`Notebook` will be accessible on the Internet after its container is started.
         """
-        return f"{self.slug}.{base_domain}"
+        return f"{self.slug}.{settings.PROXY_DOMAIN}"
 
     @property
     def lab_url(self) -> t.Optional[str]:
@@ -207,7 +208,7 @@ class Notebook(SophonGroupModel):
         """
         if not self.is_running:
             return None
-        return f"{http_protocol}://{self.external_domain}/lab?token={self.jupyter_token}"
+        return f"{settings.PROXY_PROTOCOL}://{self.external_domain}/lab?token={self.jupyter_token}"
 
     @property
     def legacy_notebook_url(self) -> t.Optional[str]:
@@ -218,7 +219,7 @@ class Notebook(SophonGroupModel):
         """
         if not self.is_running:
             return None
-        return f"{http_protocol}://{self.external_domain}/tree?token={self.jupyter_token}"
+        return f"{settings.PROXY_PROTOCOL}://{self.external_domain}/tree?token={self.jupyter_token}"
 
     @property
     def internal_domain(self) -> t.Optional[str]:
