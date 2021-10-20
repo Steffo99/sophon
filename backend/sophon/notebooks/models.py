@@ -381,7 +381,10 @@ class Notebook(SophonGroupModel):
 
         if self.container_id is None:
             return None
-        return docker_client.containers.get(self.container_id)
+        try:
+            return docker_client.containers.get(self.container_id)
+        except docker.errors.NotFound:
+            return None
 
     def sync_container(self) -> t.Optional[docker.models.containers.Container]:
         """

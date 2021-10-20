@@ -31,7 +31,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         """
         notebook: Notebook = self.get_object()
         notebook.sync_container()
-        Serializer = notebook.get_access_serializer(request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(notebook)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -42,7 +42,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         """
         notebook: Notebook = self.get_object()
         notebook.start()
-        Serializer = notebook.get_access_serializer(request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(notebook)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -57,7 +57,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         if notebook.locked_by is None:
             notebook.locked_by = self.request.user
         notebook.save()
-        Serializer = notebook.get_access_serializer(request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(notebook)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -71,7 +71,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         notebook: Notebook = self.get_object()
         notebook.locked_by = None
         notebook.save()
-        Serializer = notebook.get_access_serializer(request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(notebook)
         return Response(serializer.data, status.HTTP_200_OK)
 
@@ -82,7 +82,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         """
         notebook: Notebook = self.get_object()
         notebook.stop()
-        Serializer = notebook.get_access_serializer(request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(notebook)
         return Response(serializer.data, status.HTTP_200_OK)
 
