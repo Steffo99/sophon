@@ -84,7 +84,7 @@ export function InstanceFormBox(): JSX.Element {
 
     const urlField =
         useFormState<string>(
-            instance?.state?.url?.toString() ?? "",
+            instance?.state?.url?.toString() ?? process.env.REACT_APP_DEFAULT_INSTANCE ?? "",
             onValidate,
         )
 
