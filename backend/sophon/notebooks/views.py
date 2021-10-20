@@ -8,7 +8,7 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 
 from sophon.core.models import ResearchGroup
-from sophon.core.serializers import dynamic_serializer
+from sophon.core.serializers import dynamic_serializer, NoneSerializer
 from sophon.core.views import SophonGroupViewSet
 from sophon.notebooks.models import Notebook
 from sophon.projects.models import ResearchProject
@@ -17,6 +17,12 @@ from sophon.projects.models import ResearchProject
 class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
     def get_group_from_serializer(self, serializer) -> ResearchGroup:
         return serializer.validated_data["project"].group
+
+    def get_custom_serializer_classes(self):
+        if self.action in ["sync", "start", "lock", "unlock", "stop"]:
+            return self.get_object().get_access_serializer(self.request.user)
+        else:
+            return NoneSerializer
 
     @action(["PATCH"], detail=True)
     def sync(self, request: Request, **kwargs):

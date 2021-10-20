@@ -207,6 +207,12 @@ class ResearchGroupViewSet(WriteSophonViewSet):
             "owner": self.request.user,
         }
 
+    def get_custom_serializer_classes(self):
+        if self.action in ["join", "leave"]:
+            return self.get_object().get_access_serializer(self.request.user)
+        else:
+            return serializers.NoneSerializer
+
     @action(detail=True, methods=["post"], name="Join group")
     def join(self, request, pk) -> Response:
         group = models.ResearchGroup.objects.get(pk=pk)
