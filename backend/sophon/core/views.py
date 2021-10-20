@@ -223,7 +223,7 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         group.members.add(self.request.user)
 
         # noinspection PyPep8Naming
-        Serializer = group.get_access_serializer(self.request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(instance=group)
 
         return Response(data=serializer.data, status=s.HTTP_200_OK)
@@ -244,7 +244,7 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         group.members.remove(self.request.user)
 
         # noinspection PyPep8Naming
-        Serializer = group.get_access_serializer(self.request.user)
+        Serializer = self.get_serializer_class()
         serializer = Serializer(instance=group)
 
         return Response(data=serializer.data, status=s.HTTP_200_OK)
