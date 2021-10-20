@@ -7,6 +7,7 @@ import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonResearchProject} from "../../types/SophonTypes"
 import {Validators} from "../../utils/Validators"
+import {useGroupMembership} from "../group/useGroupMembership"
 
 
 export interface ProjectCreateBoxProps {
@@ -40,33 +41,6 @@ export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JS
     const slug =
         useFormSlug(resource, name.value)
 
-    const canAdministrate =
-        React.useMemo(
-            () => {
-                if(resource) {
-                    if(!authorization) {
-                        return false
-                    }
-                    if(!group) {
-                        return false
-                    }
-                    if(!authorization.state.user) {
-                        return false
-                    }
-                    if(!(
-                        group.value.members.includes(authorization.state.user.id) || group.value.owner === authorization.state.user.id
-                    )) {
-                        return false
-                    }
-                    return true
-                }
-                else {
-                    return true
-                }
-            },
-            [authorization, group, resource],
-        )
-
     const applyChanges =
         useApplyChanges(viewSet, resource, {
             name: name.value,
@@ -88,11 +62,7 @@ export function ProjectCreateBox({viewSet, resource}: ProjectCreateBoxProps): JS
             [viewSet, resource],
         )
 
-    if(!authorization?.state.token ||
-        !(
-            viewSet || resource
-        ) ||
-        !canAdministrate) {
+    if(!useGroupMembership()) {
         return null
     }
 

@@ -1,13 +1,13 @@
 import {Box, Details, Form, Idiomatic as I, useFormState} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
-import {useGroupContext} from "../../contexts/group"
 import {useProjectContext} from "../../contexts/project"
 import {useApplyChanges} from "../../hooks/useApplyChanges"
 import {useFormSlug} from "../../hooks/useFormSlug"
 import {ManagedResource, ManagedViewSet} from "../../hooks/useManagedViewSet"
 import {SophonNotebook} from "../../types/SophonTypes"
 import {Validators} from "../../utils/Validators"
+import {useGroupMembership} from "../group/useGroupMembership"
 
 
 export interface NotebookCreateBoxProps {
@@ -18,7 +18,6 @@ export interface NotebookCreateBoxProps {
 
 export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
-    const group = useGroupContext()
     const project = useProjectContext()
 
     const name =
@@ -56,18 +55,7 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
             [viewSet, resource],
         )
 
-    if(!authorization) {
-        return null
-    }
-    if(!group) {
-        return null
-    }
-    if(!authorization.state.token) {
-        return null
-    }
-    if(!(
-        group.value.members.includes(authorization.state.user.id) || group.value.owner === authorization.state.user.id
-    )) {
+    if(!useGroupMembership()) {
         return null
     }
     if(resource) {

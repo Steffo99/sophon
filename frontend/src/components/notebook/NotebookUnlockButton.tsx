@@ -3,10 +3,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Button} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
-import {useGroupContext} from "../../contexts/group"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonNotebook} from "../../types/SophonTypes"
 import {SafetyButton} from "../elements/SafetyButton"
+import {useGroupMembership} from "../group/useGroupMembership"
 
 
 export interface NotebookUnlockButtonProps {
@@ -16,27 +16,15 @@ export interface NotebookUnlockButtonProps {
 
 export function NotebookUnlockButton({resource}: NotebookUnlockButtonProps): JSX.Element | null {
     const authorization = useAuthorizationContext()
-    const group = useGroupContext()
 
-    if(!authorization) {
-        return null
-    }
-    if(!group) {
-        return null
-    }
-    if(!authorization.state.user) {
-        return null
-    }
-    if(!(
-        group.value.members.includes(authorization.state.user.id) || group.value.owner === authorization.state.user.id
-    )) {
+    if(!useGroupMembership()) {
         return null
     }
     if(!resource.value.locked_by) {
         return null
     }
 
-    if(resource.value.locked_by === authorization.state.user.id) {
+    if(resource.value.locked_by === authorization!.state.user!.id) {
         return (
             <Button onClick={() => resource.action("PATCH", "unlock", {})} disabled={resource.busy}>
                 <FontAwesomeIcon icon={faLockOpen} spin={resource.busy}/>&nbsp;Unlock

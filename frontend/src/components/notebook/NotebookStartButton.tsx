@@ -2,10 +2,9 @@ import {faLightbulb} from "@fortawesome/free-solid-svg-icons"
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Button} from "@steffo/bluelib-react"
 import * as React from "react"
-import {useAuthorizationContext} from "../../contexts/authorization"
-import {useGroupContext} from "../../contexts/group"
 import {ManagedResource} from "../../hooks/useManagedViewSet"
 import {SophonNotebook} from "../../types/SophonTypes"
+import {useGroupMembership} from "../group/useGroupMembership"
 
 
 export interface NotebookStartButtonProps {
@@ -14,21 +13,7 @@ export interface NotebookStartButtonProps {
 
 
 export function NotebookStartButton({resource}: NotebookStartButtonProps): JSX.Element | null {
-    const authorization = useAuthorizationContext()
-    const group = useGroupContext()
-
-    if(!authorization) {
-        return null
-    }
-    if(!group) {
-        return null
-    }
-    if(!authorization.state.user) {
-        return null
-    }
-    if(!(
-        group.value.members.includes(authorization.state.user.id) || group.value.owner === authorization.state.user.id
-    )) {
+    if(!useGroupMembership()) {
         return null
     }
     if(resource.value.is_running) {
