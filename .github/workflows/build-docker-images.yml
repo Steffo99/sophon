@@ -1,28 +1,41 @@
 name: Build docker images
-
 on:
   push:
     branches: [ main ]
-
 jobs:
   build-backend:
+    name: "Build backend image"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
-    - run: docker build ./backend --tag ghcr.io/steffo99/sophon-backend:latest
-    - run: docker push ghcr.io/steffo99/sophon-backend:latest
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Login to GitHub Containers"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+      - name: "Build the docker container `ghcr.io/steffo99/sophon-backend:latest`"
+        run: docker build ./backend --tag ghcr.io/steffo99/sophon-backend:latest
+      - name: "Upload the container to GitHub Containers"
+        run: docker push ghcr.io/steffo99/sophon-backend:latest
   build-frontend:
+    name: "Build frontend image"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
-    - run: docker build ./frontend --tag ghcr.io/steffo99/sophon-frontend:latest
-    - run: docker push ghcr.io/steffo99/sophon-frontend:latest
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Login to GitHub Containers"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+      - name: "Build the docker container `ghcr.io/steffo99/sophon-frontend:latest`"
+        run: docker build ./frontend --tag ghcr.io/steffo99/sophon-frontend:latest
+      - name: "Upload the container to GitHub Containers"
+        run: docker push ghcr.io/steffo99/sophon-frontend:latest
   build-proxy:
+    name: "Build proxy image"
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
-    - run: docker build ./proxy --tag ghcr.io/steffo99/sophon-proxy:latest
-    - run: docker push ghcr.io/steffo99/sophon-proxy:latest
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Login to GitHub Containers"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+      - name: "Build the docker container `ghcr.io/steffo99/sophon-proxy:latest`"
+        run: docker build ./proxy --tag ghcr.io/steffo99/sophon-proxy:latest
+      - name: "Upload the container to GitHub Containers"
+        run: docker push ghcr.io/steffo99/sophon-proxy:latest
