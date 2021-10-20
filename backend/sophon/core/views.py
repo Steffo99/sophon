@@ -175,7 +175,7 @@ class UserViewSet(ReadSophonViewSet):
     A viewset to list registered users.
     """
     def get_queryset(self):
-        return User.objects.all()
+        return User.objects.order_by("username").all()
 
     def get_serializer_class(self):
         return serializers.UserSerializer
@@ -199,7 +199,7 @@ class ResearchGroupViewSet(WriteSophonViewSet):
 
     def get_queryset(self):
         # All research groups are public, so it's fine to do this
-        return models.ResearchGroup.objects.all()
+        return models.ResearchGroup.objects.order_by("slug").all()
 
     def hook_create(self, serializer) -> dict[str, t.Any]:
         # Add the owner field to the serializer

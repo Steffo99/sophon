@@ -97,7 +97,7 @@ class NotebooksByProjectViewSet(NotebooksViewSet):
             return Notebook.objects.filter(
                 Q(project__slug=self.kwargs["project_slug"]) &
                 Q(project__visibility="PUBLIC")
-            )
+            ).distinct().order_by("slug").all()
         else:
             return Notebook.objects.filter(
                 Q(project__slug=self.kwargs["project_slug"]) & (
@@ -106,7 +106,7 @@ class NotebooksByProjectViewSet(NotebooksViewSet):
                         Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user]) |
                         Q(project__visibility="PRIVATE", project__group__owner=self.request.user)
                 )
-            )
+            ).distinct().order_by("slug").all()
 
     def get_serializer_class(self):
         # Get the base serializer
@@ -145,11 +145,11 @@ class NotebooksBySlugViewSet(NotebooksViewSet):
         if self.request.user.is_anonymous:
             return Notebook.objects.filter(
                 Q(project__visibility="PUBLIC")
-            )
+            ).distinct().order_by("slug").all()
         else:
             return Notebook.objects.filter(
                 Q(project__visibility="PUBLIC") |
                 Q(project__visibility="INTERNAL") |
                 Q(project__visibility="PRIVATE", project__group__members__in=[self.request.user]) |
                 Q(project__visibility="PRIVATE", project__group__owner=self.request.user)
-            )
+            ).distinct().order_by("slug").all()
