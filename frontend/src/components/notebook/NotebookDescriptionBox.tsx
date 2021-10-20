@@ -42,12 +42,16 @@ export function NotebookDescriptionBox(): JSX.Element | null {
             <p>
                 A <B>{notebook.value.is_running ? "running" : "stopped"}</B> notebook using <B><Code>{notebook.value.container_image}</Code></B>{locked_text}.
             </p>
-            <Form>
-                <Form.Row>
-                    <NotebookLabButton/>
-                    <NotebookLegacyButton/>
-                </Form.Row>
-            </Form>
+            {
+                notebook.value.is_running ? (
+                    <Form>
+                        <Form.Row>
+                            <NotebookLabButton/>
+                            <NotebookLegacyButton/>
+                        </Form.Row>
+                    </Form>
+                ) : null
+            }
         </Box>
     )
 }
