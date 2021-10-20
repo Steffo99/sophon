@@ -54,6 +54,12 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
             [viewSet, resource],
         )
 
+    if(!authorization) {
+        return null
+    }
+    if(!authorization.state.token) {
+        return null
+    }
     if(resource) {
         if(resource.value.locked_by) {
             return null
