@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{ GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+    - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
     - run: docker build ./backend --tag ghcr.io/steffo99/sophon-backend:latest
     - run: docker push ghcr.io/steffo99/sophon-backend:latest
   build-frontend:
