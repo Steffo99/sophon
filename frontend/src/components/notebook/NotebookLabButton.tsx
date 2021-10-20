@@ -1,9 +1,9 @@
 import {faFlask} from "@fortawesome/free-solid-svg-icons"
+import {Button} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useNotebookContext} from "../../contexts/notebook"
 import {IconText} from "../elements/IconText"
-import {NavigateButton} from "../elements/NavigateButton"
 
 
 export function NotebookLabButton(): JSX.Element | null {
@@ -28,10 +28,10 @@ export function NotebookLabButton(): JSX.Element | null {
     }
 
     return (
-        <NavigateButton href={notebook.value.lab_url} disabled={!canOpen}>
+        <Button onClick={() => window.open(notebook.value.lab_url!)} disabled={!canOpen}>
             <IconText icon={faFlask}>
                 Open JupyterLab
             </IconText>
-        </NavigateButton>
+        </Button>
     )
 }

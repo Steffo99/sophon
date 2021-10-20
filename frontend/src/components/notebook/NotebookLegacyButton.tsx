@@ -1,9 +1,9 @@
 import {faBook} from "@fortawesome/free-solid-svg-icons"
+import {Button} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useAuthorizationContext} from "../../contexts/authorization"
 import {useNotebookContext} from "../../contexts/notebook"
 import {IconText} from "../elements/IconText"
-import {NavigateButton} from "../elements/NavigateButton"
 
 
 export function NotebookLegacyButton(): JSX.Element | null {
@@ -28,10 +28,10 @@ export function NotebookLegacyButton(): JSX.Element | null {
     }
 
     return (
-        <NavigateButton href={notebook.value.legacy_notebook_url} disabled={!canOpen}>
+        <Button onClick={() => window.open(notebook.value.legacy_notebook_url!)} disabled={!canOpen}>
             <IconText icon={faBook}>
                 Open legacy Jupyter Notebook
             </IconText>
-        </NavigateButton>
+        </Button>
     )
 }
