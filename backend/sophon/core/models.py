@@ -338,7 +338,7 @@ class ResearchGroup(SophonGroupModel):
         User,
         help_text="The users who belong to this group.",
         related_name="is_a_member_of",
-        blank=True, null=True,
+        blank=True,
     )
 
     owner = models.ForeignKey(
