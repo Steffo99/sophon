@@ -26,38 +26,38 @@ services:
       - bone
 
   frontend:
-    image: ghcr.io/steffo99/sophon-frontend
+    image: ghcr.io/steffo99/sophon-frontend:latest
     environment:
       - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
     networks:
       - bone
 
   backend:
-    image: ghcr.io/steffo99/sophon-backend
+    image: ghcr.io/steffo99/sophon-backend:latest
     environment:
-      # TODO: Set a random secret key!
+      # INSTALL: Set a random secret key!
       - DJANGO_SECRET_KEY=change-me!!!
-      # TODO: Configure your allowed hosts!
+      # INSTALL: Configure your allowed hosts!
       - DJANGO_ALLOWED_HOSTS=api.dev.sophon.steffo.eu
-      # TODO: Configure your allowed origins! (* doesn't work)
+      # INSTALL: Configure your allowed origins! (* doesn't work)
       - DJANGO_ALLOWED_ORIGINS=http://dev.sophon.steffo.eu
-      # TODO: Configure your proxy details!
+      # INSTALL: Configure your proxy details!
       - DJANGO_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
       - DJANGO_PROXY_PROTOCOL=http
-      - DJANGO_PROXY_CONTAINER_NAME=sophon2-proxy-1  # The correct name probably is $DIRECTORYNAME-proxy-1
-      # TODO: Configure your static url!
+      # INSTALL: Configure your static url!
       - DJANGO_STATIC_URL=http://static.dev.sophon.steffo.eu/django-static/
-      # TODO: Set your language!
+      # INSTALL: Set your language!
       - DJANGO_LANGUAGE_CODE=en-us
-      # TODO: Set your timezone!
+      # INSTALL: Set your timezone!
       - DJANGO_TIME_ZONE=CET
-      # TODO: Set the superuser login details!
+      # INSTALL: Set the superuser login details!
       - DJANGO_SU_USERNAME=root
       - DJANGO_SU_EMAIL=root@example.org
       - DJANGO_SU_PASSWORD=square
       # Don't change these.
+      - DJANGO_PROXY_CONTAINER_NAME=sophon-proxy-1
       - DJANGO_DATABASE_ENGINE=django.db.backends.postgresql
-      - DJANGO_DATABASE_HOST=db
+      - DJANGO_DATABASE_HOST=sophon-db-1
       - DJANGO_DATABASE_USER=sophon
       - DJANGO_DATABASE_PASSWORD=sophonity
       - DJANGO_DATABASE_NAME=sophon
@@ -78,16 +78,16 @@ services:
       - bone
 
   proxy:
-    image: ghcr.io/steffo99/sophon-proxy
+    image: ghcr.io/steffo99/sophon-proxy:latest
     ports:
-      # Change this port based on your own needs!
-      - "80:80"
+      # INSTALL: Change this port based on your own needs!
+      - "30033:80"
     environment:
-      # TODO: Configure your proxy details!
+      # INSTALL: Configure your proxy details!
       - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
       #`Don't change these.
-      - SOPHON_BACKEND_NAME=backend:8000
-      - SOPHON_FRONTEND_NAME=frontend:5000
+      - SOPHON_BACKEND_NAME=sophon-backend-1:8000
+      - SOPHON_FRONTEND_NAME=sophon-frontend-1:5000
     volumes:
       - proxy-data:/run/sophon/proxy
       - django-static:/usr/local/apache2/htdocs/django-static
