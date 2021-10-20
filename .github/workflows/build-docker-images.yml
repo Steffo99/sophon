@@ -18,13 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{ GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+    - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
     - run: docker build ./frontend --tag ghcr.io/steffo99/sophon-frontend:latest
     - run: docker push ghcr.io/steffo99/sophon-frontend:latest
   build-proxy:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - run: echo ${{ GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+    - run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
     - run: docker build ./proxy --tag ghcr.io/steffo99/sophon-proxy:latest
     - run: docker push ghcr.io/steffo99/sophon-proxy:latest
