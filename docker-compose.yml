@@ -26,14 +26,14 @@ services:
       - bone
 
   frontend:
-    image: steffo45/sophon-frontend
+    image: ghcr.io/steffo99/sophon-frontend
     environment:
       - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
     networks:
       - bone
 
   backend:
-    image: steffo45/sophon-backend
+    image: ghcr.io/steffo99/sophon-backend
     environment:
       # TODO: Set a random secret key!
       - DJANGO_SECRET_KEY=change-me!!!
@@ -78,8 +78,9 @@ services:
       - bone
 
   proxy:
-    image: steffo45/sophon-proxy
+    image: ghcr.io/steffo99/sophon-proxy
     ports:
+      # Change this port based on your own needs!
       - "80:80"
     environment:
       # TODO: Configure your proxy details!
