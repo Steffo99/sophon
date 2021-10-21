@@ -9,6 +9,49 @@ The goal of this project is developing a platform that universities can use to *
 papers_.
 
 
+## Installation
+
+### Requirements
+
+- Internet connection
+- Any Linux server
+- [Docker][what-is-docker]
+- [Docker Compose][what-is-compose]
+
+[what-is-docker]: https://www.docker.com/
+
+[what-is-docker-compose]: https://docs.docker.com/compose/
+
+
+### Steps
+
+1. Create a new directory named `sophon` on your machine and enter it:
+   ```console
+   # mkdir sophon
+   # cd sophon
+   ```
+
+2. Pull the `ghcr.io/steffo99/sophon-jupyter` Docker image:
+   ```console
+   # docker pull ghcr.io/steffo99/sophon-jupyter
+   ```
+
+3. Download the `docker-compose.yml` file from this repository:
+   ```console
+   # wget "https://raw.githubusercontent.com/Steffo99/sophon/main/docker-compose.yml"
+   ```
+
+4. Configure the `docker-compose.yml` file following the instructions written in the comments:
+   ```console
+   # vim docker-compose.yml
+   ```
+
+5. Start the Docker containers:
+   ```console
+   # docker compose up -d
+   ```
+
+
 ## Structure
 
 The project consists of four parts:
