@@ -20,7 +20,7 @@ papers_.
 
 [what-is-docker]: https://www.docker.com/
 
-[what-is-docker-compose]: https://docs.docker.com/compose/
+[what-is-compose]: https://docs.docker.com/compose/
 
 
 ### Steps
