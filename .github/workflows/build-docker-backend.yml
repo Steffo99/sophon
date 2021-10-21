@@ -1,0 +1,19 @@
+name: Build backend image
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "/backend"
+jobs:
+  build:
+    name: "Build backend image"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Login to GitHub Containers"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+      - name: "Build the docker container `ghcr.io/steffo99/sophon-backend:latest`"
+        run: docker build ./backend --tag ghcr.io/steffo99/sophon-backend:latest
+      - name: "Upload the container to GitHub Containers"
+        run: docker push ghcr.io/steffo99/sophon-backend:latest
