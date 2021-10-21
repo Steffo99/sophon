@@ -39,3 +39,15 @@ jobs:
         run: docker build ./proxy --tag ghcr.io/steffo99/sophon-proxy:latest
       - name: "Upload the container to GitHub Containers"
         run: docker push ghcr.io/steffo99/sophon-proxy:latest
+  build-jupyter:
+    name: "Build jupyter image"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Login to GitHub Containers"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+      - name: "Build the docker container `ghcr.io/steffo99/sophon-jupyter:latest`"
+        run: docker build ./jupyter --tag ghcr.io/steffo99/sophon-jupyter:latest
+      - name: "Upload the container to GitHub Containers"
+        run: docker push ghcr.io/steffo99/sophon-jupyter:latest
