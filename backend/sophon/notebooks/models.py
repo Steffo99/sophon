@@ -83,7 +83,7 @@ class Notebook(SophonGroupModel):
         # ("jupyter/r-notebook", "Python + R"),
         # ("jupyter/pyspark-notebook", "Python (Scientific) + Apache Spark"),
         # ("jupyter/all-spark-notebook", "Python (Scientific) + Scala + R + Apache Spark"),
-        ("steffo45/jupyterlab-docker-sophon", "Python (Sophonic)"),
+        ("ghcr.io/steffo99/sophon-jupyter", "Python (Sophonic)"),
     )
 
     container_image = models.CharField(

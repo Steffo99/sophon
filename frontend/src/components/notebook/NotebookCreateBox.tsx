@@ -31,7 +31,7 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
 
     const image =
         useFormState<string>(
-            resource?.value.container_image ?? "steffo45/jupyterlab-docker-sophon",
+            resource?.value.container_image ?? "ghcr.io/steffo99/sophon-jupyter",
             Validators.alwaysValid,
         )
 
