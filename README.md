@@ -2,6 +2,12 @@
 
 _A research hub for universities_
 
+![Screenshot 1](https://user-images.githubusercontent.com/1540885/138204295-59c6efc3-a4fe-4c91-982b-8257e42b7970.png)
+
+![Screenshot 2](https://user-images.githubusercontent.com/1540885/138204345-346d144f-914f-4435-8816-69abe4a34381.png)
+
+![Screenshot 3](https://user-images.githubusercontent.com/1540885/138204387-69cd2e63-3030-48b8-a149-043e3e2393f7.png)
+
 
 ## Goal
 
