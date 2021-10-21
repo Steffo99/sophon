@@ -90,7 +90,7 @@ export function NotebookCreateBox({viewSet, resource}: NotebookCreateBoxProps): 
                         <Form.Select
                             label={"Image"}
                             options={{
-                                "Python (Sophonic)": "steffo45/jupyterlab-docker-sophon",
+                                "Python (Sophonic)": "ghcr.io/steffo99/sophon-jupyter",
                             }}
                             {...image}
                         />
