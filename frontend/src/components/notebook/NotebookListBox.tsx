@@ -21,7 +21,7 @@ export function NotebookListBox({viewSet}: NotebookListBoxProps): JSX.Element {
             if(viewSet.resources.length === 0) {
                 return <Empty>This project has no notebooks.</Empty>
             }
-            return viewSet.resources?.map(res => <NotebookResourcePanel resource={res} key={res.value.slug}/>)
+            return viewSet.resources?.filter(res => res !== undefined).map(res => <NotebookResourcePanel resource={res} key={res.value.slug}/>)
         },
         [viewSet],
     )
