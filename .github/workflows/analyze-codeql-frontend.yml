@@ -1,0 +1,27 @@
+name: "Analyze frontend using CodeQL"
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "frontend/**"
+  pull_request:
+    branches: [ main ]
+    paths:
+      - "frontend/**"
+jobs:
+  analyze:
+    name: "Analyze frontend"
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: "javascript"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
