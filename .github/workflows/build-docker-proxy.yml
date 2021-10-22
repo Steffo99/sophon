@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "/proxy"
+      - "proxy/**"
 jobs:
   build:
     name: "Build proxy image"

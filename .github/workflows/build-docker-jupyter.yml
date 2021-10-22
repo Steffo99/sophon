@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "/jupyter"
+      - "jupyter/**"
 jobs:
   build:
     name: "Build jupyter image"

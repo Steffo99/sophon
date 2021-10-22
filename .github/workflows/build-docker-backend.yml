@@ -3,7 +3,7 @@ on:
   push:
     branches: [ main ]
     paths:
-      - "/backend"
+      - "backend/**"
 jobs:
   build:
     name: "Build backend image"
