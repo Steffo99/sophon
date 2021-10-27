@@ -5,13 +5,28 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="DJANGO_SETTINGS_MODULE" value="sophon.settings" />
-      <env name="DJANGO_SECRET_KEY" value="DJANGONE" />
-      <env name="DJANGO_DEBUG" value="1" />
-      <env name="DJANGO_TIME_ZONE" value="CET" />
+      <env name="DJANGO_ALLOWED_ORIGINS" value="http://dev.sophon.steffo.eu" />
       <env name="DJANGO_PROXY_BASE_DOMAIN" value="dev.sophon.steffo.eu" />
       <env name="DJANGO_PROXY_PROTOCOL" value="http" />
-      <env name="DJANGO_ALLOWED_ORIGINS" value="http://localhost:3000" />
+      <env name="DJANGO_STATIC_URL" value="/static/" />
+      <env name="DJANGO_LANGUAGE_CODE" value="en-us" />
+      <env name="DJANGO_SU_USERNAME" value="root" />
+      <env name="DJANGO_SU_EMAIL" value="root@example.org" />
+      <env name="DJANGO_SU_PASSWORD" value="square" />
+      <env name="DJANGO_PROXY_CONTAINER_NAME" value="" />
+      <env name="DJANGO_DATABASE_ENGINE" value="django.db.backends.postgresql" />
+      <env name="DJANGO_DATABASE_HOST" value="" />
+      <env name="DJANGO_DATABASE_USER" value="steffo" />
+      <env name="DJANGO_DATABASE_PASSWORD" value="" />
+      <env name="DJANGO_DATABASE_NAME" value="sophon" />
+      <env name="DJANGO_AUTHENTICATION_BACKEND" value="django.contrib.auth.backends.ModelBackend" />
+      <env name="DJANGO_DOCKER_CONTAINER_PREFIX" value="sophon-container" />
+      <env name="DJANGO_DOCKER_VOLUME_PREFIX" value="sophon-volume" />
+      <env name="DJANGO_DOCKER_NETWORK_PREFIX" value="sophon-network" />
+      <env name="DJANGO_DOCKER_HOST" value="/var/run/docker.sock" />
+      <env name="DJANGO_DOCKER_TLS_VERIFY" value="" />
+      <env name="DJANGO_DOCKER_CERT_PATH" value="" />
+      <env name="DJANGO_SETTINGS_MODULE" value="sophon.settings" />
     </envs>
     <option name="SDK_HOME" value="$USER_HOME$/.cache/pypoetry/virtualenvs/sophon-rpVYiJ6v-py3.9/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
