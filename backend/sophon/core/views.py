@@ -202,6 +202,9 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         return models.ResearchGroup.objects.order_by("slug").all()
 
     def hook_create(self, serializer) -> dict[str, t.Any]:
+        if self.request.user.is_anonymous:
+            raise HTTPException(status=403)
+
         # Add the owner field to the serializer
         return {
             "owner": self.request.user,
