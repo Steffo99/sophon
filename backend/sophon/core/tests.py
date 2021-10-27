@@ -30,9 +30,9 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
-    def list_fail(self) -> None:
+    def list_fail(self, code) -> None:
         response = self.list()
-        self.assertTrue(response.status_code >= 400)
+        self.assertEqual(response.status_code, code)
 
     def retrieve(self, pk) -> Response:
         url = self.get_url("detail", pk=pk)
@@ -44,9 +44,9 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
-    def retrieve_fail(self, pk) -> None:
+    def retrieve_fail(self, pk, code) -> None:
         response = self.retrieve(pk=pk)
-        self.assertTrue(response.status_code >= 400)
+        self.assertEqual(response.status_code, code)
 
     def create(self, data) -> Response:
         url = self.get_url("list")
@@ -58,9 +58,9 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
-    def create_fail(self, data) -> None:
+    def create_fail(self, data, code) -> None:
         response = self.create(data)
-        self.assertTrue(response.status_code >= 400)
+        self.assertEqual(response.status_code, code)
 
     def update(self, pk, data) -> Response:
         url = self.get_url("detail", pk=pk)
@@ -72,6 +72,10 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
+    def update_fail(self, pk, data, code) -> None:
+        response = self.update(pk, data)
+        self.assertEqual(response.status_code, code)
+
     def destroy(self, pk) -> Response:
         url = self.get_url("detail", pk=pk)
         return self.client.delete(url, format="json")
@@ -80,9 +84,9 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         response = self.destroy(pk=pk)
         self.assertEqual(response.status_code, 204)
 
-    def destroy_fail(self, pk) -> None:
+    def destroy_fail(self, pk, code) -> None:
         response = self.destroy(pk)
-        self.assertTrue(response.status_code >= 400)
+        self.assertEqual(response.status_code, code)
 
 
 class ResearchGroupTests(SophonModelTestCase):
@@ -91,10 +95,12 @@ class ResearchGroupTests(SophonModelTestCase):
         return "research-group"
 
     test_user: User = None
+    other_user: User = None
 
     @classmethod
     def setUpTestData(cls):
         cls.test_user = User.objects.create_user(username="TEST", password="TheGreatDjangoTest")
+        cls.other_user = User.objects.create_user(username="TAST", password="TheGreatDjangoTast")
 
         models.ResearchGroup.objects.create(
             slug="alpha",
@@ -118,66 +124,67 @@ class ResearchGroupTests(SophonModelTestCase):
         count = r["count"]
         self.assertEqual(count, 2)
 
-        results = r["results"]
+        list_page = r["results"]
 
-        self.assertIn("slug", results[0])
-        self.assertIn("name", results[0])
-        self.assertIn("description", results[0])
-        self.assertIn("owner", results[0])
-        self.assertIn("members", results[0])
-        self.assertIn("access", results[0])
+        self.assertIn("slug", list_page[0])
+        self.assertIn("name", list_page[0])
+        self.assertIn("description", list_page[0])
+        self.assertIn("owner", list_page[0])
+        self.assertIn("members", list_page[0])
+        self.assertIn("access", list_page[0])
 
     def test_retrieve_valid(self):
-        result = self.retrieve_unwrap("alpha")
+        retrieved = self.retrieve_unwrap("alpha")
 
-        self.assertIn("slug", result)
-        self.assertIn("name", result)
-        self.assertIn("description", result)
-        self.assertIn("owner", result)
-        self.assertIn("members", result)
-        self.assertIn("access", result)
+        self.assertIn("slug", retrieved)
+        self.assertIn("name", retrieved)
+        self.assertIn("description", retrieved)
+        self.assertIn("owner", retrieved)
+        self.assertIn("members", retrieved)
+        self.assertIn("access", retrieved)
 
-        self.assertEqual(result["slug"], "alpha")
-        self.assertEqual(result["name"], "Alpha")
-        self.assertEqual(result["description"], "First test group.")
-        self.assertEqual(result["owner"], self.test_user.id)
-        self.assertEqual(result["members"], [])
-        self.assertEqual(result["access"], "MANUAL")
+        self.assertEqual(retrieved["slug"], "alpha")
+        self.assertEqual(retrieved["name"], "Alpha")
+        self.assertEqual(retrieved["description"], "First test group.")
+        self.assertEqual(retrieved["owner"], self.test_user.id)
+        self.assertEqual(retrieved["members"], [])
+        self.assertEqual(retrieved["access"], "MANUAL")
 
     def test_retrieve_not_existing(self):
-        self.retrieve_fail("banana")
+        self.retrieve_fail("banana", 404)
 
     def test_create_valid(self):
         self.client.login(username="TEST", password="TheGreatDjangoTest")
 
-        result = self.create_unwrap({
+        created = self.create_unwrap({
             "slug": "omega",
             "name": "Omega",
             "description": "Last test group.",
             "members": [],
             "access": "OPEN",
         })
-        self.assertIn("slug", result)
-        self.assertIn("name", result)
-        self.assertIn("description", result)
-        self.assertIn("members", result)
-        self.assertIn("access", result)
+        self.assertIn("slug", created)
+        self.assertIn("name", created)
+        self.assertIn("description", created)
+        self.assertIn("owner", created)
+        self.assertIn("members", created)
+        self.assertIn("access", created)
 
-        check = self.retrieve_unwrap("omega")
+        retrieved = self.retrieve_unwrap("omega")
 
-        self.assertIn("slug", check)
-        self.assertIn("name", check)
-        self.assertIn("description", check)
-        self.assertIn("owner", check)
-        self.assertIn("members", check)
-        self.assertIn("access", check)
+        self.assertIn("slug", retrieved)
+        self.assertIn("name", retrieved)
+        self.assertIn("description", retrieved)
+        self.assertIn("owner", retrieved)
+        self.assertIn("members", retrieved)
+        self.assertIn("access", retrieved)
 
-        self.assertEqual(check["slug"], "omega")
-        self.assertEqual(check["name"], "Omega")
-        self.assertEqual(check["description"], "Last test group.")
-        self.assertEqual(result["owner"], self.test_user.id)
-        self.assertEqual(result["members"], [])
-        self.assertEqual(result["access"], "OPEN")
+        self.assertEqual(retrieved["slug"], "omega")
+        self.assertEqual(retrieved["name"], "Omega")
+        self.assertEqual(retrieved["description"], "Last test group.")
+        self.assertEqual(retrieved["owner"], self.test_user.id)
+        self.assertEqual(retrieved["members"], [])
+        self.assertEqual(retrieved["access"], "OPEN")
 
     def test_create_not_logged_in(self):
         self.create_fail({
@@ -186,7 +193,7 @@ class ResearchGroupTests(SophonModelTestCase):
             "description": "This creation should fail.",
             "members": [],
             "access": "OPEN",
-        })
+        }, 401)
 
     def test_create_invalid_schema(self):
         self.client.login(username="TEST", password="TheGreatDjangoTest")
@@ -194,34 +201,29 @@ class ResearchGroupTests(SophonModelTestCase):
         self.create_fail({
             "potato": "sweet",
             "access": "OPEN",
-        })
+        }, 400)
 
     def test_update_valid(self):
         self.client.login(username="TEST", password="TheGreatDjangoTest")
 
-        creation = self.create_unwrap({
+        self.create_unwrap({
             "slug": "gamma",
             "name": "Gamma",
             "description": "A test group to update.",
             "members": [],
             "access": "OPEN",
         })
-        self.assertIn("slug", creation)
-        self.assertIn("name", creation)
-        self.assertIn("description", creation)
-        self.assertIn("members", creation)
-        self.assertIn("access", creation)
 
-        check = self.retrieve_unwrap("gamma")
+        retrieved = self.retrieve_unwrap("gamma")
 
-        self.assertEqual(check["slug"], "gamma")
-        self.assertEqual(check["name"], "Gamma")
-        self.assertEqual(check["description"], "A test group to update.")
-        self.assertEqual(check["owner"], self.test_user.id)
-        self.assertEqual(check["members"], [])
-        self.assertEqual(check["access"], "OPEN")
+        self.assertEqual(retrieved["slug"], "gamma")
+        self.assertEqual(retrieved["name"], "Gamma")
+        self.assertEqual(retrieved["description"], "A test group to update.")
+        self.assertEqual(retrieved["owner"], self.test_user.id)
+        self.assertEqual(retrieved["members"], [])
+        self.assertEqual(retrieved["access"], "OPEN")
 
-        update = self.update_unwrap("gamma", {
+        updated = self.update_unwrap("gamma", {
             "slug": "gamma",
             "name": "Gamma",
             "description": "An updated test group.",
@@ -229,69 +231,99 @@ class ResearchGroupTests(SophonModelTestCase):
             "access": "MANUAL",
         })
 
-        self.assertIn("slug", update)
-        self.assertIn("name", update)
-        self.assertIn("description", update)
-        self.assertIn("owner", update)
-        self.assertIn("members", update)
-        self.assertIn("access", update)
+        self.assertIn("slug", updated)
+        self.assertIn("name", updated)
+        self.assertIn("description", updated)
+        self.assertIn("owner", updated)
+        self.assertIn("members", updated)
+        self.assertIn("access", updated)
 
-        self.assertEqual(update["slug"], "gamma")
-        self.assertEqual(update["name"], "Gamma")
-        self.assertEqual(update["description"], "An updated test group.")
-        self.assertEqual(update["owner"], self.test_user.id)
-        self.assertEqual(update["members"], [])
-        self.assertEqual(update["access"], "MANUAL")
+        self.assertEqual(updated["slug"], "gamma")
+        self.assertEqual(updated["name"], "Gamma")
+        self.assertEqual(updated["description"], "An updated test group.")
+        self.assertEqual(updated["owner"], self.test_user.id)
+        self.assertEqual(updated["members"], [])
+        self.assertEqual(updated["access"], "MANUAL")
 
-        check2 = self.retrieve_unwrap("gamma")
+        retrieved2 = self.retrieve_unwrap("gamma")
 
-        self.assertEqual(check2["slug"], "gamma")
-        self.assertEqual(check2["name"], "Gamma")
-        self.assertEqual(check2["description"], "An updated test group.")
-        self.assertEqual(check2["owner"], self.test_user.id)
-        self.assertEqual(check2["members"], [])
-        self.assertEqual(check2["access"], "MANUAL")
+        self.assertEqual(retrieved2["slug"], "gamma")
+        self.assertEqual(retrieved2["name"], "Gamma")
+        self.assertEqual(retrieved2["description"], "An updated test group.")
+        self.assertEqual(retrieved2["owner"], self.test_user.id)
+        self.assertEqual(retrieved2["members"], [])
+        self.assertEqual(retrieved2["access"], "MANUAL")
 
     def test_update_not_logged_in(self):
-        result = self.update_unwrap("alpha", {
+        self.update_fail("alpha", {
             "slug": "alpha",
             "name": "AAAAA",
             "description": "An hacker has updated the Alpha group without permissions!",
             "members": [],
             "access": "MANUAL",
-        })
+        }, 401)
 
-        self.assertIn("slug", result)
-        self.assertIn("name", result)
-        self.assertIn("description", result)
-        self.assertIn("owner", result)
-        self.assertIn("members", result)
-        self.assertIn("access", result)
+    def test_update_unauthorized(self):
+        self.client.login(username="TAST", password="TheGreatDjangoTast")
 
-        self.assertEqual(result["slug"], "alpha")
-        self.assertEqual(result["name"], "Alpha")
-        self.assertEqual(result["description"], "First test group.")
-        self.assertEqual(result["owner"], self.test_user.id)
-        self.assertEqual(result["members"], [])
-        self.assertEqual(result["access"], "MANUAL")
+        self.update_fail("alpha", {
+            "slug": "alpha",
+            "name": "AAAAA",
+            "description": "An hacker has updated the Alpha group without permissions!",
+            "members": [],
+            "access": "MANUAL",
+        }, 403)
 
     def test_update_invalid_schema(self):
-        result = self.update_unwrap("alpha", {
+        self.client.login(username="TEST", password="TheGreatDjangoTest")
+
+        self.update_fail("alpha", {
             "hahaha": "soccer",
+        }, 400)
+
+    def test_destroy_valid(self):
+        self.client.login(username="TEST", password="TheGreatDjangoTest")
+
+        self.create_unwrap({
+            "slug": "boom",
+            "name": "Boom!!!",
+            "description": "A group that should explode.",
+            "members": [],
+            "access": "OPEN",
         })
 
-        self.assertIn("slug", result)
-        self.assertIn("name", result)
-        self.assertIn("description", result)
-        self.assertIn("owner", result)
-        self.assertIn("members", result)
-        self.assertIn("access", result)
+        self.destroy_unwrap("boom")
+        self.retrieve_fail("boom", 404)
 
-        self.assertEqual(result["slug"], "alpha")
-        self.assertEqual(result["name"], "Alpha")
-        self.assertEqual(result["description"], "First test group.")
-        self.assertEqual(result["owner"], self.test_user.id)
-        self.assertEqual(result["members"], [])
-        self.assertEqual(result["access"], "MANUAL")
+    def test_destroy_not_logged_in(self):
+        self.client.login(username="TEST", password="TheGreatDjangoTest")
 
-    # TODO: Create destroy test
+        self.create_unwrap({
+            "slug": "boom",
+            "name": "Boom!!!",
+            "description": "A group that should explode.",
+            "members": [],
+            "access": "OPEN",
+        })
+
+        self.client.logout()
+
+        self.destroy_fail("boom", 401)
+        self.retrieve_unwrap("boom")
+
+    def test_destroy_unauthorized(self):
+        self.client.login(username="TEST", password="TheGreatDjangoTest")
+
+        self.create_unwrap({
+            "slug": "doom",
+            "name": "Doom!!!",
+            "description": "A group about a game.",
+            "members": [],
+            "access": "OPEN",
+        })
+
+        self.client.logout()
+        self.client.login(username="TAST", password="TheGreatDjangoTast")
+
+        self.destroy_fail("doom", 403)
+        self.retrieve_unwrap("doom")
