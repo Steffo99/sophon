@@ -31,6 +31,10 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
+    def list_fail(self) -> None:
+        response = self.list()
+        self.assertTrue(response.status_code >= 400)
+
     def retrieve(self, pk) -> Response:
         url = self.get_url("detail", pk=pk)
         return self.client.get(url, {}, format="json")
@@ -40,6 +44,10 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(isinstance(response.data, dict))
         return response.data
+
+    def retrieve_fail(self, pk) -> None:
+        response = self.retrieve(pk=pk)
+        self.assertTrue(response.status_code >= 400)
 
     def create(self, data) -> Response:
         url = self.get_url("list")
@@ -51,6 +59,10 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
+    def create_fail(self, data) -> None:
+        response = self.create(data)
+        self.assertTrue(response.status_code >= 400)
+
     def update(self, pk, data) -> Response:
         url = self.get_url("detail", pk=pk)
         return self.client.put(url, data, format="json")
@@ -61,6 +73,10 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
         self.assertTrue(isinstance(response.data, dict))
         return response.data
 
+    def update_fail(self, pk, data) -> None:
+        response = self.update(pk, data)
+        self.assertTrue(response.status_code >= 400)
+
     def destroy(self, pk) -> Response:
         url = self.get_url("detail", pk=pk)
         return self.client.delete(url, format="json")
@@ -68,6 +84,10 @@ class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
     def destroy_unwrap(self, pk) -> None:
         response = self.destroy(pk=pk)
         self.assertEqual(response.status_code, 204)
+
+    def destroy_fail(self, pk) -> None:
+        response = self.destroy(pk)
+        self.assertTrue(response.status_code >= 400)
 
 
 class ResearchGroupTests(SophonModelTestCase):
