@@ -57,18 +57,18 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         raise NotImplementedError()
 
     @classmethod
-    def get_url(cls, action: str, *args, **kwargs) -> str:
+    def get_url(cls, kind: str, *args, **kwargs) -> str:
         """
         Find the URL of a specific action by using :func:`django.urls.reverse`.
 
-        :param action: The action to perform on the ViewSet, such as `"list"` or `"destroy"`.
+        :param kind: The kind of view of the ViewSet to access: either ``"list"`` or ``"detail"``.
         :param args: Positional arguments passed to :func:`django.urls.reverse` for getting the URL.
         :param kwargs: Keyword arguments passed to :func:`django.urls.reverse` for getting the URL.
         :return: The URL corresponding to the action with all parameters filled in.
         """
         basename = cls.get_basename()
         try:
-            return reverse(f"{basename}-{action}", args=args, kwargs=kwargs)
+            return reverse(f"{basename}-{kind}", args=args, kwargs=kwargs)
         except django.urls.exceptions.NoReverseMatch:
             raise errors.HTTPException(404)
 
@@ -524,3 +524,9 @@ class ResearchGroupTestCase(WriteSophonTestCase):
     def test_destroy_403(self):
         with self.as_user(self.outside_user.username):
             self.assertActionDestroy("alpha", 403)
+
+    # TODO: Test join and leave
+
+# TODO: Test instance details
+
+# TODO: Test some more code
