@@ -2,11 +2,14 @@ import abc
 import contextlib
 import typing as t
 
+import django.urls.exceptions
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.response import Response
 from rest_framework.test import APITestCase
+from rest_framework.utils.serializer_helpers import ReturnDict
 
+from . import errors
 from . import models
 
 
@@ -16,15 +19,28 @@ class BetterAPITestCase(APITestCase):
     """
 
     @contextlib.contextmanager
-    def as_user(self, username: str, password: str) -> t.ContextManager[None]:
+    def as_user(self, username: str, password: str = None) -> t.ContextManager[None]:
         """
         **Context manager** which runs tests as a specific user.
 
         :param username: The username of the user to login as.
-        :param password: The password of the user to login as.
+        :param password: The password of the user to login as. If not specified, the username is used as password.
         """
-        yield self.client.login(username, password)
+        yield self.client.login(username=username, password=password or username)
         self.client.logout()
+
+    def assertData(self, data: ReturnDict, expected: dict):
+        """
+        Assert that the returned data includes the key-value pairs of the second.
+
+        :param data: The "larger" dictionary.
+        :param expected: The "smaller" dictionary.
+
+        .. seealso:: https://stackoverflow.com/a/59777678/4334568, https://www.python.org/dev/peps/pep-0584/
+        """
+        # Convert the ReturnDict to a regular dict, otherwise DRF will include some garbage
+        data = dict(data)
+        self.assertEqual(data, data | expected)
 
 
 class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
@@ -51,7 +67,10 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         :return: The URL corresponding to the action with all parameters filled in.
         """
         basename = cls.get_basename()
-        return reverse(f"{basename}-{action}", args=args, kwargs=kwargs)
+        try:
+            return reverse(f"{basename}-{action}", args=args, kwargs=kwargs)
+        except django.urls.exceptions.NoReverseMatch:
+            raise errors.HTTPException(404)
 
     def list(self) -> Response:
         """
@@ -63,16 +82,21 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         return self.client.get(url, {}, format="json")
 
     # I hate how unittest doesn't follow PEP8 when naming methods
-    def assertActionList(self, code: int = 200) -> t.Any:
+    def assertActionList(self, code: int = 200) -> t.Optional[ReturnDict]:
         """
         Perform the ``list`` action, and assert that it will return a specific status code.
 
         :param code: The expected status code.
         :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
         """
-        response = self.list()
-        self.assertEqual(response.status_code, code, msg=f"`list` did not return {code}")
-        return response.data or None
+        try:
+            response = self.list()
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`list` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`list` did not return {code}: {response.data!r}")
+            return response.data or None
 
     def retrieve(self, pk) -> Response:
         """
@@ -84,7 +108,7 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         url = self.get_url("detail", pk=pk)
         return self.client.get(url, {}, format="json")
 
-    def assertActionRetrieve(self, pk, code: int = 200) -> t.Any:
+    def assertActionRetrieve(self, pk, code: int = 200) -> t.Optional[ReturnDict]:
         """
         Perform the ``retrieve`` action, and assert that it will return a specific status code.
 
@@ -92,9 +116,14 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         :param code: The expected status code.
         :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
         """
-        response = self.retrieve(pk=pk)
-        self.assertEqual(response.status_code, code, msg=f"`retrieve` did not return {code}")
-        return response.data
+        try:
+            response = self.retrieve(pk=pk)
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`retrieve` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`retrieve` did not return {code}: {response.data!r}")
+            return response.data
 
 
 class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
@@ -112,7 +141,7 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         url = self.get_url("list")
         return self.client.post(url, data, format="json")
 
-    def assertActionCreate(self, data, code: int = 201) -> t.Any:
+    def assertActionCreate(self, data, code: int = 201) -> t.Optional[ReturnDict]:
         """
         Perform the ``create`` action, and assert that it will return a specific status code.
 
@@ -120,9 +149,14 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         :param code: The expected status code.
         :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
         """
-        response = self.create(data=data)
-        self.assertEqual(response.status_code, code, msg=f"`create` did not return {code}")
-        return response.data
+        try:
+            response = self.create(data=data)
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`create` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`create` did not return {code}: {response.data!r}")
+            return response.data
 
     def update(self, pk, data) -> Response:
         """
@@ -135,7 +169,7 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         url = self.get_url("detail", pk=pk)
         return self.client.put(url, data, format="json")
 
-    def assertActionUpdate(self, pk, data, code: int = 200) -> t.Any:
+    def assertActionUpdate(self, pk, data, code: int = 200) -> t.Optional[ReturnDict]:
         """
         Perform the ``update`` action, and assert that it will return a specific status code.
 
@@ -144,9 +178,14 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         :param code: The expected status code.
         :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
         """
-        response = self.update(pk=pk, data=data)
-        self.assertEqual(response.status_code, code, msg=f"`update` did not return {code}")
-        return response.data
+        try:
+            response = self.update(pk=pk, data=data)
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`update` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`update` did not return {code}: {response.data!r}")
+            return response.data
 
     def destroy(self, pk) -> Response:
         """
@@ -158,7 +197,7 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         url = self.get_url("detail", pk=pk)
         return self.client.delete(url, {}, format="json")
 
-    def assertActionDestroy(self, pk, code: int = 200) -> t.Any:
+    def assertActionDestroy(self, pk, code: int = 200) -> t.Optional[ReturnDict]:
         """
         Perform the ``destroy`` action, and assert that it will return a specific status code.
 
@@ -166,250 +205,322 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         :param code: The expected status code.
         :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
         """
-        response = self.destroy(pk=pk)
-        self.assertEqual(response.status_code, code, msg=f"`destroy` did not return {code}")
-        return response.data
+        try:
+            response = self.destroy(pk=pk)
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`create` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`destroy` did not return {code}: {response.data!r}")
+            return response.data
 
 
-class ResearchGroupTests(WriteSophonTestCase):
+class UsersByIdTestCase(ReadSophonTestCase):
     """
-    :class:`APITestCase` for the :class:`ResearchGroupViewSet`.
+    Tests for :class:`sophon.core.views.UsersByIdViewSet`.
+
+    Since the viewset by itself is trivial, these tests are to verify that DRF is working as expected.
+    """
+
+    @classmethod
+    def get_basename(cls) -> str:
+        return "user-by-id"
+
+    first_user: User = None
+    second_user: User = None
+    third_user: User = None
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.first_user = User.objects.create_user(username="first", password="One")
+        cls.second_user = User.objects.create_user(username="second", password="Two")
+        cls.third_user = User.objects.create_user(username="third", password="Three")
+
+    def test_list_200(self):
+        data = self.assertActionList(200)
+        self.assertEqual(3, data["count"], msg="`list` did not return 3 users")
+        self.assertEqual(3, len(data["results"]), msg="`list` results did not match count")
+        self.assertData(data["results"][0], {"username": "first"})
+        self.assertData(data["results"][1], {"username": "second"})
+        self.assertData(data["results"][2], {"username": "third"})
+
+    def test_retrieve_200(self):
+        data = self.assertActionRetrieve(self.first_user.id)
+        self.assertData(data, {"username": "first"})
+        data = self.assertActionRetrieve(self.second_user.id)
+        self.assertData(data, {"username": "second"})
+        data = self.assertActionRetrieve(self.third_user.id)
+        self.assertData(data, {"username": "third"})
+
+    def test_retrieve_400(self):
+        self.assertActionRetrieve("qwerty", code=400)
+        self.assertActionRetrieve(1.0, code=400)
+        self.assertActionRetrieve("xyzzy", code=400)
+
+    def test_retrieve_404(self):
+        self.assertActionRetrieve(100, code=404)
+        self.assertActionRetrieve(-1, code=404)
+        self.assertActionRetrieve(999999, code=404)
+
+
+class UsersByUsernameTestCase(ReadSophonTestCase):
+    """
+    Tests for :class:`sophon.core.views.UsersByUsernameViewSet`.
+
+    Basically the same as the UsersByIdTestCase, except that it checks for alphabetical ordering.
+    """
+
+    @classmethod
+    def get_basename(cls) -> str:
+        return "user-by-username"
+
+    first_user: User = None
+    second_user: User = None
+    third_user: User = None
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.first_user = User.objects.create_user(username="zzzzzz", password="zzzzzz")
+        cls.second_user = User.objects.create_user(username="wwwwww", password="wwwwww")
+        cls.third_user = User.objects.create_user(username="aaaaaa", password="aaaaaa")
+
+    def test_list_200(self):
+        data = self.assertActionList(200)
+        self.assertEqual(3, data["count"], msg="`list` did not return 3 users")
+        self.assertEqual(3, len(data["results"]), msg="`list` results did not match count")
+        self.assertData(data["results"][0], {"username": "aaaaaa"})
+        self.assertData(data["results"][1], {"username": "wwwwww"})
+        self.assertData(data["results"][2], {"username": "zzzzzz"})
+
+    def test_retrieve_200(self):
+        data = self.assertActionRetrieve(self.first_user.username)
+        self.assertData(data, {"username": "zzzzzz"})
+        data = self.assertActionRetrieve(self.second_user.username)
+        self.assertData(data, {"username": "wwwwww"})
+        data = self.assertActionRetrieve(self.third_user.username)
+        self.assertData(data, {"username": "aaaaaa"})
+
+    def test_retrieve_400(self):
+        self.assertActionRetrieve(1, code=400)
+        self.assertActionRetrieve(-1, code=400)
+        self.assertActionRetrieve(1.0, code=400)
+
+    def test_retrieve_404(self):
+        self.assertActionRetrieve("sas", code=404)
+        self.assertActionRetrieve("sos", code=404)
+        self.assertActionRetrieve("sus", code=404)
+
+
+class ResearchGroupTestCase(WriteSophonTestCase):
+    """
+    Tests for :class:`sophon.core.views.UsersByUsernameViewSet`.
+
+    These tests verify that :class:`sophon.core.views.SophonGroupViewSet` is working as intended.
     """
 
     @classmethod
     def get_basename(cls) -> str:
         return "research-group"
 
-    test_user: User = None
-    other_user: User = None
+    owner_user: User = None
+    member_user: User = None
+    outside_user: User = None
 
     @classmethod
     def setUpTestData(cls):
-        cls.test_user = User.objects.create_user(username="TEST", password="TheGreatDjangoTest")
-        cls.other_user = User.objects.create_user(username="TAST", password="TheGreatDjangoTast")
+        cls.owner_user = User.objects.create_user(username="owner", password="owner")
+        cls.member_user = User.objects.create_user(username="member", password="member")
+        cls.outside_user = User.objects.create_user(username="outside", password="outside")
 
-        models.ResearchGroup.objects.create(
+        alpha = models.ResearchGroup.objects.create(
             slug="alpha",
             name="Alpha",
             description="First test group.",
-            owner=cls.test_user,
+            owner=cls.owner_user,
             access="MANUAL",
         )
+        alpha.members.set([cls.member_user])
 
-        models.ResearchGroup.objects.create(
+        beta = models.ResearchGroup.objects.create(
             slug="beta",
             name="Beta",
             description="Second test group.",
-            owner=cls.test_user,
+            owner=cls.owner_user,
             access="OPEN",
         )
+        beta.members.set([])
 
-    def test_list(self):
-        r = self.list_unwrap()
-
-        count = r["count"]
-        self.assertEqual(count, 2)
-
-        list_page = r["results"]
-
-        self.assertIn("slug", list_page[0])
-        self.assertIn("name", list_page[0])
-        self.assertIn("description", list_page[0])
-        self.assertIn("owner", list_page[0])
-        self.assertIn("members", list_page[0])
-        self.assertIn("access", list_page[0])
-
-    def test_retrieve_valid(self):
-        retrieved = self.retrieve_unwrap("alpha")
-
-        self.assertIn("slug", retrieved)
-        self.assertIn("name", retrieved)
-        self.assertIn("description", retrieved)
-        self.assertIn("owner", retrieved)
-        self.assertIn("members", retrieved)
-        self.assertIn("access", retrieved)
-
-        self.assertEqual(retrieved["slug"], "alpha")
-        self.assertEqual(retrieved["name"], "Alpha")
-        self.assertEqual(retrieved["description"], "First test group.")
-        self.assertEqual(retrieved["owner"], self.test_user.id)
-        self.assertEqual(retrieved["members"], [])
-        self.assertEqual(retrieved["access"], "MANUAL")
-
-    def test_retrieve_not_existing(self):
-        self.retrieve_fail("banana", 404)
-
-    def test_create_valid(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
-
-        created = self.create_unwrap({
-            "slug": "omega",
-            "name": "Omega",
-            "description": "Last test group.",
+    def test_list_200(self):
+        data = self.assertActionList()
+        self.assertEqual(2, data["count"])
+        self.assertEqual(2, len(data["results"]))
+        self.assertData(data["results"][0], {
+            "slug": "alpha",
+            "name": "Alpha",
+            "description": "First test group.",
+            "owner": self.owner_user.id,
+            "members": [self.member_user.id],
+            "access": "MANUAL",
+        })
+        self.assertData(data["results"][1], {
+            "slug": "beta",
+            "name": "Beta",
+            "description": "Second test group.",
+            "owner": self.owner_user.id,
             "members": [],
             "access": "OPEN",
         })
-        self.assertIn("slug", created)
-        self.assertIn("name", created)
-        self.assertIn("description", created)
-        self.assertIn("owner", created)
-        self.assertIn("members", created)
-        self.assertIn("access", created)
 
-        retrieved = self.retrieve_unwrap("omega")
+    def test_retrieve_200(self):
+        data = self.assertActionRetrieve("alpha")
+        self.assertData(data, {
+            "slug": "alpha",
+            "name": "Alpha",
+            "description": "First test group.",
+            "owner": self.owner_user.id,
+            "members": [self.member_user.id],
+            "access": "MANUAL",
+        })
 
-        self.assertIn("slug", retrieved)
-        self.assertIn("name", retrieved)
-        self.assertIn("description", retrieved)
-        self.assertIn("owner", retrieved)
-        self.assertIn("members", retrieved)
-        self.assertIn("access", retrieved)
-
-        self.assertEqual(retrieved["slug"], "omega")
-        self.assertEqual(retrieved["name"], "Omega")
-        self.assertEqual(retrieved["description"], "Last test group.")
-        self.assertEqual(retrieved["owner"], self.test_user.id)
-        self.assertEqual(retrieved["members"], [])
-        self.assertEqual(retrieved["access"], "OPEN")
-
-    def test_create_not_logged_in(self):
-        self.create_fail({
-            "slug": "fail",
-            "name": "Failure",
-            "description": "This creation should fail.",
+        data = self.assertActionRetrieve("beta")
+        self.assertData(data, {
+            "slug": "beta",
+            "name": "Beta",
+            "description": "Second test group.",
+            "owner": self.owner_user.id,
             "members": [],
+            "access": "OPEN",
+        })
+
+    def test_retrieve_404(self):
+        self.assertActionRetrieve("banana", 404)
+        self.assertActionRetrieve("tomato", 404)
+        self.assertActionRetrieve("potato", 404)
+        # Since these are path parameters, they are interpreted as strings
+        self.assertActionRetrieve(1, 404)
+        self.assertActionRetrieve(-1, 404)
+        self.assertActionRetrieve(1.0, 404)
+
+    def test_create_201(self):
+        with self.as_user(self.owner_user.username):
+            # Ensure the group doesn't already exist
+            self.assertActionRetrieve("gamma", 404)
+            # Create the group
+            created = self.assertActionCreate({
+                "slug": "gamma",
+                "name": "Gamma",
+                "description": "Third test group.",
+                "members": [self.member_user.id],
+                "access": "OPEN",
+            }, 201)
+            self.assertData(created, {
+                "slug": "gamma",
+                "name": "Gamma",
+                "description": "Third test group.",
+                "owner": self.owner_user.id,
+                "members": [self.member_user.id],
+                "access": "OPEN",
+            })
+            # Ensure the group now exists
+            retrieved = self.assertActionRetrieve("gamma")
+            self.assertData(retrieved, {
+                "slug": "gamma",
+                "name": "Gamma",
+                "description": "Third test group.",
+                "owner": self.owner_user.id,
+                "members": [self.member_user.id],
+                "access": "OPEN",
+            })
+
+    def test_create_400(self):
+        self.assertActionCreate({}, 400)
+        self.assertActionCreate({
+            "slug": 1,
+            "name": 213478,
+            "description": 384592,
+            "members": {
+                "why not": "a dict"
+            },
+            "access": "yes",
+        }, 400)
+
+    def test_create_401(self):
+        self.assertActionCreate({
+            "slug": "delta",
+            "name": "Delta",
+            "description": "Fourth test group.",
+            "members": [self.member_user.id],
             "access": "OPEN",
         }, 401)
 
-    def test_create_invalid_schema(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
+    def test_update_200(self):
+        with self.as_user(self.owner_user.username):
+            updated = self.assertActionUpdate("beta", {
+                "slug": "beta",
+                "name": "Beta",
+                "description": "Second test group.",
+                "owner": self.owner_user.id,
+                "members": [self.member_user.id],  # <-
+                "access": "OPEN",
+            })
+            self.assertData(updated, {
+                "slug": "beta",
+                "name": "Beta",
+                "description": "Second test group.",
+                "owner": self.owner_user.id,
+                "members": [self.member_user.id],
+                "access": "OPEN",
+            })
 
-        self.create_fail({
-            "potato": "sweet",
-            "access": "OPEN",
-        }, 400)
+    def test_update_400(self):
+        with self.as_user(self.owner_user.username):
+            self.assertActionUpdate("beta", {
+                "members": {
+                    "nobody expects": "the dict inquisition",
+                }
+            }, 400)
 
-    def test_update_valid(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
-
-        self.create_unwrap({
-            "slug": "gamma",
-            "name": "Gamma",
-            "description": "A test group to update.",
-            "members": [],
-            "access": "OPEN",
+    # Using AllowAny, update always succeeds, even if permissions are missing, but won't apply any changes due to the access serializer
+    def test_update_unauthenticated(self):
+        self.assertActionUpdate("beta", {
+            "members": [self.outside_user.id],
         })
 
-        retrieved = self.retrieve_unwrap("gamma")
-
-        self.assertEqual(retrieved["slug"], "gamma")
-        self.assertEqual(retrieved["name"], "Gamma")
-        self.assertEqual(retrieved["description"], "A test group to update.")
-        self.assertEqual(retrieved["owner"], self.test_user.id)
-        self.assertEqual(retrieved["members"], [])
-        self.assertEqual(retrieved["access"], "OPEN")
-
-        updated = self.update_unwrap("gamma", {
-            "slug": "gamma",
-            "name": "Gamma",
-            "description": "An updated test group.",
-            "members": [],
-            "access": "MANUAL",
-        })
-
-        self.assertIn("slug", updated)
-        self.assertIn("name", updated)
-        self.assertIn("description", updated)
-        self.assertIn("owner", updated)
-        self.assertIn("members", updated)
-        self.assertIn("access", updated)
-
-        self.assertEqual(updated["slug"], "gamma")
-        self.assertEqual(updated["name"], "Gamma")
-        self.assertEqual(updated["description"], "An updated test group.")
-        self.assertEqual(updated["owner"], self.test_user.id)
-        self.assertEqual(updated["members"], [])
-        self.assertEqual(updated["access"], "MANUAL")
-
-        retrieved2 = self.retrieve_unwrap("gamma")
-
-        self.assertEqual(retrieved2["slug"], "gamma")
-        self.assertEqual(retrieved2["name"], "Gamma")
-        self.assertEqual(retrieved2["description"], "An updated test group.")
-        self.assertEqual(retrieved2["owner"], self.test_user.id)
-        self.assertEqual(retrieved2["members"], [])
-        self.assertEqual(retrieved2["access"], "MANUAL")
-
-    def test_update_not_logged_in(self):
-        self.update_fail("alpha", {
-            "slug": "alpha",
-            "name": "AAAAA",
-            "description": "An hacker has updated the Alpha group without permissions!",
-            "members": [],
-            "access": "MANUAL",
-        }, 401)
-
-    def test_update_unauthorized(self):
-        self.client.login(username="TAST", password="TheGreatDjangoTast")
-
-        self.update_fail("alpha", {
-            "slug": "alpha",
-            "name": "AAAAA",
-            "description": "An hacker has updated the Alpha group without permissions!",
-            "members": [],
-            "access": "MANUAL",
-        }, 403)
-
-    def test_update_invalid_schema(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
-
-        self.update_fail("alpha", {
-            "hahaha": "soccer",
-        }, 400)
-
-    def test_destroy_valid(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
-
-        self.create_unwrap({
-            "slug": "boom",
-            "name": "Boom!!!",
-            "description": "A group that should explode.",
+        retrieved = self.assertActionRetrieve("beta")
+        self.assertData(retrieved, {
+            "slug": "beta",
+            "name": "Beta",
+            "description": "Second test group.",
+            "owner": self.owner_user.id,
             "members": [],
             "access": "OPEN",
         })
 
-        self.destroy_unwrap("boom")
-        self.retrieve_fail("boom", 404)
+    # Using AllowAny, update always succeeds, even if permissions are missing, but won't apply any changes due to the access serializer
+    def test_update_forbidden(self):
+        with self.as_user(self.outside_user.username):
+            self.assertActionUpdate("beta", {
+                "name": "Bbbbbbbbb",
+            })
 
-    def test_destroy_not_logged_in(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
+            retrieved = self.assertActionRetrieve("beta")
+            self.assertData(retrieved, {
+                "slug": "beta",
+                "name": "Beta",
+                "description": "Second test group.",
+                "owner": self.owner_user.id,
+                "members": [],
+                "access": "OPEN",
+            })
 
-        self.create_unwrap({
-            "slug": "boom",
-            "name": "Boom!!!",
-            "description": "A group that should explode.",
-            "members": [],
-            "access": "OPEN",
-        })
+    def test_destroy_204(self):
+        with self.as_user(self.owner_user.username):
+            self.assertActionDestroy("beta", 204)
+            self.assertActionRetrieve("beta", 404)
 
-        self.client.logout()
+    def test_destroy_401(self):
+        self.assertActionDestroy("alpha", 401)
 
-        self.destroy_fail("boom", 401)
-        self.retrieve_unwrap("boom")
-
-    def test_destroy_unauthorized(self):
-        self.client.login(username="TEST", password="TheGreatDjangoTest")
-
-        self.create_unwrap({
-            "slug": "doom",
-            "name": "Doom!!!",
-            "description": "A group about a game.",
-            "members": [],
-            "access": "OPEN",
-        })
-
-        self.client.logout()
-        self.client.login(username="TAST", password="TheGreatDjangoTast")
-
-        self.destroy_fail("doom", 403)
-        self.retrieve_unwrap("doom")
+    def test_destroy_403(self):
+        with self.as_user(self.outside_user.username):
+            self.assertActionDestroy("alpha", 403)
