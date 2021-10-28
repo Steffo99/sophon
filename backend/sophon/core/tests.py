@@ -88,7 +88,7 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         Perform the ``list`` action, and assert that it will return a specific status code.
 
         :param code: The expected status code.
-        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
         """
         try:
             response = self.list()
@@ -115,7 +115,7 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
 
         :param pk: The primary key of the resource to retrieve.
         :param code: The expected status code.
-        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
         """
         try:
             response = self.retrieve(pk=pk)
@@ -124,6 +124,70 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
             return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`retrieve` did not return {code}: {response.data!r}")
+            return response.data
+
+    def custom_list(self, method: str, action: str, data: dict = None) -> Response:
+        """
+        Perform a list action on the ViewSet.
+
+        :param method: The method to use in the request.
+        :param action: The name of the action to perform.
+        :param data: The data to send with the request.
+        :return: The server response.
+        """
+        url = self.get_url(action)
+        return self.client.generic(method, url, data or {})
+
+    def assertActionCustomList(self, method: str, action: str, data: dict = None, code: int = 200) -> t.Optional[ReturnDict]:
+        """
+        Perform a list action on the ViewSet, and assert that it will return a specific status code.
+
+        :param method: The method to use in the request.
+        :param action: The name of the action to perform.
+        :param data: The data to send with the request.
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
+        """
+        try:
+            response = self.custom_list(method, action, data)
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`{action}` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`{action}` did not return {code}: {response.data!r}")
+            return response.data
+
+    def custom_detail(self, method: str, action: str, pk, data: dict = None) -> Response:
+        """
+        Perform a detail action on the ViewSet.
+
+        :param method: The method to use in the request.
+        :param action: The name of the action to perform.
+        :param pk: The primary key of the resource to operate on.
+        :param data: The data to send with the request.
+        :return: The server response.
+        """
+        url = self.get_url(action, pk=pk)
+        return self.client.generic(method, url, data or {})
+
+    def assertActionCustomDetail(self, method: str, action: str, pk, data: dict = None, code: int = 200) -> t.Optional[ReturnDict]:
+        """
+        Perform a detail action on the ViewSet, and assert that it will return a specific status code.
+
+        :param method: The method to use in the request.
+        :param action: The name of the action to perform.
+        :param pk: The primary key of the resource to operate on.
+        :param data: The data to send with the request.
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
+        """
+        try:
+            response = self.custom_detail(method, action, pk, data)
+        except errors.HTTPException as exc:
+            self.assertEqual(exc.status, code, msg=f"`{action}` did not return {code}: {exc!r}")
+            return None
+        else:
+            self.assertEqual(response.status_code, code, msg=f"`{action}` did not return {code}: {response.data!r}")
             return response.data
 
 
@@ -148,7 +212,7 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
 
         :param data: The data to create the resource with.
         :param code: The expected status code.
-        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
         """
         try:
             response = self.create(data=data)
@@ -177,7 +241,7 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         :param pk: The primary key of the resource to update.
         :param data: The data to update the resource with.
         :param code: The expected status code.
-        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
         """
         try:
             response = self.update(pk=pk, data=data)
@@ -204,7 +268,7 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
 
         :param pk: The primary key of the resource to destroy.
         :param code: The expected status code.
-        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        :return: The data the server responded with, or :data:`None` if a HTTPException is raised.
         """
         try:
             response = self.destroy(pk=pk)
@@ -526,7 +590,41 @@ class ResearchGroupTestCase(WriteSophonTestCase):
         with self.as_user(self.outside_user.username):
             self.assertActionDestroy("alpha", 403)
 
-    # TODO: Test join and leave
+    def test_join_200(self):
+        with self.as_user(self.member_user.username):
+            data = self.assertActionCustomDetail("POST", "join", "beta")
+            self.assertData(data, {
+                "members": [self.member_user.id]
+            })
+
+    def test_join_401(self):
+        self.assertActionCustomDetail("POST", "join", "beta", code=401)
+
+    def test_join_403(self):
+        with self.as_user(self.outside_user.username):
+            self.assertActionCustomDetail("POST", "join", "alpha", code=403)
+
+    def test_join_404(self):
+        with self.as_user(self.member_user.username):
+            self.assertActionCustomDetail("POST", "join", "zxy", code=404)
+
+    def test_leave_200(self):
+        with self.as_user(self.member_user.username):
+            data = self.assertActionCustomDetail("DELETE", "leave", "alpha")
+            self.assertData(data, {
+                "members": [],
+            })
+
+    def test_leave_401(self):
+        self.assertActionCustomDetail("DELETE", "leave", "alpha", code=401)
+
+    def test_leave_403(self):
+        with self.as_user(self.owner_user.username):
+            self.assertActionCustomDetail("DELETE", "leave", "alpha", code=403)
+
+    def test_leave_404(self):
+        with self.as_user(self.member_user.username):
+            self.assertActionCustomDetail("DELETE", "leave", "zxy", code=404)
 
 
 class SophonInstanceDetailsTestCase(BetterAPITestCase):
