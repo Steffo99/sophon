@@ -262,10 +262,6 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         """
         group = models.ResearchGroup.objects.get(pk=pk)
 
-        # Raise an error if the user is already in the group
-        if self.request.user in group.members.all():
-            return Response(status=s.HTTP_409_CONFLICT)
-
         # Raise an error if the group doesn't allow member joins
         if group.access != "OPEN":
             return Response(status=s.HTTP_403_FORBIDDEN)
@@ -286,10 +282,6 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         Group owners aren't allowed to leave the group they created to prevent situations where a group has no owner.
         """
         group = models.ResearchGroup.objects.get(pk=pk)
-
-        # Raise an error if the user is not in the group
-        if self.request.user not in group.members.all():
-            return Response(status=s.HTTP_409_CONFLICT)
 
         # Raise an error if the user is the owner of the group
         if self.request.user == group.owner:
