@@ -3,6 +3,7 @@ import contextlib
 import typing as t
 
 import django.urls.exceptions
+import pkg_resources
 from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework.response import Response
@@ -527,6 +528,16 @@ class ResearchGroupTestCase(WriteSophonTestCase):
 
     # TODO: Test join and leave
 
-# TODO: Test instance details
+
+class SophonInstanceDetailsTestCase(BetterAPITestCase):
+    def test_details_200(self):
+        response = self.client.get("/api/core/instance/")
+        self.assertEqual(response.status_code, 200)
+        self.assertData(response.data, {
+            "name": "Sophon",
+            "description": None,
+            "theme": "sophon",
+            "version": pkg_resources.get_distribution("sophon").version,
+        })
 
 # TODO: Test some more code
