@@ -1,0 +1,56 @@
+{% extends 'admin/base.html' %}
+
+{% block extrahead %}
+    <style>
+        :root {
+            --body-fg: rgb(45, 154, 255);
+            --body-bg: rgb(0, 0, 20);
+            --body-quiet-color: rgb(34, 115, 191);
+            --body-loud-color: rgb(255, 255, 255);
+
+            --primary: rgb(2, 10, 34);
+            --primary-fg: rgb(45, 154, 255);
+
+            --secondary: rgb(5, 24, 54);
+
+            --accent: rgb(255, 255, 255);
+
+            --darkened-bg: var(--primary);
+            --hairline-color: var(--secondary);
+            --border-color: var(--secondary);
+            --button-bg: var(--secondary);
+            --button-hover-bg: rgba(45, 154, 255, 0.2);
+            --close-button-bg: var(--secondary);
+            --close-button-hover-bg: rgba(45, 154, 255, 0.2);
+
+            --link-fg: rgb(0, 202, 202);
+            --link-hover-color: rgb(30, 232, 232);
+            --link-selected-fg: rgb(60, 255, 255);
+            --breadcrumbs-link-fg: rgb(0, 202, 202);
+
+            --error-fg: rgb(255, 125, 125);
+            --message-success-bg: rgba(125, 255, 125, 0.2);
+            --message-warning-bg: rgba(255, 255, 125, 0.2);
+            --message-error-bg: rgba(255, 125, 125, 0.2);
+            --selected-row: rgba(45, 154, 255, 0.2);
+            --selected-bg: rgba(45, 154, 255, 0.2);
+        }
+
+        /* WHY?!?!?! */
+
+        #user-tools a {
+            color: var(--link-fg) !important;
+            border-bottom-color: var(--link-fg) !important;
+        }
+
+        #user-tools a:focus, #user-tools a:hover {
+            color: var(--link-hover-color) !important;
+            border-bottom-color: var(--link-hover-color) !important;
+        }
+
+        #user-tools a:active {
+            color: var(--link-selected-fg) !important;
+            border-bottom-color: var(--link-selected-fg) !important;
+        }
+    </style>
+{% endblock %}

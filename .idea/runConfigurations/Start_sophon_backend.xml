@@ -27,6 +27,7 @@
       <env name="DJANGO_DOCKER_TLS_VERIFY" value="" />
       <env name="DJANGO_DOCKER_CERT_PATH" value="" />
       <env name="DJANGO_SETTINGS_MODULE" value="sophon.settings" />
+      <env name="DJANGO_SECRET_KEY" value="development" />
     </envs>
     <option name="SDK_HOME" value="$USER_HOME$/.cache/pypoetry/virtualenvs/sophon-rpVYiJ6v-py3.9/bin/python" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />

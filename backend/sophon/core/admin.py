@@ -1,15 +1,18 @@
-from django.contrib import admin
+import django.contrib.admin
+import django.contrib.auth.models
 
 from . import models
 
+django.contrib.admin.site.unregister(django.contrib.auth.models.Group)
 
-class SophonAdmin(admin.ModelAdmin):
+
+class SophonAdmin(django.contrib.admin.ModelAdmin):
     """
     Base :class:`django.contrib.admin.ModelAdmin` class from which all other admin classes inherit.
     """
 
 
-@admin.register(models.SophonInstanceDetails)
+@django.contrib.admin.register(models.SophonInstanceDetails)
 class SophonInstanceDetails(SophonAdmin):
     list_display = (
         "name",
@@ -28,7 +31,7 @@ class SophonInstanceDetails(SophonAdmin):
         return False
 
 
-@admin.register(models.ResearchGroup)
+@django.contrib.admin.register(models.ResearchGroup)
 class ResearchGroupAdmin(SophonAdmin):
     list_display = (
         "slug",

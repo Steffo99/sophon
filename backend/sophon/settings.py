@@ -265,7 +265,7 @@ BASE_DIR = pathlib.Path(__file__).resolve().parent.parent
 
 # Define the installed django apps
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    'sophon.admin.SophonAdminConfig',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -299,7 +299,9 @@ ROOT_URLCONF = 'sophon.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR / "sophon" / "templates"
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
