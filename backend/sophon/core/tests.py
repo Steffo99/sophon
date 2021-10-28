@@ -1,5 +1,6 @@
 import abc
-import collections
+import contextlib
+import typing as t
 
 from django.contrib.auth.models import User
 from django.urls import reverse
@@ -9,87 +10,172 @@ from rest_framework.test import APITestCase
 from . import models
 
 
-class SophonModelTestCase(APITestCase, metaclass=abc.ABCMeta):
+class BetterAPITestCase(APITestCase):
+    """
+    An extension for :class:`APITestCase` which includes some utility methods to make tests clearer.
+    """
+
+    @contextlib.contextmanager
+    def as_user(self, username: str, password: str) -> t.ContextManager[None]:
+        """
+        **Context manager** which runs tests as a specific user.
+
+        :param username: The username of the user to login as.
+        :param password: The password of the user to login as.
+        """
+        yield self.client.login(username, password)
+        self.client.logout()
+
+
+class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
+    """
+    Abstract :class:`.BetterAPITestCase` for testing :class:`~sophon.core.views.ReadSophonViewSet`\\ s.
+    """
+
     @classmethod
     @abc.abstractmethod
     def get_basename(cls) -> str:
+        """
+        :return: The `basename` of the ViewSet to test, as defined in the `urls` module of the app.
+        """
         raise NotImplementedError()
 
     @classmethod
-    def get_url(cls, kind: str, *args, **kwargs) -> str:
+    def get_url(cls, action: str, *args, **kwargs) -> str:
+        """
+        Find the URL of a specific action by using :func:`django.urls.reverse`.
+
+        :param action: The action to perform on the ViewSet, such as `"list"` or `"destroy"`.
+        :param args: Positional arguments passed to :func:`django.urls.reverse` for getting the URL.
+        :param kwargs: Keyword arguments passed to :func:`django.urls.reverse` for getting the URL.
+        :return: The URL corresponding to the action with all parameters filled in.
+        """
         basename = cls.get_basename()
-        return reverse(f"{basename}-{kind}", args=args, kwargs=kwargs)
+        return reverse(f"{basename}-{action}", args=args, kwargs=kwargs)
 
     def list(self) -> Response:
+        """
+        Perform the ``list`` action on the ViewSet.
+
+        :return: The server response.
+        """
         url = self.get_url("list")
         return self.client.get(url, {}, format="json")
 
-    def list_unwrap(self) -> collections.OrderedDict:
-        response = self.list()
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(isinstance(response.data, dict))
-        return response.data
+    # I hate how unittest doesn't follow PEP8 when naming methods
+    def assertActionList(self, code: int = 200) -> t.Any:
+        """
+        Perform the ``list`` action, and assert that it will return a specific status code.
 
-    def list_fail(self, code) -> None:
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        """
         response = self.list()
-        self.assertEqual(response.status_code, code)
+        self.assertEqual(response.status_code, code, msg=f"`list` did not return {code}")
+        return response.data or None
 
     def retrieve(self, pk) -> Response:
+        """
+        Perform the ``retrieve`` action on the ViewSet.
+
+        :param pk: The primary key of the resource to retrieve.
+        :return: The server response.
+        """
         url = self.get_url("detail", pk=pk)
         return self.client.get(url, {}, format="json")
 
-    def retrieve_unwrap(self, pk) -> collections.OrderedDict:
+    def assertActionRetrieve(self, pk, code: int = 200) -> t.Any:
+        """
+        Perform the ``retrieve`` action, and assert that it will return a specific status code.
+
+        :param pk: The primary key of the resource to retrieve.
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        """
         response = self.retrieve(pk=pk)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(isinstance(response.data, dict))
+        self.assertEqual(response.status_code, code, msg=f"`retrieve` did not return {code}")
         return response.data
 
-    def retrieve_fail(self, pk, code) -> None:
-        response = self.retrieve(pk=pk)
-        self.assertEqual(response.status_code, code)
+
+class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
+    """
+    Abstract :class:`.ReadSophonTestCase` for testing :class:`~sophon.core.views.WriteSophonViewSet`\\ s.
+    """
 
     def create(self, data) -> Response:
+        """
+        Perform the ``create`` action on the ViewSet.
+
+        :param data: The data to create the resource with.
+        :return: The server response.
+        """
         url = self.get_url("list")
         return self.client.post(url, data, format="json")
 
-    def create_unwrap(self, data) -> collections.OrderedDict:
+    def assertActionCreate(self, data, code: int = 201) -> t.Any:
+        """
+        Perform the ``create`` action, and assert that it will return a specific status code.
+
+        :param data: The data to create the resource with.
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        """
         response = self.create(data=data)
-        self.assertEqual(response.status_code, 201)
-        self.assertTrue(isinstance(response.data, dict))
+        self.assertEqual(response.status_code, code, msg=f"`create` did not return {code}")
         return response.data
 
-    def create_fail(self, data, code) -> None:
-        response = self.create(data)
-        self.assertEqual(response.status_code, code)
-
     def update(self, pk, data) -> Response:
+        """
+        Perform the ``update`` action on the ViewSet.
+
+        :param pk: The primary key of the resource to update.
+        :param data: The data to update the resource with.
+        :return: The server response.
+        """
         url = self.get_url("detail", pk=pk)
         return self.client.put(url, data, format="json")
 
-    def update_unwrap(self, pk, data) -> collections.OrderedDict:
+    def assertActionUpdate(self, pk, data, code: int = 200) -> t.Any:
+        """
+        Perform the ``update`` action, and assert that it will return a specific status code.
+
+        :param pk: The primary key of the resource to update.
+        :param data: The data to update the resource with.
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        """
         response = self.update(pk=pk, data=data)
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(isinstance(response.data, dict))
+        self.assertEqual(response.status_code, code, msg=f"`update` did not return {code}")
         return response.data
 
-    def update_fail(self, pk, data, code) -> None:
-        response = self.update(pk, data)
-        self.assertEqual(response.status_code, code)
-
     def destroy(self, pk) -> Response:
+        """
+        Perform the ``destroy`` action on the ViewSet.
+
+        :param pk: The primary key of the resource to destroy.
+        :return: The server response.
+        """
         url = self.get_url("detail", pk=pk)
-        return self.client.delete(url, format="json")
+        return self.client.delete(url, {}, format="json")
 
-    def destroy_unwrap(self, pk) -> None:
+    def assertActionDestroy(self, pk, code: int = 200) -> t.Any:
+        """
+        Perform the ``destroy`` action, and assert that it will return a specific status code.
+
+        :param pk: The primary key of the resource to destroy.
+        :param code: The expected status code.
+        :return: The data the server responded with, or :data:`None` if the data evaluates to :data:`False`.
+        """
         response = self.destroy(pk=pk)
-        self.assertEqual(response.status_code, 204)
-
-    def destroy_fail(self, pk, code) -> None:
-        response = self.destroy(pk)
-        self.assertEqual(response.status_code, code)
+        self.assertEqual(response.status_code, code, msg=f"`destroy` did not return {code}")
+        return response.data
 
 
-class ResearchGroupTests(SophonModelTestCase):
+class ResearchGroupTests(WriteSophonTestCase):
+    """
+    :class:`APITestCase` for the :class:`ResearchGroupViewSet`.
+    """
+
     @classmethod
     def get_basename(cls) -> str:
         return "research-group"
