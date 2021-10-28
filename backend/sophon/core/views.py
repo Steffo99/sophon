@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db.models import QuerySet
 from rest_framework import status as s
 from rest_framework.decorators import action
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework.views import APIView
@@ -144,8 +145,6 @@ class WriteSophonViewSet(ModelViewSet, ReadSophonViewSet, metaclass=abc.ABCMeta)
         serializer.save(**hook)
 
         if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
@@ -241,21 +240,26 @@ class ResearchGroupViewSet(WriteSophonViewSet):
             raise errors.HTTPException(s.HTTP_403_FORBIDDEN)
 
     def get_permission_classes(self) -> t.Collection[t.Type[permissions.BasePermission]]:
+        # Only the owner can destroy a ResearchGroup
         if self.action in ["destroy"]:
             return permissions.Admin,
-        elif self.action in ["update", "partial_update"]:
-            return permissions.Edit,
+        # Otherwise, ignore DRF permissions and delegate to the access serializer
         else:
             return permissions.AllowAny,
 
     def get_custom_serializer_classes(self):
+        # Use access serializer for join and leave actions
         if self.action in ["join", "leave"]:
             return self.get_object().get_access_serializer(self.request.user)
+        # Default to NoneSerializer for not recognized actions to stop DRF from going crazy
         else:
             return serializers.NoneSerializer
 
     @action(detail=True, methods=["post"], name="Join group")
-    def join(self, request, pk) -> Response:
+    def join(self, request: Request, pk: int) -> Response:
+        """
+        An action that allows an user to join a group with ``"OPEN"`` access.
+        """
         group = models.ResearchGroup.objects.get(pk=pk)
 
         # Raise an error if the user is already in the group
@@ -276,6 +280,11 @@ class ResearchGroupViewSet(WriteSophonViewSet):
 
     @action(detail=True, methods=["delete"], name="Leave group")
     def leave(self, request, pk):
+        """
+        An action that allows an user to leave a group they're a part of.
+
+        Group owners aren't allowed to leave the group they created to prevent situations where a group has no owner.
+        """
         group = models.ResearchGroup.objects.get(pk=pk)
 
         # Raise an error if the user is not in the group
@@ -286,7 +295,7 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         if self.request.user == group.owner:
             return Response(status=s.HTTP_403_FORBIDDEN)
 
-        # Add the user to the group
+        # Remove the user from the group
         group.members.remove(self.request.user)
 
         serializer_class = group.get_access_serializer(self.request.user)
@@ -297,14 +306,18 @@ class ResearchGroupViewSet(WriteSophonViewSet):
 
 class SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta):
     """
-    A :class:`ModelViewSet` for objects belonging to a :class:`~.models.ResearchGroup`.
+    An abstract ViewSet for resources belonging to a :class:`~.models.ResearchGroup`, like projects or notebooks.
     """
 
     @abc.abstractmethod
     def get_group_from_serializer(self, serializer) -> models.ResearchGroup:
         """
-        :param serializer: The validated serializer containing the data of the object about to be created.
-        :return: The group the data in the serializer refers to.
+        A method to find the group that the serialized resource belongs to.
+
+        Used in :meth:`.hook_create` and :meth:`.hook_update` to prevent the creation of resources on inaccessible groups.
+
+        :param serializer: The validated serializer containing the data of the resource about to be created.
+        :return: The group the serialized resource belongs to.
         """
         raise NotImplementedError()
 
@@ -314,7 +327,7 @@ class SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta):
         if not group.can_edit(self.request.user):
             raise errors.HTTPException(s.HTTP_403_FORBIDDEN)
 
-        return {}
+        return super().hook_create(serializer)
 
     def hook_update(self, serializer) -> dict[str, t.Any]:
         # Allow group transfers only to groups the user has Edit access on
@@ -322,22 +335,24 @@ class SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta):
         if not group.can_edit(self.request.user):
             raise errors.HTTPException(s.HTTP_403_FORBIDDEN)
 
-        return {}
+        return super().hook_update(serializer)
 
     def get_permission_classes(self) -> t.Collection[t.Type[permissions.BasePermission]]:
-        if self.action in ["destroy", "update", "partial_update"]:
+        # Allow all group members to destroy resources that are not the group itself
+        if self.action == "destroy":
             return permissions.Edit,
+        # Ignore the DRF permissions and delegate to the access serializer
         else:
             return permissions.AllowAny,
 
 
 class SophonInstanceDetailsView(APIView):
     """
-    Get the details of this Sophon instance.
+    A `GET`\\ table APIView that returns details about the current Sophon instance.
     """
 
-    # noinspection PyMethodMayBeStatic,PyUnusedLocal
-    def get(self, request, format=None):
+    # noinspection PyMethodMayBeStatic,PyUnusedLocal,PyShadowingBuiltins
+    def get(self, request: Request, format=None) -> Response:
         details = models.SophonInstanceDetails.objects.get()
         # noinspection PyPep8Naming
         ViewSerializer = details.get_view_serializer()
