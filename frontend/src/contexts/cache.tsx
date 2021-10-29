@@ -34,7 +34,7 @@ export function useCacheContext(): Cache | undefined {
  * @constructor
  */
 export function CacheProvider({children}: WithChildren): JSX.Element {
-    const users = useManagedViewSet<SophonUser>("/api/core/users/", "id")
+    const users = useManagedViewSet<SophonUser>("/api/core/users-by-id/", "id")
 
     const usersIdMap =
         React.useMemo(

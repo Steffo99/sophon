@@ -44,7 +44,7 @@ export function AuthorizationLoginButton({username, password, disabled = false}:
                 setError(undefined)
                 try {
                     const loginRequest = await axios.post<SophonToken>("/api/auth/token/", {username, password})
-                    const dataRequest = await axios.get<SophonUser>(`/api/core/users/${username}/`)
+                    const dataRequest = await axios.get<SophonUser>(`/api/core/users-by-username/${username}/`)
                     authorization.dispatch({
                         type: "success:login",
                         user: dataRequest.data,

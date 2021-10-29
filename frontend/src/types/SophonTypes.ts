@@ -10,7 +10,7 @@ export interface SophonToken extends DjangoResource {
 
 
 /**
- * A Django User, as returned by the `/api/core/users/` endpoint.
+ * A Django User, as returned by the `/api/core/users-by-id/` and `/api/core/users-by-username/` endpoints.
  */
 export interface SophonUser extends DjangoResource {
     id: number,
