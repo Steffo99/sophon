@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/backend/Backend (Django).iml" filepath="$PROJECT_DIR$/backend/Backend (Django).iml" />
-      <module fileurl="file://$PROJECT_DIR$/frontend/Frontend (React).iml" filepath="$PROJECT_DIR$/frontend/Frontend (React).iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/Backend.iml" filepath="$PROJECT_DIR$/backend/Backend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/frontend/Frontend.iml" filepath="$PROJECT_DIR$/frontend/Frontend.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jupyter/Jupyter.iml" filepath="$PROJECT_DIR$/jupyter/Jupyter.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Main.iml" filepath="$PROJECT_DIR$/.idea/Main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/proxy/Proxy.iml" filepath="$PROJECT_DIR$/proxy/Proxy.iml" />
     </modules>
   </component>
 </project>
