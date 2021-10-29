@@ -4,6 +4,7 @@ import typing as t
 import deprecation
 from django.contrib.auth.models import User
 from django.db.models import QuerySet
+from django.shortcuts import get_object_or_404
 from rest_framework import status as s
 from rest_framework.decorators import action
 from rest_framework.request import Request
@@ -195,7 +196,7 @@ class UsersByIdViewSet(ReadSophonViewSet):
 
     def get_object(self):
         pk = self.kwargs["pk"]
-        return User.objects.filter(id=pk).get()
+        return get_object_or_404(User.objects.filter(id=pk))
 
 
 class UsersByUsernameViewSet(ReadSophonViewSet):
@@ -211,7 +212,7 @@ class UsersByUsernameViewSet(ReadSophonViewSet):
 
     def get_object(self):
         pk = self.kwargs["pk"]
-        return User.objects.filter(username=pk).get()
+        return get_object_or_404(User.objects.filter(username=pk))
 
 
 class ResearchGroupViewSet(WriteSophonViewSet):
@@ -260,7 +261,7 @@ class ResearchGroupViewSet(WriteSophonViewSet):
         """
         An action that allows an user to join a group with ``"OPEN"`` access.
         """
-        group = models.ResearchGroup.objects.get(pk=pk)
+        group = get_object_or_404(models.ResearchGroup.objects, pk=pk)
 
         if self.request.user.is_anonymous:
             return Response(status=s.HTTP_401_UNAUTHORIZED)
@@ -284,7 +285,7 @@ class ResearchGroupViewSet(WriteSophonViewSet):
 
         Group owners aren't allowed to leave the group they created to prevent situations where a group has no owner.
         """
-        group = models.ResearchGroup.objects.get(pk=pk)
+        group = get_object_or_404(models.ResearchGroup.objects, pk=pk)
 
         if self.request.user.is_anonymous:
             return Response(status=s.HTTP_401_UNAUTHORIZED)

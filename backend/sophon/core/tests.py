@@ -95,6 +95,9 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         except errors.HTTPException as exc:
             self.assertEqual(exc.status, code, msg=f"`list` did not return {code}: {exc!r}")
             return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`list` did not return {code}: {exc!r}")
+            return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`list` did not return {code}: {response.data!r}")
             return response.data or None
@@ -121,6 +124,9 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
             response = self.retrieve(pk=pk)
         except errors.HTTPException as exc:
             self.assertEqual(exc.status, code, msg=f"`retrieve` did not return {code}: {exc!r}")
+            return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`retrieve` did not return {code}: {exc!r}")
             return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`retrieve` did not return {code}: {response.data!r}")
@@ -152,6 +158,9 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
             response = self.custom_list(method, action, data)
         except errors.HTTPException as exc:
             self.assertEqual(exc.status, code, msg=f"`{action}` did not return {code}: {exc!r}")
+            return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`{action}` did not return {code}: {exc!r}")
             return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`{action}` did not return {code}: {response.data!r}")
@@ -186,6 +195,9 @@ class ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta):
         except errors.HTTPException as exc:
             self.assertEqual(exc.status, code, msg=f"`{action}` did not return {code}: {exc!r}")
             return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`{action}` did not return {code}: {exc!r}")
+            return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`{action}` did not return {code}: {response.data!r}")
             return response.data
@@ -219,6 +231,9 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         except errors.HTTPException as exc:
             self.assertEqual(exc.status, code, msg=f"`create` did not return {code}: {exc!r}")
             return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`create` did not return {code}: {exc!r}")
+            return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`create` did not return {code}: {response.data!r}")
             return response.data
@@ -248,6 +263,9 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         except errors.HTTPException as exc:
             self.assertEqual(exc.status, code, msg=f"`update` did not return {code}: {exc!r}")
             return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`update` did not return {code}: {exc!r}")
+            return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`update` did not return {code}: {response.data!r}")
             return response.data
@@ -273,7 +291,10 @@ class WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta):
         try:
             response = self.destroy(pk=pk)
         except errors.HTTPException as exc:
-            self.assertEqual(exc.status, code, msg=f"`create` did not return {code}: {exc!r}")
+            self.assertEqual(exc.status, code, msg=f"`destroy` did not return {code}: {exc!r}")
+            return None
+        except ValueError as exc:
+            self.assertEqual(400, code, msg=f"`destroy` did not return {code}: {exc!r}")
             return None
         else:
             self.assertEqual(response.status_code, code, msg=f"`destroy` did not return {code}: {response.data!r}")
@@ -317,11 +338,6 @@ class UsersByIdTestCase(ReadSophonTestCase):
         data = self.assertActionRetrieve(self.third_user.id)
         self.assertData(data, {"username": "third"})
 
-    def test_retrieve_400(self):
-        self.assertActionRetrieve("qwerty", code=400)
-        self.assertActionRetrieve(1.0, code=400)
-        self.assertActionRetrieve("xyzzy", code=400)
-
     def test_retrieve_404(self):
         self.assertActionRetrieve(100, code=404)
         self.assertActionRetrieve(-1, code=404)
@@ -364,11 +380,6 @@ class UsersByUsernameTestCase(ReadSophonTestCase):
         self.assertData(data, {"username": "wwwwww"})
         data = self.assertActionRetrieve(self.third_user.username)
         self.assertData(data, {"username": "aaaaaa"})
-
-    def test_retrieve_400(self):
-        self.assertActionRetrieve(1, code=400)
-        self.assertActionRetrieve(-1, code=400)
-        self.assertActionRetrieve(1.0, code=400)
 
     def test_retrieve_404(self):
         self.assertActionRetrieve("sas", code=404)
