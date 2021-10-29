@@ -6,7 +6,7 @@
   <component name="PWA">
     <option name="wasEnabledAtLeastOnce" value="true" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Poetry (backend) (2)" project-jdk-type="Python SDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" project-jdk-name="Poetry (sophon2)" project-jdk-type="Python SDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="PythonCompatibilityInspectionAdvertiser">
