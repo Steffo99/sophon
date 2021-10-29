@@ -648,5 +648,3 @@ class SophonInstanceDetailsTestCase(BetterAPITestCase):
             "theme": "sophon",
             "version": pkg_resources.get_distribution("sophon").version,
         })
-
-# TODO: Test some more code
