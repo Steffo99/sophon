@@ -10,8 +10,8 @@ Contenuti
    :maxdepth: 4
    :caption: Manuale utente
 
-   1_guide/1_about
-   1_guide/2_usage
+   1_user/1_about
+   1_user/2_usage
 
 
 .. toctree::
