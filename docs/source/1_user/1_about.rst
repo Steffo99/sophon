@@ -8,12 +8,13 @@ Sophon permette ai suoi utenti di effettuare in sicurezza attività di ricerca c
 .. _dipartimento di Informatica: https://www.fim.unimore.it/
 .. _Università di Modena e Reggio Emilia: https://www.unimore.it/
 
+
 Screenshots
 -----------
 
-.. image:: instance_select.png
-.. image:: user_select.png
-.. image:: notebook_select.png
-.. image:: mode_select.png
-.. image:: inside_the_lab.png
-.. image:: admin_page.png
+.. image:: screenshots/instance_select.png
+.. image:: screenshots/user_select.png
+.. image:: screenshots/notebook_select.png
+.. image:: screenshots/mode_select.png
+.. image:: screenshots/inside_the_lab.png
+.. image:: screenshots/admin_page.png
