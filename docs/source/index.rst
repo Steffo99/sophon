@@ -11,7 +11,7 @@ Contenuti
    :caption: Manuale utente
 
    1_user/1_about
-   1_user/2_usage
+   1_user/2_concepts
 
 
 .. toctree::
@@ -36,3 +36,13 @@ Collegamenti
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+Licenza
+-------
+
+Sophon è rilasciato sotto la `GNU Affero General Public License 3`_ (o successiva).
+
+Il testo completo della licenza è disponibile all'interno del file ``LICENSE.txt`` allegato al codice sorgente del software.
+
+.. _GNU Affero General Public License 3: https://www.gnu.org/licenses/agpl-3.0.html
