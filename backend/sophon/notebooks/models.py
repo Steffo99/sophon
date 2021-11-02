@@ -76,14 +76,7 @@ class Notebook(SophonGroupModel):
 
     # Remember to make a migration when changing this!
     IMAGE_CHOICES = (
-        # ("jupyter/base-notebook", "Base"),
-        # ("jupyter/minimal-notebook", "Python"),
-        # ("jupyter/scipy-notebook", "Python (Scientific)"),
-        # ("jupyter/tensorflow-notebook", "Python (Tensorflow)"),
-        # ("jupyter/r-notebook", "Python + R"),
-        # ("jupyter/pyspark-notebook", "Python (Scientific) + Apache Spark"),
-        # ("jupyter/all-spark-notebook", "Python (Scientific) + Scala + R + Apache Spark"),
-        ("ghcr.io/steffo99/sophon-jupyter", "Python (Sophonic)"),
+        ("ghcr.io/steffo99/sophon-jupyter", "Jupyter (Sophon)"),
     )
 
     container_image = models.CharField(
