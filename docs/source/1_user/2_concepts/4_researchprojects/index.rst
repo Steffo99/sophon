@@ -1,7 +1,7 @@
 Progetto di ricerca
 ===================
 
-Un *progetto di ricerca* rappresenta una **collezione di materiali** relativa a un singolo argomento mantenuta da un :ref:`gruppo di ricerca`.
+Un *progetto di ricerca* rappresenta una **collezione di oggetti** relativa a un singolo argomento mantenuta da un :ref:`gruppo di ricerca`.
 
 .. image:: diagram.png
    :width: 400

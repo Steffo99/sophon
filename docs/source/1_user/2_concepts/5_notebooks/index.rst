@@ -1,22 +1,9 @@
 Notebook
 ========
 
-Un *notebook* è un **tipo di materiale** che può essere allegato ad un :ref:`progetto di ricerca` (attualmente, l'unico implementato).
-
-Rappresenta una **postazione di lavoro** sul server dell':ref:`istanza` Sophon, utilizzabile da un :term:`utente` o più.
+Un *notebook* rappresenta una **postazione di lavoro** che può essere allegata ad un :ref:`progetto di ricerca`.
 
 .. image:: diagram.png
-   :width: 400
-
-
-Isolamento dei notebook
------------------------
-
-I notebook risiedono tutti sullo **stesso elaboratore fisico** che esegue l':ref:`istanza` Sophon, pertanto ne condividono le risorse, come processore, scheda video e memoria.
-
-Sono però **logicamente isolati**: i file contenuti in un notebook non sono accessibili agli altri, e i notebook non hanno modo di comunicare direttamente tra loro.
-
-.. image:: diagram_network.png
    :width: 400
 
 
@@ -29,7 +16,7 @@ Qualsiasi **membro** di un :ref:`gruppo di ricerca` può creare nuovi notebook a
 
 .. note::
 
-   Per motivi tecnici, i notebook non possono avere come slug ``backend``, ``frontend``, ``proxy``, ``api``, ``static`` e ``src``.
+   Per motivi tecnici, i notebook non possono avere come slug ``backend``, ``frontend``, ``proxy``, ``api``, ``static`` e ``src``, oppure iniziare o terminare con un trattino ``-``.
 
 
 Stato del notebook
@@ -90,6 +77,16 @@ I **membri** del :ref:`gruppo di ricerca` a cui appartiene il notebook possono c
 .. image:: connection.png
 
 
+Utilizzo di un notebook
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Una volta connessi ad un notebook, sarà visualizzato il programma eseguito dall'immagine selezionata.
+
+.. seealso::
+
+   Per informazioni su come usare JupyterLab, è possibile consultare l'apposita `documentazione <https://jupyterlab.readthedocs.io/en/stable/>`_.
+
+
 Collaborazione
 ^^^^^^^^^^^^^^
 
@@ -110,12 +107,24 @@ Bloccare un notebook **rimuove dall'interfaccia web** i bottoni per l'avvio, l'a
 .. image:: locked.png
 
 .. warning::
+
    Il blocco di un notebook è solo estetico, e non impedisce agli utenti di effettuare queste operazioni tramite strumenti esterni, come la Console per sviluppatori del browser web.
 
 Un notebook bloccato potrà essere sbloccato da qualsiasi **membro** del :ref:`gruppo di ricerca`; il membro che ha richiesto il blocco potrà sbloccarlo **immediatamente**, mentre agli altri membri sarà richiesto di confermare l'azione come se stesse venendo effettuata un'eliminazione.
 
 .. seealso::
    :ref:`Conferma di eliminazione`
+
+
+Isolamento dei notebook
+-----------------------
+
+I notebook risiedono tutti sullo **stesso elaboratore fisico** che esegue l':ref:`istanza` Sophon, pertanto ne condividono le risorse, come processore, scheda video e memoria.
+
+Sono però **logicamente isolati**: i file contenuti in un notebook non sono accessibili agli altri, e i notebook non hanno modo di comunicare direttamente tra loro.
+
+.. image:: diagram_network.png
+   :width: 400
 
 
 Modifica di un notebook
@@ -131,7 +140,7 @@ Lo *slug*, l'identificatore univoco del notebook, non è modificabile successiva
 Eliminazione di un notebook
 ---------------------------
 
-Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i notebook all'interno dei progetti del gruppo.
+Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i notebook all'interno dei progetti del gruppo, a condizione che questi siano *fermi* e *non bloccati*.
 
 
 Notebook nell'interfaccia web

@@ -1,11 +1,11 @@
-Differenze con altri progetti simili
-************************************
+Differenze da altri progetti simili
+***********************************
 
 Sophon a prima vista può sembrare simile ad altri progetti già esistenti, ma si differenzia in alcune particolarità del suo funzionamento.
 
 
-Differenze con JupyterHub
-=========================
+Differenze da JupyterHub
+========================
 
 `JupyterHub`_ è un progetto con scopi molto simili a quelli di Sophon, ovvero di permettere a tanti utenti di utilizzare `Jupyter`_ su un server remoto, ma ha funzionalità di autorizzazione molto semplici e non ha supporto per :ref:`collaborazione` in tempo reale, in quanto i server `Jupyter`_ che istanzia sono single-user.
 
@@ -15,8 +15,8 @@ Differenze con JupyterHub
 .. _Jupyter: https://jupyter.org/
 
 
-Differenze con Google Colab
-===========================
+Differenze da Google Colab
+==========================
 
 `Google Colab`_ è un progetto che permette di effettuare ricerca su server `Jupyter`_ utilizzando le risorse della `Google Cloud Platform`_.
 
