@@ -24,6 +24,7 @@ services:
       - POSTGRES_DB=sophon
     networks:
       - bone
+    restart: always
 
   frontend:
     image: ghcr.io/steffo99/sophon-frontend:latest
@@ -31,6 +32,7 @@ services:
       - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
     networks:
       - bone
+    restart: always
 
   backend:
     image: ghcr.io/steffo99/sophon-backend:latest
@@ -76,6 +78,7 @@ services:
       - db
     networks:
       - bone
+    restart: always
 
   proxy:
     image: ghcr.io/steffo99/sophon-proxy:latest
@@ -96,3 +99,4 @@ services:
       - frontend
     networks:
       - bone
+    restart: always
