@@ -8,9 +8,6 @@ Benvenuto alla documentazione di Sophon, il centro di ricerca per le Università
 Si è cercato di mantenere il registro di ciascuna parte al livello tecnico del pubblico a cui è destinata, pertanto è possibile osservare alcune **semplificazioni** nelle prime parti.
 
 
-Tabelle dei contenuti
-=====================
-
 .. toctree::
    :caption: Manuale utente
 
@@ -22,20 +19,20 @@ Tabelle dei contenuti
 .. toctree::
    :caption: Guida per l'amministratore
 
-   2_admin/1_why_sophon
-   2_admin/2_how_does_it_work
-   2_admin/3_installation
-   2_admin/4_update
-   2_admin/5_administration
+   2_admin/1_installation/index
+   2_admin/2_administration/index
 
 
 .. toctree::
    :caption: Documentazione tecnica
 
+   3_dev/1_license/index
+   3_dev/2_differences/index
 
-Collegamenti
-============
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+Pagine speciali
+===============
+
+- :ref:`genindex`
+- :ref:`modindex`
+- :ref:`search`

@@ -37,19 +37,19 @@ services:
     environment:
       # INSTALL: Set a random secret key!
       - DJANGO_SECRET_KEY=change-me!!!
+      # INSTALL: Configure your proxy details!
+      - DJANGO_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
+      - DJANGO_PROXY_PROTOCOL=http
       # INSTALL: Configure your allowed hosts!
       - DJANGO_ALLOWED_HOSTS=api.dev.sophon.steffo.eu
       # INSTALL: Configure your allowed origins! (* doesn't work)
       - DJANGO_ALLOWED_ORIGINS=http://dev.sophon.steffo.eu
-      # INSTALL: Configure your proxy details!
-      - DJANGO_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
-      - DJANGO_PROXY_PROTOCOL=http
       # INSTALL: Configure your static url!
       - DJANGO_STATIC_URL=http://static.dev.sophon.steffo.eu/django-static/
       # INSTALL: Set your language!
       - DJANGO_LANGUAGE_CODE=en-us
       # INSTALL: Set your timezone!
-      - DJANGO_TIME_ZONE=CET
+      - DJANGO_TIME_ZONE=Europe/Rome
       # INSTALL: Set the superuser login details!
       - DJANGO_SU_USERNAME=root
       - DJANGO_SU_EMAIL=root@example.org
@@ -80,7 +80,6 @@ services:
   proxy:
     image: ghcr.io/steffo99/sophon-proxy:latest
     ports:
-      # INSTALL: Change this port based on your own needs!
       - "30033:80"
     environment:
       # INSTALL: Configure your proxy details!

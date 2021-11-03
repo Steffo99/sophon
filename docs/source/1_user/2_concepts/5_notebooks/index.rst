@@ -27,6 +27,10 @@ Qualsiasi **membro** di un :ref:`gruppo di ricerca` può creare nuovi notebook a
 
 .. image:: creation.png
 
+.. note::
+
+   Per motivi tecnici, i notebook non possono avere come slug ``backend``, ``frontend``, ``proxy``, ``api``, ``static`` e ``src``.
+
 
 Stato del notebook
 ------------------
