@@ -23,7 +23,7 @@ I progetti hanno tre diverse impostazioni di visibilità che regolano chi può v
    Progetto pubblico
       Il progetto è visibile a tutti.
 
-I progetti privati sono marcati con l'icona di un **luchetto chiuso 🔒**, i progetti interni con l'icona di un **università 🏦** e i progetti pubblici con l'icona di un **globo 🌐**.
+I progetti privati sono marcati con l'icona di un **lucchetto chiuso 🔒**, i progetti interni con l'icona di un **università 🏦** e i progetti pubblici con l'icona di un **globo 🌐**.
 
 .. image:: icons.png
 

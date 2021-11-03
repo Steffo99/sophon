@@ -10,6 +10,7 @@ Si è cercato di mantenere il registro di ciascuna parte al livello tecnico del 
 
 .. toctree::
    :caption: Manuale utente
+   :maxdepth: 2
 
    1_user/1_about/index
    1_user/2_concepts/index
@@ -18,13 +19,17 @@ Si è cercato di mantenere il registro di ciascuna parte al livello tecnico del 
 
 .. toctree::
    :caption: Guida per l'amministratore
+   :maxdepth: 2
 
    2_admin/1_installation/index
    2_admin/2_administration/index
+   2_admin/3_update/index
+   2_admin/4_uninstallation/index
 
 
 .. toctree::
    :caption: Documentazione tecnica
+   :maxdepth: 2
 
    3_dev/1_license/index
    3_dev/2_differences/index
