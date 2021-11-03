@@ -20,8 +20,8 @@ Si aggiungano i seguenti ``VirtualHost`` alla configurazione:
 .. code-block:: apacheconf
 
    <VirtualHost *:80>
-       ServerName "DOMINIO"
-       ServerAlias "*.DOMINIO"
+       ServerName "ilmiosophon.it"
+       ServerAlias "*.ilmiosophon.it"
 
        RewriteEngine On
        RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
@@ -30,12 +30,12 @@ Si aggiungano i seguenti ``VirtualHost`` alla configurazione:
 .. code-block:: apacheconf
 
    <VirtualHost *:443>
-       ServerName "DOMINIO"
-       ServerAlias "*.DOMINIO"
+       ServerName "ilmiosophon.it"
+       ServerAlias "*.ilmiosophon.it"
 
        SSLEngine on
-       SSLCertificateFile      "/PERCORSO/ALLA/CATENA/DI/CHIAVI/PUBBLICHE/SSL"
-       SSLCertificateKeyFile   "/PERCORSO/ALLA/CHIAVE/PRIVATA/SSL"
+       SSLCertificateFile      "/SOSTITUISCIMI/CON/IL/PERCORSO/ALLA/FULL/CHAIN/SSL"
+       SSLCertificateKeyFile   "/SOSTITUISCIMI/CON/IL/PERCORSO/ALLA/CHIAVE/PRIVATA/SSL"
 
        ProxyPreserveHost On
        RequestHeader set "X-Forwarded-Proto" expr=%{REQUEST_SCHEME}

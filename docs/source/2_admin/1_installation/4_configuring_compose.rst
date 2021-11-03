@@ -39,11 +39,11 @@ Specifica la chiave segreta da usare per i cookie di sessione.
 ``DJANGO_PROXY_BASE_DOMAIN``
 ----------------------------
 
-Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il ``DOMINIO`` per il quale si è configurato il DNS in precedenza.
+Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il dominio per il quale si è configurato il DNS in precedenza.
 
 .. code-block:: yml
 
-   - DJANGO_PROXY_BASE_DOMAIN=prod.sophon.steffo.eu
+   - DJANGO_PROXY_BASE_DOMAIN=ilmiosophon.it
 
 .. note::
 
@@ -59,7 +59,7 @@ Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il
 
 Specifica il protocollo che dovrà essere usato nei mapping del proxy.
 
-Si consiglia caldamente di utilizzare ``https``, ma è un valore valido anche ``http``.
+Si consiglia vivamente di utilizzare ``https``, ma è un valore valido anche ``http``.
 
 .. code-block:: yml
 
@@ -73,11 +73,11 @@ Specifica i domini da cui possono provenire le richieste alla pagina di amminist
 
 Per specificare più domini, è necessario separarli con dei pipe ``|`` .
 
-Eccetto in configurazioni speciali, deve essere uguale a ``api.DOMINIO``.
+Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso da ``api.``.
 
 .. code-block:: yml
 
-   - DJANGO_ALLOWED_HOSTS=api.prod.sophon.steffo.eu
+   - DJANGO_ALLOWED_HOSTS=api.ilmiosophon.it
 
 .. seealso::
 
@@ -91,11 +91,11 @@ Specifica i domini da cui possono provenire le richieste all'API.
 
 Per specificare più domini, è necessario separarli con dei pipe ``|`` .
 
-Eccetto in configurazioni speciali, deve essere uguale a ``PROTOCOLLO://DOMINIO|https://sophon.steffo.eu``.
+Eccetto in configurazioni speciali, deve contenere il proprio dominio prefisso dal protocollo, e in aggiunta il dominio speciale ``https://sophon.steffo.eu``, necessario per permettere l'accesso dall'interfaccia web "universale" di Sophon.
 
 .. code-block:: yml
 
-   - DJANGO_ALLOWED_ORIGINS=https://prod.sophon.steffo.eu|https://sophon.steffo.eu
+   - DJANGO_ALLOWED_ORIGINS=https://ilmiosophon.it|https://sophon.steffo.eu
 
 .. seealso::
 
@@ -107,15 +107,15 @@ Eccetto in configurazioni speciali, deve essere uguale a ``PROTOCOLLO://DOMINIO|
 
 Specifica l'URL a cui saranno accessibili i file statici di Sophon.
 
-Eccetto in configurazioni speciali, deve essere uguale a ``PROTOCOLLO://static.DOMINIO/django-static/``.
+Eccetto in configurazioni speciali, deve essere uguale alla seguente stringa, con le parole in maiuscolo sostituite rispettivamente dal protocollo e dal dominio selezionato: ``PROTOCOLLO://static.DOMINIO/django-static/``.
 
 .. code-block:: yml
 
-   - DJANGO_ALLOWED_ORIGINS=http://static.prod.sophon.steffo.eu/django-static/
+   - DJANGO_ALLOWED_ORIGINS=http://static.ilmiosophon.it/django-static/
 
 .. warning::
 
-   Ci si assicuri di inserire la barra finale, altrimenti Sophon non funzionerà correttamente!
+   Ci si assicuri che sia presente uno slash al termine della stringa, oppure il pannello di amministrazione non sarà visualizzato correttamente!
 
 .. seealso::
 
@@ -133,10 +133,6 @@ Usa il formato `language code`_ di Django.
 
    - DJANGO_LANGUAGE_CODE=en-us
 
-.. tip::
-
-   Generalmente è una buona idea impostarlo a ``en-us`` per facilitare la risoluzione di eventuali problemi.
-
 .. seealso::
 
    `LANGUAGE_CODE <https://docs.djangoproject.com/en/3.2/ref/settings/#language-code>`_ nella documentazione di Django
@@ -153,7 +149,7 @@ Usa il formato `tzdata`_.
 
 .. code-block:: yml
 
-   - DJANGO_TIME_ZONE=Europe/Rome
+   - DJANGO_TIME_ZONE=Europe/Paris
 
 .. hint::
 
@@ -198,6 +194,18 @@ Specifica la password del :ref:`superutente` che verrà automaticamente creato q
 .. warning::
 
    La password è un dato estremamente riservato, in quanto chiunque ne venga a conoscenza potrà accedere a Sophon con pieni privilegi!
+
+
+``REACT_APP_DEFAULT_INSTANCE``
+------------------------------
+
+Specifica il valore con cui precompilare il campo "selezione istanza" dell'interfaccia web di Sophon.
+
+Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso dal protocollo e da ``api.``.
+
+.. code-block:: yml
+
+   - REACT_APP_DEFAULT_INSTANCE=https://api.ilmiosophon.it
 
 
 ``APACHE_PROXY_BASE_DOMAIN``
