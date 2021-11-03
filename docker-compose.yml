@@ -26,14 +26,6 @@ services:
       - bone
     restart: always
 
-  frontend:
-    image: ghcr.io/steffo99/sophon-frontend:latest
-    environment:
-      - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
-    networks:
-      - bone
-    restart: always
-
   backend:
     image: ghcr.io/steffo99/sophon-backend:latest
     environment:
@@ -76,6 +68,15 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
     depends_on:
       - db
+    networks:
+      - bone
+    restart: always
+
+  frontend:
+    image: ghcr.io/steffo99/sophon-frontend:latest
+    environment:
+      # INSTALL: Configure your domain here!
+      - REACT_APP_DEFAULT_INSTANCE=http://api.dev.sophon.steffo.eu
     networks:
       - bone
     restart: always
