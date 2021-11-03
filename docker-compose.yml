@@ -55,9 +55,9 @@ services:
       - DJANGO_SU_EMAIL=root@example.org
       - DJANGO_SU_PASSWORD=square
       # Don't change these.
-      - DJANGO_PROXY_CONTAINER_NAME=sophon-proxy-1
+      - DJANGO_PROXY_CONTAINER_NAME=proxy
       - DJANGO_DATABASE_ENGINE=django.db.backends.postgresql
-      - DJANGO_DATABASE_HOST=sophon-db-1
+      - DJANGO_DATABASE_HOST=db
       - DJANGO_DATABASE_USER=sophon
       - DJANGO_DATABASE_PASSWORD=sophonity
       - DJANGO_DATABASE_NAME=sophon
@@ -85,8 +85,8 @@ services:
       # INSTALL: Configure your proxy details!
       - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
       #`Don't change these.
-      - SOPHON_BACKEND_NAME=sophon-backend-1:8000
-      - SOPHON_FRONTEND_NAME=sophon-frontend-1:5000
+      - SOPHON_BACKEND_NAME=backend:8000
+      - SOPHON_FRONTEND_NAME=frontend:5000
     volumes:
       - proxy-data:/run/sophon/proxy
       - django-static:/usr/local/apache2/htdocs/django-static
