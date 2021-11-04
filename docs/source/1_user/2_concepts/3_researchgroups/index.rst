@@ -64,6 +64,6 @@ Il creatore di un gruppo è l'unico utente in grado di **cancellare** il gruppo 
 Gruppi nell'interfaccia web
 ---------------------------
 
-Dopo aver effettuato l'accesso come :ref:`utente` o :ref:`ospite`, l'interfaccia utente di Sophon visualizza l'elenco di gruppi di ricerca disponibili nell':ref:`instanza`, permettendo agli utenti di unirsi ad essi, lasciarli, oppure eliminarli.
+Dopo aver effettuato l'accesso come :ref:`utente` o :ref:`ospite`, l'interfaccia utente di Sophon visualizza l'elenco di gruppi di ricerca disponibili nell':ref:`istanza`, permettendo agli utenti di unirsi ad essi, lasciarli, oppure eliminarli.
 
 .. image:: list.png

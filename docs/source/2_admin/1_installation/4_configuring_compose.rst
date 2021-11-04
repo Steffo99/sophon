@@ -15,7 +15,7 @@ In particolare, tutte le impostazioni precedute da ``# INSTALL`` vanno obbligato
 
 Specifica la chiave segreta da usare per i cookie di sessione.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_SECRET_KEY=do-not-use-this-key-in-production-or-you-will-get-hacked
 
@@ -41,7 +41,7 @@ Specifica la chiave segreta da usare per i cookie di sessione.
 
 Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il dominio per il quale si è configurato il DNS in precedenza.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_PROXY_BASE_DOMAIN=ilmiosophon.it
 
@@ -61,7 +61,7 @@ Specifica il protocollo che dovrà essere usato nei mapping del proxy.
 
 Si consiglia vivamente di utilizzare ``https``, ma è un valore valido anche ``http``.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_PROXY_PROTOCOL=https
 
@@ -75,7 +75,7 @@ Per specificare più domini, è necessario separarli con dei pipe ``|`` .
 
 Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso da ``api.``.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_ALLOWED_HOSTS=api.ilmiosophon.it
 
@@ -93,7 +93,7 @@ Per specificare più domini, è necessario separarli con dei pipe ``|`` .
 
 Eccetto in configurazioni speciali, deve contenere il proprio dominio prefisso dal protocollo, e in aggiunta il dominio speciale ``https://sophon.steffo.eu``, necessario per permettere l'accesso dall'interfaccia web "universale" di Sophon.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_ALLOWED_ORIGINS=https://ilmiosophon.it|https://sophon.steffo.eu
 
@@ -109,7 +109,7 @@ Specifica l'URL a cui saranno accessibili i file statici di Sophon.
 
 Eccetto in configurazioni speciali, deve essere uguale alla seguente stringa, con le parole in maiuscolo sostituite rispettivamente dal protocollo e dal dominio selezionato: ``PROTOCOLLO://static.DOMINIO/django-static/``.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_ALLOWED_ORIGINS=http://static.ilmiosophon.it/django-static/
 
@@ -129,7 +129,7 @@ Specifica la lingua che deve usare Sophon nei messaggi di errore.
 
 Usa il formato `language code`_ di Django.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_LANGUAGE_CODE=en-us
 
@@ -147,7 +147,7 @@ Specifica il fuso orario che deve usare Sophon nell'interfaccia di amministrazio
 
 Usa il formato `tzdata`_.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_TIME_ZONE=Europe/Paris
 
@@ -163,7 +163,7 @@ Usa il formato `tzdata`_.
 
 Specifica il nome del :ref:`superutente` che verrà automaticamente creato qualora il database non contenga altri utenti.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_SU_USERNAME=root
 
@@ -173,7 +173,7 @@ Specifica il nome del :ref:`superutente` che verrà automaticamente creato qualo
 
 Specifica l'email del :ref:`superutente` che verrà automaticamente creato qualora il database non contenga altri utenti.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_SU_USERNAME=bot@steffo.eu
 
@@ -187,7 +187,7 @@ Specifica l'email del :ref:`superutente` che verrà automaticamente creato qualo
 
 Specifica la password del :ref:`superutente` che verrà automaticamente creato qualora il database non contenga altri utenti.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - DJANGO_SU_PASSWORD=square
 
@@ -203,7 +203,7 @@ Specifica il valore con cui precompilare il campo "selezione istanza" dell'inter
 
 Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso dal protocollo e da ``api.``.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - REACT_APP_DEFAULT_INSTANCE=https://api.ilmiosophon.it
 
@@ -213,7 +213,7 @@ Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso dal p
 
 Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il ``DOMINIO`` per il quale si è configurato il DNS in precedenza.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    - APACHE_PROXY_BASE_DOMAIN=dev.sophon.steffo.eu
 

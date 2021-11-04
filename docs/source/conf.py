@@ -64,6 +64,7 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3.8", None),
     "django": ("http://docs.djangoproject.com/en/3.2/", "http://docs.djangoproject.com/en/3.2/_objects/"),
     "docker": ("https://docker-py.readthedocs.io/en/stable/", None),
+    "coloredlogs": ("https://coloredlogs.readthedocs.io/en/latest/", None),
 }
 
 # -- Automodule options ------------------------------------------------------
