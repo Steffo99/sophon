@@ -19,6 +19,8 @@ Inoltre, effettua le seguenti operazioni in risposta a determinate richieste eff
 - *configurazione*, *avvio* e *arresto* di container Docker basati sulle immagini specificate dai notebook;
 - *configurazione*, *attivazione* e *disattivazione* del servizio di proxying effettuato dal :ref:`modulo proxy`.
 
+È collocato all'interno del repository in ``/backend``.
+
 
 Librerie e tecnologie utilizzate
 --------------------------------

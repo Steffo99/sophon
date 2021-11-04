@@ -6,6 +6,8 @@ Il *modulo frontend* consiste in una interfaccia web che consente agli utenti di
 
 Si è cercato di renderla più user-friendly possibile, cercando di comunicare più informazioni possibili all'utente attraverso colori e icone, rendendo possibile apprendere ad utilizzare l'interfaccia intuitivamente.
 
+È collocato all'interno del repository in ``/frontend``.
+
 
 Librerie e tecnologie utilizzate
 --------------------------------

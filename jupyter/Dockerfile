@@ -30,7 +30,7 @@ RUN echo '{"theme": "JupyterLab Sophon"}' > ".jupyter/lab/user-settings/@jupyter
 FROM extensions AS healthcheck
 # As root...
 USER root
-# Install cURL
+# Install curl
 RUN apt-get update
 RUN apt-get install -y curl
 # Use curl to check the health status
