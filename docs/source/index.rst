@@ -31,8 +31,10 @@ Si è cercato di mantenere il registro di ciascuna parte al livello tecnico del 
    :caption: Documentazione tecnica
    :maxdepth: 2
 
-   3_dev/1_license/index
-   3_dev/2_differences/index
+   3_dev/1_tools/index
+   3_dev/2_structure/index
+   3_dev/3_differences/index
+   3_dev/4_license/index
 
 
 Pagine speciali

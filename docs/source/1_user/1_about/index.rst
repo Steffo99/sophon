@@ -19,4 +19,4 @@ Screenshots
 .. image:: ../2_concepts/5_notebooks/list.png
 .. image:: ../2_concepts/5_notebooks/detail.png
 .. image:: ../2_concepts/5_notebooks/inside_the_lab.png
-.. image:: ../../2_admin/2_administration/admin_page.png
+.. image:: ../../2_admin/2_administration/admin_home.png
