@@ -1,58 +1,58 @@
 import { parsePath } from "./ParsePath"
 
 
-test("splits empty path", () => {
+test("parses empty path", () => {
     expect(
         parsePath("/"),
     ).toMatchObject(
-        {}
+        {},
     )
 })
 
-test("splits instance path", () => {
+test("parses instance path", () => {
     expect(
         parsePath("/i/https:api:sophon:steffo:eu:"),
     ).toMatchObject(
         {
-            instance: "https:api:sophon:steffo:eu:"
-        }
+            instance: "https:api:sophon:steffo:eu:",
+        },
     )
 })
 
-test("splits username path", () => {
+test("parses username path", () => {
     expect(
         parsePath("/i/https:api:sophon:steffo:eu:/u/steffo"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
             userName: "steffo",
-        }
+        },
     )
 })
 
-test("splits userid path", () => {
+test("parses userid path", () => {
     expect(
         parsePath("/i/https:api:sophon:steffo:eu:/u/1"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
             userId: "1",
-        }
+        },
     )
 })
 
-test("splits research group path", () => {
+test("parses research group path", () => {
     expect(
         parsePath("/i/https:api:sophon:steffo:eu:/g/testers"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
             researchGroup: "testers",
-        }
+        },
     )
 })
 
-test("splits research project path", () => {
+test("parses research project path", () => {
     expect(
         parsePath("/i/https:api:sophon:steffo:eu:/g/testers/p/test"),
     ).toMatchObject(
@@ -60,11 +60,11 @@ test("splits research project path", () => {
             instance: "https:api:sophon:steffo:eu:",
             researchGroup: "testers",
             researchProject: "test",
-        }
+        },
     )
 })
 
-test("splits research project path", () => {
+test("parses research project path", () => {
     expect(
         parsePath("/i/https:api:sophon:steffo:eu:/g/testers/p/test/n/testerino"),
     ).toMatchObject(
@@ -73,6 +73,6 @@ test("splits research project path", () => {
             researchGroup: "testers",
             researchProject: "test",
             notebook: "testerino",
-        }
+        },
     )
 })
