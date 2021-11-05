@@ -84,7 +84,7 @@ class Notebook(SophonGroupModel):
         help_text="The Docker image to run for this notebook.",
         choices=IMAGE_CHOICES,
         max_length=256,
-        default="steffo45/jupyterlab-docker-sophon",
+        default="ghcr.io/steffo99/sophon-jupyter",
     )
 
     jupyter_token = models.CharField(
