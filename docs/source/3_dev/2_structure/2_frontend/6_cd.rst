@@ -5,6 +5,8 @@ L'immagine del modulo viene automaticamente ricompilata da GitHub Actions e pubb
 
 Questo workflow è definito all'interno del file ``.github/workflows/build-docker-frontend.yml``.
 
+.. image:: cd_example.png
+
 .. seealso::
 
    `La pagina del container <https://github.com/Steffo99/sophon/pkgs/container/sophon-frontend>`_ su GitHub Containers.
