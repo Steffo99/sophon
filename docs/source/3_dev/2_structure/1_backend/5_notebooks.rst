@@ -36,6 +36,8 @@ Gestione della rubrica del proxy
 
 Viene creata una classe per la gestione della rubrica del proxy, utilizzando il modulo `dbm.gnu`, supportato da HTTPd.
 
+La rubrica mappa gli URL pubblici dei notebook a URL privati relativi al :ref:`modulo proxy`, in modo da effettuare reverse proxying **dinamico**.
+
 .. class:: ApacheDB
 
    Classe che permette il recupero, la creazione, la modifica e l'eliminazioni di chiavi di un database `dbm.gnu` come se quest'ultimo fosse un `dict` con supporto a chiavi e valori `str` e `bytes`.
@@ -48,11 +50,73 @@ Viene creata una classe per la gestione della rubrica del proxy, utilizzando il 
 Assegnazione porta effimera
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In modalità sviluppo, è necessario trovare una porta libera a cui rendere accessibile i container Docker dei notebook.
+In *modalità sviluppo*, è necessario trovare una porta libera a cui rendere accessibile i container Docker dei notebook.
 
 .. function:: get_ephemeral_port() -> int
 
    Questa funzione apre e chiude immediatamente un `socket.socket` all'indirizzo ``localhost:0`` in modo da ricevere dal sistema operativo un numero di porta sicuramente libero.
+
+
+Connessione al daemon Docker
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. module:: sophon.notebooks.docker
+
+Per facilitare l'utilizzo del daemon Docker per la gestione dei container dei notebook, viene utilizzato il modulo `docker`.
+
+.. function:: get_docker_client() -> docker.DockerClient
+
+   Funzione che crea un client Docker con le variabili di ambiente del modulo.
+
+.. data:: client: docker.DockerClient = lazy_object_proxy.Proxy(get_docker_client)
+
+   Viene creato un client Docker globale con inizializzazione lazy al fine di non tentare connessioni (lente!) al daemon quando non sono necessarie.
+
+
+Controllo dello stato di salute
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Il modulo `docker` viene esteso implementando supporto per l'istruzione ``HEALTHCHECK`` dei ``Dockerfile``.
+
+.. class:: HealthState(enum.IntEnum)
+
+   Enumerazione che elenca gli stati possibili in cui può essere la salute di un container.
+
+   .. attribute:: UNDEFINED = -2
+
+      Il ``Dockerfile`` non ha un ``HEALTHCHECK`` definito.
+
+   .. attribute:: STARTING = -1
+
+      Il container Docker non mai completato con successo un ``HEALTHCHECK``.
+
+   .. attribute:: HEALTHY = 0
+
+      Il container Docker ha completato con successo l'ultimo ``HEALTHCHECK`` e quindi sta funzionando correttamente.
+
+   .. attribute:: UNHEALTHY = 1
+
+      Il container Docker ha fallito l'ultimo ``HEALTHCHECK``.
+
+
+.. function:: get_health(container: docker.models.containers.Container) -> HealthState
+
+   Funzione che utilizza l'API a basso livello del client Docker per recuperare l'`HealthState` dei container.
+
+.. function:: sleep_until_container_has_started(container: docker.models.containers.Container) -> HealthState
+
+   Funzione bloccante che restituisce solo quando lo stato del container specificato non è `HealthState.STARTING`.
+
+
+Generazione di token sicuri
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Si è scelto di rendere completamente trasparente all'utente il meccanismo di autenticazione a JupyterLab.
+
+Pertanto, si è verificata la necessità di generare token crittograficamente sicuri da richiedere per l'accesso a JupyterLab.
+
+.. function:: generate_secure_token() -> str
+
+   Funzione che utilizza `secrets.token_urlsafe` per generare un token valido e crittograficamente sicuro.
 
 
 Modello dei notebook
@@ -64,15 +128,36 @@ Viene definito il modello rappresentante un :ref:`notebook`.
 .. class:: Notebook(SophonGroupModel)
 
    .. attribute:: slug: SlugField
+
+      Lo slug dei notebook prevede ulteriori restrizioni oltre a quelle previste dallo `django.db.models.SlugField`:
+
+      - non può essere uno dei seguenti valori: ``api``, ``static``, ``proxy``, ``backend``, ``frontend``, ``src``;
+      - non può iniziare o finire con un trattino ``-``.
+
    .. attribute:: project: ForeignKey → sophon.projects.models.ResearchProject
    .. attribute:: name: CharField
    .. attribute:: locked_by: ForeignKey → django.contrib.auth.models.User
+
    .. attribute:: container_image: CharField ["ghcr.io/steffo99/sophon-jupyter"]
+
+      Campo che specifica l'immagine che il client Docker dovrà avviare per questo notebook.
+
+      Al momento ne è configurata una sola per semplificare l'esperienza utente, ma altre possono essere specificate per permettere agli utenti più scelta.
+
+      .. note::
+
+         Al momento, le immagini specificate devono esporre un server web sulla porta ``8888``, e supportare il protocollo di connessione di Jupyter, ovvero :samp:`{PROTOCOLLO}://immagine:8888/lab?token={TOKEN}` e :samp:`{PROTOCOLLO}://immagine:8888/tree?token={TOKEN}`.
+
    .. attribute:: jupyter_token: CharField
 
       Il token segreto che verrà passato attraverso le variabili di ambiente al container Docker dell'oggetto per permettere solo agli utenti autorizzati di accedere a quest'ultimo.
 
    .. attribute:: container_id: CharField
+
+      L'id assegnato dal daemon Docker al container di questo oggetto.
+
+      Se il notebook non è avviato, questo attributo varrà `None`.
+
    .. attribute:: port: IntegerField
 
       La porta assegnata al container Docker dell'oggetto nel caso in cui Sophon sia avviato in "modalità sviluppo", ovvero con il :ref:`modulo proxy` in esecuzione sul sistema host.
@@ -104,11 +189,53 @@ Viene definito il modello rappresentante un :ref:`notebook`.
 
       Crea e configura un container Docker per l'oggetto, con l'immagine specificata in `.container_image`.
 
-   .. method:: stop_container(self) -> None
+   .. method:: start(self) -> None
+
+      Tenta di creare e avviare un container Docker per l'oggetto, bloccando fino a quando esso non sarà avviato con `~.docker.sleep_until_container_has_started`.
+
+   .. method:: stop(self) -> None
 
       Arresta il container Docker dell'oggetto.
 
-   .. method:: sleep_until_container_has_started(self) -> None
 
-      Attende che il container Docker dell'oggetto si sia avviato.
+Viewset dei notebook
+^^^^^^^^^^^^^^^^^^^^
+.. module:: sophon.notebooks.views
 
+Come per il modulo `sophon.projects`, vengono creati due viewset per interagire con i progetti di ricerca, basati entrambi su un viewset astratto che ne definisce le proprietà comuni.
+
+.. class:: NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta)
+
+   Classe **astratta** che effettua l'override di `~sophon.core.views.SophonGroupView.get_group_from_serializer` e definisce cinque azioni personalizzate per l'interazione con il notebook.
+
+   .. method:: sync(self, request: Request, **kwargs) -> Response
+
+      Azione personalizzata che sincronizza lo stato dell'oggetto dell'API con quello del daemon Docker.
+
+   .. method:: start(self, request: Request, **kwargs) -> Response
+
+      Azione personalizzata che avvia il notebook con `.models.Notebook.start`.
+
+   .. method:: stop(self, request: Request, **kwargs) -> Response
+
+      Azione personalizzata che arresta il notebook con `.models.Notebook.stop`.
+
+   .. method:: lock(self, request: Request, **kwargs) -> Response
+
+      Azione personalizzata che blocca il notebook impostando il campo `.models.Notebook.locked_by` all'utente che ha effettuato la richiesta.
+
+   .. method:: unlock(self, request: Request, **kwargs) -> Response
+
+      Azione personalizzata che sblocca il notebook impostando il campo `.models.Notebook.locked_by` a `None`.
+
+.. class:: NotebooksBySlugViewSet(NotebooksViewSet)
+
+   Viewset in lettura e scrittura che permette di interagire con tutti i notebook a cui l'utente loggato ha accesso.
+
+   Accessibile all'URL :samp:`/api/notebooks/by-slug/{NOTEBOOK_SLUG}/`.
+
+.. class:: NotebooksByProjectViewSet(NotebooksViewSet)
+
+   Viewset in lettura e scrittura che permette di interagire con i notebook a cui l'utente loggato ha accesso, filtrati per il progetto di appartenenza.
+
+   Accessibile all'URL :samp:`/api/notebooks/by-project/{PROJECT_SLUG}/{NOTEBOOK_SLUG/`.
