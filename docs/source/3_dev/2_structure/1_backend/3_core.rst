@@ -4,7 +4,6 @@ L'app sophon.core
 .. default-role:: obj
 .. module:: sophon.core
 
-
 L'app `sophon.core` è l'app principale del progetto, e non può essere disattivata, in quanto dipendenza obbligatoria di tutte le altre app.
 
 
@@ -266,6 +265,13 @@ Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle clas
 .. class:: SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta)
 
    Classe **astratta** che estende la classe base `.WriteSophonViewSet` estendendo gli ``hook_*`` con verifiche dei permessi dell'utente che tenta di effettuare l'azione.
+
+   .. method:: get_group_from_serializer(self, serializer) -> models.ResearchGroup
+      :abstractmethod:
+
+      Metodo necessario a trovare il gruppo a cui apparterrà un oggetto prima che il suo serializzatore venga elaborato.
+
+      :param serializer: Il `~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto.
 
 
 Viewset concreti
