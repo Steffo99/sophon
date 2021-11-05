@@ -54,20 +54,12 @@ export function parsePath(path: string): ParsedPath {
     }
 
     result.instance = path.match(/[/]i[/]([^/]+)/)?.[1]
-    result.userId = path.match(/[/]u[/]([0-9]+)/)?.[1]
-    result.userName = path.match(/[/]u[/]([A-Za-z0-9_-]+)/)?.[1]
     result.researchGroup = path.match(/[/]g[/]([A-Za-z0-9_-]+)/)?.[1]
     result.researchProject = path.match(/[/]p[/]([A-Za-z0-9_-]+)/)?.[1]
     result.notebook = path.match(/[/]n[/]([A-Za-z0-9_-]+)/)?.[1]
     result.loggedIn = Boolean(path.match(/[/]l[/]logged-in/))
 
     if(result.instance) {
-        result.count += 1
-    }
-    if(result.userId) {
-        result.count += 1
-    }
-    if(result.userName) {
         result.count += 1
     }
     if(result.researchGroup) {
