@@ -18,7 +18,7 @@ from sophon.notebooks.apache import get_ephemeral_port
 from sophon.notebooks.docker import client as docker_client
 from sophon.notebooks.docker import sleep_until_container_has_started, get_proxy_container
 from sophon.notebooks.jupyter import generate_secure_token
-from sophon.notebooks.validators import DisallowedValuesValidator
+from sophon.notebooks.validators import DisallowedValuesValidator, NotStartingWithDashValidator
 from sophon.projects.models import ResearchProject
 
 module_name = __name__
@@ -51,7 +51,8 @@ class Notebook(SophonGroupModel):
                 "backend",  # reserved for future use
                 "frontend",  # reserved for future use
                 "src",  # reserved for future use
-            ])
+            ]),
+            NotStartingWithDashValidator(),
         ]
     )
 
@@ -486,9 +487,6 @@ class Notebook(SophonGroupModel):
                 "8888/tcp": (f"127.0.0.1", f"{self.port}/tcp")
             } if self.port else {},
             environment={
-                "JUPYTER_ENABLE_LAB": "yes",
-                "RESTARTABLE": "yes",
-                "GRANT_SUDO": "yes",
                 "JUPYTER_TOKEN": self.jupyter_token,
             },
             volumes={

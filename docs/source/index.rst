@@ -34,7 +34,8 @@ Si è cercato di mantenere il registro di ciascuna parte al livello tecnico del 
    3_dev/1_tools/index
    3_dev/2_structure/index
    3_dev/3_differences/index
-   3_dev/4_license/index
+   3_dev/4_tests/index
+   3_dev/5_license/index
 
 
 Pagine speciali

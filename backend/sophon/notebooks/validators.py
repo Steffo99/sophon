@@ -14,3 +14,13 @@ class DisallowedValuesValidator:
                 _("%(value)s is a disallowed value."),
                 params={"value": value},
             )
+
+
+@deconstructible
+class NotStartingWithDashValidator:
+    def __call__(self, value):
+        if value.startswith("-") or value.endswith("-"):
+            raise ValidationError(
+                _("%(value)s starts or ends with a dash."),
+                params={"value": value},
+            )

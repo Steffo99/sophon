@@ -8,7 +8,7 @@ L'app `sophon.projects` è un app secondaria che dipende da `sophon.core` che in
 
 .. caution::
 
-   Anche se l'app `sophon.projects` è opzionale (il progetto può funzionare senza di essa), si sconsiglia di disattivarla, in quanto il :ref:`modulo frontend` si aspetta che l'app sia attiva e solleverà un errore nel caso il viewset fornito da questa app non sia disponibile.
+   Anche se l'app `sophon.projects` è opzionale (il progetto può funzionare senza di essa), si sconsiglia di disattivarla, in quanto il :ref:`modulo frontend` si aspetta che l'app sia attiva e solleverà un errore nel caso che i viewset forniti da questa app non siano disponibile.
 
 
 Modello del progetto di ricerca

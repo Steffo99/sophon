@@ -26,13 +26,11 @@ Il modulo è composto da un singolo ``Dockerfile`` che crea un immagine Docker i
       # Set the maintainer label
       LABEL maintainer="Stefano Pigozzi <me@steffo.eu>"
 
-#. **Env**: Configura le variabili di ambiente dell'immagine, dando il nome "sophon" all'utente non-privilegiato, attivando JupyterLab, configurando il riavvio automatico di Jupyter e permettendo all'utente non-privilegiato di acquisire i privilegi di root attraverso il comando ``sudo``;
+#. **Env**: Configura le variabili di ambiente dell'immagine, attivando JupyterLab, configurando il riavvio automatico di Jupyter e permettendo all'utente non-privilegiato di acquisire i privilegi di root attraverso il comando ``sudo``;
 
    .. code-block:: docker
 
       FROM base AS env
-      # Override the default "jovyan" user
-      ARG NB_USER="sophon"
       # Set useful envvars for Sophon notebooks
       ENV JUPYTER_ENABLE_LAB=yes
       ENV RESTARTABLE=yes

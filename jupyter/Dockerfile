@@ -6,8 +6,6 @@ LABEL maintainer="Stefano Pigozzi <me@steffo.eu>"
 
 
 FROM base AS env
-# Override the default "jovyan" user
-ARG NB_USER="sophon"
 # Set useful envvars for Sophon notebooks
 ENV JUPYTER_ENABLE_LAB=yes
 ENV RESTARTABLE=yes
