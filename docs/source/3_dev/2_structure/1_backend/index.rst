@@ -24,3 +24,5 @@ Il *modulo backend* consiste in un server web che espone un'API e un sito web pe
    3_core
    4_projects
    5_notebooks
+   6_ci
+   7_cd

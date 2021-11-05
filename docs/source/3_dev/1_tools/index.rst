@@ -19,6 +19,7 @@ Per sviluppare Sophon sono usati i seguenti strumenti:
       - `GitHub Actions`_, un sistema di `Continuous Integration`_ e `Continuous Deployment`_ integrato in `GitHub`_;
       - `GitHub Containers`_, un registro di container Docker integrato in `GitHub`_;
       - `CodeQL`_, un tool di analisi statica integrato in `GitHub`_;
+      - `Dependabot`_, un tool di analisi delle dipendenze integrato in `GitHub`_;
 
 - `Sphinx`_, uno strumento per la creazione di documentazione.
 
@@ -32,6 +33,7 @@ Per sviluppare Sophon sono usati i seguenti strumenti:
 .. _CodeQL: https://codeql.github.com/
 .. _GitHub Containers: https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
 .. _Sphinx: https://www.sphinx-doc.org/
+.. _Dependabot: https://dependabot.com/
 
 .. seealso::
 

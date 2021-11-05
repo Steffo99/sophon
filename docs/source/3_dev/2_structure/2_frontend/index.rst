@@ -17,3 +17,6 @@ Il modulo è formato dal package JavaScript :mod:`@steffo45/sophon-frontend`, ch
    2_tree
    3_resources
    4_contexts
+   5_ci
+   6_cd
+
