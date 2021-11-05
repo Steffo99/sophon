@@ -25,7 +25,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
             return NoneSerializer
 
     @action(["PATCH"], detail=True)
-    def sync(self, request: Request, **kwargs):
+    def sync(self, request: Request, **kwargs) -> Response:
         """
         Update the `Notebook`'s state.
         """
@@ -36,7 +36,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         return Response(serializer.data, status.HTTP_200_OK)
 
     @action(["PATCH"], detail=True)
-    def start(self, request: Request, **kwargs):
+    def start(self, request: Request, **kwargs) -> Response:
         """
         Start the `Notebook`.
         """
@@ -47,7 +47,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         return Response(serializer.data, status.HTTP_200_OK)
 
     @action(["PATCH"], detail=True)
-    def lock(self, request: Request, **kwargs):
+    def lock(self, request: Request, **kwargs) -> Response:
         """
         Lock the `Notebook`.
 
@@ -62,7 +62,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         return Response(serializer.data, status.HTTP_200_OK)
 
     @action(["PATCH"], detail=True)
-    def unlock(self, request: Request, **kwargs):
+    def unlock(self, request: Request, **kwargs) -> Response:
         """
         Unlock the `Notebook`.
 
@@ -76,7 +76,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         return Response(serializer.data, status.HTTP_200_OK)
 
     @action(["PATCH"], detail=True)
-    def stop(self, request: Request, **kwargs):
+    def stop(self, request: Request, **kwargs) -> Response:
         """
         Stop the `Notebook`.
         """
