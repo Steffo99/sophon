@@ -12,7 +12,7 @@ Aggiunta di un nuovo comando di gestione
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.management.commands.initsuperuser
 
-Per permettere l'integrazione la creazione automatica del primo :ref:`superutente` quando Sophon viene eseguito da Docker, viene introdotto il comando di gestione ``initsuperuser``.
+Per permettere l'integrazione la creazione automatica del primo :ref:`superutente` quando Sophon viene eseguito da Docker, viene introdotto dall'app il comando di gestione ``initsuperuser``.
 
 .. class:: Command
 
@@ -121,6 +121,8 @@ Viene creato il modello che rappresenta i dettagli dell':ref:`istanza` Sophon.
 
       Impostando ``1`` come unica scelta per il campo della chiave primaria ``id``, si crea un modello "singleton", ovvero un modello di cui può esistere un'istanza sola in tutto il database.
 
+      L'istanza unica viene creata dalla migrazione ``0004_sophoninstancedetails.py``.
+
    .. attribute:: name: CharField
    .. attribute:: description: TextField
    .. attribute:: theme: CharField ["sophon", "paper", "royalblue", "hacker", "amber"]
@@ -138,9 +140,9 @@ Viene creato il modello che rappresenta i dettagli dell':ref:`istanza` Sophon.
 Modello del gruppo di ricerca
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. class:: ResearchGroup(SophonGroupModel)
+Viene creato il modello che rappresenta un :ref:`gruppo di ricerca`.
 
-   Modello che rappresenta un :ref:`gruppo di ricerca`.
+.. class:: ResearchGroup(SophonGroupModel)
 
    .. attribute:: slug: SlugField
    .. attribute:: name: CharField
@@ -165,15 +167,15 @@ I permessi di `rest_framework` vengono estesi con due nuove classi che utilizzan
    Consente l'interazione solo agli utenti che possono amministrare (`.can_admin`) l'oggetto.
 
 
-Viewset astratte
+Viewset astratti
 ^^^^^^^^^^^^^^^^
 .. module:: sophon.core.views
 
-Vengono definiti due viewset in grado di utilizzare i metodi aggiunti dalle classi astratte `.models.SophonModel` e `.models.SophonGroupModel`.
+Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle classi astratte `.models.SophonModel` e `.models.SophonGroupModel`.
 
 .. class:: ReadSophonViewSet(rest_framework.viewsets.ReadOnlyModelViewSet, metaclass=abc.ABCMeta)
 
-   Estende la classe base `rest_framework.viewsets.ReadOnlyModelViewSet` con metodi di utilità mancanti nell'implementazione originale, allacciandola inoltre a `.models.SophonGroupModel`.
+   Classe **astratta** che estende la classe base `rest_framework.viewsets.ReadOnlyModelViewSet` con metodi di utilità mancanti nell'implementazione originale, allacciandola inoltre a `.models.SophonGroupModel`.
 
    .. method:: get_queryset(self) -> QuerySet
       :abstractmethod:
@@ -194,7 +196,6 @@ Vengono definiti due viewset in grado di utilizzare i metodi aggiunti dalle clas
       Utile per le classi che erediteranno da questa.
 
    .. method:: get_serializer_class(self) -> typing.Type[Serializer]
-      :final:
 
       Funzione che permette la selezione del `rest_framework.serializers.Serializer` da utilizzare per una determinata richiesta al momento di ricezione di quest'ultima.
 
@@ -212,3 +213,115 @@ Vengono definiti due viewset in grado di utilizzare i metodi aggiunti dalle clas
    .. method:: get_custom_serializer_classes(self) -> t.Type[Serializer]
 
       Permette alle classi che ereditano da questa di selezionare quale `rest_framework.serializers.Serializer` utilizzare per le azioni personalizzate.
+
+.. class:: WriteSophonViewSet(rest_framework.viewsets.ModelViewSet, ReadSophonViewSet, metaclass=abc.ABCMeta)
+
+   Classe **astratta** che estende la classe base `ReadSophonViewSet` aggiungendoci i metodi di `rest_framework.viewsets.ModelViewSet` che effettuano modifiche sugli oggetti.
+
+   Depreca i metodi ``perform_*`` di `rest_framework`, introducendone versioni migliorate con una signature diversa dal nome di ``hook_*``.
+
+   .. method:: perform_create(self, serializer)
+
+      .. deprecated:: 0.1
+
+   .. method:: perform_update(self, serializer)
+
+      .. deprecated:: 0.1
+
+   .. method:: perform_destroy(self, serializer)
+
+      .. deprecated:: 0.1
+
+   .. method:: hook_create(self, serializer) -> dict[str, typing.Any]
+
+      Funzione chiamata durante l'esecuzione dell'azione di creazione oggetto ``create``.
+
+      :param serializer: Il `~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto che sta per essere creato.
+      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una `.HTTPException` all'interno della funzione.
+      :returns: Un `dict` da unire a quello del `~rest_framework.serializers.Serializer` per formare l'oggetto da creare.
+
+   .. method:: hook_update(self, serializer) -> dict[str, t.Any]
+
+      Funzione chiamata durante l'esecuzione delle azioni di modifica oggetto ``update`` e ``partial_update``.
+
+      :param serializer: Il `~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto che sta per essere modificato.
+      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una `.HTTPException` all'interno della funzione.
+      :returns: Un `dict` da unire a quello del `~rest_framework.serializers.Serializer` per formare l'oggetto da modificare.
+
+   .. method:: hook_destroy(self, serializer) -> dict[str, typing.Any]
+
+      Funzione chiamata durante l'esecuzione dell'azione di eliminazione oggetto ``destroy``.
+
+      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una `.HTTPException` all'interno della funzione.
+
+.. exception:: sophon.core.errors.HTTPException
+
+   Tipo di eccezione che è possibile sollevare nei metodi ``hook_*`` di `.WriteSophonViewSet` per interrompere l'azione in corso senza applicare le modifiche.
+
+   .. attribute:: status: int
+
+      Permette di specificare il codice errore con cui rispondere alla richiesta interrotta.
+
+
+.. class:: SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta)
+
+   Classe **astratta** che estende la classe base `.WriteSophonViewSet` estendendo gli ``hook_*`` con verifiche dei permessi dell'utente che tenta di effettuare l'azione.
+
+
+Viewset concreti
+^^^^^^^^^^^^^^^^
+
+Vengono poi definiti tre viewset e una view che permettono interazioni tra l'utente e i modelli definiti nell'app.
+
+.. class:: UsersByIdViewSet(ReadSophonViewSet)
+
+   Viewset in sola lettura che permette di recuperare gli utenti dell'istanza partendo dal loro ``id``.
+
+   Accessibile all'URL :samp:`/api/core/users/by-id/{ID}/`.
+
+.. class:: UsersByUsernameViewSet(ReadSophonViewSet)
+
+   Viewset in sola lettura che permette di recuperare gli utenti dell'istanza partendo dal loro ``username``.
+
+   Accessibile all'URL :samp:`/api/core/users/by-username/{USERNAME}/`.
+
+.. class:: ResearchGroupViewSet(WriteSophonViewSet)
+
+   Viewset in lettura e scrittura che permette di interagire con i gruppi di ricerca.
+
+   Accessibile all'URL :samp:`/api/core/groups/{GROUP_SLUG}/`.
+
+   .. method:: join(self, request: Request, pk: int) -> Response
+
+      Azione personalizzata che permette ad un utente di unirsi ad un gruppo aperto.
+
+      Utilizza `.models.SophonGroupModel.get_access_serializer`.
+
+   .. method:: leave(self, request: Request, pk: int) -> Response
+
+      Azione personalizzata che permette ad un utente di abbandonare un gruppo di cui non è proprietario.
+
+      Utilizza `.models.SophonGroupModel.get_access_serializer`.
+
+.. class:: SophonInstanceDetailsView(APIView)
+
+   View che restituisce il valore attuale dell'unico oggetto `.models.SophonInstanceDetails`.
+
+   Accessibile tramite richieste ``GET`` all'URL :samp:`/api/core/instance/`.
+
+
+Pagina di amministrazione
+^^^^^^^^^^^^^^^^^^^^^^^^^
+.. module:: sophon.core.admin
+
+Vengono infine registrati nella pagina di amministrazione i modelli concreti definiti in questa app, effettuando alcune personalizzazioni elencate in seguito.
+
+.. class:: ResearchGroupAdmin(SophonAdmin)
+
+   Per i gruppi di ricerca, viene specificato un ordinamento, permesso il filtraggio e selezionati i campi più importanti da visualizzare nella lista.
+
+.. class:: SophonInstanceDetails(SophonAdmin)
+
+   Per i dettagli dell'istanza, vengono disattivate tutte le azioni, impedendo la creazione o eliminazione del singleton.
+
+
