@@ -8,17 +8,6 @@ export interface ParsedPath {
     instance?: string,
 
     /**
-     * The numeric id of the user.
-     */
-    userId?: string,
-
-    /**
-     * The username of the user.
-     * @warning Matches {@link userId} if it is defined.
-     */
-    userName?: string,
-
-    /**
      * The research group slug.
      */
     researchGroup?: string,
