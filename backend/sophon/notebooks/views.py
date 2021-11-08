@@ -4,10 +4,12 @@ import typing as t
 from django.db.models import Q
 from rest_framework import status
 from rest_framework.decorators import action
+from rest_framework.permissions import BasePermission
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from sophon.core.models import ResearchGroup
+from sophon.core.permissions import Edit
 from sophon.core.serializers import dynamic_serializer, NoneSerializer
 from sophon.core.views import SophonGroupViewSet
 from sophon.notebooks.models import Notebook
@@ -17,6 +19,12 @@ from sophon.projects.models import ResearchProject
 class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
     def get_group_from_serializer(self, serializer) -> ResearchGroup:
         return serializer.validated_data["project"].group
+
+    def get_permission_classes(self) -> t.Collection[t.Type[BasePermission]]:
+        if self.action in ["sync", "start", "lock", "unlock", "stop"]:
+            return Edit
+        else:
+            super().get_permission_classes()
 
     def get_custom_serializer_classes(self):
         if self.action in ["sync", "start", "lock", "unlock", "stop"]:
