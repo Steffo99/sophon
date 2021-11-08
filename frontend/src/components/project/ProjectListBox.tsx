@@ -21,7 +21,7 @@ export function ProjectListBox({viewSet}: ProjectListBoxProps): JSX.Element {
             if(viewSet.resources.length === 0) {
                 return <Empty>This group owns no projects.</Empty>
             }
-            return viewSet.resources?.filter(res => res !== undefined).map(res => <ProjectResourcePanel resource={res} key={res.value.slug}/>)
+            return viewSet.resources?.filter(res => Boolean(res)).map(res => <ProjectResourcePanel resource={res} key={res.value.slug}/>)
         },
         [viewSet],
     )
