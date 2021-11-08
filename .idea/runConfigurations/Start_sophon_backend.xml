@@ -5,7 +5,7 @@
     <option name="PARENT_ENVS" value="true" />
     <envs>
       <env name="PYTHONUNBUFFERED" value="1" />
-      <env name="DJANGO_ALLOWED_ORIGINS" value="http://dev.sophon.steffo.eu" />
+      <env name="DJANGO_ALLOWED_ORIGINS" value="http://dev.sophon.steffo.eu|http://localhost:3000" />
       <env name="DJANGO_PROXY_BASE_DOMAIN" value="dev.sophon.steffo.eu" />
       <env name="DJANGO_PROXY_PROTOCOL" value="http" />
       <env name="DJANGO_STATIC_URL" value="/static/" />

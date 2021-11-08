@@ -7,6 +7,6 @@ export function arrayExtension<T>(array: Array<T>, index: number, newValue: T): 
 
 export function arrayExclude<T>(array: Array<T>, index: number): Array<T> {
     const clone = [...array]
-    delete clone[index]
+    clone.splice(index, 1)
     return clone
 }
