@@ -1,6 +1,5 @@
 import enum
 import logging
-import time
 
 import docker.errors
 import docker.models.containers
@@ -61,28 +60,3 @@ def get_proxy_container() -> docker.models.containers.Container:
     :return: The container of the proxy, having the name specified in `settings.PROXY_CONTAINER_NAME`.
     """
     return client.containers.get(settings.PROXY_CONTAINER_NAME)
-
-
-def sleep_until_container_has_started(container: docker.models.containers.Container) -> HealthState:
-    """
-    Sleep until the specified container is not anymore in the ``starting`` state.
-
-    :param container: The container to check the health of.
-
-    .. seealso:: https://stackoverflow.com/a/64971593/4334568
-    """
-
-    log.debug(f"Blocking until {container!r} has started...")
-
-    while (health := get_health(container)) == HealthState.STARTING:
-        # FIXME: I hope Django isn't single-threaded.
-        time.sleep(0.5)
-
-    if health == HealthState.HEALTHY:
-        log.debug(f"{container!r} has started successfully!")
-    elif health == HealthState.UNDEFINED:
-        log.warning(f"{container!r} does not define an healthcheck.")
-    else:
-        log.warning(f"{container!r} failed during startup.")
-
-    return health

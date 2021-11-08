@@ -16,7 +16,7 @@ from sophon.core.models import SophonGroupModel, ResearchGroup
 from sophon.notebooks.apache import db as apache_db
 from sophon.notebooks.apache import get_ephemeral_port
 from sophon.notebooks.docker import client as docker_client
-from sophon.notebooks.docker import sleep_until_container_has_started, get_proxy_container
+from sophon.notebooks.docker import get_proxy_container
 from sophon.notebooks.jupyter import generate_secure_token
 from sophon.notebooks.validators import DisallowedValuesValidator, NotStartingWithDashValidator
 from sophon.projects.models import ResearchProject
@@ -504,50 +504,17 @@ class Notebook(SophonGroupModel):
 
         return container
 
-    def stop_container(self) -> None:
-        """
-        Like :meth:`.remove_container`, but will sync the notebook state with Apache and the Docker daemon and won't raise an error if the
-        :class:`~docker.models.containers.Container` already exists, instead not doing anything.
-        """
-
-        self.sync_container()
-        try:
-            self.remove_container()
-        except self.ContainerError:
-            pass
-
-    def start_container(self) -> docker.models.containers.Container:
-        """
-        Like :meth:`.create_container`, but will sync the notebook state with Apache and the Docker daemon and won't raise an error if the
-        :class:`~docker.models.containers.Container` already exists, instead returning the already existing object.
-        """
-
-        self.sync_container()
-        try:
-            return self.create_container()
-        except self.ContainerError:
-            return self.get_container()
-
-    def sleep_until_container_has_started(self) -> None:
-        """
-        Calls :func:`sleep_until_container_has_started` on the associated container.
-
-        :raises .ContainerError: If the :class:`Notebook` has no associated :class:`~docker.models.containers.Container`.
-        """
-
-        container = self.get_container()
-
-        self.log.debug("Sleeping until the Container is healthy...")
-        sleep_until_container_has_started(container)
-
-    def start(self) -> None:
+    def start(self) -> docker.models.containers.Container:
         """
         Create and start everything required for the :class:`Notebook` to work, blocking until it's all ready.
         """
 
         self.log.info("Starting Notebook...")
-        self.start_container()
-        self.sleep_until_container_has_started()
+        self.sync_container()
+        try:
+            return self.create_container()
+        except self.ContainerError:
+            return self.get_container()
 
     def stop(self) -> None:
         """
@@ -555,7 +522,11 @@ class Notebook(SophonGroupModel):
         """
 
         self.log.info("Stopping Notebook...")
-        self.stop_container()
+        self.sync_container()
+        try:
+            self.remove_container()
+        except self.ContainerError:
+            pass
 
     @property
     def is_running(self) -> bool:

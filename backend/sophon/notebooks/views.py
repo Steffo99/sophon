@@ -44,7 +44,7 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
         notebook.start()
         Serializer = self.get_serializer_class()
         serializer = Serializer(notebook)
-        return Response(serializer.data, status.HTTP_200_OK)
+        return Response(serializer.data, status.HTTP_202_ACCEPTED)
 
     @action(["PATCH"], detail=True)
     def lock(self, request: Request, **kwargs) -> Response:
