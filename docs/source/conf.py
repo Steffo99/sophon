@@ -101,7 +101,7 @@ html_static_path = [
 ]
 # Path of extra files to add to the build
 html_extra_path = [
-    "extra",
+    "_extra",
 ]
 
 # LaTeX rendering engine to use
