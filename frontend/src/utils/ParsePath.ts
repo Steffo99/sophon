@@ -58,17 +58,12 @@ interface ParsePathSegmentConfig {
 
 
 function parsePathSegment({path, parsed, regex, key, next}: ParsePathSegmentConfig): ParsedPath {
-    // If the path is empty, return
-    if(!path) {
-        return parsed
-    }
-
     // Try matching the regex
     const match = path.match(regex)
 
-    // If the match fails, it means the path is invalid
+    // If the match fails, it means the matching is over
     if(!match || !match.groups) {
-        parsed.valid = Boolean(path)
+        parsed.valid = path === "/"
         return parsed
     }
 
@@ -95,7 +90,7 @@ function parsePathSegment({path, parsed, regex, key, next}: ParsePathSegmentConf
  * @param path - The path to split.
  */
 export function parsePath(path: string): ParsedPath {
-    return parsePathSegment({
+    const result = parsePathSegment({
         path,
         parsed: {count: 0, valid: true},
         regex: INSTANCE_REGEX,
@@ -142,4 +137,8 @@ export function parsePath(path: string): ParsedPath {
             },
         ]
     })
+
+    console.debug("[ParsePath] Parsed", result)
+
+    return result
 }
