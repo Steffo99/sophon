@@ -5,74 +5,79 @@ test("parses empty path", () => {
     expect(
         parsePath("/"),
     ).toMatchObject(
-        {},
+        {
+            count: 0,
+            valid: true,
+        },
     )
 })
 
 test("parses instance path", () => {
     expect(
-        parsePath("/i/https:api:sophon:steffo:eu:"),
+        parsePath("/i/https:api:sophon:steffo:eu:/"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
+            count: 1,
+            valid: true,
         },
     )
 })
 
-test("parses username path", () => {
+test("parses logged in path", () => {
     expect(
-        parsePath("/i/https:api:sophon:steffo:eu:/u/steffo"),
+        parsePath("/i/https:api:sophon:steffo:eu:/l/logged-in/"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
-            userName: "steffo",
-        },
-    )
-})
-
-test("parses userid path", () => {
-    expect(
-        parsePath("/i/https:api:sophon:steffo:eu:/u/1"),
-    ).toMatchObject(
-        {
-            instance: "https:api:sophon:steffo:eu:",
-            userId: "1",
+            loggedIn: "logged-in",
+            count: 2,
+            valid: true,
         },
     )
 })
 
 test("parses research group path", () => {
     expect(
-        parsePath("/i/https:api:sophon:steffo:eu:/g/testers"),
+        parsePath("/i/https:api:sophon:steffo:eu:/l/logged-in/g/testers/"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
+            loggedIn: "logged-in",
             researchGroup: "testers",
+            count: 3,
+            valid: true,
         },
     )
 })
 
 test("parses research project path", () => {
     expect(
-        parsePath("/i/https:api:sophon:steffo:eu:/g/testers/p/test"),
+        parsePath("/i/https:api:sophon:steffo:eu:/l/logged-in/g/testers/p/test/"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
+            loggedIn: "logged-in",
             researchGroup: "testers",
             researchProject: "test",
+            count: 4,
+            valid: true,
         },
     )
 })
 
-test("parses research project path", () => {
+test("parses notebook path", () => {
     expect(
-        parsePath("/i/https:api:sophon:steffo:eu:/g/testers/p/test/n/testerino"),
+        parsePath("/i/https:api:sophon:steffo:eu:/l/logged-in/g/testers/p/test/n/testerino/"),
     ).toMatchObject(
         {
             instance: "https:api:sophon:steffo:eu:",
+            loggedIn: "logged-in",
             researchGroup: "testers",
             researchProject: "test",
             notebook: "testerino",
+            count: 5,
+            valid: true,
         },
     )
 })

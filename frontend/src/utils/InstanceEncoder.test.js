@@ -5,17 +5,17 @@ import { InstanceEncoder } from "./InstanceEncoder"
 
 test("encodes pathless URL", () => {
     expect(
-        InstanceEncoder.encode(new URL("https://api.sophon.steffo.eu")),
+        InstanceEncoder.encode(new URL("https://api.sophon.steffo.eu/")),
     ).toEqual(
-        "https:api.sophon.steffo.eu",
+        "https:api.sophon.steffo.eu:",
     )
 })
 
 test("encodes URL with port number", () => {
     expect(
-        InstanceEncoder.encode(new URL("http://localhost:30033")),
+        InstanceEncoder.encode(new URL("http://localhost:30033/")),
     ).toEqual(
-        "http:localhost%3A30033",
+        "http:localhost%3A30033:",
     )
 })
 
@@ -43,23 +43,23 @@ test("does not encode URL with %3A in path", () => {
 
 test("decodes pathless URL", () => {
     expect(
-        InstanceEncoder.decode("https:api.sophon.steffo.eu"),
+        InstanceEncoder.decode("https:api.sophon.steffo.eu:").toString(),
     ).toEqual(
-        "https://api.sophon.steffo.eu",
+        "https://api.sophon.steffo.eu/",
     )
 })
 
 test("decodes URL with port number", () => {
     expect(
-        InstanceEncoder.decode("http:localhost%3A30033"),
+        InstanceEncoder.decode("http:localhost%3A30033:").toString(),
     ).toEqual(
-        "http://localhost:30033",
+        "http://localhost:30033/",
     )
 })
 
 test("decodes URL with simple path", () => {
     expect(
-        InstanceEncoder.decode("https:steffo.eu:sophon:api:"),
+        InstanceEncoder.decode("https:steffo.eu:sophon:api:").toString(),
     ).toEqual(
         "https://steffo.eu/sophon/api/",
     )
@@ -67,7 +67,7 @@ test("decodes URL with simple path", () => {
 
 test("decodes URL with colon in path", () => {
     expect(
-        InstanceEncoder.decode("https:steffo.eu:sophon%3Aapi:"),
+        InstanceEncoder.decode("https:steffo.eu:sophon%3Aapi:").toString(),
     ).toEqual(
         "https://steffo.eu/sophon:api/",
     )
