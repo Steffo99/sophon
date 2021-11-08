@@ -68,7 +68,7 @@ export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselec
                 />
             )
         },
-        [viewSet, UnselectedRoute, SelectedRoute, pk, pkKey],
+        [viewSet, UnselectedRoute, SelectedRoute, pk, pkKey, pathSegment],
     )
 
 
