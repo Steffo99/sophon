@@ -102,9 +102,9 @@ Il modulo `docker` viene esteso implementando supporto per l'istruzione ``HEALTH
 
    Funzione che utilizza l'API a basso livello del client Docker per recuperare l'`HealthState` dei container.
 
-.. function:: sleep_until_container_has_started(container: docker.models.containers.Container) -> HealthState
+.. note::
 
-   Funzione bloccante che restituisce solo quando lo stato del container specificato non è `HealthState.STARTING`.
+   Queste funzionalità sono state disabilitate per risolvere il `bug #86 <https://github.com/Steffo99/sophon/issues/86>`_.
 
 
 Generazione di token sicuri
@@ -191,7 +191,7 @@ Viene definito il modello rappresentante un :ref:`notebook`.
 
    .. method:: start(self) -> None
 
-      Tenta di creare e avviare un container Docker per l'oggetto, bloccando fino a quando esso non sarà avviato con `~.docker.sleep_until_container_has_started`.
+      Tenta di creare e avviare un container Docker per l'oggetto.
 
    .. method:: stop(self) -> None
 
