@@ -50,7 +50,15 @@ export function ViewSetRouter<Resource extends DjangoResource>({viewSet, unselec
                 )
             }
 
-            const selection = pk ? viewSet.resources?.find(res => res.value[pkKey] === pk) : undefined
+            let selection
+            if(pk) {
+                selection = viewSet.resources?.find(res => res.value[pkKey] === pk)
+                if(!selection) {
+                    return (
+                        <ErrorBox error={new Error(`Resource not found: ${pk}`)}/>
+                    )
+                }
+            }
 
             return (
                 <ResourceRouter
