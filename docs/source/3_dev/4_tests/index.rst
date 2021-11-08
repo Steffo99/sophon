@@ -125,8 +125,6 @@ Parsing dei segmenti del path
 
 - parses empty path
 - parses instance path
-- parses username path
-- parses userid path
 - parses research group path
 - parses research project path
-- parses research project path
+- parses notebook path
