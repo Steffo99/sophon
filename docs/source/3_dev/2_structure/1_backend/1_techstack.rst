@@ -12,5 +12,5 @@ Librerie e tecnologie utilizzate
       - L'estensione per Django `Django CORS Headers <https://github.com/adamchainz/django-cors-headers>`_
    - L'adattatore database per PostgreSQL `Psycopg <https://pypi.org/project/psycopg2/>`_
    - Il `Docker SDK for Python <https://docker-py.readthedocs.io/en/stable/>`_
-   - I server web `Gunicorn <https://gunicorn.org/>`_ e `Uvicorn <https://www.uvicorn.org/>`_
+   - Il server web `Gunicorn <https://gunicorn.org/>`_
    - L'utilità `lazy-object-proxy <https://github.com/ionelmc/python-lazy-object-proxy>`_
