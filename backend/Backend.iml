@@ -21,6 +21,7 @@
       <sourceFolder url="file://$MODULE_DIR$/../docs/source" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../docs/source/_static" type="java-resource" />
       <excludeFolder url="file://$MODULE_DIR$/../docs/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../docs/source/_extra" />
     </content>
     <orderEntry type="jdk" jdkName="Poetry (backend) (3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
