@@ -58,9 +58,9 @@ primary_domain = None
 default_role = None
 
 # Print warnings on the page
-keep_warnings = True
+keep_warnings = False
 # Display more warnings than usual
-nitpicky = True
+nitpicky = False
 
 # Intersphinx URLs
 intersphinx_mapping = {

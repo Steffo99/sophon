@@ -1,5 +1,6 @@
 Contesti innestati
 ------------------
+.. default-domain:: js
 
 Per minimizzare i rerender, l'applicazione è organizzata a "contesti innestati".
 
