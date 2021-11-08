@@ -1,4 +1,5 @@
-import {faBook, faProjectDiagram, faServer, faUniversity, faUser, faUsers} from "@fortawesome/free-solid-svg-icons"
+import {faBook, faExclamationCircle, faProjectDiagram, faServer, faUniversity, faUser, faUsers} from "@fortawesome/free-solid-svg-icons"
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome"
 import {Box} from "@steffo/bluelib-react"
 import * as React from "react"
 import {useSophonPath} from "../../hooks/useSophonPath"
@@ -11,7 +12,7 @@ export function BreadcrumbsBox(): JSX.Element {
     const location = useSophonPath()
 
     return (
-        <Box>
+        <Box builtinColor={location.valid ? undefined : "red"}>
             <BreadcrumbLink
                 href={"/"}
                 icon={faServer}
@@ -67,6 +68,10 @@ export function BreadcrumbsBox(): JSX.Element {
                     ) : null}
                 </>
             ) : null}
+            {location.valid ? null : <>
+                <BreadcrumbSeparator/>
+                <FontAwesomeIcon icon={faExclamationCircle}/>&nbsp;Invalid path!
+            </>}
         </Box>
     )
 }
