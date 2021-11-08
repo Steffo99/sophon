@@ -63,7 +63,7 @@ function parsePathSegment({path, parsed, regex, key, next}: ParsePathSegmentConf
 
     // If the match fails, it means the matching is over
     if(!match || !match.groups) {
-        parsed.valid = path === "/"
+        parsed.valid = path === "" || path === "/"
         return parsed
     }
 
@@ -73,7 +73,7 @@ function parsePathSegment({path, parsed, regex, key, next}: ParsePathSegmentConf
     parsed.count += 1
 
     const results = next.map((func) => {
-        return func(rest, parsed)
+        return func(rest ?? "", parsed)
     }).reduce((a, b) => {
         return {...a, ...b}
     }, {})
