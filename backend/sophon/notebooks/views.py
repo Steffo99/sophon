@@ -22,9 +22,9 @@ class NotebooksViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta):
 
     def get_permission_classes(self) -> t.Collection[t.Type[BasePermission]]:
         if self.action in ["sync", "start", "lock", "unlock", "stop"]:
-            return Edit
+            return Edit,
         else:
-            super().get_permission_classes()
+            return super().get_permission_classes()
 
     def get_custom_serializer_classes(self):
         if self.action in ["sync", "start", "lock", "unlock", "stop"]:
