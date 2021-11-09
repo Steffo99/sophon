@@ -17,11 +17,10 @@ version = pkg_resources.get_distribution(project.lower()).version
 release = pkg_resources.get_distribution(project.lower()).version
 
 # Sphinx language
-language = "en"  # TODO: Change to it for thesis
+language = "it"
 # Sphinx extensions
 extensions = [
     "sphinx.ext.intersphinx",
-    "sphinx.ext.autosectionlabel",  # TODO: Remove in thesis
 ]
 
 # Source files encoding
@@ -73,13 +72,13 @@ intersphinx_mapping = {
 manpages_url = "https://man.archlinux.org/"
 
 # Autonumber figures
-numfig = False  # TODO: Set to true for thesis
+numfig = True
 # Autonumeration formatting
 numfig_format = {
-    "figure": "Fig. %s",  # TODO: Translate in italian
-    "table": "Table %s",  # TODO: Translate in italian
-    "code-block": "Listing %s",  # TODO: Translate in italian
-    "section": "Section %s",  # TODO: Translate in italian
+    "figure": "Figura %s",
+    "table": "Tabella %s",
+    "code-block": "Listati %s",
+    "section": "Sezione %s",
 }
 # Maximum depth for autonumeration
 numfig_secnum_depth = 2
@@ -105,13 +104,13 @@ html_extra_path = [
 ]
 
 # LaTeX rendering engine to use
-latex_engine = "pdflatex"
+latex_engine = "lualatex"
 # LaTeX top level title type
 latex_toplevel_sectioning = "part"
 # LaTeX URLs rendering
 latex_show_urls = "footnote"
 # LaTeX theme
-latex_theme = "manual"  # TODO: I'm not sure between manual or howto
+latex_theme = "manual"
 
 latex_setup = {
     "TitleColor": "{rgb}{0,0,0.08}",
@@ -141,8 +140,12 @@ latex_setup = {
     "errorBgColor": "{rgb}{0.95,0.62,0.59}",
 }
 latex_elements = {
-    # TODO: Set Times New Roman font
     "papersize": "a4paper",
     "pointsize": "12pt",
-    "sphinxsetup": ", ".join(f"{key}={value}" for key, value in latex_setup.items())
+    "sphinxsetup": ", ".join(f"{key}={value}" for key, value in latex_setup.items()),
+    "fontpkg": r"""
+        \setmainfont{EB Garamond}
+        \setsansfont{Fira Sans}
+        \setmonofont{Fira Code}
+    """
 }
