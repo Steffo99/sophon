@@ -68,6 +68,8 @@ intersphinx_mapping = {
     "django": ("http://docs.djangoproject.com/en/3.2/", "http://docs.djangoproject.com/en/3.2/_objects/"),
     "docker": ("https://docker-py.readthedocs.io/en/stable/", None),
     "coloredlogs": ("https://coloredlogs.readthedocs.io/en/latest/", None),
+    "gunicorn": ("https://docs.gunicorn.org/en/stable/", None),
+    "psycopg2": ("https://www.psycopg.org/docs/", None),
 }
 # Manpages URL
 manpages_url = "https://man.archlinux.org/"
