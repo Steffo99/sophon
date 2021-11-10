@@ -8,6 +8,7 @@ Un centro di ricerca per le università
 .. toctree::
    :maxdepth: 6
    :numbered:
+   :caption: Contenuti
 
    docs/1_sinossi/index
    docs/2_introduzione/index
@@ -18,3 +19,10 @@ Un centro di ricerca per le università
    docs/7_applicazione/index
    docs/8_conclusione/index
    docs/9_appendice/index
+
+.. only:: html
+
+   Collegamenti utili
+   ==================
+
+   * :ref:`genindex`
