@@ -2,3 +2,4 @@
 Introduzione
 ************
 
+.. include:: tech.rst
