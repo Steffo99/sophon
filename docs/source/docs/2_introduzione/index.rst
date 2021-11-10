@@ -2,4 +2,6 @@
 Introduzione
 ************
 
-.. include:: tech.rst
+.. toctree::
+
+   tech

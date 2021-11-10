@@ -21,6 +21,7 @@ language = "it"
 # Sphinx extensions
 extensions = [
     "sphinx.ext.intersphinx",
+    "sphinx.ext.autosectionlabel",
 ]
 
 # Source files encoding
