@@ -20,9 +20,16 @@ Un centro di ricerca per le università
    docs/8_conclusione/index
    docs/9_appendice/index
 
+.. todo:: Rimuovere la sezione "da fare" nella versione definitiva.
+
 .. only:: html
 
    Collegamenti utili
    ==================
 
    * :ref:`genindex`
+
+   Da fare
+   =======
+
+   .. todolist::

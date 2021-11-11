@@ -22,6 +22,8 @@ language = "it"
 extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autosectionlabel",
+    "sphinx.ext.todo",
+    "sphinxcontrib.bibtex",
 ]
 
 # Source files encoding
@@ -55,7 +57,7 @@ rst_epilog = ""
 # Default domain
 primary_domain = None
 # Default role
-default_role = None
+default_role = "any"
 
 # Print warnings on the page
 keep_warnings = False
@@ -152,3 +154,13 @@ latex_elements = {
         \setmonofont{Fira Code}
     """
 }
+
+# TODOs
+todo_include_todos = True  # TODO: Change to false in the final version
+todo_emit_warnings = False
+todo_link_only = False
+
+# BibTeX
+bibtex_bibfiles = [
+    "refs.bib",
+]
