@@ -111,7 +111,7 @@ html_extra_path = [
 # LaTeX rendering engine to use
 latex_engine = "lualatex"
 # LaTeX top level title type
-latex_toplevel_sectioning = "part"
+latex_toplevel_sectioning = "chapter"
 # LaTeX URLs rendering
 latex_show_urls = "footnote"
 # LaTeX theme
