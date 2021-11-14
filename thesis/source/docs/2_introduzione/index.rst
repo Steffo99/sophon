@@ -19,7 +19,7 @@ Jupyter però ha alcuni problemi: è complesso da installare e mantenere, e non 
 Obiettivo della tesi
 ====================
 
-L'obiettivo di questa tesi è quello di illustrare la situazione attuale della ricerca collaborativa, per poi descrivere lo sviluppo dell'applicativo "*Sophon*" realizzato con il fine di risolvere i problemi di Jupyter precedentemente descritti.
+L'obiettivo di questa tesi è quello di illustrare la situazione attuale della ricerca collaborativa, per poi descrivere lo sviluppo dell'applicativo "*Sophon*" realizzato con il fine di facilitare l'utilizzo di Jupyter in ambiente universitario.
 
 
 Struttura della tesi
