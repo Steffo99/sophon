@@ -9,17 +9,17 @@ Negli ultimi decenni, le possibilità per effettuare ricerca di gruppo si sono m
 
 Internet infatti ha portato alla creazione di strumenti informatici per facilitare la comunicazione e collaborazione remota, come email, chat, strumenti di revisione bozze e sistemi di controllo versione.
 
-Parallelamente a questi strumenti, sono stati sviluppati degli ambienti di lavoro a supporto della ricerca, che permettono la creazione di documenti interattivi, detti *notebook*, che combinano analisi di dati ad elementi multimediali come testo formattato, immagini e grafici.
+Parallelamente a questi strumenti, sono stati sviluppati degli ambienti di lavoro a supporto della ricerca, che permettono la creazione di documenti interattivi, detti `notebook <Notebook computazionali>`, che combinano analisi di dati ad elementi multimediali come testo formattato, immagini e grafici.
 
-Il più popolare di questi ambienti di lavoro è l'ambiente computazionale Jupyter, che all'interno del notebook permette l'utilizzo di molteplici linguaggi di programmazione, sia per l'elaborazione dei dati, sia per la stesura del testo.
+Il più popolare di questi ambienti di lavoro è l'ambiente computazionale `Jupyter`, che all'interno del notebook permette l'utilizzo di molteplici linguaggi di programmazione, sia per l'elaborazione dei dati, sia per la stesura del testo.
 
-Jupyter però ha alcuni problemi: è complesso da installare e mantenere, e non implementa di default molte funzionalità per la collaborazione, la confidenzialità e l'autenticazione.
+Jupyter però ha alcuni problemi: è complesso da installare e mantenere, e non implementa di default molte funzionalità per la collaborazione, la confidenzialità e l'autenticazione, che devono quindi essere implementate da strumenti esterni.
 
 
 Obiettivo della tesi
 ====================
 
-L'obiettivo di questa tesi è quello di illustrare la situazione attuale della ricerca collaborativa, per poi descrivere lo sviluppo dell'applicativo "*Sophon*" realizzato con il fine di facilitare l'utilizzo di Jupyter in ambiente universitario.
+L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo "*Sophon*", realizzato con il fine di colmare le lacune di `Jupyter`, facilitandone l'utilizzo in ambiente universitario.
 
 
 Struttura della tesi
