@@ -28,12 +28,11 @@ L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo 
 
 In particolare, l'obiettivo di Sophon è quello di:
 
-*  essere intuitivo da utilizzare;
-*  permettere a più utenti remoti di lavorare simultaneamente sullo stesso notebook;
-*  permettere l'utilizzo delle risorse computazionali dell'Università;
-*  non comportare costi aggiuntivi per l'istituzione che voglia usarlo;
-*  essere trasparente ed open source;
-*  essere facilmente estendibile in futuro, qualora fossero necessarie funzionalità aggiuntive.
+*  essere **intuitivo** da utilizzare;
+*  permettere a più utenti remoti di lavorare **simultaneamente** sullo stesso notebook;
+*  permettere l'**utilizzo dei server dell'Università**;
+*  essere un software **open source** sia nel senso di "**gratuito**" sia nel senso di "**libero**";
+*  essere **facilmente estendibile** in futuro, qualora fossero necessarie funzionalità aggiuntive o integrazioni con software esterni.
 
 
 .. index::
