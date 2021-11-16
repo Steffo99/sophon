@@ -5,6 +5,8 @@
 Introduzione
 ************
 
+Nel mondo della ricerca universitaria, è frequente la collaborazione tra più colleghi su uno stesso progetto, condividendo dati e materiale al fine di ottenere risultati più efficientemente.
+
 Negli ultimi decenni, le possibilità per effettuare ricerca collaborativa si sono moltiplicate, grazie principalmente allo sviluppo della rete Internet, che permette comunicazione immediata tra istituzioni di tutto il mondo.
 
 Internet infatti ha portato alla creazione di strumenti informatici per facilitare la comunicazione e collaborazione remota, come email, chat, strumenti di revisione bozze e sistemi di controllo versione.
