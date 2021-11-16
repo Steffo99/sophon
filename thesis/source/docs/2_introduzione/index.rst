@@ -18,6 +18,9 @@ Il più popolare di questi ambienti di lavoro è l'ambiente computazionale `Jupy
 Jupyter però ha alcuni problemi: è complesso da installare e mantenere, e non implementa di default molte funzionalità per la collaborazione, la confidenzialità e l'autenticazione, che devono quindi essere implementate da strumenti esterni.
 
 
+.. index::
+   single: obiettivo della tesi
+
 Obiettivo della tesi
 ====================
 
@@ -32,6 +35,9 @@ In particolare, l'obiettivo di Sophon è quello di:
 *  essere trasparente ed open source;
 *  essere facilmente estendibile in futuro, qualora fossero necessarie funzionalità aggiuntive.
 
+
+.. index::
+   single: struttura della tesi
 
 Struttura della tesi
 ====================
