@@ -23,6 +23,15 @@ Obiettivo della tesi
 
 L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo "*Sophon*", realizzato con il fine di colmare le lacune di `Jupyter`, facilitandone l'utilizzo in ambiente universitario.
 
+In particolare, l'obiettivo di Sophon è quello di:
+
+*  essere intuitivo da utilizzare;
+*  permettere a più utenti remoti di lavorare simultaneamente sullo stesso notebook;
+*  permettere l'utilizzo delle risorse computazionali dell'Università;
+*  non comportare costi aggiuntivi per l'istituzione che voglia usarlo;
+*  essere trasparente ed open source;
+*  essere facilmente estendibile in futuro, qualora fossero necessarie funzionalità aggiuntive.
+
 
 Struttura della tesi
 ====================
