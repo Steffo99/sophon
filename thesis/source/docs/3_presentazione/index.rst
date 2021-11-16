@@ -1,9 +1,9 @@
 .. index::
    single: presentazione
 
-*************
-Presentazione
-*************
+*********************
+Ricerca collaborativa
+*********************
 
 Nelle scienze, sia teoriche, sia sperimentali, si verifica spesso la necessità di dover prendere appunti e condividere appunti sulla ricerca effettuata.
 
