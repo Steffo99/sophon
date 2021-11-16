@@ -164,3 +164,4 @@ todo_link_only = False
 bibtex_bibfiles = [
     "refs.bib",
 ]
+bibtex_reference_style = "super"
