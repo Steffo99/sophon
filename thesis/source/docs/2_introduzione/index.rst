@@ -5,7 +5,7 @@
 Introduzione
 ************
 
-Negli ultimi decenni, le possibilità per effettuare ricerca di gruppo si sono moltiplicate, grazie principalmente allo sviluppo della rete Internet, che permette comunicazione immediata tra istituzioni di tutto il mondo.
+Negli ultimi decenni, le possibilità per effettuare ricerca collaborativa si sono moltiplicate, grazie principalmente allo sviluppo della rete Internet, che permette comunicazione immediata tra istituzioni di tutto il mondo.
 
 Internet infatti ha portato alla creazione di strumenti informatici per facilitare la comunicazione e collaborazione remota, come email, chat, strumenti di revisione bozze e sistemi di controllo versione.
 
@@ -29,7 +29,7 @@ La tesi è strutturata nel seguente modo:
 
 #. nel primo capitolo, :ref:`Sinossi`, viene descritto molto brevemente il progetto realizzato;
 #. nel secondo capitolo, :ref:`Introduzione`, viene introdotto il contesto della tesi, la tesi stessa e i suoi contenuti;
-#. nel terzo capitolo, :ref:`Presentazione`, viene presentata in dettaglio la situazione attuale della ricerca collaborativa;
+#. nel terzo capitolo, :ref:`Ricerca collaborativa`, viene presentata in dettaglio la situazione attuale della ricerca collaborativa;
 #. nel quarto capitolo, :ref:`Requisiti`, venono elencati i requisiti che si sono voluti raggiungere con la realizzazione dell'applicativo;
 #. nel quinto capitolo, :ref:`Progetto`, viene descritta la progettazione avvenuta, entrando nei dettagli della suddivisione in moduli e delle astrazioni create;
 #. nel sesto capitolo, :ref:`Implementazione`, vengono trattate le specifiche tecniche implementative del progetto;
