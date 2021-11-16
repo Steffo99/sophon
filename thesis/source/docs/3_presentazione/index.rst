@@ -1,5 +1,5 @@
 .. index::
-   single: presentazione
+   single: ricerca collaborativa
 
 *********************
 Ricerca collaborativa
