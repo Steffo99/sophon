@@ -1,0 +1,42 @@
+name: Build report document
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "report/**"
+jobs:
+  html:
+    name: "Build HTML document"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Build HTML document with Sphinx"
+        uses: ammaraskar/sphinx-action@master
+        with:
+          docs-folder: "report/"
+          build-command: "make html"
+      - name: "Create a gzip of the build"
+        run: "tar -xvzf report/_build/report.html.tar.gz report/_build/html"
+      - name: "Upload build artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "report.html.tar.gz"
+          path: "report/_build/report.html.tar.gz"
+  latexpdf:
+    name: "Build PDF document"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Build Latex document with Sphinx"
+        uses: ammaraskar/sphinx-action@master
+        with:
+          docs-folder: "report/"
+          pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
+          build-command: "make latexpdf"
+      - name: "Upload build artifact"
+        uses: actions/upload-artifact@v2
+        with:
+          name: "report.pdf"
+          path: "report/_build/latex/sophon.pdf"
