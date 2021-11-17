@@ -3,18 +3,12 @@
 
 import datetime
 
-import pkg_resources
-
 # Project name
-project = 'Sophon'
+project = 'Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca'
 # Project author
 author = 'Stefano Pigozzi'
 # Project copyright
 project_copyright = f'{datetime.date.today().year}, {author}'
-# Project short version
-version = pkg_resources.get_distribution(project.lower()).version
-# Project long version
-release = pkg_resources.get_distribution(project.lower()).version
 
 # Sphinx language
 language = "it"
