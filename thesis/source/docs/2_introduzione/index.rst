@@ -24,7 +24,7 @@ Jupyter però ha alcuni problemi: è complesso da installare e mantenere, e non 
 Obiettivo della tesi
 ====================
 
-L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo "*Sophon*", realizzato con il fine di colmare le lacune di `Jupyter`, facilitandone l'utilizzo in ambiente universitario.
+L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo "*Sophon*", realizzato con il fine di semplificare l'utilizzo di `Jupyter` in ambiente universitario.
 
 In particolare, l'obiettivo di Sophon è quello di:
 

@@ -159,3 +159,11 @@ bibtex_bibfiles = [
     "refs.bib",
 ]
 bibtex_reference_style = "super"
+
+# Rinohtype
+rinoh_documents = [
+    {
+        "doc": "index",
+        "target": "manual",
+    }
+]
