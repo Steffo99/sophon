@@ -191,9 +191,9 @@ Come software-as-a-service
 
 Un esempio di cloud provider che fornisce questo servizio è Google, con `Google Colaboratory <https://colab.research.google.com/#>`_.
 
-Usare il modello :abbr:`SaaS <Software as a Service>` è il modo più semplice per usare Jupyter, in quanto non richiede di effettuare alcuna installazione sul proprio computer, e in genere permette di collaborare online con altri utenti.
+Usare il modello :abbr:`SaaS (Software as a Service)` è il modo più semplice per usare Jupyter, in quanto non richiede di effettuare alcuna installazione sul proprio computer, e in genere permette di collaborare online con altri utenti.
 
-In genere, però, Jupyter sulle piattaforme :abbr:`SaaS <Software as a Service>` non permette l'installazione di plugin, limitando la personalizzazione, e, se si necessitano più risorse di quelle offerte gratuitamente dai provider, si rischia di trovarsi a pagare mensilmente cifre elevate.
+In genere, però, Jupyter sulle piattaforme :abbr:`SaaS (Software as a Service)` non permette l'installazione di plugin, limitando la personalizzazione, e, se si necessitano più risorse di quelle offerte gratuitamente dai provider, si rischia di trovarsi a pagare mensilmente cifre elevate.
 
 
 .. index::
