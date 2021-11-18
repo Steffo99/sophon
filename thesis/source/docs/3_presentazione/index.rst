@@ -170,7 +170,7 @@ Essendo `server <server Jupyter>` e `client <client Jupyter>` separati, è possi
 Hosting locale
 ^^^^^^^^^^^^^^
 
-È possibile installare il server Jupyter **sul proprio computer** per visualizzare e modificare notebook semplici.
+È possibile installare il server Jupyter **sul proprio computer**.
 
 Così facendo, le celle saranno eseguite con le risorse del proprio computer, e il notebook sarà accessibile solo dal computer che sta eseguendo il server.
 
