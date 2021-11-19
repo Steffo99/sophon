@@ -33,14 +33,16 @@ L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo 
 Struttura della tesi
 ====================
 
+.. todo::
+
+   Aggiornare questo elenco man mano che vengono aggiunti nuovi capitoli.
+
 La tesi è strutturata nel seguente modo:
 
 #. nel primo capitolo, :ref:`Sinossi`, viene descritto molto brevemente il progetto realizzato;
 #. nel secondo capitolo, :ref:`Introduzione`, viene introdotto il contesto della tesi, la tesi stessa e i suoi contenuti;
 #. nel terzo capitolo, :ref:`Ricerca collaborativa`, viene presentata in dettaglio la situazione attuale della ricerca collaborativa;
-#. nel quarto capitolo, :ref:`Requisiti`, venono elencati i requisiti che si sono voluti raggiungere con la realizzazione dell'applicativo;
-#. nel quinto capitolo, :ref:`Progetto`, viene descritta la progettazione avvenuta, entrando nei dettagli della suddivisione in moduli e delle astrazioni create;
-#. nel sesto capitolo, :ref:`Implementazione`, vengono trattate le specifiche tecniche implementative del progetto;
-#. nel settimo capitolo, :ref:`Applicazione`, viene fatto un esempio di applicazione del progetto all'interno di un'Università;
-#. nell'ottavo capitolo, :ref:`Conclusione`, vengono tratte le conclusioni della tesi;
-#. nel nono capitolo, :ref:`Appendice`, è infine inserito ulteriore materiale indirettamente relativo alla tesi.
+#. nel quarto capitolo, :ref:`Progettazione`, viene descritta la progettazione avvenuta, entrando nei dettagli dei requisiti, della suddivisione in moduli e delle astrazioni create;
+#. nel quinto capitolo, :ref:`Implementazione`, vengono trattate le specifiche tecniche implementative del progetto;
+#. nel sesto capitolo, :ref:`Applicazione`, viene fatto un breve esempio di applicazione del progetto all'interno di un'Università;
+#. nell'settimo capitolo, :ref:`Conclusione`, vengono tratte le conclusioni della tesi.

@@ -2,9 +2,8 @@
 Appendice
 *********
 
-.. only:: html
-
-   .. rubric:: Bibliografia
+Bibliografia
+============
 
 .. bibliography::
    :all:

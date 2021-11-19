@@ -4,19 +4,17 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
 
 .. toctree::
    :maxdepth: 6
-   :numbered: 1
+   :numbered: 2
    :caption: Contenuti
 
    docs/1_sinossi/index
    docs/2_introduzione/index
    docs/3_presentazione/index
-   docs/4_requisiti/index
-   docs/9_appendice/index
-
-.. docs/5_progetto/index
-.. docs/6_implementazione/index
-.. docs/7_applicazione/index
-.. docs/8_conclusione/index
+   docs/4_progetto/index
+   docs/5_implementazione/index
+   docs/6_applicazione/index
+   docs/7_conclusione/index
+   docs/8_appendice/index
 
 
 .. only:: html
