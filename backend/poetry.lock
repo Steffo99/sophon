@@ -249,6 +249,17 @@ MarkupSafe = ">=2.0"
 i18n = ["Babel (>=2.7)"]
 
 [[package]]
+name = "jsx-lexer"
+version = "1.0.0"
+description = "A JSX lexer for Pygments"
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Pygments = ">=2.7"
+
+[[package]]
 name = "latexcodec"
 version = "2.0.1"
 description = "A lexer and codec to work with LaTeX code in Python."
@@ -730,7 +741,7 @@ test = ["websockets"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "51ddb46bd6559cbdb22d529967f3368f91b034862c4df87b14e785aa282aa03d"
+content-hash = "a4b579746d23d05799bebbe7a3581f9b0762034ef30cca8934d9d2e46feb0a0b"
 
 [metadata.files]
 alabaster = [
@@ -824,6 +835,10 @@ imagesize = [
 jinja2 = [
     { file = "Jinja2-3.0.2-py3-none-any.whl", hash = "sha256:8569982d3f0889eed11dd620c706d39b60c36d6d25843961f33f77fb6bc6b20c" },
     { file = "Jinja2-3.0.2.tar.gz", hash = "sha256:827a0e32839ab1600d4eb1c4c33ec5a8edfbc5cb42dafa13b81f182f97784b45" },
+]
+jsx-lexer = [
+    { file = "jsx-lexer-1.0.0.tar.gz", hash = "sha256:b5f5270cad47b065417fd7bdb780199d5166bd4a88a2a0fd7412e90e7a59b5cc" },
+    { file = "jsx_lexer-1.0.0-py2.py3-none-any.whl", hash = "sha256:491783c7ae75f2cbde18f66c1362e93afd6e281078482215b70c1a8dfa61e57b" },
 ]
 latexcodec = [
     { file = "latexcodec-2.0.1-py2.py3-none-any.whl", hash = "sha256:c277a193638dc7683c4c30f6684e3db728a06efb0dc9cf346db8bd0aa6c5d271" },

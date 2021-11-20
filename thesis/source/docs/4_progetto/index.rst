@@ -155,11 +155,11 @@ Per realizzare il requisito dell'`estendibilità <Estendibilità>`, si è scelto
 Modulo backend
 --------------
 
-Il modulo backend consisterà in una web :abbr:`API (application programming interface)` che si interfaccia con il database e i moduli Jupyter, permettendo un accesso controllato alle risorse del software.
+Il modulo backend consiste in una web :abbr:`API (application programming interface)` che si interfaccia con il database e i moduli Jupyter, permettendo un accesso controllato alle risorse del software.
 
-Sarà scritto in `Python`, usando `Poetry` e le librerie `Django`, `Django REST Framework` e `Docker SDK for Python`, descritte nei prossimi paragrafi.
+È scritto in `Python`, usando `Poetry` e le librerie `Django`, `Django REST Framework` e `Docker SDK for Python`, descritte nei prossimi paragrafi.
 
-Esso sarà **eseguito dal server** sul quale si desidera ospitare Sophon.
+Esso è **eseguito dal server** sul quale si desidera ospitare Sophon.
 
 
 .. index::
@@ -228,7 +228,7 @@ Fornisce una suite di strumenti che assistono nella creazione di siti di medie d
 
 Le pagine restituite vengono definite attraverso funzioni, dette *function-based views*, o attraverso classi, dette *class-based views*, che ricevono in input la richiesta effettuata dall'utente ed restituscono in output la risposta HTTP da inoltrargli.
 
-È stato usato per la realizzazione del modulo backend in quanto presentato al corso di Tecnologie web di Unimore, e con tutte le funzionalità necessarie per la realizzazione del progetto del sito.
+È stato scelto per la realizzazione del modulo backend in quanto presentato al corso di Tecnologie web di Unimore, e in quanto contenente tutte le funzionalità necessarie per la realizzazione del progetto del sito.
 
 
 .. index::
@@ -246,6 +246,8 @@ Permette di definire metodi dell'API in modo molto simile alle views di Django: 
 
 Inoltre, permette la generazione automatica di metodi per l'interazione con certe entità del database, attraverso particolari classi dette *viewset*.
 
+Come per Django, è stato scelto per lo sviluppo di Sophon in quanto è stato presentato al corso di Tecnologie web di Unimore, e perchè si è ritenuto che fosse l'opzione più semplice per realizzare una web :abbr:`API (application programming interface)` all'interno di Django.
+
 
 .. index::
    single: Docker; SDK for Python
@@ -259,6 +261,7 @@ Per interfacciarsi con i `moduli Jupyter <Modulo Jupyter>`, si è deciso di util
 
    `Containerizzazione`, più avanti nel capitolo.
 
+
 .. index::
    single: modulo; frontend
 
@@ -269,7 +272,13 @@ Il *modulo frontend* consiste in una applicazione web che consente agli utenti d
 
 Le interazioni vengono inviate al `modulo proxy <Modulo proxy>`, che le ispeziona e le inoltra al `modulo server <Modulo server>`.
 
-Sarà scritto in `TypeScript`, usando `Yarn` e le librerie `React`, `FontAwesome` e `Bluelib` in aggiunta a innumerevoli altre microdipendenze.
+È scritto in `TypeScript`, usando `React` e le librerie `FontAwesome` e `Bluelib`, in aggiunta alle loro dipendenze ed altre piccole librerie di supporto.
+
+Viene **eseguito dal browser web** dell'utente che desidera interagire con Sophon, transpilato da TypeScript a `JavaScript`.
+
+.. todo::
+
+   Transpilato esiste come parola italiana? Come si può tradurre "transpiled" altrimenti?
 
 
 .. index::
@@ -278,7 +287,56 @@ Sarà scritto in `TypeScript`, usando `Yarn` e le librerie `React`, `FontAwesome
 JavaScript
 ^^^^^^^^^^
 
-.. todo:: JavaScript
+`JavaScript <https://it.wikipedia.org/wiki/JavaScript>`_ è un linguaggio di programmazione interpretato con tipizzazione debole.
+
+È l'unico linguaggio utilizzabile per fornire interattività alle pagine web; pertanto, è indirettamente utilizzato dal modulo frontend di Sophon.
+
+Il suo modello di oggetti si basa su dizionari che mappano i nomi degli attributi ai loro corrispondenti valori.
+
+Fa inoltre abbondante uso della capacità dei linguaggi dinamici di definire funzioni a runtime (dette anche callback), sfruttandole per favorire la programmazione funzionale.
+
+.. code-block:: javascript
+
+   var cane = {
+      verso: () => console.log("Woof!"),
+   };
+
+   var gatto = {
+      verso: () => console.log("Miao!"),
+   };
+
+   var zoo = [cane, gatto];
+
+   zoo.forEach(
+      (animale) => animale.verso()
+   );
+
+.. index::
+   single: Node.js
+   single: npm
+
+Node.js
+^^^^^^^
+
+`Node.js <https://nodejs.org/>`_ è un runtime `JavaScript` che permette la scrittura e l'esecuzione di programmi all'esterno del contesto di un browser web, utilizzando invece come contesto il sistema operativo su cui viene eseguito.
+
+Include :abbr:`npm (Node package manager)`, un gestore di pacchetti per il download di librerie Node, che interagisce con l'`npm Registry <https://www.npmjs.com/>`_.
+
+È utilizzato da Sophon come toolchain per lo sviluppo e il deployment del modulo frontend, in quanto necessario per l'esecuzione di `Create React App`.
+
+
+.. index::
+   single: Create React App
+   single: React; Create React App
+
+Create React App
+^^^^^^^^^^^^^^^^
+
+`Create React App <https://create-react-app.dev/>`_ è un insieme di strumenti `Node.js` per lo sviluppo di una applicazione web utilizzando la libreria per la creazione di interfacce grafiche `React`.
+
+È utilizzato da Sophon per la costruzione della pagina del modulo frontend che sarà servita all'utente.
+
+Si è scelto di usare Create React App in quanto astrae al programmatore tutta la logica di creazione della pagina, semplificando enormemente la manutenzione ed `estensione <Estendibilità>` futura del software.
 
 
 .. index::
@@ -287,38 +345,60 @@ JavaScript
 TypeScript
 ^^^^^^^^^^
 
-.. todo:: TypeScript
+`TypeScript <https://www.typescriptlang.org/>`_ è un'estensione al linguaggio di programmazione `JavaScript` che vi introduce un sistema di tipizzazione forte.
 
+Non essendo immediatamente utilizzabile all'interno delle pagine web, deve essere prima convertito in JavaScript: ciò viene effettuato da `Create React App` in fase di costruzione dell'applicazione.
 
-.. index::
-   single: Node.JS
+.. code-block:: typescript
 
-Node.JS
-^^^^^^^
+   interface Animale {
+      verso: () => string,
+   }
 
-.. todo:: Node.JS
+   var cane: Animale = {
+      verso: () => console.log("Woof!"),
+   };
 
+   var gatto: Animale = {
+      verso: () => console.log("Miao!"),
+   };
 
-.. index::
-   single: Yarn
+   var zoo: Animale[] = [cane, gatto];
 
-Yarn
-^^^^
+   zoo.forEach(
+      (animale) => animale.verso()
+   );
 
-.. todo:: Yarn
+È stata utilizzata in quasi ogni singola parte del modulo frontend, in quanto avere una tipizzazione forte riduce significativamente i bug prodotti e facilita manutenzione ed `estensione <estendibilità>` del software.
 
 
 .. index::
    single: React
+   single: React; componente
+   single: React; hook
 
 React
 ^^^^^
 
-.. todo:: React
+`React <https://reactjs.org/>`_ è una libreria `JavaScript` per lo sviluppo di interfacce grafiche interattive all'interno di pagine web o applicazioni mobile.
 
+L'interfaccia viene definita in modo dichiarativo e funzionale attraverso una variante dei linguaggi `JavaScript` (o `TypeScript`) detta JSX (o TSX), che permette l'inserimento di nodi HTML all'interno del codice.
 
-.. index::
-   single: Bluelib
+Si basa sul concetto di *componenti*, piccole parti incapsulate di interfaccia grafica riutilizzabili attraverso tutta l'applicazione definite attraverso funzioni pure, e di *hooks*, particolari funzioni il cui nome inizia con ``use`` in grado di tenere traccia dello stato di un componente o di causare effetti collaterali all'interno di esso.
+
+.. code-block:: jsx
+
+   const ComponenteTitoloMaiuscolo = ({text}) => {
+      const capitalizedText = text.toUpperCase();
+
+      return (
+         <h1>
+            {capitalizedText}
+         </h1>
+      );
+   }
+
+È stata scelta per l'utilizzo in Sophon in quanto permette la realizzazione di interfacce grafiche molto complesse attraverso codice di facile comprensione, rendendo possibile la creazione di un'interfaccia altamente `intuibile <Intuibilità>`.
 
 
 .. index::
@@ -327,13 +407,24 @@ React
 FontAwesome
 ^^^^^^^^^^^
 
-.. todo:: FontAwesome
+`FontAwesome <https://fontawesome.com/>`_ è una libreria che fornisce più di mille icone utilizzabili gratuitamente all'interno di pagine web.
 
+È stata usata per favorire l'`intuibilità <Intuibilità>` dell'interfaccia grafica attraverso simboli familiari all'utente.
+
+
+.. index::
+   single: Bluelib
 
 Bluelib
 ^^^^^^^
 
-.. todo:: Bluelib
+.. todo::
+
+   Come potrei dire impersonalmente che l'ho fatta io?
+
+.. todo::
+
+   Bluelib
 
 
 .. index::
