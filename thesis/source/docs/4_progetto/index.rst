@@ -142,7 +142,11 @@ Inoltre, i colori scelti per l'interfaccia grafica **devono essere chiari anche 
 Separazione in moduli
 =====================
 
-.. todo:: Separazione in moduli
+Per realizzare il requisito dell'`estendibilità <Estendibilità>`, si è scelto di separare le parti dell'applicazioni in 4 diversi moduli interagenti.
+
+.. figure:: moduli.png
+
+   Schema che mostra come interagiscono tra loro i moduli di Sophon.
 
 
 .. index::
@@ -151,26 +155,109 @@ Separazione in moduli
 Modulo backend
 --------------
 
-.. todo:: Modulo backend
+Il modulo backend consisterà in una web :abbr:`API (application programming interface)` che si interfaccia con il database e i moduli Jupyter, permettendo un accesso controllato alle risorse del software.
+
+Sarà scritto in `Python`, usando `Poetry` e le librerie `Django`, `Django REST Framework` e `Docker SDK for Python`, descritte nei prossimi paragrafi.
+
+Esso sarà **eseguito dal server** sul quale si desidera ospitare Sophon.
+
+
+.. index::
+   single: Python
+   single: Python; packages
+
+Python
+^^^^^^
+
+`Python <https://www.python.org/>`_ è un linguaggio di programmazione interpretato con tipizzazione forte, particolarmente popolare negli ambiti dello sviluppo web e data science.
+
+Ha numerosissime librerie (dette *packages*) sia incluse nell'eseguibile stesso del linguaggio, sia disponibili per il download sul `Python Package Index <https://pypi.org/>`_.
+
+La sua sintassi è semplice ed human-friendly, come è possibile vedere dal seguente frammento di codice:
+
+.. code-block:: python
+
+   class Animale:
+      def verso():
+         raise NotImplementedError()
+
+   class Cane(Animale):
+      def verso():
+         print("Woof!")
+
+   class Gatto(Animale):
+      def verso():
+         print("Miao!")
+
+   zoo = [
+      Cane(),
+      Gatto(),
+      Cane(),
+   ]
+
+   for animale in zoo:
+      animale.verso()
+
+La sua semplicità e l'enorme quantità di librerie a disposizione lo ha reso il secondo linguaggio di programmazione più popolare al mondo :cite:`so:survey2021`, subito dopo `JavaScript`; proprio per questi motivi è stato scelto per lo sviluppo del modulo backend.
+
+
+.. index::
+   single: Poetry
+
+Poetry
+^^^^^^
+
+Per gestire le dipendenze di Sophon si è scelto di usare `Poetry <https://python-poetry.org/>`_, un innovativo package manager per il linguaggio Python.
+
+Poetry è in grado di risolvere automaticamente alberi complessi di dipendenze, generando un *lockfile* (``poetry.lock``) con la soluzione adottata, in modo che le dipendenze utilizzate siano congelate e uguali per tutti gli ambienti in cui deve essere sviluppato Sophon.
 
 
 .. index::
    single: Django
+   single: Django; applicazione
+   single: Django; view
+   single: Django; function-based view
+   single: Django; class-based view
 
 Django
 ^^^^^^
 
-.. todo:: Django
+`Django <https://www.djangoproject.com/>`_ è un framework Python per lo sviluppo di siti web dinamici.
+
+Fornisce una suite di strumenti che assistono nella creazione di siti di medie dimensioni, come un :abbr:`ORM (object-relational model)` per i database, una pagina di amministrazione integrata per la gestione dei contenuti del sito e un sistema di moduli scollegabili detti "applicazioni".
+
+Le pagine restituite vengono definite attraverso funzioni, dette *function-based views*, o attraverso classi, dette *class-based views*, che ricevono in input la richiesta effettuata dall'utente ed restituscono in output la risposta HTTP da inoltrargli.
+
+È stato usato per la realizzazione del modulo backend in quanto presentato al corso di Tecnologie web di Unimore, e con tutte le funzionalità necessarie per la realizzazione del progetto del sito.
 
 
 .. index::
-   single: Django; REST Framework
+   single: Django REST Framework
+   single: Django REST Framework; function-based API view
+   single: Django REST Framework; class-based API view
+   single: Django REST Framework; viewset
 
 Django REST Framework
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. todo:: Django REST Framework
+`Django REST Framework <https://www.django-rest-framework.org/>`_ è un'estensione per `Django` che aggiunge la possibilità di inserire :abbr:`REST (representational state transfer)` :abbr:`API (application programming interface)` all'interno delle applicazioni Django.
 
+Permette di definire metodi dell'API in modo molto simile alle views di Django: si vengono a creare le *function-based API views* se i metodi sono definiti attraverso funzioni, o le *class-based API views* se i metodi sono definiti attraverso classi.
+
+Inoltre, permette la generazione automatica di metodi per l'interazione con certe entità del database, attraverso particolari classi dette *viewset*.
+
+
+.. index::
+   single: Docker; SDK for Python
+
+Docker SDK for Python
+^^^^^^^^^^^^^^^^^^^^^
+
+Per interfacciarsi con i `moduli Jupyter <Modulo Jupyter>`, si è deciso di utilizzare `Docker SDK for Python <https://docker-py.readthedocs.io/en/stable/>`_, un client Python per l'interazione con il daemon `Docker`.
+
+.. seealso::
+
+   `Containerizzazione`, più avanti nel capitolo.
 
 .. index::
    single: modulo; frontend
@@ -178,7 +265,47 @@ Django REST Framework
 Modulo frontend
 ---------------
 
-.. todo:: Modulo frontend
+Il *modulo frontend* consiste in una applicazione web che consente agli utenti di interagire con Sophon da un'interfaccia grafica.
+
+Le interazioni vengono inviate al `modulo proxy <Modulo proxy>`, che le ispeziona e le inoltra al `modulo server <Modulo server>`.
+
+Sarà scritto in `TypeScript`, usando `Yarn` e le librerie `React`, `FontAwesome` e `Bluelib` in aggiunta a innumerevoli altre microdipendenze.
+
+
+.. index::
+   single: JavaScript
+
+JavaScript
+^^^^^^^^^^
+
+.. todo:: JavaScript
+
+
+.. index::
+   single: TypeScript
+
+TypeScript
+^^^^^^^^^^
+
+.. todo:: TypeScript
+
+
+.. index::
+   single: Node.JS
+
+Node.JS
+^^^^^^^
+
+.. todo:: Node.JS
+
+
+.. index::
+   single: Yarn
+
+Yarn
+^^^^
+
+.. todo:: Yarn
 
 
 .. index::
@@ -192,6 +319,16 @@ React
 
 .. index::
    single: Bluelib
+
+
+.. index::
+   single: FontAwesome
+
+FontAwesome
+^^^^^^^^^^^
+
+.. todo:: FontAwesome
+
 
 Bluelib
 ^^^^^^^
@@ -278,7 +415,7 @@ Volumi
 
 
 .. index::
-   single: Docker; compose
+   single: Docker; Compose
 
 Docker Compose
 --------------
