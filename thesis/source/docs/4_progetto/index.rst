@@ -417,10 +417,6 @@ Bluelib
 
 .. todo::
 
-   Come potrei dire impersonalmente che l'ho fatta io?
-
-.. todo::
-
    Bluelib
 
 
@@ -629,77 +625,343 @@ Le applicazioni Compose sono definite all'interno di un file `YAML <https://it.w
 
 .. index::
    single: database
+   single: PostgreSQL
 
 Database
 ========
 
-.. todo:: Database
+Il `modulo backend <Modulo backend>` di Sophon necessita di archiviare dati persistenti altamente relazionali; pertanto, è stato necessario adottare una soluzione in grado di gestirli.
 
-
-.. index::
-   single: PostgreSQL
-
-PostgreSQL
-----------
-
-.. todo:: PostgreSQL
+A tale scopo, è stato selezionato il database relazionale `PostgreSQL <https://www.postgresql.org/>`_, in quanto :abbr:`FLOSS (Free and Libre Open Source Software)`, adatto a dati relazionali, compatibile con Django, e ampiamente utilizzato in tutto il mondo.
 
 
 .. index::
    single: entità
 
 Entità
-------
+======
 
-.. todo:: Entità
+.. todo::
+
+   Entità
 
 
 .. index::
-   single: entità; istanza
    single: istanza
 
-Istanze
-^^^^^^^
+Istanza
+-------
 
-.. todo:: Istanze
+Un'*istanza* rappresenta un'**installazione di Sophon** effettuata su un server di un'istituzione di ricerca, come ad esempio un'Università.
 
+Ogni istanza è **fisicamente e logicamente separata** dalle altre; istanze diverse **non condividono alcun dato** tra loro.
 
-.. index::
-   single: entità; gruppi di ricerca
-   single: gruppi di ricerca
+URL dell'istanza
+^^^^^^^^^^^^^^^^
 
-Gruppi di ricerca
-^^^^^^^^^^^^^^^^^
+Ciascuna istanza è accessibile tramite **uno specifico URL**, scelto dall'amministratore di sistema al momento dell'installazione.
 
-.. todo:: Gruppi di ricerca
+.. figure:: instance_urls.png
 
-
-.. index::
-   single: entità; progetti di ricerca
-   single: progetti di ricerca
-
-Progetti di ricerca
-^^^^^^^^^^^^^^^^^^^
-
-.. todo:: Progetti di ricerca
+   Schema rappresentante un esempio di URL di istanza rispettivamente per Unimore, Unibo e il CERN. Si noti come Sophon possa essere ospitato a domini di qualsiasi livello o radici diverse da ``/``, quella predefinita.
 
 
 .. index::
-   single: entità; notebook
-   single: notebook; entità di Sophon
-
-Notebook
-^^^^^^^^
-
-.. todo:: Notebook
-
-
-.. index::
-   single: entità; utente
    single: utente
 
-Utenti
-^^^^^^
+Utente
+------
 
-.. todo:: Utenti
+Un *utente* è una entità che interagisce con una specifica istanza Sophon: ad esempio, un utente potrebbe essere una persona fisica, oppure potrebbe essere un software di automazione che si interfaccia con Sophon.
 
+La tabella viene creata automaticamente da Django all'interno di ogni applicazione che include
+
+
+.. index::
+   single: utente; super
+   single: utente; regolare
+   single: utente; ospite
+   single: superutente
+   single: ospite
+
+Livelli di accesso
+^^^^^^^^^^^^^^^^^^
+
+Un utente può avere uno dei seguenti *livelli di accesso*:
+
+Superutente
+   Utente con accesso completo a ogni singola risorsa sull'istanza Sophon, tipicamente riservato per l'amministratore di sistema.
+
+Utente
+   Utente con permessi limitati alle risorse che ha creato o a cui è stato fornito accesso.
+
+Ospite
+   Utente che può visualizzare alcuni contenuti dell'istanza Sophon ma non può interagirci.
+
+
+.. index::
+   single: credenziali di accesso
+   single: username
+   single: password
+   single: Single Sign-On
+
+Credenziali di accesso
+^^^^^^^^^^^^^^^^^^^^^^
+
+Gli utenti di tipo *Utente* e *Superutente* devono identificarsi sull'istanza con le loro credenziali.
+
+Di default, le credenziali sono un **nome utente** e una **password**, ma è possibile implementare un sistema diverso, ad esempio un sistema :abbr:`SSO (Single Sign-On)`.
+
+.. warning::
+
+   Non avendo a disposizione sistemi di :abbr:`SSO (Single Sign-On)`, questa funzionalità non è stata testata.
+
+
+.. index::
+   single: gruppo di ricerca
+
+Gruppo di ricerca
+-----------------
+
+Un *gruppo di ricerca* rappresenta un insieme di utenti che collaborano su uno o più progetti.
+
+
+.. index::
+   single: gruppo di ricerca; aperto
+   single: gruppo di ricerca; modalità manuale
+   single: gruppo di ricerca; membri
+
+Membri e modalità di accesso
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Gli utenti dell':ref:`istanza` possono diventare *membri* dei gruppi di ricerca, con una delle seguenti modalità selezionate nelle impostazioni del gruppo:
+
+- se il gruppo è *aperto*, allora qualsiasi utente potrà diventarne membro semplicemente **facendo richiesta** attraverso l'interfaccia web;
+- se il gruppo è in *modalità manuale*, allora nessun utente potrà richiedere di unirsi, e i membri saranno **selezionati manualmente** dal creatore del gruppo.
+
+In qualsiasi momento, i membri di un gruppo possono **lasciarlo** facendo apposita richiesta attraverso il frontend.
+
+
+.. index::
+   single: gruppo di ricerca; creazione
+
+Creazione di nuovi gruppi
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi :ref:`utente` può **creare** gruppi di ricerca dall'interfaccia web.
+
+
+.. index::
+   single: gruppo di ricerca; modifica
+
+Modifica di gruppi
+^^^^^^^^^^^^^^^^^^
+
+Il creatore di un gruppo di ricerca è l'unico :ref:`utente` che può cambiarne **nome**, **descrizione**, **membri** e **modalità di accesso**.
+
+Lo *slug*, l'identificatore univoco del gruppo, non è modificabile successivamente alla creazione, in quanto verrà utilizzato all'interno degli URL, che devono essere immutabili.
+
+
+.. index::
+   single: gruppo di ricerca; eliminazione
+
+Eliminazione di gruppi
+^^^^^^^^^^^^^^^^^^^^^^
+
+Il creatore di un gruppo è l'unico utente in grado di **cancellare** il gruppo che ha creato.
+
+.. danger::
+
+   L'eliminazione di un gruppo è un'operazione distruttiva non reversibile!
+
+
+.. index::
+   single: progetto di ricerca
+
+Progetto di ricerca
+-------------------
+
+Un *progetto di ricerca* rappresenta una **collezione di oggetti** relativa a un singolo argomento mantenuta da un :ref:`gruppo di ricerca`.
+
+
+.. index::
+   single: progetto di ricerca; visibilità
+   single: progetto di ricerca; privato
+   single: progetto di ricerca; interno
+   single: progetto di ricerca; pubblico
+
+Visibilità dei progetti
+^^^^^^^^^^^^^^^^^^^^^^^
+
+I progetti hanno tre diverse impostazioni di visibilità che regolano chi può visualizzarne i contenuti:
+
+Progetto privato
+   Il progetto è visibile solo ai membri del gruppo a cui appartiene il progetto.
+
+Progetto interno
+   Il progetto è visibile solo agli :term:`utenti` dell'istanza, e non agli :term:`ospiti`.
+
+Progetto pubblico
+   Il progetto è visibile a tutti.
+
+
+.. index::
+   single: progetto di ricerca; creazione
+
+Creazione di nuovi progetti
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi *membro* di un :ref:`gruppo di ricerca` può creare nuovi progetti.
+
+
+.. index::
+   single: progetto di ricerca; modifica
+
+Modifica di progetti
+^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi *membro* di un :ref:`gruppo di ricerca` può modificare **nome**, **descrizione** dei progetti al suo interno.
+
+Solo il *creatore del gruppo* può modificarne la **visibilità**, o **trasferire il progetto ad un altro gruppo**.
+
+Lo *slug*, l'identificatore univoco del progetto, non è modificabile successivamente alla creazione, in quanto è utilizzato all'interno degli URL, che devono essere immutabili.
+
+
+.. index::
+   single: progetto di ricerca; eliminazione
+
+Eliminazione di progetti
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i progetti al suo interno.
+
+.. danger::
+
+   L'eliminazione di un progetto è un'operazione distruttiva non reversibile!
+
+
+.. index::
+   single: notebook (entità)
+
+Notebook
+--------
+
+Un *notebook* rappresenta una **postazione di lavoro** che può essere allegata ad un :ref:`progetto di ricerca`.
+
+
+.. index::
+   single: notebook (entità); creazione
+
+Creazione di nuovi notebook
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi **membro** di un :ref:`gruppo di ricerca` può creare nuovi notebook all'interno di uno dei progetti del gruppo a cui appartiene.
+
+
+.. index::
+   single: notebook (entità); slug riservati
+
+Slug riservati
+^^^^^^^^^^^^^^
+
+Un notebook non può avere come *slug* uno dei seguenti valori, in quanto riservati per altri usi:
+
+*  ``backend``
+*  ``frontend``
+*  ``proxy``
+*  ``api``
+*  ``static``
+*  ``src``
+
+In più, uno slug di un notebook non può iniziare o terminare con un trattino ``-``, in quanto risulterebbe in un URL non valido.
+
+
+.. index::
+   single: notebook (entità); stato
+   single: notebook (entità); avviato
+   single: notebook (entità); fermo
+
+Stato del notebook
+^^^^^^^^^^^^^^^^^^
+
+Un notebook può essere *avviato* o *fermo* in base al suo stato di esecuzione sull':ref:`istanza` Sophon:
+
+*  è *avviato* se sta venendo eseguito ed è accessibile;
+*  è *fermo* se non sta venendo eseguito o sta venendo preparato.
+
+Alla creazione, un notebook è *fermo*.
+
+
+Avviare un notebook
+"""""""""""""""""""
+
+Un **membro** del :ref:`gruppo di ricerca` a cui appartiene il notebook può richiedere al server l'avvio di quest'ultimo, in modo da poterlo utilizzare successivamente.
+
+
+Fermare un notebook
+"""""""""""""""""""
+
+Un **membro** del :ref:`gruppo di ricerca` a cui appartiene il notebook può richiedere al server l'arresto di quest'ultimo, salvando i dati e interrompendo la sessione di lavoro attualmente in corso.
+
+
+.. index::
+   single: notebook (entità); immagine
+
+Immagine del notebook
+^^^^^^^^^^^^^^^^^^^^^
+
+In **fase di creazione** di un notebook, oppure mentre esso è **fermo**, è possibile selezionare l'`immagine Docker <immagine>` che esso deve eseguire all'avvio.
+
+Di default, l'immagine deve essere quella del `modulo Jupyter <Modulo Jupyter>`.
+
+Le immagini ammesse devono esporre un server HTTP sulla porta 8080, su cui verrà fatto `reverse proxying <reverse proxy>` dal `modulo proxy <Modulo proxy>`.
+
+
+.. index::
+   single: notebook (entità); collegamento
+
+Collegamento a un notebook
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+I **membri** del :ref:`gruppo di ricerca` a cui appartiene il notebook possono connettersi ad un notebook **avviato** attraverso un URL segreto comunicatogli dal `modulo backend <Modulo backend>`.
+
+L'URL segreto è ottenuto inserendo come query parameter dell'URL del notebook il token di autenticazione di `Jupyter`.
+
+
+.. index::
+   single: notebook (entità); blocco
+
+Blocco di un notebook
+^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi **membro** del :ref:`gruppo di ricerca` a cui appartiene il notebook può *bloccarlo* per segnalare agli altri utenti che vi hanno accesso di non utilizzare quello specifico notebook.
+
+Bloccare un notebook **rimuove dall'interfaccia web** i bottoni di interazione con esso per tutti gli utenti, tranne quello che ha richiesto il blocco.
+
+.. note::
+
+   Il blocco di un notebook **è solo estetico**, e non ha lo scopo di impedire agli utenti di interagire con il notebook, ma serve per indicare ai propri collaboratori che si stanno effettuando modifiche grandi che non permettono collaborazione sul notebook.
+
+Un notebook bloccato può essere sbloccato da qualsiasi **membro** del :ref:`gruppo di ricerca`; il membro che ha richiesto il blocco potrà sbloccarlo **immediatamente**, mentre agli altri membri è richiesto di confermare l'azione.
+
+
+.. index::
+   single: notebook (entità); modifica
+
+Modifica di un notebook
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi *membro* di un :ref:`gruppo di ricerca` può modificare **nome** e **immagine** dei notebook *fermi* al suo interno.
+
+I notebook *avviati* non possono essere modificati.
+
+Lo *slug*, l'identificatore univoco del notebook, non è modificabile successivamente alla creazione, in quanto è utilizzato all'interno degli URL, che devono essere immutabili.
+
+
+.. index::
+   single: notebook (entità); eliminazione
+
+Eliminazione di un notebook
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i notebook all'interno dei progetti del gruppo, a condizione che questi siano *fermi* e *non bloccati*.

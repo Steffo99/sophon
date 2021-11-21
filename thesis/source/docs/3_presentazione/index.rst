@@ -72,7 +72,7 @@ Il più importante di questi editor è `Google Docs <https://docs.google.com/>`_
 
 
 .. index::
-   single: notebook; computazionale
+   single: notebook computazionale
    single: celle
 
 Notebook computazionali
