@@ -40,37 +40,3 @@ jobs:
         with:
           name: "report.html.tar.gz"
           path: "report/build/report.html.tar.gz"
-  latexpdf:
-    name: "Build PDF document"
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Update apt repositories"
-        run: sudo apt-get update -y
-      - name: "Checkout repository"
-        uses: actions/checkout@v2
-      - name: "Setup Python"
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: "Setup Poetry"
-        uses: abatilo/actions-poetry@v2.0.0
-        with:
-          poetry-version: 1.1.11
-      - name: "Install LaTeX packages"
-        run: sudo apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-luatex
-      - name: "Install backend dependencies"
-        working-directory: backend/
-        run: poetry install --no-interaction
-      - name: "Find Poetry Python environment"
-        working-directory: backend/
-        run: echo "pythonLocation=$(poetry env list --full-path | cut -f1 -d' ')/bin" >> $GITHUB_ENV
-      - name: "Build LaTeX document with Sphinx"
-        working-directory: report/
-        run: |
-          source $pythonLocation/activate
-          make latexpdf
-      - name: "Upload build artifact"
-        uses: actions/upload-artifact@v2
-        with:
-          name: "report.pdf"
-          path: "report/build/latex/sophon.pdf"
