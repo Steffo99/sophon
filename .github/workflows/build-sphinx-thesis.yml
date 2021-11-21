@@ -23,9 +23,8 @@ jobs:
       - name: "Install backend dependencies"
         working-directory: backend/
         run: "poetry install --no-interaction"
-      - name: "Activate Python environment"
-        run: |
-          source $(poetry env list --full-path | cut -f1 -d" ")/bin/activate
+      - name: "Find Poetry Python environment"
+        run: echo "pythonLocation=$(poetry env list --full-path | cut -f1 -d' ')/bin" >> $GITHUB_ENV
       - name: "Build HTML document with Sphinx"
         uses: ammaraskar/sphinx-action@master
         with:
@@ -54,10 +53,9 @@ jobs:
           poetry-version: 1.1.11
       - name: "Install backend dependencies"
         working-directory: backend/
-        run: "poetry install --no-interaction"
-      - name: "Activate Python environment"
-        run: |
-          source $(poetry env list --full-path | cut -f1 -d" ")/bin/activate
+        run: poetry install --no-interaction
+      - name: "Find Poetry Python environment"
+        run: echo "pythonLocation=$(poetry env list --full-path | cut -f1 -d' ')/bin" >> $GITHUB_ENV
       - name: "Install Latex dependencies"
         run: apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
       - name: "Build Latex document with Sphinx"
