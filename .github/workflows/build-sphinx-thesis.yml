@@ -29,7 +29,9 @@ jobs:
         run: echo "pythonLocation=$(poetry env list --full-path | cut -f1 -d' ')/bin" >> $GITHUB_ENV
       - name: "Build HTML document with Sphinx"
         working-directory: thesis/
-        run: make html
+        run: |
+          source $pythonLocation/activate
+          make html
       - name: "Create a gzip of the build"
         run: "tar -xvzf thesis/_build/thesis.html.tar.gz thesis/_build/html"
       - name: "Upload build artifact"
@@ -61,7 +63,9 @@ jobs:
         run: apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
       - name: "Build Latex document with Sphinx"
         working-directory: thesis/
-        run: make latexpdf
+        run: |
+          source $pythonLocation/activate
+          make latexpdf
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
         with:
