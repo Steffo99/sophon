@@ -6,8 +6,9 @@ on:
       - ".github/workflows/build-sphinx-thesis.yml"
       - "thesis/**"
 jobs:
-  setup:
-    name: "Setup the environment"
+  html:
+    name: "Build HTML document"
+    needs: [ setup ]
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout repository"
@@ -23,11 +24,6 @@ jobs:
       - name: "Install backend dependencies"
         working-directory: backend/
         run: "poetry install --no-interaction"
-  html:
-    name: "Build HTML document"
-    needs: [ setup ]
-    runs-on: ubuntu-latest
-    steps:
       - name: "Activate Python environment"
         run: |
           source $(poetry env list --full-path | cut -f1 -d" ")/bin/activate
@@ -48,6 +44,19 @@ jobs:
     needs: [ setup ]
     runs-on: ubuntu-latest
     steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Setup Python"
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: "Setup Poetry"
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.11
+      - name: "Install backend dependencies"
+        working-directory: backend/
+        run: "poetry install --no-interaction"
       - name: "Activate Python environment"
         run: |
           source $(poetry env list --full-path | cut -f1 -d" ")/bin/activate
