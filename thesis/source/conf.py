@@ -142,11 +142,12 @@ latex_elements = {
     "papersize": "a4paper",
     "pointsize": "12pt",
     "sphinxsetup": ", ".join(f"{key}={value}" for key, value in latex_setup.items()),
-    "fontpkg": r"""
-        \setmainfont{EB Garamond}
-        \setsansfont{Fira Sans}
-        \setmonofont{Fira Code}
-    """
+    # TODO: Re-enable this before production
+    # "fontpkg": r"""
+    #     \setmainfont{EB Garamond}
+    #     \setsansfont{Fira Sans}
+    #     \setmonofont{Fira Code}
+    # """
 }
 
 # TODOs
