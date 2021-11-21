@@ -167,3 +167,17 @@ rinoh_documents = [
         "target": "manual",
     }
 ]
+
+# Smartquotes
+smartquotes_excludes = {
+    "languages": [
+        # Smartquotes is completely broken in italian!
+        "it",
+        # Keep the default, just in case
+        "ja",
+    ],
+    "builders": [
+        "man",
+        "text",
+    ]
+}
