@@ -274,11 +274,7 @@ Le interazioni vengono inviate al `modulo proxy <Modulo proxy>`, che le ispezion
 
 È scritto in `TypeScript`, usando `React` e le librerie `FontAwesome` e `Bluelib`, in aggiunta alle loro dipendenze ed altre piccole librerie di supporto.
 
-Viene **eseguito dal browser web** dell'utente che desidera interagire con Sophon, transpilato da TypeScript a `JavaScript`.
-
-.. todo::
-
-   Transpilato esiste come parola italiana? Come si può tradurre "transpiled" altrimenti?
+Viene **eseguito dal browser web** dell'utente che desidera interagire con Sophon, transcompilato da TypeScript a `JavaScript`.
 
 
 .. index::
