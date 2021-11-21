@@ -32,13 +32,13 @@ jobs:
         run: |
           source $pythonLocation/activate
           make html
-      - name: "Create a gzip of the build"
-        run: "tar -cvzf thesis/_build/thesis.html.tar.gz thesis/_build/html"
+      - name: "Create a gzipped tarball of the build"
+        run: tar -cvzf report/build/report.html.tar.gz report/build/html
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
         with:
           name: "thesis.html.tar.gz"
-          path: "thesis/_build/thesis.html.tar.gz"
+          path: "thesis/build/thesis.html.tar.gz"
   latexpdf:
     name: "Build PDF document"
     runs-on: ubuntu-latest
@@ -72,4 +72,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "thesis.pdf"
-          path: "thesis/_build/latex/sophon.pdf"
+          path: "thesis/build/latex/sophon.pdf"
