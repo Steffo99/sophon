@@ -33,6 +33,7 @@ jobs:
           source $pythonLocation/activate
           make html
       - name: "Create a gzipped tarball of the build"
+        working-directory: ${{ github.workspace }}
         run: tar -cvzf report/build/report.html.tar.gz report/build/html
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
