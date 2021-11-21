@@ -293,15 +293,15 @@ Fa inoltre abbondante uso della capacità dei linguaggi dinamici di definire fun
 
 .. code-block:: javascript
 
-   var cane = {
+   const cane = {
       verso: () => console.log("Woof!"),
    };
 
-   var gatto = {
+   const gatto = {
       verso: () => console.log("Miao!"),
    };
 
-   var zoo = [cane, gatto];
+   const zoo = [cane, gatto];
 
    zoo.forEach(
       (animale) => animale.verso()
