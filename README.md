@@ -125,6 +125,7 @@ Commits names are prefixed with a variant of [Gitmoji][what-is-gitmoji] which fo
 - 🐛 Bug fix
 - 🧹 Cleanup
 - 📔 Documentation
+- 🎓 Thesis
 - 🗒 Readme
 - ⬆ Dependency update
 - 📦 Packaging
