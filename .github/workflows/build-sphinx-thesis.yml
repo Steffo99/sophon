@@ -34,7 +34,7 @@ jobs:
           make html
       - name: "Create a gzipped tarball of the build"
         working-directory: ${{ github.workspace }}
-        run: tar -cvzf report/build/report.html.tar.gz report/build/html
+        run: tar -cvzf thesis/build/thesis.html.tar.gz thesis/build/html
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
         with:
