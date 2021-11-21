@@ -65,7 +65,7 @@ jobs:
         with:
           poetry-version: 1.1.11
       - name: "Install LaTeX packages"
-        run: sudo apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-luatex fonts-ebgaramond fonts-ebgaramond-extra fonts-firacode
+        run: sudo apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-luatex fonts-ebgaramond fonts-ebgaramond-extra fonts-firacode xindy
       - name: "Install backend dependencies"
         working-directory: backend/
         run: poetry install --no-interaction
