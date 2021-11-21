@@ -33,7 +33,7 @@ jobs:
           source $pythonLocation/activate
           make html
       - name: "Create a gzip of the build"
-        run: "tar -xvzf thesis/_build/thesis.html.tar.gz thesis/_build/html"
+        run: "tar -cvzf thesis/_build/thesis.html.tar.gz thesis/_build/html"
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
         with:
