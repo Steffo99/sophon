@@ -5,6 +5,7 @@ on:
     paths:
       - ".github/workflows/build-sphinx-report.yml"
       - "report/**"
+      - "backend/**"
 jobs:
   html:
     name: "Build HTML document"
