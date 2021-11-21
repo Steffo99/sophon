@@ -3,14 +3,34 @@ on:
   push:
     branches: [ main ]
     paths:
+      - ".github/workflows/build-sphinx-thesis.yml"
       - "thesis/**"
 jobs:
-  html:
-    name: "Build HTML document"
+  setup:
+    name: "Setup the environment"
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v2
+      - name: "Setup Python"
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: "Setup Poetry"
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.11
+      - name: "Install backend dependencies"
+        working-directory: backend/
+        run: "poetry install --no-interaction"
+  html:
+    name: "Build HTML document"
+    needs: [ setup ]
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Activate Python environment"
+        run: |
+          source $(poetry env list --full-path | cut -f1 -d" ")/bin/activate
       - name: "Build HTML document with Sphinx"
         uses: ammaraskar/sphinx-action@master
         with:
@@ -25,15 +45,18 @@ jobs:
           path: "thesis/_build/thesis.html.tar.gz"
   latexpdf:
     name: "Build PDF document"
+    needs: [ setup ]
     runs-on: ubuntu-latest
     steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v2
+      - name: "Activate Python environment"
+        run: |
+          source $(poetry env list --full-path | cut -f1 -d" ")/bin/activate
+      - name: "Install Latex dependencies"
+        run: apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
       - name: "Build Latex document with Sphinx"
         uses: ammaraskar/sphinx-action@master
         with:
           docs-folder: "thesis/"
-          pre-build-command: "apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended"
           build-command: "make latexpdf"
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
