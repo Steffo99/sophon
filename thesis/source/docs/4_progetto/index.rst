@@ -159,7 +159,7 @@ Il modulo backend consiste in una web :abbr:`API (application programming interf
 
 È scritto in `Python`, usando `Poetry` e le librerie `Django`, `Django REST Framework` e `Docker SDK for Python`, descritte nei prossimi paragrafi.
 
-Esso è **eseguito dal server** sul quale si desidera ospitare Sophon.
+Esso è **eseguito dal server** sul quale è ospitato Sophon.
 
 
 .. index::
@@ -307,6 +307,7 @@ Fa inoltre abbondante uso della capacità dei linguaggi dinamici di definire fun
       (animale) => animale.verso()
    );
 
+
 .. index::
    single: Node.js
    single: npm
@@ -394,7 +395,7 @@ Si basa sul concetto di *componenti*, piccole parti incapsulate di interfaccia g
       );
    }
 
-È stata scelta per l'utilizzo in Sophon in quanto permette la realizzazione di interfacce grafiche molto complesse attraverso codice di facile comprensione, rendendo possibile la creazione di un'interfaccia altamente `intuibile <Intuibilità>`.
+È stata scelta per l'utilizzo in Sophon in quanto permette la realizzazione di interfacce grafiche molto complesse attraverso codice di facile comprensione, rendendo possibile la creazione di un'interfaccia interattiva ed `intuibile <Intuibilità>`.
 
 
 .. index::
@@ -429,7 +430,30 @@ Bluelib
 Modulo proxy
 ------------
 
-.. todo:: Modulo proxy
+Il *modulo proxy* consiste in un web server che permette di accedere al `modulo backend <Modulo backend>`, ai `moduli Jupyter <Modulo Jupyter>` e a una versione preconfigurata del `modulo frontend <Modulo frontend>`.
+
+È stato realizzato configurando `Apache HTTP Server` in modo che effettuasse dinamicamente `reverse proxying <Reverse proxy>` verso gli altri moduli basandosi su una rubrica aggiornata dal backend.
+
+Viene **eseguito dal server** sul quale è ospitato Sophon.
+
+.. index::
+   pair: reverse; proxy
+
+Reverse proxy
+^^^^^^^^^^^^^
+
+Il *reverse proxying* è un'operazione effettuabile dai web server per permettere l'accesso controllato ad altri web server collocati su una rete interna attraverso l'inoltro di pacchetti.
+
+Frequentemente, il reverse proxying viene utilizzato per "aggiungere" l'HTTPS a un web server disponibile solo in HTTP, o per disambiguare tra più web server che devono essere accessibili allo stesso indirizzo IP ma con nomi di dominio diversi.
+
+In un'installazione predefinita di Sophon, il reverse proxying effettuato è duplice:
+
+*  il server web della macchina host riceve richieste HTTPS e le inoltra in HTTP al server web del `modulo proxy <Modulo proxy>`;
+*  il server web del modulo proxy riceve richieste HTTP che inoltra ai vari moduli in base al valore dell'header ``Host`` della richiesta ricevuta.
+
+.. figure:: proxy.png
+
+   Schema del reverse proxying di Sophon.
 
 
 .. index::
@@ -440,7 +464,23 @@ Modulo proxy
 Apache HTTP server
 ^^^^^^^^^^^^^^^^^^
 
-.. todo:: Apache HTTP server
+`Apache HTTP Server <https://httpd.apache.org/>`_, comunemente chiamato anche *httpd* o *apache2*, è uno dei tre webserver "general purpose" più comunemente usati al mondo.
+
+Ha una struttura a moduli, che forniscono funzionalità aggiuntive, ed è configurabile tramite uno o più file ``.conf`` aventi sintassi come la seguente:
+
+.. code-block:: apacheconf
+
+   # Questa è un'istruzione globale.
+   Bind 80
+
+   # Questo è un blocco di istruzioni ristretto a un contesto specifico.
+   <VirtualHost *:80>
+      ServerName "ilmiosophon.it"
+      ServerAlias "*.ilmiosophon.it"
+
+      RewriteEngine On
+      RewriteRule ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+   </VirtualHost>
 
 
 .. index::
@@ -450,7 +490,11 @@ Apache HTTP server
 Modulo Jupyter
 --------------
 
-.. todo:: Modulo backend
+Il *modulo Jupyter* consiste in una versione preconfigurata di `Jupyter` pronta per essere istanziata dal `modulo backend <Modulo backend>`.
+
+Tanti moduli Jupyter possono esistere contemporaneamente su Sophon: ne viene creato uno per ogni `notebook computazionale <Notebook computazionali>` gestito dal modulo backend.
+
+Viene **eseguito dal server** sul quale è ospitato Sophon.
 
 
 .. index::
@@ -459,7 +503,7 @@ Modulo Jupyter
 Containerizzazione
 ==================
 
-.. todo:: Containerizzazione
+Al fine di facilitare l'installazione e di migliorare la `sicurezza <Sicurezza>` dell'applicazione, si è stabilito di costruire `container <Container>` `Docker` per tutti i moduli di Sophon.
 
 
 .. index::
@@ -468,7 +512,25 @@ Containerizzazione
 Docker
 ------
 
-.. todo:: Containerizzazione
+`Docker <https://www.docker.com/>`_ è un software che permette di eseguire applicazioni all'interno di `container <Container>` isolati dal resto del sistema, in maniera simile all'esecuzione di macchine virtuali, ma **condividendo il kernel** con la macchina host.
+
+È composto da due parti, `Docker Engine` e `Docker Compose`, e prevede varie astrazioni, quali le `immagini <Immagini>`, i `container <Container>`, i `network <Network>` e i `volumi <Volumi>`.
+
+
+.. index::
+   single: image
+   single: immagine
+   single: Docker; image
+   single: Docker; immagine
+
+Immagini
+^^^^^^^^
+
+Le *immagini* Docker sono sequenze di regole e insiemi di file per la creazione di un `container <Container>`, tipicamente partendo da un altro container come base. :cite:`docker:overview`
+
+Utilizzano un filesystem copy-on-write a strati: vengono registrate all'interno dell'immagine solamente le modifiche che ogni regola ha apportato al filesystem interno, rendendo le immagini molto più leggere di quanto lo sarebbero se dovesse essere salvato tutto il disco virtuale.
+
+Possono essere comparate a immagini di macchine virtuali con tanti "punti di ripristino".
 
 
 .. index::
@@ -478,7 +540,9 @@ Docker
 Container
 ^^^^^^^^^
 
-.. todo:: Container
+I *container* Docker sono istanze di `immagini <Immagini>` che possono essere eseguite dal `Docker Engine` :cite:`docker:overview`.
+
+Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arrestata.
 
 
 .. index::
@@ -488,7 +552,11 @@ Container
 Network
 ^^^^^^^
 
-.. todo:: Network
+I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari `container <Container>` ad una rete locale virtuale, permettendone l'interazione :cite:`docker:networking`.
+
+All'interno di un network è disponibile una funzionalità di risoluzione automatica degli indirizzi IP virtuali dei container: per accedere al container ``pear`` in HTTP, ad esempio, sarà sufficiente utilizzare ``apple`` come se fosse un nome di dominio: ``http://pear/``.
+
+Sono una versione più potente dei moduli di rete per macchine virtuali.
 
 
 .. index::
@@ -498,7 +566,22 @@ Network
 Volumi
 ^^^^^^
 
-.. todo:: Volumi
+I *volumi* Docker sono astrazioni per filesystem che permettono la condivisione di file tra container :cite:`docker:volumes`.
+
+Essi vengono montati all'interno di un container in una cartella configurabile detta *mount point*; tutti i container con accesso al volume vedranno gli stessi file all'interno di essa.
+
+Sono il parallelo delle immagini disco delle macchine virtuali.
+
+
+.. index::
+   single: Docker; Engine
+
+Docker Engine
+-------------
+
+`Docker Engine <https://docs.docker.com/engine/>`_ è il daemon che si occupa della gestione di `immagini <Immagini>`, `container <Container>`, `network <Network>` e `volumi <Volumi>`.
+
+Astrae la piattaforma su cui viene eseguito, in modo che tutte le immagini possano essere eseguite su Linux come su Windows o Mac OS X.
 
 
 .. index::
@@ -507,7 +590,41 @@ Volumi
 Docker Compose
 --------------
 
-.. todo:: Containerizzazione
+`Docker Compose <https://docs.docker.com/compose/>`_ è uno strumento da linea di comando che permette l'esecuzione di applicazioni Docker composte da tanti container.
+
+Le applicazioni Compose sono definite all'interno di un file `YAML <https://it.wikipedia.org/wiki/YAML>`_ come il seguente:
+
+.. code-block:: yaml
+
+   version: "3.9"
+
+   # Elenco dei volumi dell'applicazione
+   volumes:
+     db-data:
+
+   # Elenco dei network dell'applicazione
+   networks:
+     main:
+
+   # Elenco dei container dell'applicazione
+   services:
+     db:
+       # Immagine del container
+       image: postgres
+       # Mount point dei volumi del container
+       volumes:
+         - db-data:/var/lib/postgresql/data
+       # Network del container
+       networks:
+         - main
+
+     app:
+       image: my-app-image
+       networks:
+         - main
+       # Container richiesti da questo container
+       depends_on:
+         - db
 
 
 .. index::
