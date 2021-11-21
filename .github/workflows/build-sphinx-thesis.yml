@@ -81,4 +81,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: "thesis.pdf"
-          path: "thesis/build/latex/sophon.pdf"
+          path: "thesis/build/latex/progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.pdf"
