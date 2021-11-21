@@ -60,7 +60,13 @@ jobs:
         working-directory: backend/
         run: echo "pythonLocation=$(poetry env list --full-path | cut -f1 -d' ')/bin" >> $GITHUB_ENV
       - name: "Install LaTeX dependencies"
-        run: apt-get update -y && apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended
+        run: >
+          sudo apt-get update -y &&
+          sudo apt-get install -y
+            latexmk
+            texlive-latex-recommended
+            texlive-latex-extra
+            texlive-fonts-recommended
       - name: "Build LaTeX document with Sphinx"
         working-directory: report/
         run: |
