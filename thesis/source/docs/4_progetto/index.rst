@@ -411,13 +411,42 @@ FontAwesome
 
 .. index::
    single: Bluelib
+   single: Bluelib; tema
 
 Bluelib
 ^^^^^^^
 
-.. todo::
+`Bluelib <https://gh.steffo.eu/bluelib/>`_ è un foglio di stile per pagine web orientato alla modularità, alla responsività e all'`accessibilità <Accessibilità>`.
 
-   Bluelib
+È stato sviluppato nell'Estate 2021 come progetto personale dell'autore di questa tesi, ed è stato esteso con temi aggiuntivi in Autunno 2021, tra cui uno sviluppato appositamente per Sophon.
+
+Si basa sul concetto di **pannelli**, sezioni di pagina separate dal resto tramite un colore di sfondo o un bordo diverso.
+
+Fa ampio uso delle `CSS Custom Properties <https://developer.mozilla.org/en-US/docs/Web/CSS/--*>`_, permettendo lo sviluppo di vari *temi* con aspetto differente.
+
+.. image:: bluelib_paper.png
+   :scale: 25%
+.. image:: bluelib_royalblue.png
+   :scale: 25%
+.. image:: bluelib_sophon.png
+   :scale: 25%
+.. image:: bluelib_hacker.png
+   :scale: 25%
+.. image:: bluelib_amber.png
+   :scale: 25%
+
+
+.. index::
+   pair: Bluelib; React
+
+Bluelib React
+"""""""""""""
+
+`Bluelib React <http://gh.steffo.eu/bluelib-react/>`_ è un adattamento a `React` del foglio di stile `Bluelib`.
+
+È stato sviluppato a inizio Autunno 2021 come parte del tirocinio interno dell'autore di questa tesi.
+
+Definice componenti per ogni elemento grafico introdotto in Bluelib, e rende velocemente configurabili alcuni parametri, come il colore o la disabilitazione di un pannello.
 
 
 .. index::
@@ -431,6 +460,7 @@ Il *modulo proxy* consiste in un web server che permette di accedere al `modulo 
 È stato realizzato configurando `Apache HTTP Server` in modo che effettuasse dinamicamente `reverse proxying <Reverse proxy>` verso gli altri moduli basandosi su una rubrica aggiornata dal backend.
 
 Viene **eseguito dal server** sul quale è ospitato Sophon.
+
 
 .. index::
    pair: reverse; proxy
