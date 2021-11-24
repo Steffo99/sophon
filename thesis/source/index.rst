@@ -11,10 +11,10 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    docs/2_introduzione/index
    docs/3_presentazione/index
    docs/4_progetto/index
-   docs/5_implementazione/index
-   docs/6_applicazione/index
-   docs/7_conclusione/index
-   docs/8_appendice/index
+.. docs/5_implementazione/index
+.. docs/6_applicazione/index
+.. docs/7_conclusione/index
+.. docs/8_appendice/index
 
 
 .. only:: html
@@ -23,6 +23,8 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    ==================
 
    * :ref:`genindex`
+   * :ref:`modindex`
+   * :ref:`search`
 
    Da fare
    =======
