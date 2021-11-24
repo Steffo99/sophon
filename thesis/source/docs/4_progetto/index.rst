@@ -144,7 +144,7 @@ Separazione in moduli
 
 Per realizzare il requisito dell'`estendibilità <Estendibilità>`, si è scelto di separare le parti dell'applicazioni in 4 diversi moduli interagenti.
 
-.. figure:: figure_modules.png
+.. figure:: diagram_modules.png
 
    Schema che mostra come interagiscono tra loro i moduli di Sophon.
 
@@ -477,7 +477,7 @@ In un'installazione predefinita di Sophon, il reverse proxying effettuato è dup
 *  il server web della macchina host riceve richieste HTTPS e le inoltra in HTTP al server web del `modulo proxy <Modulo proxy>`;
 *  il server web del modulo proxy riceve richieste HTTP che inoltra ai vari moduli in base al valore dell'header ``Host`` della richiesta ricevuta.
 
-.. figure:: proxy.png
+.. figure:: diagram_proxy.png
 
    Schema del reverse proxying di Sophon.
 
