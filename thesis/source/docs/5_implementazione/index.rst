@@ -1,61 +1,32 @@
 .. index::
-   single: implementazione
+   pair: Sophon; realizzazione
 
-***************
-Implementazione
-***************
+***********************
+Realizzazione di Sophon
+***********************
 
-Ultimato il progetto, si è passati alla sua implementazione su calcolatore.
+Terminato il progetto, si è passati a realizzarne una versione funzionante su calcolatore.
 
-.. todo:: Create index
-
-.. todo:: Fix references
-
-.. todo:: Add details
-
-
-.. index::
-   single: Git; repository
-
-Repository Git
-==============
-
-
-
-.. index::
-   single: Git
-
-Git
----
-
-
-GitHub
-------
-
-.. todo:: GitHub
+.. todo:: Inserire nell'indice tutte le sezioni.
 
 
 .. index::
    pair: implementazione; backend
 
-Implementazione del modulo backend
-==================================
+Realizzazione del modulo backend
+================================
 .. default-domain:: py
 
-.. todo:: Implementazione del modulo backend
-
-
-Ambiente virtuale Python
-------------------------
-
-.. todo:: Ambiente virtuale Python
+Il modulo backend è stato realizzato come un package `Python` denominato ``sophon``, e poi `containerizzato <Containerizzazione del modulo backend>`, creando un'immagine `Docker` standalone.
 
 
 Il project Django
 -----------------
 .. module:: sophon
 
-Il project del modulo aggiunge alla struttura base autogenerata da Django alcune funzionalità utili all'intero backend.
+Il package è stato creato utilizzando l'utility ``startproject`` di Django, la quale crea una cartella di script `Python` con i quali partire per lo sviluppo di una nuovo software web.
+
+La cartella generata è stata modificata significativamente: ne si è modificata la struttura in modo tale da trasformarla da un insieme di script a un vero e proprio modulo Python eseguibile e distribuibile, e si sono aggiunte nuove funzionalità di utilità generale all'applicazione, quali una `pagina di amministrazione personalizzata <Pagina di amministrazione personalizzata>`, il `caricamento dinamico delle impostazioni <Caricamento dinamico delle impostazioni>` e vari `miglioramenti all'autenticazione <Miglioramenti all'autenticazione>`
 
 
 Pagina di amministrazione personalizzata
@@ -91,11 +62,11 @@ Inoltre, il template predefinito viene sovrascritto da quello all'interno del fi
       `.SophonAdminSite` è selezionata come classe predefinita per il sito di amministrazione.
 
 
-Impostazioni dinamiche
-^^^^^^^^^^^^^^^^^^^^^^
+Caricamento dinamico delle impostazioni
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.settings
 
-Il file di impostazioni viene modificato per **permettere la configurazione attraverso variabili di ambiente** invece che attraverso il file ``settings.py``, rendendo il deployment con Docker molto più semplice.
+Il file di impostazioni viene modificato per **permettere la configurazione attraverso variabili di ambiente** invece che attraverso la modifica del file ``settings.py``, rendendo la `containerizzazione <Containerizzazione del modulo backend>` molto più semplice.
 
 .. code-block:: python
 
@@ -117,8 +88,8 @@ Inoltre, viene configurato il modulo `logging` per emettere testo colorato di pi
    }
 
 
-Autenticazione migliorata
-^^^^^^^^^^^^^^^^^^^^^^^^^
+Miglioramenti all'autenticazione
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.auth1
 
 La classe `rest_framework.authentication.TokenAuthentication` viene modificata per ottenere un comportamento conforme agli standard del web.
@@ -127,7 +98,7 @@ La classe `rest_framework.authentication.TokenAuthentication` viene modificata p
 
    .. attribute:: keyword = "Bearer"
 
-      Si configura `rest_framework` per accettare header di autenticazione nella forma ``Bearer <token>``, invece che ``Token <token>``.
+      Si configura `rest_framework` per accettare header di autenticazione nella forma ``Bearer <token>``, invece che il default di `rest_framework` ``Token <token>``.
 
 .. module:: sophon.auth2
 
@@ -142,8 +113,6 @@ La view `rest_framework.authtoken.views.ObtainAuthToken` viene estesa per aggiun
 
 L'app Sophon Core
 -----------------
-.. default-domain:: py
-.. default-role:: obj
 .. module:: sophon.core
 
 L'app `sophon.core` è l'app principale del progetto, e non può essere disattivata, in quanto dipendenza obbligatoria di tutte le altre app.
@@ -164,7 +133,7 @@ Modello base astratto
 ^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.models
 
-Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabilire il livello di accesso di un utente all'oggetto e per generare automaticamente i `rest_framework.serializers.ModelSerializer` in base al livello di accesso.
+Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabilire il `livello di accesso` di un `utente <Utenti in Sophon>` all'oggetto e per generare automaticamente i `rest_framework.serializers.ModelSerializer` in base ad esso.
 
 .. class:: SophonModel(django.db.models.Model)
 
@@ -204,7 +173,7 @@ Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabil
 Modello di autorizzazione astratto
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Viene definito un nuovo modello astratto, basato su `SophonModel`, che permette di determinare i permessi dell'utente in base alla sua appartenenza al gruppo a cui è collegato l'oggetto implementatore.
+Viene definito un nuovo modello astratto, basato su `SophonModel`, che permette di determinare i permessi dell'`utente <Utenti in Sophon>` in base alla sua appartenenza al gruppo a cui è collegato l'oggetto implementatore.
 
 .. class:: SophonGroupModel(SophonModel)
 
@@ -228,33 +197,33 @@ Viene definito un nuovo modello astratto, basato su `SophonModel`, che permette 
 
 .. class:: sophon.core.enums.SophonGroupAccess(enum.IntEnum)
 
-   Enumerazione che stabilisce il livello di autorità che un utente può avere all'interno di un gruppo.
+   Enumerazione che stabilisce il livello di autorità che un `utente <Utenti in Sophon>` può avere all'interno di un `gruppo di ricerca <Gruppi di ricerca in Sophon>`.
 
    .. attribute:: NONE = 0
 
-      Utente :ref:`ospite`.
+      Ospite.
 
    .. attribute:: REGISTERED = 10
 
-      :ref:`Utente` registrato.
+      Utente registrato.
 
    .. attribute:: MEMBER = 50
 
-      Membro del :ref:`gruppo di ricerca`.
+      Membro del gruppo al quale appartiene l'oggetto.
 
    .. attribute:: OWNER = 100
 
-      Creatore del :ref:`gruppo di ricerca`.
+      Creatore del gruppo al quale appartiene l'oggetto.
 
    .. attribute:: SUPERUSER = 200
 
-      :ref:`Superutente` con privilegi universali.
+      Superutente con privilegi universali.
 
 
 Modello dei dettagli dell'istanza
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Viene creato il modello che rappresenta i dettagli dell':ref:`istanza` Sophon.
+Viene creato il modello che rappresenta i dettagli dell'`istanza di Sophon <Istanza di Sophon>`.
 
 .. class:: SophonInstanceDetails(SophonModel)
 
@@ -265,39 +234,60 @@ Viene creato il modello che rappresenta i dettagli dell':ref:`istanza` Sophon.
       L'istanza unica viene creata dalla migrazione ``0004_sophoninstancedetails.py``.
 
    .. attribute:: name: CharField
+
+      Il titolo dell'istanza Sophon.
+
    .. attribute:: description: TextField
+
+      La descrizione dell'istanza Sophon, da visualizzare in un riquadro "A proposito dell'istanza".
+
    .. attribute:: theme: CharField ["sophon", "paper", "royalblue", "hacker", "amber"]
+
+      Il tema `Bluelib` dell'istanza.
 
    .. method:: version: str
       :property:
 
-      :returns: La versione installata del pacchetto `sophon`.
-
-   .. seealso::
-
-      :ref:`Sophon instance details` nella guida per l'amministratore.
+      :returns: La versione installata del pacchetto :mod:`sophon`.
 
 
 Modello del gruppo di ricerca
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Viene creato il modello che rappresenta un :ref:`gruppo di ricerca`.
+Viene creato il modello che rappresenta un :ref:`gruppo di ricerca <Gruppi di ricerca>`.
 
 .. class:: ResearchGroup(SophonGroupModel)
 
    .. attribute:: slug: SlugField
+
+      L'identificatore del gruppo di ricerca.
+
    .. attribute:: name: CharField
+
+      Il nome del gruppo di ricerca.
+
    .. attribute:: description: TextField
+
+      La descrizione del gruppo di ricerca, da visualizzare in un riquadro "A proposito del gruppo".
+
    .. attribute:: members: ManyToManyField → django.contrib.auth.models.User
+
+      Elenco dei membri del gruppo. L'utente `.owner` è ignorato, in quanto è considerato sempre parte del gruppo.
+
    .. attribute:: owner: ForeignKey → django.contrib.auth.models.User
+
+      Il creatore e proprietario del gruppo, con privilegi amministrativi.
+
    .. attribute:: access: CharField ["MANUAL", "OPEN"]
+
+      La `modalità di accesso <Membri e modalità di accesso>` del gruppo.
 
 
 Estensione ai permessi di Django
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.permissions
 
-I permessi di `rest_framework` vengono estesi con due nuove classi che utilizzano il :ref:`modello di autorizzazione` precedentemente definito.
+I permessi di `rest_framework` vengono estesi con due nuove classi che utilizzano il `modello di autorizzazione astratto <Modello di autorizzazione astratto>` precedentemente definito.
 
 .. class:: Edit(rest_framework.permissions.BasePermission)
 
@@ -365,13 +355,19 @@ Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle clas
 
       .. deprecated:: 0.1
 
+      Metodo di `rest_framework` rimosso da Sophon.
+
    .. method:: perform_update(self, serializer)
 
       .. deprecated:: 0.1
 
+      Metodo di `rest_framework` rimosso da Sophon.
+
    .. method:: perform_destroy(self, serializer)
 
       .. deprecated:: 0.1
+
+      Metodo di `rest_framework` rimosso da Sophon.
 
    .. method:: hook_create(self, serializer) -> dict[str, typing.Any]
 

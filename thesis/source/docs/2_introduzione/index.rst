@@ -1,9 +1,9 @@
 .. index::
-   single: introduzione
+   pair: tesi; introduzione
 
-************
-Introduzione
-************
+**********************
+Introduzione alla tesi
+**********************
 
 Nel mondo della ricerca universitaria, è frequente la collaborazione tra più colleghi su uno stesso progetto, condividendo dati e materiale al fine di ottenere risultati più efficientemente.
 
@@ -19,7 +19,7 @@ Jupyter però ha alcuni problemi: è complesso da installare e mantenere, e non 
 
 
 .. index::
-   single: obiettivo della tesi
+   pair: tesi; obiettivo
 
 Obiettivo della tesi
 ====================
@@ -28,7 +28,7 @@ L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo 
 
 
 .. index::
-   single: struttura della tesi
+   pair: tesi; struttura
 
 Struttura della tesi
 ====================
@@ -40,7 +40,7 @@ Struttura della tesi
 La tesi è strutturata nel seguente modo:
 
 #. nel primo capitolo, :ref:`Sinossi`, viene descritto molto brevemente il progetto realizzato;
-#. nel secondo capitolo, :ref:`Introduzione`, viene introdotto il contesto della tesi, la tesi stessa e i suoi contenuti;
+#. nel secondo capitolo, :ref:`Introduzione alla tesi`, viene introdotto il contesto della tesi, la tesi stessa e i suoi contenuti;
 #. nel terzo capitolo, :ref:`Ricerca collaborativa`, viene presentata in dettaglio la situazione attuale della ricerca collaborativa;
 #. nel quarto capitolo, :ref:`Progettazione`, viene descritta la progettazione avvenuta, entrando nei dettagli dei requisiti, della suddivisione in moduli e delle astrazioni create;
 #. nel quinto capitolo, :ref:`Implementazione`, vengono trattate le specifiche tecniche implementative del progetto;

@@ -1,18 +1,18 @@
 .. index::
-   single: progettazione
+   pair: Sophon; progettazione
 
-*************
-Progettazione
-*************
+***********************
+Progettazione di Sophon
+***********************
 
 Vista la situazione della `ricerca collaborativa <Ricerca collaborativa>`, si è ritenuto potesse essere utile sviluppare un'alternativa al `progetto JupyterHub <Hosting on-premises>`.
 
 
 .. index::
-   single: requisiti
+   pair: Sophon; requisiti del progetto
 
-Requisiti
-=========
+Requisiti del progetto
+======================
 
 Si è stabilito che per essere un'alternativa valida, il progetto dovesse avere i seguenti requisiti:
 
@@ -28,8 +28,7 @@ Seguono descrizioni dettagliate dei requisiti elencati.
 
 
 .. index::
-   single: requisiti; estendibilità
-   single: estendibilità
+   pair: requisiti; estendibilità
 
 Estendibilità
 -------------
@@ -42,8 +41,7 @@ Infine, il software deve esporre un'**interfaccia alla quale altri software este
 
 
 .. index::
-   single: requisiti; sicurezza
-   single: sicurezza
+   pair: requisiti; sicurezza
 
 Sicurezza
 ---------
@@ -58,8 +56,7 @@ Non si reputa nemmeno importante limitare le risorse utilizzate dai `notebook <n
 
 
 .. index::
-   single: requisiti; intuibilità
-   single: intuibilità
+   pair: requisiti; intuibilità
 
 Intuibilità
 -----------
@@ -72,8 +69,7 @@ In aggiunta, i **dettagli implementativi devono essere nascosti** all'utente, in
 
 
 .. index::
-   single: requisiti; personalizzabilità
-   single: personalizzabilità
+   pair: requisiti; personalizzabilità
 
 Personalizzabilità
 ------------------
@@ -84,8 +80,7 @@ Inoltre, il software deve inoltre permettere all'amministratore di **personalizz
 
 
 .. index::
-   single: requisiti; possibilità di collaborazione
-   single: possibilità di collaborazione
+   pair: requisiti; possibilità di collaborazione
 
 Possibilità di collaborazione
 -----------------------------
@@ -96,8 +91,7 @@ Devono essere **facilitate le interazioni tra utenti**, al fine di ridurre error
 
 
 .. index::
-   single: requisiti; open source
-   single: open source
+   pair: requisiti; open source
 
 Open source
 -----------
@@ -110,8 +104,7 @@ Tutte le **modifiche al codice sorgente devono essere rese disponibili agli uten
 
 
 .. index::
-   single: requisiti; responsività
-   single: responsività
+   pair: requisiti; responsività
 
 Responsività
 ------------
@@ -122,8 +115,7 @@ Pertanto, gli elementi dell'interfaccia devono essere disposti in modo che non e
 
 
 .. index::
-   single: requisiti; accessibilità
-   single: accessibilità
+   pair: requisiti; accessibilità
 
 Accessibilità
 -------------
@@ -136,8 +128,7 @@ Inoltre, i colori scelti per l'interfaccia grafica **devono essere chiari anche 
 
 
 .. index::
-   single: separazione in moduli
-   single: modulo
+   pair: Sophon; separazione in moduli
 
 Separazione in moduli
 =====================
@@ -152,8 +143,8 @@ Per realizzare il requisito dell'`estendibilità <Estendibilità>`, si è scelto
 .. index::
    pair: modulo; backend
 
-Progetto del Modulo backend
----------------------------
+Modulo backend
+--------------
 
 Il modulo backend consiste in una web :abbr:`API (application programming interface)` che si interfaccia con il database e i moduli Jupyter, permettendo un accesso controllato alle risorse del software.
 
@@ -214,17 +205,17 @@ Poetry è in grado di risolvere automaticamente alberi complessi di dipendenze, 
 
 .. index::
    single: Django
-   single: Django; applicazione
-   single: Django; view
-   single: Django; function-based view
-   single: Django; class-based view
+   pair: Django; app
+   pair: Django; view
+   pair: Django; function-based view
+   pair: Django; class-based view
 
 Django
 ^^^^^^
 
 `Django <https://www.djangoproject.com/>`_ è un framework Python per lo sviluppo di siti web dinamici.
 
-Fornisce una suite di strumenti che assistono nella creazione di siti di medie dimensioni, come un :abbr:`ORM (object-relational model)` per i database, una pagina di amministrazione integrata per la gestione dei contenuti del sito e un sistema di moduli scollegabili detti "applicazioni".
+Fornisce una suite di strumenti che assistono nella creazione di siti di medie dimensioni, come un :abbr:`ORM (object-relational model)` per i database, una pagina di amministrazione integrata per la gestione dei contenuti del sito e un sistema di moduli scollegabili detti "app".
 
 Le pagine restituite vengono definite attraverso funzioni, dette *function-based views*, o attraverso classi, dette *class-based views*, che ricevono in input la richiesta effettuata dall'utente ed restituscono in output la risposta HTTP da inoltrargli.
 
@@ -233,9 +224,9 @@ Le pagine restituite vengono definite attraverso funzioni, dette *function-based
 
 .. index::
    single: Django REST Framework
-   single: Django REST Framework; function-based API view
-   single: Django REST Framework; class-based API view
-   single: Django REST Framework; viewset
+   pair: Django REST Framework; function-based API view
+   pair: Django REST Framework; class-based API view
+   pair: Django REST Framework; viewset
 
 Django REST Framework
 ^^^^^^^^^^^^^^^^^^^^^
@@ -371,8 +362,8 @@ Non essendo immediatamente utilizzabile all'interno delle pagine web, deve esser
 
 .. index::
    single: React
-   single: React; componente
-   single: React; hook
+   pair: React; componente
+   pair: React; hook
 
 React
 ^^^^^
@@ -411,7 +402,7 @@ FontAwesome
 
 .. index::
    single: Bluelib
-   single: Bluelib; tema
+   pair: Bluelib; tema
 
 Bluelib
 ^^^^^^^
@@ -424,16 +415,25 @@ Si basa sul concetto di **pannelli**, sezioni di pagina separate dal resto trami
 
 Fa ampio uso delle `CSS Custom Properties <https://developer.mozilla.org/en-US/docs/Web/CSS/--*>`_, permettendo lo sviluppo di vari *temi* con aspetto differente.
 
-.. image:: bluelib_paper.png
-   :scale: 25%
-.. image:: bluelib_royalblue.png
-   :scale: 25%
-.. image:: bluelib_sophon.png
-   :scale: 25%
-.. image:: bluelib_hacker.png
-   :scale: 25%
-.. image:: bluelib_amber.png
-   :scale: 25%
+.. figure:: bluelib_royalblue.png
+
+   Il tema "Royal Blue" di Bluelib, da cui ha origine il nome.
+
+.. figure:: bluelib_paper.png
+
+   Il tema "Sheet of Paper" di Bluelib, pensato per la stampa su carta.
+
+.. figure:: bluelib_sophon.png
+
+   Il tema "Sophon" di Bluelib, creato appositamente per questo progetto.
+
+.. figure:: bluelib_hacker.png
+
+   Il tema "Hacker Terminal" di Bluelib, creato per testare la visualizzazione di caratteri monospace.
+
+.. figure:: bluelib_amber.png
+
+   Il tema "Gestione Amber" di Bluelib, realizzato da Lorenzo Balugani.
 
 
 .. index::
@@ -483,9 +483,9 @@ In un'installazione predefinita di Sophon, il reverse proxying effettuato è dup
 
 
 .. index::
-   single: Apache HTTP server
+   single: Apache; HTTP server
    single: httpd
-   single: apache2
+   single: Apache; apache2
 
 Apache HTTP server
 ^^^^^^^^^^^^^^^^^^
@@ -544,10 +544,8 @@ Docker
 
 
 .. index::
-   single: image
-   single: immagine
-   single: Docker; image
-   single: Docker; immagine
+   pair: Docker; image
+   pair: Docker; immagine
 
 Immagini
 ^^^^^^^^
@@ -560,8 +558,7 @@ Possono essere comparate a immagini di macchine virtuali con tanti "punti di rip
 
 
 .. index::
-   single: container
-   single: Docker; container
+   pair: Docker; container
 
 Container
 ^^^^^^^^^
@@ -572,8 +569,7 @@ Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arr
 
 
 .. index::
-   single: network
-   single: Docker; network
+   pair: Docker; network
 
 Network
 ^^^^^^^
@@ -586,8 +582,7 @@ Sono una versione più potente dei moduli di rete per macchine virtuali.
 
 
 .. index::
-   single: volume
-   single: Docker; volume
+   pair: Docker; volume
 
 Volumi
 ^^^^^^
@@ -600,7 +595,7 @@ Sono il parallelo delle immagini disco delle macchine virtuali.
 
 
 .. index::
-   single: Docker; Engine
+   pair: Docker; Engine
 
 Docker Engine
 -------------
@@ -611,7 +606,7 @@ Astrae la piattaforma su cui viene eseguito, in modo che tutte le immagini possa
 
 
 .. index::
-   single: Docker; Compose
+   pair: Docker; Compose
 
 Docker Compose
 --------------
@@ -653,20 +648,60 @@ Le applicazioni Compose sono definite all'interno di un file `YAML <https://it.w
          - db
 
 
-.. index::
-   single: entità
 
-Entità
-======
+.. index::
+   single: controllo versione
+   single: version control system
+   single: vcs
+
+Controllo versione
+==================
+
+Per assistere nello sviluppo del software si è deciso di utilizzare il sistema di controllo versione `Git` in ogni fase dello sviluppo del progetto.
+
+Inoltre, per favorire lo sviluppo di una community `open source <Open source>` attorno a Sophon, si è deciso di pubblicare il progetto su `GitHub`, sotto la licenza `AGPL 3.0+`.
+
+
+.. index::
+   single: Git
+   pair: Git; repository
+   pair: Git; commit
+
+Git
+---
+
+`Git <https://git-scm.com/>`_ è un software di controllo versione, ovvero un software in grado di tenere traccia di modifiche effettuate su file, in modo da mantenerne uno storico, e permettere a più autori di lavorare in parallelo su documenti.
+
+Inizialmente realizzato da Linus Torvalds per lo sviluppo del kernel Linux, ha preso velocemente piede in tutto il settore dello sviluppo software, diventando di fatto lo standard per lo sviluppo collaborativo di software.
+
+Le cartelle di file tracciate da Git sono dette *repository*, mentre un blocco atomico di modifiche è detto *commit*.
+
+
+.. index::
+   pair: Git; GitHub
+
+GitHub
+------
+
+`GitHub <https://github.com/>`_ è un servizio web di Microsoft per l'hosting e la pubblicazione di repository Git.
+
+Per ciascun repository sono messe a disposizione gratuitamente numerose funzionalità, quali un issue tracker, strumenti di code review e sistemi di automazione per lo sviluppo :cite:`github:features`.
+
+
+.. index::
+   pair: Sophon; entità
+
+Entità di Sophon
+================
 
 Al fine di definire più in dettaglio le operazioni che devono poter essere effettuate all'interno di Sophon, sono state definite delle *entità*, i tipi base con cui l'utente può interagire.
 
 
 .. index::
-   single: istanza
+   pair: Sophon; istanza
 
-Istanza
--------
+Istanza in Sophon
+-----------------
 
 Un'*istanza* rappresenta un'**installazione di Sophon** effettuata su un server di un'istituzione di ricerca, come ad esempio un'Università.
 
@@ -683,10 +718,10 @@ Ciascuna istanza è accessibile tramite **uno specifico URL**, scelto dall'ammin
 
 
 .. index::
-   single: utente
+   pair: Sophon; utente
 
-Utente
-------
+Utenti in Sophon
+----------------
 
 Un *utente* è una entità che interagisce con una specifica istanza Sophon: ad esempio, un utente potrebbe essere una persona fisica, oppure potrebbe essere un software di automazione che si interfaccia con Sophon.
 
@@ -694,11 +729,9 @@ La tabella viene creata automaticamente da Django all'interno di ogni applicazio
 
 
 .. index::
-   single: utente; super
-   single: utente; regolare
-   single: utente; ospite
-   single: superutente
-   single: ospite
+   pair: Sophon; superutente
+   pair: Sophon; ospite
+   pair: Sophon; livello di accesso
 
 Livelli di accesso
 ^^^^^^^^^^^^^^^^^^
@@ -716,10 +749,10 @@ Ospite
 
 
 .. index::
-   single: credenziali di accesso
-   single: username
-   single: password
-   single: Single Sign-On
+   pair: Sophon; credenziali di accesso
+   pair: Sophon; username
+   pair: Sophon; password
+   pair: Sophon; Single Sign-On
 
 Credenziali di accesso
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -730,27 +763,22 @@ Di default, le credenziali sono un **nome utente** e una **password**, ma è pos
 
 .. warning::
 
-   Non avendo a disposizione sistemi di :abbr:`SSO (Single Sign-On)`, questa funzionalità non è stata testata.
+   Non avendo a disposizione sistemi di :abbr:`SSO (Single Sign-On)`, questa funzionalità non è stata testata, e potrebbe non funzionare.
 
 
 .. index::
-   single: gruppo di ricerca
+   pair: Sophon; gruppo
 
-Gruppo di ricerca
------------------
+Gruppi di ricerca in Sophon
+---------------------------
 
 Un *gruppo di ricerca* rappresenta un insieme di utenti che collaborano su uno o più progetti.
 
 
-.. index::
-   single: gruppo di ricerca; aperto
-   single: gruppo di ricerca; modalità manuale
-   single: gruppo di ricerca; membri
-
 Membri e modalità di accesso
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Gli utenti dell':ref:`istanza` possono diventare *membri* dei gruppi di ricerca, con una delle seguenti modalità selezionate nelle impostazioni del gruppo:
+Gli utenti dell'`istanza <Istanza di Sophon>` possono diventare *membri* dei gruppi di ricerca, con una delle seguenti modalità selezionate nelle impostazioni del gruppo:
 
 - se il gruppo è *aperto*, allora qualsiasi utente potrà diventarne membro semplicemente **facendo richiesta** attraverso l'interfaccia web;
 - se il gruppo è in *modalità manuale*, allora nessun utente potrà richiedere di unirsi, e i membri saranno **selezionati manualmente** dal creatore del gruppo.
@@ -758,28 +786,19 @@ Gli utenti dell':ref:`istanza` possono diventare *membri* dei gruppi di ricerca,
 In qualsiasi momento, i membri di un gruppo possono **lasciarlo** facendo apposita richiesta attraverso il frontend.
 
 
-.. index::
-   single: gruppo di ricerca; creazione
-
 Creazione di nuovi gruppi
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi :ref:`utente` può **creare** gruppi di ricerca dall'interfaccia web.
+Qualsiasi `utente <Utenti in Sophon>` può **creare** gruppi di ricerca dall'interfaccia web.
 
-
-.. index::
-   single: gruppo di ricerca; modifica
 
 Modifica di gruppi
 ^^^^^^^^^^^^^^^^^^
 
-Il creatore di un gruppo di ricerca è l'unico :ref:`utente` che può cambiarne **nome**, **descrizione**, **membri** e **modalità di accesso**.
+Il creatore di un gruppo di ricerca è l'unico `utente <Utenti in Sophon>` che può cambiarne **nome**, **descrizione**, **membri** e **modalità di accesso**.
 
 Lo *slug*, l'identificatore univoco del gruppo, non è modificabile successivamente alla creazione, in quanto verrà utilizzato all'interno degli URL, che devono essere immutabili.
 
-
-.. index::
-   single: gruppo di ricerca; eliminazione
 
 Eliminazione di gruppi
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -792,19 +811,16 @@ Il creatore di un gruppo è l'unico utente in grado di **cancellare** il gruppo 
 
 
 .. index::
-   single: progetto di ricerca
+   pair: Sophon; progetto
 
-Progetto di ricerca
--------------------
+Progetti di ricerca in Sophon
+-----------------------------
 
-Un *progetto di ricerca* rappresenta una **collezione di oggetti** relativa a un singolo argomento mantenuta da un :ref:`gruppo di ricerca`.
+Un *progetto di ricerca* rappresenta una **collezione di oggetti** relativa a un singolo argomento mantenuta da un `gruppo di ricerca <Gruppi di ricerca in Sophon>`.
 
 
 .. index::
-   single: progetto di ricerca; visibilità
-   single: progetto di ricerca; privato
-   single: progetto di ricerca; interno
-   single: progetto di ricerca; pubblico
+   single: Sophon; visibilità del progetto
 
 Visibilità dei progetti
 ^^^^^^^^^^^^^^^^^^^^^^^
@@ -812,44 +828,35 @@ Visibilità dei progetti
 I progetti hanno tre diverse impostazioni di visibilità che regolano chi può visualizzarne i contenuti:
 
 Progetto privato
-   Il progetto è visibile solo ai membri del gruppo a cui appartiene il progetto.
+   Il progetto è visibile **solo ai membri del gruppo** a cui appartiene il progetto.
 
 Progetto interno
-   Il progetto è visibile solo agli :term:`utenti` dell'istanza, e non agli :term:`ospiti`.
+   Il progetto è visibile **solo agli utenti** dell'istanza, e non agli ospiti.
 
 Progetto pubblico
-   Il progetto è visibile a tutti.
+   Il progetto è visibile **a tutti**.
 
-
-.. index::
-   single: progetto di ricerca; creazione
 
 Creazione di nuovi progetti
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi *membro* di un :ref:`gruppo di ricerca` può creare nuovi progetti.
+Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può creare nuovi progetti.
 
-
-.. index::
-   single: progetto di ricerca; modifica
 
 Modifica di progetti
 ^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi *membro* di un :ref:`gruppo di ricerca` può modificare **nome**, **descrizione** dei progetti al suo interno.
+Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può modificare **nome**, **descrizione** dei progetti al suo interno.
 
 Solo il *creatore del gruppo* può modificarne la **visibilità**, o **trasferire il progetto ad un altro gruppo**.
 
 Lo *slug*, l'identificatore univoco del progetto, non è modificabile successivamente alla creazione, in quanto è utilizzato all'interno degli URL, che devono essere immutabili.
 
 
-.. index::
-   single: progetto di ricerca; eliminazione
-
 Eliminazione di progetti
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i progetti al suo interno.
+Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può eliminare i progetti al suo interno.
 
 .. danger::
 
@@ -857,7 +864,7 @@ Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i progetti al s
 
 
 .. index::
-   single: notebook (entità)
+   pair: Sophon; notebook
 
 Notebook
 --------
@@ -865,17 +872,11 @@ Notebook
 Un *notebook* rappresenta una **postazione di lavoro** che può essere allegata ad un :ref:`progetto di ricerca`.
 
 
-.. index::
-   single: notebook (entità); creazione
-
 Creazione di nuovi notebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi **membro** di un :ref:`gruppo di ricerca` può creare nuovi notebook all'interno di uno dei progetti del gruppo a cui appartiene.
+Qualsiasi **membro** di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può creare nuovi notebook all'interno di uno dei progetti del gruppo a cui appartiene.
 
-
-.. index::
-   single: notebook (entità); slug riservati
 
 Slug riservati
 ^^^^^^^^^^^^^^
@@ -889,13 +890,11 @@ Un notebook non può avere come *slug* uno dei seguenti valori, in quanto riserv
 *  ``static``
 *  ``src``
 
-In più, uno slug di un notebook non può iniziare o terminare con un trattino ``-``, in quanto risulterebbe in un URL non valido.
+In più, uno slug di un notebook non può iniziare o terminare con un trattino ``-``, in quanto risulterebbe in un sottodominio non valido.
 
 
 .. index::
-   single: notebook (entità); stato
-   single: notebook (entità); avviato
-   single: notebook (entità); fermo
+   pair: Sophon; stato del notebook
 
 Stato del notebook
 ^^^^^^^^^^^^^^^^^^
@@ -911,17 +910,17 @@ Alla creazione, un notebook è *fermo*.
 Avviare un notebook
 """""""""""""""""""
 
-Un **membro** del :ref:`gruppo di ricerca` a cui appartiene il notebook può richiedere al server l'avvio di quest'ultimo, in modo da poterlo utilizzare successivamente.
+Un **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>` a cui appartiene il notebook può richiedere al server l'avvio di quest'ultimo, in modo da poterlo utilizzare successivamente.
 
 
 Fermare un notebook
 """""""""""""""""""
 
-Un **membro** del :ref:`gruppo di ricerca` a cui appartiene il notebook può richiedere al server l'arresto di quest'ultimo, salvando i dati e interrompendo la sessione di lavoro attualmente in corso.
+Un **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>` a cui appartiene il notebook può richiedere al server l'arresto di quest'ultimo, salvando i dati e interrompendo la sessione di lavoro attualmente in corso.
 
 
 .. index::
-   single: notebook (entità); immagine
+   pair: Sophon; immagine
 
 Immagine del notebook
 ^^^^^^^^^^^^^^^^^^^^^
@@ -933,24 +932,21 @@ Di default, l'immagine deve essere quella del `modulo Jupyter <Modulo Jupyter>`.
 Le immagini ammesse devono esporre un server HTTP sulla porta 8080, su cui verrà fatto `reverse proxying <reverse proxy>` dal `modulo proxy <Modulo proxy>`.
 
 
-.. index::
-   single: notebook (entità); collegamento
-
 Collegamento a un notebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-I **membri** del :ref:`gruppo di ricerca` a cui appartiene il notebook possono connettersi ad un notebook **avviato** attraverso un URL segreto comunicatogli dal `modulo backend <Modulo backend>`.
+I **membri** del `gruppo di ricerca <Gruppi di ricerca in Sophon>` a cui appartiene il notebook possono connettersi ad un notebook **avviato** attraverso un URL segreto comunicatogli dal `modulo backend <Modulo backend>`.
 
 L'URL segreto è ottenuto inserendo come query parameter dell'URL del notebook il token di autenticazione di `Jupyter`.
 
 
 .. index::
-   single: notebook (entità); blocco
+   pair: Sophon; notebook bloccato
 
 Blocco di un notebook
 ^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi **membro** del :ref:`gruppo di ricerca` a cui appartiene il notebook può *bloccarlo* per segnalare agli altri utenti che vi hanno accesso di non utilizzare quello specifico notebook.
+Qualsiasi **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>` a cui appartiene il notebook può *bloccarlo* per segnalare agli altri utenti che vi hanno accesso di non utilizzare quello specifico notebook.
 
 Bloccare un notebook **rimuove dall'interfaccia web** i bottoni di interazione con esso per tutti gli utenti, tranne quello che ha richiesto il blocco.
 
@@ -958,33 +954,27 @@ Bloccare un notebook **rimuove dall'interfaccia web** i bottoni di interazione c
 
    Il blocco di un notebook **è solo estetico**, e non ha lo scopo di impedire agli utenti di interagire con il notebook, ma serve per indicare ai propri collaboratori che si stanno effettuando modifiche grandi che non permettono collaborazione sul notebook.
 
-Un notebook bloccato può essere sbloccato da qualsiasi **membro** del :ref:`gruppo di ricerca`; il membro che ha richiesto il blocco potrà sbloccarlo **immediatamente**, mentre agli altri membri è richiesto di confermare l'azione.
+Un notebook bloccato può essere sbloccato da qualsiasi **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>`; il membro che ha richiesto il blocco potrà sbloccarlo **immediatamente**, mentre agli altri membri è richiesto di confermare l'azione.
 
-
-.. index::
-   single: notebook (entità); modifica
 
 Modifica di un notebook
 ^^^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi *membro* di un :ref:`gruppo di ricerca` può modificare **nome** e **immagine** dei notebook *fermi* al suo interno.
+Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può modificare **nome** e **immagine** dei notebook *fermi* al suo interno.
 
 I notebook *avviati* non possono essere modificati.
 
 Lo *slug*, l'identificatore univoco del notebook, non è modificabile successivamente alla creazione, in quanto è utilizzato all'interno degli URL, che devono essere immutabili.
 
 
-.. index::
-   single: notebook (entità); eliminazione
-
 Eliminazione di un notebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i notebook all'interno dei progetti del gruppo, a condizione che questi siano *fermi* e *non bloccati*.
+Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può eliminare i notebook all'interno dei progetti del gruppo, a condizione che questi siano *fermi* e *non bloccati*.
 
 
 .. index::
-   single: database
+   pair: Sophon; database
    single: PostgreSQL
 
 Database

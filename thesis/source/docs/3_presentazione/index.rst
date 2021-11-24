@@ -11,8 +11,7 @@ Mentre in passato a tale scopo venivano utilizzati quaderni di carta (detti anch
 
 
 .. index::
-   single: composizione tipografica
-   single: sistemi di composizione tipografica
+   pair: sistemi; composizione tipografica
 
 Sistemi di composizione tipografica
 ===================================
@@ -34,7 +33,7 @@ Un esempio di documento LaTeX :cite:`overleaf:learn30mins` è il seguente:
 
 
 .. index::
-   single: editor WYSIWYG
+   pair: editor; WYSIWYG
 
 Editor WYSIWYG
 ==============
@@ -53,7 +52,7 @@ Alcuni esempi moderni di editor :abbr:`WYSIWYG (What You See Is What You Get)` s
 
 
 .. index::
-   single: editor WYSIWYG; web-based
+   pair: editor; web-based
 
 Web-based editor
 ================
@@ -72,8 +71,8 @@ Il più importante di questi editor è `Google Docs <https://docs.google.com/>`_
 
 
 .. index::
-   single: notebook computazionale
-   single: celle
+   single: notebook; computazionali
+   pair: notebook; celle
 
 Notebook computazionali
 =======================
@@ -109,16 +108,16 @@ Prende ispirazione dai `web-based editor <Web-based editor>`, permettendo agli u
 
 
 .. index::
-   single: Jupyter; parti di
+   pair: Jupyter; componenti
 
-Parti di Jupyter
-----------------
+Componenti di Jupyter
+---------------------
 
-Jupyter è composto da 3 parti: un `kernel <Kernel Jupyter>`, un `server <server Jupyter>` e un `client <client Jupyter>`.
+Jupyter è composto da 3 componenti: un `kernel <Kernel Jupyter>`, un `server <server Jupyter>` e un `client <client Jupyter>`.
 
 
 .. index::
-   single: Jupyter; kernel
+   pair: Jupyter; kernel
    single: IPython
 
 Kernel Jupyter
@@ -130,7 +129,7 @@ Per ogni linguaggio di programmazione che si desidera utilizzare nel notebook è
 
 
 .. index::
-   single: Jupyter; server
+   pair: Jupyter; server
 
 Server Jupyter
 ^^^^^^^^^^^^^^
@@ -141,9 +140,9 @@ Il server ufficiale di Jupyter è `Jupyter Server <https://github.com/jupyter-se
 
 
 .. index::
-   single: Jupyter; client
-   single: Jupyter; Notebook
-   single: Jupyter; Lab
+   pair: Jupyter; client
+   single: Jupyter; Jupyter Notebook
+   single: Jupyter; JupyterLab
 
 Client Jupyter
 ^^^^^^^^^^^^^^
@@ -154,7 +153,7 @@ Esistono due client ufficiali per Jupyter: il client di vecchia generazione `Jup
 
 
 .. index::
-   single: Jupyter; hosting
+   pair: Jupyter; hosting
 
 Hosting di Jupyter
 ------------------
@@ -163,9 +162,6 @@ Essendo `server <server Jupyter>` e `client <client Jupyter>` separati, è possi
 
 È possibile selezionare la macchina su cui eseguire il server in tre modi diversi, elencati nelle prossime sezioni, ciascuno con alcuni vantaggi e svantaggi.
 
-
-.. index::
-   single: Jupyter; hosting locale
 
 Hosting locale
 ^^^^^^^^^^^^^^
@@ -180,7 +176,6 @@ In base al proprio sistema operativo, però, potrebbe risultare difficile da ins
 
 
 .. index::
-   single: Jupyter; come software-as-a-service
    single: Google Colaboratory
    single: SageMaker Notebook
 
@@ -197,8 +192,7 @@ In genere, però, Jupyter sulle piattaforme :abbr:`SaaS (Software as a Service)`
 
 
 .. index::
-   single: Jupyter; hosting on-premises
-   single: Jupyter; Hub
+   single: Jupyter; JupyterHub
 
 Hosting on-premises
 ^^^^^^^^^^^^^^^^^^^
