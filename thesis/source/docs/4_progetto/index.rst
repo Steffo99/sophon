@@ -150,10 +150,10 @@ Per realizzare il requisito dell'`estendibilità <Estendibilità>`, si è scelto
 
 
 .. index::
-   single: modulo; backend
+   pair: modulo; backend
 
-Modulo backend
---------------
+Progetto del Modulo backend
+---------------------------
 
 Il modulo backend consiste in una web :abbr:`API (application programming interface)` che si interfaccia con il database e i moduli Jupyter, permettendo un accesso controllato alle risorse del software.
 
@@ -263,7 +263,7 @@ Per interfacciarsi con i `moduli Jupyter <Modulo Jupyter>`, si è deciso di util
 
 
 .. index::
-   single: modulo; frontend
+   pair: modulo; frontend
 
 Modulo frontend
 ---------------
@@ -450,7 +450,7 @@ Definice componenti per ogni elemento grafico introdotto in Bluelib, e rende vel
 
 
 .. index::
-   single: modulo; proxy
+   pair: modulo; proxy
 
 Modulo proxy
 ------------
