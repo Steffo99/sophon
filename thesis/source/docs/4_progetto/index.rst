@@ -144,7 +144,7 @@ Separazione in moduli
 
 Per realizzare il requisito dell'`estendibilità <Estendibilità>`, si è scelto di separare le parti dell'applicazioni in 4 diversi moduli interagenti.
 
-.. figure:: moduli.png
+.. figure:: figure_modules.png
 
    Schema che mostra come interagiscono tra loro i moduli di Sophon.
 
@@ -654,26 +654,12 @@ Le applicazioni Compose sono definite all'interno di un file `YAML <https://it.w
 
 
 .. index::
-   single: database
-   single: PostgreSQL
-
-Database
-========
-
-Il `modulo backend <Modulo backend>` di Sophon necessita di archiviare dati persistenti altamente relazionali; pertanto, è stato necessario adottare una soluzione in grado di gestirli.
-
-A tale scopo, è stato selezionato il database relazionale `PostgreSQL <https://www.postgresql.org/>`_, in quanto :abbr:`FLOSS (Free and Libre Open Source Software)`, adatto a dati relazionali, compatibile con Django, e ampiamente utilizzato in tutto il mondo.
-
-
-.. index::
    single: entità
 
 Entità
 ======
 
-.. todo::
-
-   Entità
+Al fine di definire più in dettaglio le operazioni che devono poter essere effettuate all'interno di Sophon, sono state definite delle *entità*, i tipi base con cui l'utente può interagire.
 
 
 .. index::
@@ -691,7 +677,7 @@ URL dell'istanza
 
 Ciascuna istanza è accessibile tramite **uno specifico URL**, scelto dall'amministratore di sistema al momento dell'installazione.
 
-.. figure:: instance_urls.png
+.. figure:: diagram_instance_urls.png
 
    Schema rappresentante un esempio di URL di istanza rispettivamente per Unimore, Unibo e il CERN. Si noti come Sophon possa essere ospitato a domini di qualsiasi livello o radici diverse da ``/``, quella predefinita.
 
@@ -995,3 +981,19 @@ Eliminazione di un notebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Qualsiasi *membro* di un :ref:`gruppo di ricerca` può eliminare i notebook all'interno dei progetti del gruppo, a condizione che questi siano *fermi* e *non bloccati*.
+
+
+.. index::
+   single: database
+   single: PostgreSQL
+
+Database
+========
+
+Il `modulo backend <Modulo backend>` di Sophon necessita di archiviare dati persistenti altamente relazionali; pertanto, è stato necessario adottare una soluzione in grado di gestirli.
+
+A tale scopo, è stato selezionato il database relazionale `PostgreSQL <https://www.postgresql.org/>`_, in quanto :abbr:`FLOSS (Free and Libre Open Source Software)`, adatto a dati relazionali, compatibile con Django, e ampiamente utilizzato in tutto il mondo.
+
+.. figure:: diagram_database.png
+
+   Schema semplificato del database di Sophon.
