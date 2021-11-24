@@ -1,8 +1,11 @@
+.. index::
+   single: implementazione
+
 ***************
 Implementazione
 ***************
 
-.. todo:: Implementazione
+Ultimato il progetto, si è passati alla sua implementazione su calcolatore.
 
 .. todo:: Create index
 
@@ -10,8 +13,34 @@ Implementazione
 
 .. todo:: Add details
 
+
+.. index::
+   single: Git; repository
+
+Repository Git
+==============
+
+
+
+.. index::
+   single: Git
+
+Git
+---
+
+
+GitHub
+------
+
+.. todo:: GitHub
+
+
+.. index::
+   pair: implementazione; backend
+
 Implementazione del modulo backend
 ==================================
+.. default-domain:: py
 
 .. todo:: Implementazione del modulo backend
 
@@ -24,8 +53,6 @@ Ambiente virtuale Python
 
 Il project Django
 -----------------
-.. default-domain:: py
-.. default-role:: obj
 .. module:: sophon
 
 Il project del modulo aggiunge alla struttura base autogenerata da Django alcune funzionalità utili all'intero backend.
