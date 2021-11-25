@@ -9,8 +9,6 @@ Realizzazione di Sophon
 
 Terminato il progetto, si è passati a realizzarne una versione funzionante su calcolatore.
 
-.. todo:: Inserire nell'indice tutte le sezioni.
-
 
 .. index::
    pair: realizzazione; backend
@@ -35,7 +33,7 @@ App di amministrazione personalizzata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.admin
 
-L'app di amministrazione di Django viene personalizzata con la classe `SophonAdminSite`, che modifica alcuni parametri della classe base.
+L'app di amministrazione di Django :mod:`django.contrib.admin` viene personalizzata con la classe `SophonAdminSite`, che ne modifica alcuni parametri.
 
 Inoltre, il template predefinito viene sovrascritto dal file ``templates/admin/base.html``, che sostituisce il foglio di stile con uno personalizzato per Sophon.
 
@@ -92,6 +90,8 @@ Inoltre, viene configurato il modulo `logging` per emettere testo colorato di pi
        "format": "{asctime:>19} | {name:<24} | {levelname:>8} | {message}",
        "style": "{",
    }
+
+Una lista di tutte le variabili di ambiente di configurazione è riportata nella :ref:`Guida all'installazione` dell'appendice.
 
 
 Miglioramenti all'autenticazione
@@ -480,6 +480,7 @@ Testing in Sophon Core
 .. module:: sophon.core.tests
 
 Per verificare che i `modelli <Modello base astratto>` e `viewset <Viewset astratti>` funzionassero correttamente e non avessero problemi di `sicurezza <Sicurezza>`, sono stati realizzati degli unit test in grado di rilevare la presenza di errori all'interno dell'app.
+
 
 Test case generici
 ^^^^^^^^^^^^^^^^^^
@@ -892,6 +893,9 @@ Come per il modulo `sophon.projects`, vengono creati due viewset per interagire 
    Accessibile all'URL :samp:`/api/notebooks/by-project/{PROJECT_SLUG}/{NOTEBOOK_SLUG}/`.
 
 
+.. index::
+   pair: backend; containerizzazione
+
 Containerizzazione del modulo backend
 -------------------------------------
 
@@ -906,6 +910,9 @@ L'immagine utilizza `Poetry` per installare le dipendenze, poi esegue il file ``
    poetry run python -O ./manage.py initsuperuser
    poetry run python -O -m gunicorn sophon.wsgi:application --workers=4 --bind=0.0.0.0:8000
 
+
+.. index::
+   pair: frontend; realizzazione
 
 Realizzazione del modulo frontend
 =================================
@@ -1094,12 +1101,21 @@ Viene creato un hook che tiene traccia degli oggetti restituiti da un determinat
       Se la richiesta va a buon fine, il valore restituito dal backend sostituisce l'oggetto utilizzato in :attr:`.state`.
 
 
+.. index::
+   single: contesto
+
 Contesti innestati
 ------------------
-.. default-domain:: js
 
 Per minimizzare i re-render, l'applicazione è organizzata a "contesti innestati".
 
+
+.. index::
+   single: contesto; istanza
+   single: contesto; autorizzazione
+   single: contesto; gruppo di ricerca
+   single: contesto; progetto di ricerca
+   single: contesto; notebook
 
 I contesti
 ^^^^^^^^^^
@@ -1115,13 +1131,19 @@ Essi sono, in ordine dal più esterno al più interno:
 #. :data:`NotebookContext` (`Notebook <Notebook in Sophon>`)
 
 
+.. index::
+   single: contesto; contenuti
+
 Contenuto dei contesti
 """"""""""""""""""""""
 
 Questi contesti possono avere tre tipi di valori: :data:`undefined` se ci si trova al di fuori del contesto, :data:`null` se non è stato selezionato alcun oggetto oppure **l'oggetto selezionato** se esso esiste.
 
 
-URL contestuale
+.. index::
+   pair: URL; segmento
+
+Segmenti di URL
 ^^^^^^^^^^^^^^^
 
 Si è definita la seguente struttura per gli URL del frontend di Sophon, in modo che essi identificassero universalmente una risorsa e che essi fossero human-readable.
@@ -1132,9 +1154,28 @@ Si è definita la seguente struttura per gli URL del frontend di Sophon, in modo
       /l/logged-in
          /g/{GROUP_SLUG}
             /p/{PROJECT_SLUG}
-               /n/{NOTEBOOK_SLUG}/
+               /n/{NOTEBOOK_SLUG}
+                  /
 
-Ad esempio, l'URL per il notebook ``my-first-notebook`` dell'istanza demo di Sophon sarebbe:
+Ciascuna riga nel listato sopra rappresenta un *segmento di URL*.
+
+
+Parsing dei segmenti di URL
+"""""""""""""""""""""""""""
+
+Il parsing di questi segmenti viene effettuato dalla seguente funzione:
+
+.. function:: parsePathSegment({path, parsed, regex, key, next}) → ParsedPath
+
+   Funzione ricorsiva per la cattura di un segmento, che riempie ad ogni chiamata una chiave dell'oggetto ``ParsedPath``.
+
+   :param path: La stringa del percorso ancora da parsare.
+   :param parsed: L'oggetto ``ParsedPath`` riempito con i segmenti trovati fino ad ora.
+   :param regex: Una regular expression usata per catturare un segmento. Il **primo gruppo di cattura** sarà il valore che verrà mantenuto e inserito nel ``ParsedPath``.
+   :param key: La chiave a cui inserire il valore catturato all'interno del ``ParsedPath``.
+   :param next: Callback della prossima funzione da chiamare.
+
+Un esempio di URL per il notebook ``my-first-notebook`` all'interno della istanza demo di Sophon potrebbe essere:
 
 .. code-block:: text
 
@@ -1142,38 +1183,31 @@ Ad esempio, l'URL per il notebook ``my-first-notebook`` dell'istanza demo di Sop
       /l/logged-in
          /g/my-first-group
             /p/my-first-project
-               /n/my-first-notebook/
+               /n/my-first-notebook
+                  /
 
 
-Parsing degli URL contestuali
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. index::
+   single: breadcrumbs
 
-Viene definita una funzione in grado di comprendere gli URL contestuali:
+Breadcrumbs
+"""""""""""
 
-.. function:: parsePath(path)
+È possibile vedere tutti i segmenti di URL dalla barra superiore dell'interfaccia grafica, detta *barra dei breadcrumbs*.
 
-   :param path: Il "path" da leggere.
-   :returns:
-      Un oggetto con le seguenti chiavi, dette "segmenti di percorso", le quali possono essere :data:`undefined` per indicare che non è stato selezionato un oggetto di quel tipo:
+.. figure:: breadcrumbs.png
 
-      - ``instance``: l'URL dell'istanza da utilizzare, con caratteri speciali sostituiti da ``:``
-      - ``loggedIn``: :class:`Boolean`, se :data:`True` l'utente ha effettuato il login (anche come ospite)
-      - ``researchGroup``: lo slug del `gruppo di ricerca <Gruppi di ricerca in Sophon>` selezionato
-      - ``researchProject``: lo slug del `progetto di ricerca <Progetti di ricerca in Sophon>` selezionato
-      - ``notebook``: lo slug del `notebook <Notebook in Sophon>` selezionato
+   La barra dei breadcrumbs. Ci si trova attualmente sulla pagina del gruppo ``my-first-group``.
 
-      Ad esempio, l'URL precedente restituirebbe il seguente oggetto se processato:
+Nel caso il parsing dei segmenti fallisca, la barra dei breadcrumbs è in grado di mostrare un errore, e di permettere all'utente di riprendere la navigazione ad uno dei segmenti trovati.
 
-      .. code-block:: js
+.. figure:: breadcrumbs_error.png
 
-         {
-            "instance": "https:api.prod.sophon.steffo.eu:",
-            "loggedIn": True,
-            "researchGroup": "my-first-group",
-            "researchProject": "my-first-project",
-            "notebook": "my-first-notebook"
-         }
+   La barra dei breadcrumbs in errore. È possibile riprendere la navigazione dalla pagina di selezione istanza o di login.
 
+
+.. index::
+   single: contesto; componenti
 
 Componenti contestuali
 ^^^^^^^^^^^^^^^^^^^^^^
@@ -1201,8 +1235,11 @@ I più significativi comuni a tutti i contesti sono i `ResourcePanel` e le `List
 
    .. figure:: list_box.png
 
-      Un `ListBox` che mostra l'elenco di notebook in un progetto.
+      Una `ListBox` che mostra l'elenco di notebook in un progetto.
 
+
+.. index::
+   single: contesto; routing
 
 Routing basato sui contesti
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1217,9 +1254,7 @@ I valori dei contesti vengono utilizzati per selezionare i componenti da mostrar
 
    Componente basato su :func:`ResourceRouter` che seleziona automaticamente l'elemento del viewset avente il valore del segmento di percorso ``pathSegment`` alla chiave ``pkKey``.
 
-
-Esempio di utilizzo di ViewSetRouter
-""""""""""""""""""""""""""""""""""""
+Ad esempio, :func:`ViewSetRouter` viene esteso specificatamente per il contesto del gruppo, creando il seguente componente.
 
 .. function:: GroupRouter({...props})
 
@@ -1275,17 +1310,45 @@ Se ne riassume la struttura in pseudocodice:
 Altri contesti
 ^^^^^^^^^^^^^^
 
+All'interno di Sophon sono presenti anche altri due contesti, utilizzati a scopo di semplificare e ottimizzare il codice.
+
+
+.. index::
+   single: contesto; tema
+
 Tema
 """"
 
 Il tema dell'istanza è implementato come uno speciale contesto globale :data:`ThemeContext` che riceve i dettagli dell'istanza a cui si è collegati dall':data:`InstanceContext`.
 
+Ciò permette di sincronizzare il tema della webapp con quello dell'istanza di Sophon selezionata.
+
+.. figure:: login_royalblue.png
+
+   La schermata di login dell'istanza dimostrativa di Sophon, che utilizza il tema "Royal Blue".
+
+
+.. index::
+   single: contesto; cache
 
 Cache
 """""
 
 Viene salvato l'elenco di tutti i membri dell'`istanza <Istanza in Sophon>` in uno speciale contesto :data:`CacheContext` in modo da poter risolvere gli id degli utenti al loro username senza dover effettuare ulteriori richieste.
 
+Questa funzionalità al momento viene usata per risolvere i nomi dei membri in un gruppo e il nome dell'utente che ha bloccato un notebook: in entrambi i casi, vengono restituiti dal `modulo backend <Realizzazione del modulo backend>` solamente gli ID numerici dei relativi utenti, pertanto è necessario risolverli attraverso il contesto cache.
+
+.. figure:: group_members.png
+
+   L'elenco dei membri appartenenti al gruppo "My First Group".
+
+.. figure:: notebook_lock.png
+
+   Il nome di un utente che ha bloccato un notebook. (In questo caso, "root".)
+
+
+.. index::
+   pair: frontend; containerizzazione
 
 Containerizzazione del modulo frontend
 --------------------------------------
@@ -1294,6 +1357,9 @@ Il modulo frontend è incapsulato in un'immagine :ref:`Docker` basata sull'immag
 
 L'immagine installa le dipendenze del modulo con `Yarn`, per poi eseguire il comando ``yarn run serve``, che avvia la procedura di preparazione della pagina e la rende disponibile su un webserver locale alla porta 3000.
 
+
+.. index::
+   pair: frontend; proxy
 
 Realizzazione del modulo proxy
 ==============================
@@ -1372,11 +1438,18 @@ Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che vi
 Tutte le regole usano il flag ``L`` di ``RewriteRule``, che porta il motore di rewriting a ignorare tutte le regole successive, come il ``return`` di una funzione di un linguaggio di programmazione imperativo.
 
 
+.. index::
+   pair: proxy; dockerizzazione
+
 Dockerizzazione del modulo proxy
 --------------------------------
 
 Il modulo proxy è incapsulato in un'immagine :ref:`Docker` basata sull'immagine ufficiale `httpd:2.4 <https://hub.docker.com/_/httpd>`_, che si limita ad applicare la configurazione personalizzata.
 
+
+.. index::
+   single: jupyter; realizzazione modulo Sophon
+   single: realizzazione; modulo jupyter
 
 Realizzazione del modulo Jupyter
 ================================
@@ -1403,7 +1476,7 @@ Per rendere l'interfaccia grafica più consistente ed user-friendly, è stato sv
 Estensione del container Docker di Jupyter
 ------------------------------------------
 
-Il ``Dockerfile`` del modulo ne crea un immagine Docker in quattro fasi:
+Il ``Dockerfile`` del modulo ne crea un `immagine Docker <Immagini Docker>` in quattro fasi:
 
 #. **Base**: Parte dall'immagine base ``jupyter/scipy-notebook`` e ne altera i label.
 
@@ -1456,11 +1529,19 @@ Il ``Dockerfile`` del modulo ne crea un immagine Docker in quattro fasi:
       USER ${NB_UID}
 
 
+.. index::
+   single: automazione di sviluppo
+   single: GitHub; GitHub Actions
+
 Automazione di sviluppo
 =======================
 
 Al fine di snellire lo sviluppo del software, è stato configurato lo strumento di automazione `GitHub Actions <https://github.com/features/actions>`_ per effettuare automaticamente alcuni compiti.
 
+
+.. index::
+   single: Dependabot
+   single: GitHub; Dependabot
 
 Scansione automatica delle dipendenze
 -------------------------------------
@@ -1471,6 +1552,10 @@ Scansione automatica delle dipendenze
 
    Alcune vulnerabilità rilevate da Dependabot all'interno delle dipendenze di Sophon.
 
+
+.. index::
+   single: CodeQL
+   single: GitHub; CodeQL
 
 Controllo automatico del codice
 -------------------------------
@@ -1523,6 +1608,9 @@ Si riporta un estratto relativo all'azione ``build-docker-proxy``.
       - name: "Upload the container to GitHub Containers"
         run: docker push ghcr.io/steffo99/sophon-proxy:latest
 
+
+.. index::
+   single: Sphinx
 
 Costruzione automatica della documentazione
 -------------------------------------------
