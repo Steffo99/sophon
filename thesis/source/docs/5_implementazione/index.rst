@@ -260,7 +260,7 @@ Viene creato il modello che rappresenta un :ref:`gruppo di ricerca <Gruppi di ri
 
    .. attribute:: slug: SlugField
 
-      L'identificatore del gruppo di ricerca.
+      L'identificatore del gruppo di ricerca, usato nei percorsi dell'API.
 
    .. attribute:: name: CharField
 
@@ -471,8 +471,78 @@ Vengono infine registrati nella pagina di amministrazione i modelli concreti def
 
 Testing in Sophon Core
 ^^^^^^^^^^^^^^^^^^^^^^
+.. module:: sophon.core.tests
 
-.. todo:: Testing in Sophon Core
+Per verificare che i `modelli <Modello base astratto>` e `viewset <Viewset astratti>` funzionassero correttamente e non avessero problemi di `sicurezza <Sicurezza>`, sono stati realizzati degli unit test in grado di rilevare la presenza di errori all'interno dell'app.
+
+Test case generici
+^^^^^^^^^^^^^^^^^^
+
+Vengono definiti alcuni test case generici per facilitare le interazioni tra ``APITestCase`` e viewset.
+
+.. note::
+
+   I nomi delle funzioni usano nomi con capitalizzazione inconsistente, in quanto lo stesso modulo `unittest` non rispetta lo stile suggerito in :pep:`8`.
+
+.. class:: BetterAPITestCase(APITestCase)
+
+   .. method:: as_user(self, username: str, password: str = None) -> typing.ContextManager[None]
+
+      Context manager che permette di effettuare richieste all'API come uno specifico utente, effettuando il logout quando sono state effettuate le richieste necessarie.
+
+   .. method:: assertData(self, data: ReturnDict, expected: dict)
+
+      Asserzione che permette di verificare che l'oggetto restituito da una richiesta all'API contenga almeno le chiavi e i valori contenuti nel dizionario ``expected``.
+
+.. class:: ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta)
+
+   Classe **astratta** che implementa metodi per testare rapidamente le azioni di un `.views.ReadSophonViewSet`.
+
+   .. classmethod:: get_basename(cls) -> str
+
+      Metodo **astratto** che deve restituire il basename del viewset da testare.
+
+   .. classmethod:: get_url(cls, kind: str, *args, **kwargs) -> str
+
+      Metodo utilizzato dal test case per trovare gli URL ai quali possono essere effettuate le varie azioni.
+
+   I seguenti metodi permettono di effettuare azioni sul viewset:
+
+   .. method:: list(self) -> rest_framework.response.Response
+   .. method:: retrieve(self, pk) -> rest_framework.response.Response
+   .. method:: custom_list(self, method: str, action: str, data: dict = None) -> rest_framework.response.Response
+   .. method:: custom_detail(self, method: str, action: str, pk, data: dict = None) -> rest_framework.response.Response
+
+   I seguenti metodi asseriscono che una determinata azione con determinati parametri risponderà con il codice di stato ``code``, e restituiscono i dati contenuti nella risposta se l'azione è riuscita (``200 <= code < 300``)
+
+   .. method:: assertActionList(self, code: int = 200) -> typing.Optional[ReturnDict]
+   .. method:: assertActionRetrieve(self, pk, code: int = 200) -> typing.Optional[ReturnDict]
+   .. method:: assertActionCustomList(self, method: str, action: str, data: dict = None, code: int = 200) -> typing.Optional[ReturnDict]
+   .. method:: assertActionCustomDetail(self, method: str, action: str, pk, data: dict = None, code: int = 200) -> typing.Optional[ReturnDict]
+
+
+.. class:: WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta)
+
+   Classe **astratta** che estende `.ReadSophonTestCase` con le azioni di un `.views.WriteSophonViewSet`.
+
+   .. method:: create(self, data) -> rest_framework.response.Response
+   .. method:: update(self, pk, data) -> rest_framework.response.Response
+   .. method:: destroy(self, pk) -> rest_framework.response.Response
+
+   .. method:: assertActionCreate(self, data, code: int = 201) -> typing.Optional[ReturnDict]
+   .. method:: assertActionUpdate(self, pk, data, code: int = 200) -> typing.Optional[ReturnDict]
+   .. method:: assertActionDestroy(self, pk, code: int = 200) -> typing.Optional[ReturnDict]
+
+
+Test case concreti
+^^^^^^^^^^^^^^^^^^
+
+Vengono testate tutte le view dell'app tramite `.BetterAPITestCase` e tutti i viewset dell'app tramite `.ReadSophonTestCase` e `WriteSophonTestCase`.
+
+.. class:: UsersByIdTestCase(ReadSophonTestCase)
+.. class:: UsersByUsernameTestCase(ReadSophonTestCase)
+.. class:: ResearchGroupTestCase(WriteSophonTestCase)
+.. class:: SophonInstanceDetailsTestCase(BetterAPITestCase)
 
 
 L'app Sophon Projects
@@ -482,26 +552,44 @@ L'app Sophon Projects
 .. default-role:: obj
 .. module:: sophon.projects
 
-L'app `sophon.projects` è un app secondaria che dipende da `sophon.core` che introduce in Sophon il concetto di :ref:`progetto di ricerca`.
+L'app `sophon.projects` è un app secondaria che dipende da `sophon.core` che introduce in Sophon il concetto di `progetto di ricerca <Progetti di ricerca in Sophon>`.
 
-.. caution::
+.. note::
 
-   Anche se l'app `sophon.projects` è opzionale (il progetto può funzionare senza di essa), si sconsiglia di disattivarla, in quanto il :ref:`modulo frontend` si aspetta che l'app sia attiva e solleverà un errore nel caso che i viewset forniti da questa app non siano disponibile.
+   L'app `sophon.projects` teoricamente è opzionale, in quanto il modulo backend può funzionare senza di essa, e può essere rimossa dal modulo `sophon.settings`.
+
+   Non è però possibile rimuoverla nella versione finale distribuita, in quanto il modulo `sophon.settings` non è modificabile dall'esterno, e in quanto il `modulo frontend <Modulo frontend>` non prevede questa funzionalità e si aspetta che i percorsi API relativi all'app siano disponibili.
+
+   Inoltre, rimuovendo l'app `sophon.projects` non sarà più possibile usare l'app `sophon.notebooks`, in quanto dipende da essa.
 
 
 Modello del progetto di ricerca
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.projects.models
 
-Viene introdotto un modello concreto che rappresenta un :ref:`progetto di ricerca`.
+Viene introdotto un modello concreto che rappresenta un `progetto di ricerca <Progetti di ricerca in Sophon>`.
 
 .. class:: ResearchProject(SophonGroupModel)
 
    .. attribute:: slug: SlugField
+
+      L'identificatore del progetto di ricerca, usato nei percorsi dell'API.
+
    .. attribute:: group: ForeignKey → sophon.core.models.ResearchGroup
+
+      Lo `~sophon.core.models.ResearchGroup.slug` del gruppo di ricerca al quale appartiene il progetto.
+
    .. attribute:: name: CharField
+
+      Il nome completo del progetto di ricerca.
+
    .. attribute:: description: TextField
+
+      La descrizione del progetto di ricerca, da visualizzare in un riquadro "A proposito del progetto".
+
    .. attribute:: visibility: CharField ["PUBLIC", "INTERNAL", "PRIVATE"]
+
+      La `visibilità del progetto <Visibilità dei progetti>`.
 
 
 Viewset del gruppo di ricerca
@@ -547,27 +635,31 @@ L'app Sophon Notebooks
 .. module:: sophon.notebooks
 
 
-L'app `sophon.notebooks` è un app secondaria che dipende da `sophon.projects` che introduce in Sophon il concetto di :ref:`notebook`.
+L'app `sophon.notebooks` è un app secondaria che dipende da `sophon.projects` che introduce in Sophon il concetto di `notebook <Notebook in Sophon>`.
 
-.. caution::
+.. note::
 
-   Anche se l'app `sophon.notebooks` è opzionale (il progetto può funzionare senza di essa), si sconsiglia di disattivarla, in quanto il :ref:`modulo frontend` si aspetta che l'app sia attiva e solleverà un errore nel caso che i viewset forniti da questa app non siano disponibile.
+   L'app `sophon.notebooks` teoricamente è opzionale, in quanto il modulo backend può funzionare senza di essa, e può essere rimossa dal modulo `sophon.settings`.
+
+   Non è però possibile rimuoverla nella versione finale distribuita, in quanto il modulo `sophon.settings` non è modificabile dall'esterno, e in quanto il `modulo frontend <Modulo frontend>` non prevede questa funzionalità e si aspetta che i percorsi API relativi all'app siano disponibili.
 
 
 Funzionamento di un notebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Internamente, un notebook non è altro che un container Docker accessibile ad un determinato indirizzo il cui stato è sincronizzato con un oggetto del database del :ref:`modulo backend`.
+Internamente, un notebook non è altro che un container `Docker` accessibile ad un determinato indirizzo il cui stato è sincronizzato con un oggetto del database del `modulo backend <Modulo backend>`.
 
 
 Modalità sviluppo
 """""""""""""""""
 
-Per facilitare lo sviluppo di Sophon, sono previste due modalità di operazione di quest'ultimo:
+Per facilitare lo sviluppo di Sophon, sono state realizzate due modalità di operazione di quest'ultimo.
 
-- nella prima, la **modalità sviluppo**, il :ref:`modulo proxy` non è in esecuzione, ed è possibile collegarsi direttamente ai container attraverso collegamenti a ``localhost``;
+*  Nella prima, la **modalità sviluppo**, il `modulo proxy <Modulo proxy>` non è in esecuzione, ed è possibile collegarsi direttamente ai container all'indirizzo IP locale ``127.0.0.1``.
 
-- nella seconda, la **modalità produzione**, il :ref:`modulo proxy` è in esecuzione all'interno di un container Docker, e si collega agli altri container attraverso i rispettivi network Docker agli indirizzi comunicatogli dal :ref:`modulo backend`.
+   Il `modulo frontend <Modulo frontend>` non supporta questa modalità, in quanto intesa solamente per lo sviluppo del modulo backend.
+
+*  Nella seconda, la **modalità produzione**, il `modulo proxy <Modulo proxy>` è in esecuzione all'interno di un container Docker, e si collega ai `moduli Jupyter <Modulo Jupyter>` attraverso i relativi network Docker tramite  indirizzi presenti all'interno .
 
   .. image:: notebooks_diagram.png
 
@@ -578,7 +670,7 @@ Gestione della rubrica del proxy
 
 Viene creata una classe per la gestione della rubrica del proxy, utilizzando il modulo `dbm.gnu`, supportato da HTTPd.
 
-La rubrica mappa gli URL pubblici dei notebook a URL privati relativi al :ref:`modulo proxy`, in modo da effettuare reverse proxying **dinamico**.
+La rubrica mappa gli URL pubblici dei notebook a URL privati relativi al `modulo proxy <Modulo proxy>`, in modo da effettuare reverse proxying **dinamico**.
 
 .. class:: ApacheDB
 
@@ -603,7 +695,7 @@ Connessione al daemon Docker
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.notebooks.docker
 
-Per facilitare l'utilizzo del daemon Docker per la gestione dei container dei notebook, viene utilizzato il modulo `docker`.
+Per facilitare l'utilizzo del daemon Docker per la gestione dei container dei notebook, viene utilizzato il modulo :mod:`docker`.
 
 .. function:: get_docker_client() -> docker.DockerClient
 
@@ -617,7 +709,7 @@ Per facilitare l'utilizzo del daemon Docker per la gestione dei container dei no
 Controllo dello stato di salute
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Il modulo `docker` viene esteso implementando supporto per l'istruzione ``HEALTHCHECK`` dei ``Dockerfile``.
+Il modulo :mod:`docker` viene esteso implementando supporto per l'istruzione ``HEALTHCHECK`` dei ``Dockerfile``.
 
 .. class:: HealthState(enum.IntEnum)
 
@@ -648,11 +740,19 @@ Il modulo `docker` viene esteso implementando supporto per l'istruzione ``HEALTH
 
    Funzione bloccante che restituisce solo quando lo stato del container specificato non è `HealthState.STARTING`.
 
+   .. danger::
+
+      L'implementazione di questa funzione potrebbe causare rallentamenti nella risposta alle pagine web per via di una chiamata al metodo `time.sleep` al suo interno.
+
+      Ciò è dovuto al mancato supporto alle funzioni asincrone nella versione attuale di `rest_framework`.
+
+      Si è deciso di mantenere comunque la funzionalità a scopi dimostrativi e per compatibilità futura.
+
 
 Generazione di token sicuri
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Si è scelto di rendere completamente trasparente all'utente il meccanismo di autenticazione a JupyterLab.
+Per rendere l'interfaccia grafica più `intuibile <intuibile>`, si è scelto di rendere trasparente all'utente il meccanismo di autenticazione a JupyterLab.
 
 Pertanto, si è verificata la necessità di generare token crittograficamente sicuri da richiedere per l'accesso a JupyterLab.
 
@@ -665,7 +765,7 @@ Modello dei notebook
 ^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.notebooks.models
 
-Viene definito il modello rappresentante un :ref:`notebook`.
+Viene definito il modello rappresentante un `notebook <Notebook in Sophon>`.
 
 .. class:: Notebook(SophonGroupModel)
 
@@ -673,22 +773,30 @@ Viene definito il modello rappresentante un :ref:`notebook`.
 
       Lo slug dei notebook prevede ulteriori restrizioni oltre a quelle previste dallo `django.db.models.SlugField`:
 
-      - non può essere uno dei seguenti valori: ``api``, ``static``, ``proxy``, ``backend``, ``frontend``, ``src``;
-      - non può iniziare o finire con un trattino ``-``.
+      * non può essere uno dei seguenti valori: ``api``, ``static``, ``proxy``, ``backend``, ``frontend``, ``src``;
+      * non può iniziare o finire con un trattino ``-``.
 
    .. attribute:: project: ForeignKey → sophon.projects.models.ResearchProject
+
+      Il `progetto <Progetti di ricerca in Sophon>` che include questo notebook.
+
    .. attribute:: name: CharField
+
+      Il nome del notebook.
+
    .. attribute:: locked_by: ForeignKey → django.contrib.auth.models.User
+
+      L'`utente <Utenti in Sophon>` che ha richiesto il blocco del notebook, o `None` in caso il notebook non sia bloccato.
 
    .. attribute:: container_image: CharField ["ghcr.io/steffo99/sophon-jupyter"]
 
-      Campo che specifica l'immagine che il client Docker dovrà avviare per questo notebook.
+      Campo che specifica l'immagine che il client `Docker` dovrà avviare per questo notebook.
 
-      Al momento ne è configurata una sola per semplificare l'esperienza utente, ma altre possono essere specificate per permettere agli utenti più scelta.
+      Al momento ne è supportata una sola per semplificare l'esperienza utente, ma altre possono essere aggiunte al file che definisce il modello per permettere agli utenti di scegliere tra più immagini.
 
       .. note::
 
-         Al momento, le immagini specificate devono esporre un server web sulla porta ``8888``, e supportare il protocollo di connessione di Jupyter, ovvero :samp:`{PROTOCOLLO}://immagine:8888/lab?token={TOKEN}` e :samp:`{PROTOCOLLO}://immagine:8888/tree?token={TOKEN}`.
+         Al momento, Sophon si aspetta che tutte le immagini specificate espongano un server web sulla porta ``8888``, e supportino il protocollo di autenticazione di Jupyter, ovvero che sia possibile raggiungere il container ai seguenti indirizzi: :samp:`{PROTOCOLLO}://immagine:8888/lab?token={TOKEN}` e :samp:`{PROTOCOLLO}://immagine:8888/tree?token={TOKEN}`.
 
    .. attribute:: jupyter_token: CharField
 
@@ -702,11 +810,11 @@ Viene definito il modello rappresentante un :ref:`notebook`.
 
    .. attribute:: port: IntegerField
 
-      La porta assegnata al container Docker dell'oggetto nel caso in cui Sophon sia avviato in "modalità sviluppo", ovvero con il :ref:`modulo proxy` in esecuzione sul sistema host.
+      La porta TCP locale assegnata al container Docker dell'oggetto nel caso in cui Sophon sia avviato in `modalità sviluppo <Modalità sviluppo>`.
 
    .. attribute:: internal_url: CharField
 
-      L'URL a cui è accessibile il container Docker dell'oggetto nel caso in cui Sophon non sia avviato in "modalità sviluppo", ovvero con il :ref:`modulo proxy` in esecuzione all'interno di un container.
+      L'URL a cui è accessibile il container Docker dell'oggetto nel caso in cui Sophon non sia avviato in `modalità sviluppo <Modalità sviluppo>`.
 
    .. method:: log(self) -> logging.Logger
       :property:
@@ -717,23 +825,23 @@ Viene definito il modello rappresentante un :ref:`notebook`.
 
    .. method:: enable_proxying(self) -> None
 
-      Aggiunge l'indirizzo del notebook alla rubrica del proxy.
+      Aggiunge l'indirizzo del notebook alla `rubrica del proxy <Gestione della rubrica del proxy>`.
 
    .. method:: disable_proxying(self) -> None
 
-      Rimuove l'indirizzo del notebook dalla rubrica del proxy.
+      Rimuove l'indirizzo del notebook dalla `rubrica del proxy <Gestione della rubrica del proxy>`.
 
    .. method:: sync_container(self) -> t.Optional[docker.models.containers.Container]
 
-      Sincronizza lo stato dell'oggetto nel database con lo stato del container Docker nel sistema.
+      Sincronizza lo stato dell'oggetto nel database con lo stato del container `Docker` nel sistema.
 
    .. method:: create_container(self) -> docker.models.containers.Container
 
-      Crea e configura un container Docker per l'oggetto, con l'immagine specificata in `.container_image`.
+      Crea e configura un container `Docker` per l'oggetto, con l'immagine specificata in `.container_image`.
 
    .. method:: start(self) -> None
 
-      Tenta di creare e avviare un container Docker per l'oggetto, bloccando fino a quando esso non sarà avviato con `~.docker.sleep_until_container_has_started`.
+      Tenta di creare e avviare un container `Docker` per l'oggetto, bloccando fino a quando esso non sarà avviato con `~.docker.sleep_until_container_has_started`.
 
    .. method:: stop(self) -> None
 
@@ -783,20 +891,30 @@ Come per il modulo `sophon.projects`, vengono creati due viewset per interagire 
    Accessibile all'URL :samp:`/api/notebooks/by-project/{PROJECT_SLUG}/{NOTEBOOK_SLUG}/`.
 
 
-Dockerizzazione del modulo backend
-----------------------------------
+Containerizzazione del modulo backend
+-------------------------------------
 
-.. todo:: Dockerizzazione
+Il modulo backend è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `python:3.9.7-bullseye <https://hub.docker.com/_/python>`_.
 
-Modulo frontend
-===============
+L'immagine utilizza `Poetry` per installare le dipendenze, poi esegue il file ``docker_start.sh`` riportato sotto che effettua le migrazioni, prepara i file statici di Django e `prova a creare un superutente <Aggiunta di un nuovo comando di gestione>`, per poi avviare il progetto Django attraverso :mod:`gunicorn` sulla porta 8000.
 
-.. todo:: Modulo frontend
+.. code-block:: bash
+
+   poetry run python -O ./manage.py migrate --no-input
+   poetry run python -O ./manage.py collectstatic --no-input
+   poetry run python -O ./manage.py initsuperuser
+   poetry run python -O -m gunicorn sophon.wsgi:application --workers=4 --bind=0.0.0.0:8000
+
+
+Realizzazione del modulo frontend
+=================================
+.. default-domain:: js
+
+Il modulo frontend è stato realizzato come un package `Node.js` denominato ``@steffo/sophon-frontend``, e poi `containerizzato <Containerizzazione del modulo frontend>`, creando un'immagine `Docker` standalone, esattamente come per il `modulo backend <Containerizzazione del modulo backend>`.
 
 
 Struttura delle directory
 -------------------------
-.. default-domain:: js
 
 Le directory di :mod:`@steffo45/sophon-frontend` sono strutturate nella seguente maniera:
 
@@ -821,8 +939,6 @@ public
 
 Comunicazione con il server
 ---------------------------
-.. default-domain:: js
-
 
 Axios
 ^^^^^
@@ -938,7 +1054,7 @@ Contesti innestati
 ------------------
 .. default-domain:: js
 
-Per minimizzare i rerender, l'applicazione è organizzata a "contesti innestati".
+Per minimizzare i re-render, l'applicazione è organizzata a "contesti innestati".
 
 
 I contesti
@@ -1013,6 +1129,35 @@ Viene definita una funzione in grado di comprendere gli URL contestuali:
             "researchProject": "my-first-project",
             "notebook": "my-first-notebook"
          }
+
+
+Componenti contestuali
+^^^^^^^^^^^^^^^^^^^^^^
+
+Per ciascun contesto sono stati realizzati vari componenti.
+
+I più significativi comuni a tutti i contesti sono i `ResourcePanel` e le `ListBox`.
+
+.. function:: ResourcePanel({...})
+
+   Panello che rappresenta un'`entità di Sophon <Entità di Sophon>`, diviso in quattro parti:
+
+   *  icona (a sinistra)
+   *  nome della risorsa (a destra dell'icona)
+   *  bottoni (a destra)
+   *  testo (a sinistra dei bottoni)
+
+   .. figure:: resource_panel.png
+
+      Un `ResourcePanel` rappresentante un `gruppo di ricerca <Gruppi di ricerca in Sophon>`.
+
+.. function:: ListBox({...})
+
+   Riquadro che mostra le risorse di un `useManagedViewSet` raffigurandole come tanti `ResourcePanel`.
+
+   .. figure:: list_box.png
+
+      Un `ListBox` che mostra l'elenco di notebook in un progetto.
 
 
 Routing basato sui contesti
@@ -1098,42 +1243,26 @@ Cache
 Viene salvato l'elenco di tutti i membri dell':ref:`istanza` in uno speciale contesto :data:`CacheContext` in modo da poter risolvere gli id degli utenti al loro username senza dover effettuare ulteriori richieste.
 
 
-Dockerizzazione del modulo frontend
------------------------------------
+Containerizzazione del modulo frontend
+--------------------------------------
 
-.. todo:: Dockerizzazione del modulo frontend
+Il modulo frontend è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `node:16.11.1-bullseye <https://hub.docker.com/_/node>`_.
+
+L'immagine installa le dipendenze del modulo con `Yarn`, per poi eseguire il comando ``yarn run serve``, che avvia la procedura di preparazione della pagina e la rende disponibile su un webserver locale alla porta 3000.
 
 
 Modulo proxy
 ============
 
-Il *modulo proxy* consiste in un webserver che riceve tutte le richieste HTTP dirette ad uno degli altri moduli e le smista in base a regole statiche e dinamiche.
+Il modulo proxy consiste in un file di configurazione di `Apache HTTP Server`.
 
-È collocato all'interno del repository in ``/proxy``.
+Il file di configurazione abilita i moduli httpd `rewrite`_, `proxy`_, `proxy_wstunnel`_ e `proxy_http`_, impostando quest'ultimo per inoltrare l'header `Host`_ alle pagine verso cui viene effettuato reverse proxying.
 
-
-Tecnologie utilizzate
----------------------
-
-- Il server web `Apache HTTPd`_
-   - Il modulo `rewrite`_
-   - Il modulo `proxy`_
-   - Il modulo `proxy_http`_
-   - Il modulo `proxy_wstunnel`_
-
-.. _Apache HTTPd: https://httpd.apache.org/
 .. _rewrite: https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html
 .. _proxy: https://httpd.apache.org/docs/2.4/mod/mod_proxy.html
 .. _proxy_http: https://httpd.apache.org/docs/2.4/mod/mod_proxy_http.html
 .. _proxy_wstunnel: https://httpd.apache.org/docs/2.4/mod/mod_proxy_wstunnel.html
-
-
-Funzionamento del modulo
-------------------------
-
-Il modulo proxy è composto da un file di configurazione di `Apache HTTPd`_ e di un ``Dockerfile`` che lo copia all'interno dell'immagine Docker ufficiale ``httpd:2.4``.
-
-Il file di configurazione abilita i moduli `rewrite`_, `proxy`_, `proxy_wstunnel`_ e `proxy_http`_, impostando quest'ultimo per inoltrare l'header `Host <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host>`_ alle pagine verso cui viene effettuato reverse proxying.
+.. _Host: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host
 
 Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che viene utilizzato per effettuare reverse proxying secondo le seguenti regole:
 
@@ -1198,17 +1327,11 @@ Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che vi
 
 Tutte le regole usano il flag ``L`` di ``RewriteRule``, che porta il motore di rewriting a ignorare tutte le regole successive, come il ``return`` di una funzione di un linguaggio di programmazione imperativo.
 
-.. note::
-
-   I blocchi di codice all'interno di questa sezione sono stati inseriti manualmente e potrebbero non essere interamente aggiornati alla versione più recente del file.
-
-   Si consiglia di consultare il file ``httpd.conf`` in caso si necessiti di informazioni aggiornate.
-
 
 Dockerizzazione del modulo proxy
 --------------------------------
 
-.. todo:: Dockerizzazione del modulo proxy
+Il modulo proxy è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `httpd:2.4 <https://hub.docker.com/_/httpd>`_, che si limita ad applicare la configurazione personalizzata.
 
 
 Modulo Jupyter
@@ -1217,13 +1340,6 @@ Modulo Jupyter
 Il *modulo Jupyter* consiste in un ambiente `Jupyter <https://jupyter.org/>`_ e `JupyterLab <https://jupyterlab.readthedocs.io/en/stable/>`_ modificato per una migliore integrazione con Sophon, in particolare con il :ref:`modulo frontend` e il :ref:`modulo backend`.
 
 È collocato all'interno del repository in ``/jupyter``.
-
-Progetti utilizzati
--------------------
-
-- Le immagini Docker ufficiali di Jupyter `jupyter/docker-stacks <https://github.com/jupyter/docker-stacks>`_
-- Il tema `JupyterLab Sophon <https://github.com/Steffo99/jupyterlab-theme-sophon>`_ (realizzato durante il tirocinio)
-- Il tool per il trasferimento dati `curl <https://curl.se/>`_
 
 
 Sviluppo del tema per Jupyter
