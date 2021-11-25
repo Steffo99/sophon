@@ -17,7 +17,7 @@ Realizzazione del modulo backend
 ================================
 .. default-domain:: py
 
-Il modulo backend è stato realizzato come un package `Python` denominato ``sophon``, e poi `containerizzato <Containerizzazione del modulo backend>`, creando un'immagine `Docker` standalone.
+Il modulo backend è stato realizzato come un package `Python` denominato ``sophon``, e poi `containerizzato <Containerizzazione del modulo backend>`, creando un'immagine :ref:`Docker` standalone.
 
 
 Il project Django
@@ -547,9 +547,6 @@ Vengono testate tutte le view dell'app tramite `.BetterAPITestCase` e tutti i vi
 
 L'app Sophon Projects
 ---------------------
-
-.. default-domain:: py
-.. default-role:: obj
 .. module:: sophon.projects
 
 L'app `sophon.projects` è un app secondaria che dipende da `sophon.core` che introduce in Sophon il concetto di `progetto di ricerca <Progetti di ricerca in Sophon>`.
@@ -647,7 +644,7 @@ L'app `sophon.notebooks` è un app secondaria che dipende da `sophon.projects` c
 Funzionamento di un notebook
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Internamente, un notebook non è altro che un container `Docker` accessibile ad un determinato indirizzo il cui stato è sincronizzato con un oggetto del database del `modulo backend <Modulo backend>`.
+Internamente, un notebook non è altro che un container :ref:`Docker` accessibile ad un determinato indirizzo il cui stato è sincronizzato con un oggetto del database del `modulo backend <Modulo backend>`.
 
 
 Modalità sviluppo
@@ -790,7 +787,7 @@ Viene definito il modello rappresentante un `notebook <Notebook in Sophon>`.
 
    .. attribute:: container_image: CharField ["ghcr.io/steffo99/sophon-jupyter"]
 
-      Campo che specifica l'immagine che il client `Docker` dovrà avviare per questo notebook.
+      Campo che specifica l'immagine che il client :ref:`Docker` dovrà avviare per questo notebook.
 
       Al momento ne è supportata una sola per semplificare l'esperienza utente, ma altre possono essere aggiunte al file che definisce il modello per permettere agli utenti di scegliere tra più immagini.
 
@@ -833,15 +830,15 @@ Viene definito il modello rappresentante un `notebook <Notebook in Sophon>`.
 
    .. method:: sync_container(self) -> t.Optional[docker.models.containers.Container]
 
-      Sincronizza lo stato dell'oggetto nel database con lo stato del container `Docker` nel sistema.
+      Sincronizza lo stato dell'oggetto nel database con lo stato del container :ref:`Docker` nel sistema.
 
    .. method:: create_container(self) -> docker.models.containers.Container
 
-      Crea e configura un container `Docker` per l'oggetto, con l'immagine specificata in `.container_image`.
+      Crea e configura un container :ref:`Docker` per l'oggetto, con l'immagine specificata in `.container_image`.
 
    .. method:: start(self) -> None
 
-      Tenta di creare e avviare un container `Docker` per l'oggetto, bloccando fino a quando esso non sarà avviato con `~.docker.sleep_until_container_has_started`.
+      Tenta di creare e avviare un container :ref:`Docker` per l'oggetto, bloccando fino a quando esso non sarà avviato con `~.docker.sleep_until_container_has_started`.
 
    .. method:: stop(self) -> None
 
@@ -894,7 +891,7 @@ Come per il modulo `sophon.projects`, vengono creati due viewset per interagire 
 Containerizzazione del modulo backend
 -------------------------------------
 
-Il modulo backend è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `python:3.9.7-bullseye <https://hub.docker.com/_/python>`_.
+Il modulo backend è incapsulato in un'immagine :ref:`Docker` basata sull'immagine ufficiale `python:3.9.7-bullseye <https://hub.docker.com/_/python>`_.
 
 L'immagine utilizza `Poetry` per installare le dipendenze, poi esegue il file ``docker_start.sh`` riportato sotto che effettua le migrazioni, prepara i file statici di Django e `prova a creare un superutente <Aggiunta di un nuovo comando di gestione>`, per poi avviare il progetto Django attraverso :mod:`gunicorn` sulla porta 8000.
 
@@ -910,7 +907,7 @@ Realizzazione del modulo frontend
 =================================
 .. default-domain:: js
 
-Il modulo frontend è stato realizzato come un package `Node.js` denominato ``@steffo/sophon-frontend``, e poi `containerizzato <Containerizzazione del modulo frontend>`, creando un'immagine `Docker` standalone, esattamente come per il `modulo backend <Containerizzazione del modulo backend>`.
+Il modulo frontend è stato realizzato come un package `Node.js` denominato ``@steffo/sophon-frontend``, e poi `containerizzato <Containerizzazione del modulo frontend>`, creando un'immagine :ref:`Docker` standalone, esattamente come per il `modulo backend <Containerizzazione del modulo backend>`.
 
 
 Struttura delle directory
@@ -1289,7 +1286,7 @@ Viene salvato l'elenco di tutti i membri dell'`istanza <Istanza in Sophon>` in u
 Containerizzazione del modulo frontend
 --------------------------------------
 
-Il modulo frontend è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `node:16.11.1-bullseye <https://hub.docker.com/_/node>`_.
+Il modulo frontend è incapsulato in un'immagine :ref:`Docker` basata sull'immagine ufficiale `node:16.11.1-bullseye <https://hub.docker.com/_/node>`_.
 
 L'immagine installa le dipendenze del modulo con `Yarn`, per poi eseguire il comando ``yarn run serve``, che avvia la procedura di preparazione della pagina e la rende disponibile su un webserver locale alla porta 3000.
 
@@ -1374,7 +1371,7 @@ Tutte le regole usano il flag ``L`` di ``RewriteRule``, che porta il motore di r
 Dockerizzazione del modulo proxy
 --------------------------------
 
-Il modulo proxy è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `httpd:2.4 <https://hub.docker.com/_/httpd>`_, che si limita ad applicare la configurazione personalizzata.
+Il modulo proxy è incapsulato in un'immagine :ref:`Docker` basata sull'immagine ufficiale `httpd:2.4 <https://hub.docker.com/_/httpd>`_, che si limita ad applicare la configurazione personalizzata.
 
 
 Realizzazione del modulo Jupyter
@@ -1438,7 +1435,7 @@ Il ``Dockerfile`` del modulo ne crea un immagine Docker in quattro fasi:
       RUN mkdir -p '.jupyter/lab/user-settings/@jupyterlab/apputils-extension/'
       RUN echo '{"theme": "JupyterLab Sophon"}' > ".jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings"
 
-#. **Healthcheck**: Installa `curl`, uno strumento in grado di effettuare richieste :abbr:`HTTP (HyperText Transfer Protocol` da linea di comando, e configura la verifica dello `stato di salute <Controllo dello stato di salute>` dell'immagine, al fine di comunicare al `modulo backend <Modulo backend>` il risultato di una richiesta di avvio.
+#. **Healthcheck**: Installa `curl <https://curl.se/>`_, uno strumento in grado di effettuare richieste :abbr:`HTTP (HyperText Transfer Protocol` da linea di comando, e configura la verifica dello `stato di salute <Controllo dello stato di salute>` dell'immagine, al fine di comunicare al `modulo backend <Modulo backend>` il risultato di una richiesta di avvio.
 
    .. code-block:: docker
 
@@ -1455,19 +1452,120 @@ Il ``Dockerfile`` del modulo ne crea un immagine Docker in quattro fasi:
       USER ${NB_UID}
 
 
-Strumenti di sviluppo
-=====================
+Automazione di sviluppo
+=======================
 
-.. todo:: Strumenti di sviluppo
-
-
-Continuous Integration
-----------------------
-
-.. todo:: Continuous Integration
+Al fine di snellire lo sviluppo del software, è stato configurato lo strumento di automazione `GitHub Actions <https://github.com/features/actions>`_ per effettuare automaticamente alcuni compiti.
 
 
-Continuous Deployment
----------------------
+Scansione automatica delle dipendenze
+-------------------------------------
 
-.. todo:: Continuous Deployment
+È stato abilitato su :ref:`GitHub` il supporto a `Dependabot <https://docs.github.com/en/code-security/supply-chain-security/managing-vulnerabilities-in-your-projects-dependencies/configuring-dependabot-security-updates>`_, un software che scansiona le dipendenze dei vari moduli e notifica gli sviluppatori qualora una o più di esse siano vulnerabili ad exploit.
+
+.. figure:: dependabot.png
+
+   Alcune vulnerabilità rilevate da Dependabot all'interno delle dipendenze di Sophon.
+
+
+Controllo automatico del codice
+-------------------------------
+
+Sono state configurate due azioni, ``analyze-codeql-backend`` e ``analyze-codeql-frontend``, che usano `CodeQL <https://codeql.github.com/>`_ per scansionare staticamente il codice e identificare problemi o vulnerabilità.
+
+La prima, ``analyze-codeql-backend``, viene eseguita solo quando viene inviato a GitHub nuovo codice relativo al `modulo backend <Modulo backend>`, ed effettua analisi specifiche a `Python`, mentre la seconda, ``analyze-codeql-frontend``, viene eseguita solo quando viene inviato nuovo codice del `modulo frontend <Modulo frontend>`, ed effettua analisi specifiche a JavaScript.
+
+Si riportano due estratti relativi all'azione ``analyze-codeql-backend``.
+
+.. code-block:: yaml
+
+   on:
+      push:
+         branches: [ main ]
+         paths:
+            - "backend/**"
+
+.. code-block:: yaml
+
+   steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        with:
+          languages: "python"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+
+Costruzione automatica delle immagini Docker
+--------------------------------------------
+
+Sono state configurate quattro azioni, ``build-docker-frontend``, ``build-docker-backend``, ``build-docker-jupyter`` e ``build-docker-proxy``, che costruiscono automaticamente l'immagine :ref:`Docker` di ciascun modulo qualora il relativo codice venga modificato.
+
+L'immagine creata viene poi caricata sul `GitHub Container Registry <https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry>`_, da cui può poi essere scaricata attraverso :ref:`Docker`.
+
+Si riporta un estratto relativo all'azione ``build-docker-proxy``.
+
+.. code-block:: yml
+
+   steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v2
+      - name: "Login to GitHub Containers"
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u Steffo99 --password-stdin
+      - name: "Build the docker container `ghcr.io/steffo99/sophon-proxy:latest`"
+        run: docker build ./proxy --tag ghcr.io/steffo99/sophon-proxy:latest
+      - name: "Upload the container to GitHub Containers"
+        run: docker push ghcr.io/steffo99/sophon-proxy:latest
+
+
+Costruzione automatica della documentazione
+-------------------------------------------
+
+Sono state configurate due azioni, ``build-sphinx-report`` e ``build-sphinx-thesis``, che compilano rispettivamente la documentazione richiesta per l'esame di Tecnologie Web e questa stessa tesi usando lo strumento `Sphinx <https://www.sphinx-doc.org/en/master/>`_.
+
+La documentazione per l'esame viene compilata solo da `reStructuredText <https://docutils.sourceforge.io/rst.html>`_ ad HTML; la tesi, invece, viene compilata sia in HTML sia in PDF.
+
+Si riporta un estratto relativo all'azione ``build-sphinx-thesis``.
+
+.. code-block:: yml
+
+   latexpdf:
+      name: "Build PDF document"
+      runs-on: ubuntu-latest
+      steps:
+         - name: "Update apt repositories"
+           run: sudo apt-get update -y
+         - name: "Checkout repository"
+           uses: actions/checkout@v2
+           with:
+              lfs: true
+         - name: "Checkout LFS objects"
+           run: git lfs checkout
+         - name: "Setup Python"
+           uses: actions/setup-python@v2
+           with:
+              python-version: 3.9
+         - name: "Setup Poetry"
+           uses: abatilo/actions-poetry@v2.0.0
+           with:
+              poetry-version: 1.1.11
+         - name: "Install LaTeX packages"
+           run: sudo apt-get install -y latexmk texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended texlive-luatex fonts-ebgaramond fonts-ebgaramond-extra fonts-firacode xindy
+         - name: "Install backend dependencies"
+           working-directory: backend/
+           run: poetry install --no-interaction
+         - name: "Find Poetry Python environment"
+           working-directory: backend/
+           run: echo "pythonLocation=$(poetry env list --full-path | cut -f1 -d' ')/bin" >> $GITHUB_ENV
+         - name: "Build LaTeX document with Sphinx"
+           working-directory: thesis/
+           run: |
+              source $pythonLocation/activate
+              make latexpdf
+         - name: "Upload build artifact"
+           uses: actions/upload-artifact@v2
+           with:
+              name: "thesis.pdf"
+              path: "thesis/build/latex/progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.pdf"
