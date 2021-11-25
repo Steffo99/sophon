@@ -1,7 +1,7 @@
 :github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/1_sinossi/index.rst
 
 .. index::
-   pair: tesi; sinossi
+   pair: ! tesi; sinossi
 
 Sinossi
 *******

@@ -1,7 +1,7 @@
 :github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/2_introduzione/index.rst
 
 .. index::
-   pair: tesi; introduzione
+   pair: ! tesi; introduzione
 
 **********************
 Introduzione alla tesi

@@ -1,7 +1,7 @@
 :github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/5_implementazione/index.rst
 
 .. index::
-   pair: Sophon; realizzazione
+   pair: ! realizzazione; Sophon
 
 ***********************
 Realizzazione di Sophon
@@ -13,7 +13,7 @@ Terminato il progetto, si è passati a realizzarne una versione funzionante su c
 
 
 .. index::
-   pair: implementazione; backend
+   pair: realizzazione; backend
 
 Realizzazione del modulo backend
 ================================
@@ -28,16 +28,16 @@ Il project Django
 
 Il package è stato creato utilizzando l'utility ``startproject`` di Django, la quale crea una cartella di script `Python` con i quali partire per lo sviluppo di una nuovo software web.
 
-La cartella generata è stata modificata significativamente: ne si è modificata la struttura in modo tale da trasformarla da un insieme di script a un vero e proprio modulo Python eseguibile e distribuibile, e si sono aggiunte nuove funzionalità di utilità generale all'applicazione, quali una `pagina di amministrazione personalizzata <Pagina di amministrazione personalizzata>`, il `caricamento dinamico delle impostazioni <Caricamento dinamico delle impostazioni>` e vari `miglioramenti all'autenticazione <Miglioramenti all'autenticazione>`
+La cartella generata è stata modificata significativamente: ne si è modificata la struttura in modo tale da trasformarla da un insieme di script a un vero e proprio modulo Python eseguibile e distribuibile, e si sono aggiunte nuove funzionalità di utilità generale all'applicazione, quali una `app di amministrazione personalizzata <App di amministrazione personalizzata>`, il `caricamento dinamico delle impostazioni <Caricamento dinamico delle impostazioni>` e vari `miglioramenti all'autenticazione <Miglioramenti all'autenticazione>`
 
 
-Pagina di amministrazione personalizzata
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+App di amministrazione personalizzata
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.admin
 
-La pagina di amministrazione viene personalizzata con la classe `SophonAdminSite`, che modifica alcuni parametri della classe base.
+L'app di amministrazione di Django viene personalizzata con la classe `SophonAdminSite`, che modifica alcuni parametri della classe base.
 
-Inoltre, il template predefinito viene sovrascritto da quello all'interno del file ``templates/admin/base.html``, che sostituisce il foglio di stile con uno personalizzato per Sophon.
+Inoltre, il template predefinito viene sovrascritto dal file ``templates/admin/base.html``, che sostituisce il foglio di stile con uno personalizzato per Sophon.
 
 .. class:: SophonAdminSite(django.contrib.admin.AdminSite)
 
@@ -62,6 +62,10 @@ Inoltre, il template predefinito viene sovrascritto da quello all'interno del fi
    .. attribute:: default_site = "sophon.admin.SophonAdminSite"
 
       :class:`.SophonAdminSite` è selezionata come classe predefinita per il sito di amministrazione.
+
+.. figure:: admin_site.png
+
+   Immagine della pagina principale dell'app di amministrazione.
 
 
 Caricamento dinamico delle impostazioni
