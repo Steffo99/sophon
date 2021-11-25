@@ -1,3 +1,5 @@
+:github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/4_progetto/index.rst
+
 .. index::
    pair: Sophon; progettazione
 
@@ -529,7 +531,7 @@ Viene **eseguito dal server** sul quale è ospitato Sophon.
 Containerizzazione
 ==================
 
-Al fine di facilitare l'installazione e di migliorare la `sicurezza <Sicurezza>` dell'applicazione, si è stabilito di costruire `container <Container>` `Docker` per tutti i moduli di Sophon.
+Al fine di facilitare l'installazione e di migliorare la `sicurezza <Sicurezza>` dell'applicazione, si è stabilito di costruire `container Docker <Container Docker>` per tutti i moduli di Sophon.
 
 
 .. index::
@@ -547,8 +549,8 @@ Docker
    pair: Docker; image
    pair: Docker; immagine
 
-Immagini
-^^^^^^^^
+Immagini Docker
+^^^^^^^^^^^^^^^
 
 Le *immagini* Docker sono sequenze di regole e insiemi di file per la creazione di un `container <Container>`, tipicamente partendo da un altro container come base. :cite:`docker:overview`
 
@@ -560,8 +562,8 @@ Possono essere comparate a immagini di macchine virtuali con tanti "punti di rip
 .. index::
    pair: Docker; container
 
-Container
-^^^^^^^^^
+Container Docker
+^^^^^^^^^^^^^^^^
 
 I *container* Docker sono istanze di `immagini <Immagini>` che possono essere eseguite dal `Docker Engine` :cite:`docker:overview`.
 
@@ -571,8 +573,8 @@ Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arr
 .. index::
    pair: Docker; network
 
-Network
-^^^^^^^
+Network Docker
+^^^^^^^^^^^^^^
 
 I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari `container <Container>` ad una rete locale virtuale, permettendone l'interazione :cite:`docker:networking`.
 
@@ -584,8 +586,8 @@ Sono una versione più potente dei moduli di rete per macchine virtuali.
 .. index::
    pair: Docker; volume
 
-Volumi
-^^^^^^
+Volumi Docker
+^^^^^^^^^^^^^
 
 I *volumi* Docker sono astrazioni per filesystem che permettono la condivisione di file tra container :cite:`docker:volumes`.
 
@@ -884,7 +886,7 @@ Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può 
 Notebook
 --------
 
-Un *notebook* rappresenta una **postazione di lavoro** che può essere allegata ad un :ref:`progetto di ricerca`.
+Un *notebook* rappresenta una **postazione di lavoro** che può essere allegata ad un `progetto di ricerca <Progetti di ricerca in Sophon>`.
 
 
 Creazione di nuovi notebook
@@ -914,7 +916,7 @@ In più, uno slug di un notebook non può iniziare o terminare con un trattino `
 Stato del notebook
 ^^^^^^^^^^^^^^^^^^
 
-Un notebook può essere *avviato* o *fermo* in base al suo stato di esecuzione sull':ref:`istanza` Sophon:
+Un notebook può essere *avviato* o *fermo* in base al suo stato di esecuzione sull'`istanza <Istanza in Sophon>` Sophon:
 
 *  è *avviato* se sta venendo eseguito ed è accessibile;
 *  è *fermo* se non sta venendo eseguito o sta venendo preparato.
@@ -940,7 +942,7 @@ Un **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>` a cui appart
 Immagine del notebook
 ^^^^^^^^^^^^^^^^^^^^^
 
-In **fase di creazione** di un notebook, oppure mentre esso è **fermo**, è possibile selezionare l'`immagine Docker <immagine>` che esso deve eseguire all'avvio.
+In **fase di creazione** di un notebook, oppure mentre esso è **fermo**, è possibile selezionare l'`immagine Docker <Immagini Docker>` che esso deve eseguire all'avvio.
 
 Di default, l'immagine deve essere quella del `modulo Jupyter <Modulo Jupyter>`.
 

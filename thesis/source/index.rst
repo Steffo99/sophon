@@ -1,3 +1,5 @@
+:github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/index.rst
+
 ##############################################################################
 Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
 ##############################################################################

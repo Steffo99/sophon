@@ -87,7 +87,6 @@ html_theme = 'sphinx_rtd_theme'
 # Configuration for the theme
 html_theme_options = {
     "style_nav_header_background": "#051836",
-    "github_url": "https://github.com/Steffo99/sophon/tree/main/docs/source",
 }
 # Title of the HTML page
 html_title = f"{project}"

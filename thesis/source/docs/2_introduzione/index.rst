@@ -1,3 +1,5 @@
+:github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/2_introduzione/index.rst
+
 .. index::
    pair: tesi; introduzione
 
@@ -42,7 +44,7 @@ La tesi è strutturata nel seguente modo:
 #. nel primo capitolo, :ref:`Sinossi`, viene descritto molto brevemente il progetto realizzato;
 #. nel secondo capitolo, :ref:`Introduzione alla tesi`, viene introdotto il contesto della tesi, la tesi stessa e i suoi contenuti;
 #. nel terzo capitolo, :ref:`Ricerca collaborativa`, viene presentata in dettaglio la situazione attuale della ricerca collaborativa;
-#. nel quarto capitolo, :ref:`Progettazione`, viene descritta la progettazione avvenuta, entrando nei dettagli dei requisiti, della suddivisione in moduli e delle astrazioni create;
-#. nel quinto capitolo, :ref:`Implementazione`, vengono trattate le specifiche tecniche implementative del progetto;
+#. nel quarto capitolo, :ref:`Progettazione di Sophon`, viene descritta la progettazione avvenuta, entrando nei dettagli dei requisiti, della suddivisione in moduli e delle astrazioni create;
+#. nel quinto capitolo, :ref:`Realizzazione di Sophon`, vengono trattate le specifiche tecniche implementative del progetto;
 #. nel sesto capitolo, :ref:`Applicazione`, viene fatto un breve esempio di applicazione del progetto all'interno di un'Università;
 #. nell'settimo capitolo, :ref:`Conclusione`, vengono tratte le conclusioni della tesi.

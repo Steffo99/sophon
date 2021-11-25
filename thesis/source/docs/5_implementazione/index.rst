@@ -1,3 +1,5 @@
+:github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/5_implementazione/index.rst
+
 .. index::
    pair: Sophon; realizzazione
 
@@ -92,17 +94,17 @@ Miglioramenti all'autenticazione
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.auth1
 
-La classe `rest_framework.authentication.TokenAuthentication` viene modificata per ottenere un comportamento conforme agli standard del web.
+La classe :class:`rest_framework.authentication.TokenAuthentication` viene modificata per ottenere un comportamento conforme agli standard del web.
 
 .. class:: BearerTokenAuthentication(rest_framework.authentication.TokenAuthentication)
 
    .. attribute:: keyword = "Bearer"
 
-      Si configura `rest_framework` per accettare header di autenticazione nella forma ``Bearer <token>``, invece che il default di `rest_framework` ``Token <token>``.
+      Si configura :mod:`rest_framework` per accettare header di autenticazione nella forma ``Bearer <token>``, invece che il default di :mod:`rest_framework` ``Token <token>``.
 
 .. module:: sophon.auth2
 
-La view `rest_framework.authtoken.views.ObtainAuthToken` viene estesa per aggiungere dati alla risposta di autenticazione riuscita.
+La view :class:`rest_framework.authtoken.views.ObtainAuthToken` viene estesa per aggiungere dati alla risposta di autenticazione riuscita.
 
 .. class:: CustomObtainAuthToken(rest_framework.authtoken.views.ObtainAuthToken)
 
@@ -126,14 +128,14 @@ Per permettere l'integrazione la creazione automatica del primo superutente quan
 
 .. class:: Command
 
-   Questo comando crea automaticamente un superutente con le credenziali specificate in :env:`DJANGO_SU_USERNAME`, :env:`DJANGO_SU_EMAIL` e :env:`DJANGO_SU_PASSWORD`.
+   Questo comando crea automaticamente un superutente con le credenziali specificate in :envvar:`DJANGO_SU_USERNAME`, :envvar:`DJANGO_SU_EMAIL` e :envvar:`DJANGO_SU_PASSWORD`.
 
 
 Modello base astratto
 ^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.models
 
-Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabilire il `livello di accesso <Livelli di accesso>` di un `utente <Utenti in Sophon>` all'oggetto e per generare automaticamente i `rest_framework.serializers.ModelSerializer` in base ad esso.
+Viene estesa la classe astratta :class:`django.db.models.Model` con funzioni per stabilire il `livello di accesso <Livelli di accesso>` di un `utente <Utenti in Sophon>` all'oggetto e per generare automaticamente i :class:`rest_framework.serializers.ModelSerializer` in base ad esso.
 
 .. class:: SophonModel(django.db.models.Model)
 
@@ -192,7 +194,7 @@ Viene definito un nuovo modello astratto, basato su `SophonModel`, che permette 
 
    .. method:: get_access_serializer(self, user: User) -> typing.Type[rest_framework.serializers.ModelSerializer]
 
-      :returns: Restituisce il `rest_framework.serializers.ModelSerializer` adeguato al livello di autorità dell'utente.
+      :returns: Restituisce il :class:`rest_framework.serializers.ModelSerializer` adeguato al livello di autorità dell'utente.
 
 
 .. class:: sophon.core.enums.SophonGroupAccess(enum.IntEnum)
@@ -272,7 +274,7 @@ Viene creato il modello che rappresenta un `gruppo di ricerca <Gruppi di ricerca
 
    .. attribute:: members: ManyToManyField → django.contrib.auth.models.User
 
-      Elenco dei membri del gruppo. L'utente `.owner` è ignorato, in quanto è considerato sempre parte del gruppo.
+      Elenco dei membri del gruppo. L'utente :attr:`.owner` è ignorato, in quanto è considerato sempre parte del gruppo.
 
    .. attribute:: owner: ForeignKey → django.contrib.auth.models.User
 
@@ -287,38 +289,38 @@ Estensione ai permessi di Django
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.permissions
 
-I permessi di `rest_framework` vengono estesi con due nuove classi che utilizzano il `modello di autorizzazione astratto <Modello di autorizzazione astratto>` precedentemente definito.
+I permessi di :mod:`rest_framework` vengono estesi con due nuove classi che utilizzano il `modello di autorizzazione astratto <Modello di autorizzazione astratto>` precedentemente definito.
 
 .. class:: Edit(rest_framework.permissions.BasePermission)
 
-   Consente l'interazione solo agli utenti che possono modificare (`.can_edit`) l'oggetto.
+   Consente l'interazione solo agli utenti che possono modificare l'oggetto.
 
 .. class:: Admin(rest_framework.permissions.BasePermission)
 
-   Consente l'interazione solo agli utenti che possono amministrare (`.can_admin`) l'oggetto.
+   Consente l'interazione solo agli utenti che possono amministrare l'oggetto.
 
 
 Viewset astratti
 ^^^^^^^^^^^^^^^^
 .. module:: sophon.core.views
 
-Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle classi astratte `.models.SophonModel` e `.models.SophonGroupModel`.
+Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle classi astratte :class:`.models.SophonModel` e :class:`.models.SophonGroupModel`.
 
 .. class:: ReadSophonViewSet(rest_framework.viewsets.ReadOnlyModelViewSet, metaclass=abc.ABCMeta)
 
-   Classe **astratta** che estende la classe base `rest_framework.viewsets.ReadOnlyModelViewSet` con metodi di utilità mancanti nell'implementazione originale, allacciandola inoltre a `.models.SophonGroupModel`.
+   Classe **astratta** che estende la classe base :class:`rest_framework.viewsets.ReadOnlyModelViewSet` con metodi di utilità mancanti nell'implementazione originale, allacciandola inoltre a :class:`.models.SophonGroupModel`.
 
    .. method:: get_queryset(self) -> QuerySet
       :abstractmethod:
 
-      Imposta come astratto (e quindi obbligatorio) il metodo `rest_framework.viewsets.ReadOnlyModelViewSet.get_queryset`.
+      Imposta come astratto (e quindi obbligatorio) il metodo :meth:`rest_framework.viewsets.ReadOnlyModelViewSet.get_queryset`.
 
    .. method:: permission_classes(self)
       :property:
 
-      Sovrascrive il campo di classe `rest_framework.viewsets.ReadOnlyModelViewSet.permission_classes` con una funzione, permettendone la selezione dei permessi richiesti al momento di ricezione di una richiesta HTTP (invece che al momento di definizione della classe).
+      Sovrascrive il campo di classe :attr:`rest_framework.viewsets.ReadOnlyModelViewSet.permission_classes` con una funzione, permettendone la selezione dei permessi richiesti al momento di ricezione di una richiesta HTTP (invece che al momento di definizione della classe).
 
-      Delega la selezione delle classi a `.get_permission_classes`.
+      Delega la selezione delle classi a :meth:`.get_permission_classes`.
 
    .. method:: get_permission_classes(self) -> typing.Collection[typing.Type[permissions.BasePermission]]
 
@@ -328,72 +330,72 @@ Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle clas
 
    .. method:: get_serializer_class(self) -> typing.Type[Serializer]
 
-      Funzione che permette la selezione del `rest_framework.serializers.Serializer` da utilizzare per una determinata richiesta al momento di ricezione di quest'ultima.
+      Funzione che permette la selezione del :class:`rest_framework.serializers.Serializer` da utilizzare per una determinata richiesta al momento di ricezione di quest'ultima.
 
       Utilizza:
 
          - il serializzatore **in sola lettura** per elencare gli oggetti (azione ``list``);
          - il serializzatore **di creazione** per creare nuovi oggetti (azione ``create``) e per generare i metadati del viewset (azione ``metadata``);
-         - il serializzatore ottenuto da `.models.SophonGroupModel.get_access_serializer` per la visualizzazione dettagliata (azione ``retrieve``), la modifica (azioni ``update`` e ``partial_update``) e l'eliminazione (azione ``destroy``) di un singolo oggetto;
-         - il serializzatore ottenuto da `.get_custom_serializer_classes` per le azioni personalizzate.
+         - il serializzatore ottenuto da :meth:`.models.SophonGroupModel.get_access_serializer` per la visualizzazione dettagliata (azione ``retrieve``), la modifica (azioni ``update`` e ``partial_update``) e l'eliminazione (azione ``destroy``) di un singolo oggetto;
+         - il serializzatore ottenuto da :meth:`.get_custom_serializer_classes` per le azioni personalizzate.
 
       .. seealso::
 
-         `.models.SophonGroupModel`
+         :class:`.models.SophonGroupModel`
 
    .. method:: get_custom_serializer_classes(self) -> t.Type[Serializer]
 
-      Permette alle classi che ereditano da questa di selezionare quale `rest_framework.serializers.Serializer` utilizzare per le azioni personalizzate.
+      Permette alle classi che ereditano da questa di selezionare quale :class:`rest_framework.serializers.Serializer` utilizzare per le azioni personalizzate.
 
 .. class:: WriteSophonViewSet(rest_framework.viewsets.ModelViewSet, ReadSophonViewSet, metaclass=abc.ABCMeta)
 
-   Classe **astratta** che estende la classe base `ReadSophonViewSet` aggiungendoci i metodi di `rest_framework.viewsets.ModelViewSet` che effettuano modifiche sugli oggetti.
+   Classe **astratta** che estende la classe base :class:`ReadSophonViewSet` aggiungendoci i metodi di :class:`rest_framework.viewsets.ModelViewSet` che effettuano modifiche sugli oggetti.
 
-   Depreca i metodi ``perform_*`` di `rest_framework`, introducendone versioni migliorate con una signature diversa dal nome di ``hook_*``.
+   Depreca i metodi ``perform_*`` di :mod:`rest_framework`, introducendone versioni migliorate con una signature diversa dal nome di ``hook_*``.
 
    .. method:: perform_create(self, serializer)
 
       .. deprecated:: 0.1
 
-      Metodo di `rest_framework` rimosso da Sophon.
+      Metodo di :mod:`rest_framework` rimosso da Sophon.
 
    .. method:: perform_update(self, serializer)
 
       .. deprecated:: 0.1
 
-      Metodo di `rest_framework` rimosso da Sophon.
+      Metodo di :mod:`rest_framework` rimosso da Sophon.
 
    .. method:: perform_destroy(self, serializer)
 
       .. deprecated:: 0.1
 
-      Metodo di `rest_framework` rimosso da Sophon.
+      Metodo di :mod:`rest_framework` rimosso da Sophon.
 
    .. method:: hook_create(self, serializer) -> dict[str, typing.Any]
 
       Funzione chiamata durante l'esecuzione dell'azione di creazione oggetto ``create``.
 
-      :param serializer: Il `~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto che sta per essere creato.
-      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una `.HTTPException` all'interno della funzione.
-      :returns: Un `dict` da unire a quello del `~rest_framework.serializers.Serializer` per formare l'oggetto da creare.
+      :param serializer: Il :class:`~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto che sta per essere creato.
+      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una :exc:`.HTTPException` all'interno della funzione.
+      :returns: Un `dict` da unire a quello del :class:`~rest_framework.serializers.Serializer` per formare l'oggetto da creare.
 
    .. method:: hook_update(self, serializer) -> dict[str, t.Any]
 
       Funzione chiamata durante l'esecuzione delle azioni di modifica oggetto ``update`` e ``partial_update``.
 
-      :param serializer: Il `~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto che sta per essere modificato.
-      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una `.HTTPException` all'interno della funzione.
-      :returns: Un `dict` da unire a quello del `~rest_framework.serializers.Serializer` per formare l'oggetto da modificare.
+      :param serializer: Il :class:`~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto che sta per essere modificato.
+      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una :exc:`.HTTPException` all'interno della funzione.
+      :returns: Un :class:`dict` da unire a quello del :class:`~rest_framework.serializers.Serializer` per formare l'oggetto da modificare.
 
    .. method:: hook_destroy(self, serializer) -> dict[str, typing.Any]
 
       Funzione chiamata durante l'esecuzione dell'azione di eliminazione oggetto ``destroy``.
 
-      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una `.HTTPException` all'interno della funzione.
+      :raises .HTTPException: È possibile interrompere la creazione dell'oggetto con uno specifico codice errore sollevando una :exc:`.HTTPException` all'interno della funzione.
 
 .. exception:: sophon.core.errors.HTTPException
 
-   Tipo di eccezione che è possibile sollevare nei metodi ``hook_*`` di `.WriteSophonViewSet` per interrompere l'azione in corso senza applicare le modifiche.
+   Tipo di eccezione che è possibile sollevare nei metodi ``hook_*`` di :class:`.WriteSophonViewSet` per interrompere l'azione in corso senza applicare le modifiche.
 
    .. attribute:: status: int
 
@@ -402,14 +404,14 @@ Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle clas
 
 .. class:: SophonGroupViewSet(WriteSophonViewSet, metaclass=abc.ABCMeta)
 
-   Classe **astratta** che estende la classe base `.WriteSophonViewSet` estendendo gli ``hook_*`` con verifiche dei permessi dell'utente che tenta di effettuare l'azione.
+   Classe **astratta** che estende la classe base :class:`.WriteSophonViewSet` estendendo gli ``hook_*`` con verifiche dei permessi dell'utente che tenta di effettuare l'azione.
 
    .. method:: get_group_from_serializer(self, serializer) -> models.ResearchGroup
       :abstractmethod:
 
       Metodo necessario a trovare il gruppo a cui apparterrà un oggetto prima che il suo serializzatore venga elaborato.
 
-      :param serializer: Il `~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto.
+      :param serializer: Il :class:`~rest_framework.serializers.Serializer` già "riempito" contenente i dati dell'oggetto.
 
 
 Viewset concreti
@@ -439,17 +441,17 @@ Vengono poi definiti tre viewset e una view che permettono interazioni tra l'ute
 
       Azione personalizzata che permette ad un utente di unirsi ad un gruppo aperto.
 
-      Utilizza `.models.SophonGroupModel.get_access_serializer`.
+      Utilizza :class:`.models.SophonGroupModel.get_access_serializer`.
 
    .. method:: leave(self, request: Request, pk: int) -> Response
 
       Azione personalizzata che permette ad un utente di abbandonare un gruppo di cui non è proprietario.
 
-      Utilizza `.models.SophonGroupModel.get_access_serializer`.
+      Utilizza :class:`.models.SophonGroupModel.get_access_serializer`.
 
 .. class:: SophonInstanceDetailsView(APIView)
 
-   View che restituisce il valore attuale dell'unico oggetto `.models.SophonInstanceDetails`.
+   View che restituisce il valore attuale dell'unico oggetto :class:`.models.SophonInstanceDetails`.
 
    Accessibile tramite richieste ``GET`` all'URL :samp:`/api/core/instance/`.
 
@@ -496,7 +498,7 @@ Vengono definiti alcuni test case generici per facilitare le interazioni tra ``A
 
 .. class:: ReadSophonTestCase(BetterAPITestCase, metaclass=abc.ABCMeta)
 
-   Classe **astratta** che implementa metodi per testare rapidamente le azioni di un `.views.ReadSophonViewSet`.
+   Classe **astratta** che implementa metodi per testare rapidamente le azioni di un :class:`.views.ReadSophonViewSet`.
 
    .. classmethod:: get_basename(cls) -> str
 
@@ -523,7 +525,7 @@ Vengono definiti alcuni test case generici per facilitare le interazioni tra ``A
 
 .. class:: WriteSophonTestCase(ReadSophonTestCase, metaclass=abc.ABCMeta)
 
-   Classe **astratta** che estende `.ReadSophonTestCase` con le azioni di un `.views.WriteSophonViewSet`.
+   Classe **astratta** che estende :class:`.ReadSophonTestCase` con le azioni di un :class:`.views.WriteSophonViewSet`.
 
    .. method:: create(self, data) -> rest_framework.response.Response
    .. method:: update(self, pk, data) -> rest_framework.response.Response
@@ -537,7 +539,7 @@ Vengono definiti alcuni test case generici per facilitare le interazioni tra ``A
 Test case concreti
 ^^^^^^^^^^^^^^^^^^
 
-Vengono testate tutte le view dell'app tramite `.BetterAPITestCase` e tutti i viewset dell'app tramite `.ReadSophonTestCase` e `WriteSophonTestCase`.
+Vengono testate tutte le view dell'app tramite :class:`.BetterAPITestCase` e tutti i viewset dell'app tramite :class:`.ReadSophonTestCase` e :class:`WriteSophonTestCase`.
 
 .. class:: UsersByIdTestCase(ReadSophonTestCase)
 .. class:: UsersByUsernameTestCase(ReadSophonTestCase)
@@ -574,7 +576,7 @@ Viene introdotto un modello concreto che rappresenta un `progetto di ricerca <Pr
 
    .. attribute:: group: ForeignKey → sophon.core.models.ResearchGroup
 
-      Lo `~sophon.core.models.ResearchGroup.slug` del gruppo di ricerca al quale appartiene il progetto.
+      Lo :attr:`~sophon.core.models.ResearchGroup.slug` del gruppo di ricerca al quale appartiene il progetto.
 
    .. attribute:: name: CharField
 
@@ -597,7 +599,7 @@ Da una base comune, vengono creati due viewset per interagire con i progetti di 
 
 .. class:: ResearchProjectViewSet(SophonGroupViewSet, metaclass=abc.ABCMeta)
 
-   Classe **astratta** che effettua l'override di `~sophon.core.views.SophonGroupView.get_group_from_serializer` per entrambi i viewset che seguono.
+   Classe **astratta** che effettua l'override di :meth:`~sophon.core.views.SophonGroupView.get_group_from_serializer` per entrambi i viewset che seguono.
 
 .. class:: ResearchProjectsBySlugViewSet(ResearchProjectViewSet)
 
@@ -618,7 +620,7 @@ Amministrazione del gruppo di ricerca
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.projects.admin
 
-Il modello `.models.ResearchProject` viene registrato nella pagina di amministrazione attraverso la seguente classe:
+Il modello :class:`.models.ResearchProject` viene registrato nella pagina di amministrazione attraverso la seguente classe:
 
 .. class:: ResearchProjectAdmin(sophon.core.admin.SophonAdmin)
 
@@ -656,9 +658,7 @@ Per facilitare lo sviluppo di Sophon, sono state realizzate due modalità di ope
 
    Il `modulo frontend <Modulo frontend>` non supporta questa modalità, in quanto intesa solamente per lo sviluppo del modulo backend.
 
-*  Nella seconda, la **modalità produzione**, il `modulo proxy <Modulo proxy>` è in esecuzione all'interno di un container Docker, e si collega ai `moduli Jupyter <Modulo Jupyter>` attraverso i relativi network Docker tramite  indirizzi presenti all'interno .
-
-  .. image:: notebooks_diagram.png
+*  Nella seconda, la **modalità produzione**, il `modulo proxy <Modulo proxy>` è in esecuzione all'interno di un container Docker, e si collega ai `moduli Jupyter <Modulo Jupyter>` attraverso i relativi network Docker tramite una `rubrica <Gestione della rubrica del proxy>`.
 
 
 Gestione della rubrica del proxy
@@ -741,7 +741,7 @@ Il modulo :mod:`docker` viene esteso implementando supporto per l'istruzione ``H
 
       L'implementazione di questa funzione potrebbe causare rallentamenti nella risposta alle pagine web per via di una chiamata al metodo `time.sleep` al suo interno.
 
-      Ciò è dovuto al mancato supporto alle funzioni asincrone nella versione attuale di `rest_framework`.
+      Ciò è dovuto al mancato supporto alle funzioni asincrone nella versione attuale di :mod:`rest_framework`.
 
       Si è deciso di mantenere comunque la funzionalità a scopi dimostrativi e per compatibilità futura.
 
@@ -1306,7 +1306,7 @@ Il file di configurazione abilita i moduli httpd `rewrite`_, `proxy`_, `proxy_ws
 
 Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che viene utilizzato per effettuare reverse proxying secondo le seguenti regole:
 
-#. Tutte le richieste verso ``static.`` prefisso ad :env:`APACHE_PROXY_BASE_DOMAIN` vengono processate direttamente dal webserver, utilizzando i file disponibili nella cartella ``/var/www/html/django-static`` che gli vengono forniti dal volume ``django-static`` del :ref:`modulo backend`.
+#. Tutte le richieste verso ``static.`` prefisso ad :envvar:`APACHE_PROXY_BASE_DOMAIN` vengono processate direttamente dal webserver, utilizzando i file disponibili nella cartella ``/var/www/html/django-static`` che gli vengono forniti dal volume ``django-static`` del :ref:`modulo backend`.
 
    .. code-block:: apacheconf
 
@@ -1315,7 +1315,7 @@ Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che vi
       # Process the request yourself
       RewriteRule ".?" - [L]
 
-#. Tutte le richieste verso :env:`APACHE_PROXY_BASE_DOMAIN` senza nessun sottodominio vengono inoltrate al container Docker del :ref:`modulo frontend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
+#. Tutte le richieste verso :envvar:`APACHE_PROXY_BASE_DOMAIN` senza nessun sottodominio vengono inoltrate al container Docker del :ref:`modulo frontend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
 
    .. code-block:: apacheconf
 
@@ -1326,7 +1326,7 @@ Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che vi
       # Forward to the frontend
       RewriteRule "/(.*)" "http://%1/$1" [P,L]
 
-#. Tutte le richieste verso ``api.`` prefisso ad :env:`APACHE_PROXY_BASE_DOMAIN` vengono inoltrate al container Docker del :ref:`modulo backend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
+#. Tutte le richieste verso ``api.`` prefisso ad :envvar:`APACHE_PROXY_BASE_DOMAIN` vengono inoltrate al container Docker del :ref:`modulo backend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
 
    .. code-block:: apacheconf
 
@@ -1507,7 +1507,7 @@ L'immagine creata viene poi caricata sul `GitHub Container Registry <https://doc
 
 Si riporta un estratto relativo all'azione ``build-docker-proxy``.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    steps:
       - name: "Checkout repository"
@@ -1529,7 +1529,7 @@ La documentazione per l'esame viene compilata solo da `reStructuredText <https:/
 
 Si riporta un estratto relativo all'azione ``build-sphinx-thesis``.
 
-.. code-block:: yml
+.. code-block:: yaml
 
    latexpdf:
       name: "Build PDF document"
