@@ -59,7 +59,7 @@ Inoltre, il template predefinito viene sovrascritto da quello all'interno del fi
 
    .. attribute:: default_site = "sophon.admin.SophonAdminSite"
 
-      `.SophonAdminSite` è selezionata come classe predefinita per il sito di amministrazione.
+      :class:`.SophonAdminSite` è selezionata come classe predefinita per il sito di amministrazione.
 
 
 Caricamento dinamico delle impostazioni
@@ -122,18 +122,18 @@ Aggiunta di un nuovo comando di gestione
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.management.commands.initsuperuser
 
-Per permettere l'integrazione la creazione automatica del primo :ref:`superutente` quando Sophon viene eseguito da Docker, viene introdotto dall'app il comando di gestione ``initsuperuser``.
+Per permettere l'integrazione la creazione automatica del primo superutente quando Sophon viene eseguito da Docker, viene introdotto dall'app il comando di gestione ``initsuperuser``.
 
 .. class:: Command
 
-   Questo comando crea automaticamente un :ref:`superutente` con le credenziali specificate in :ref:`\`\`DJANGO_SU_USERNAME\`\``, :ref:`\`\`DJANGO_SU_EMAIL\`\`` e :ref:`\`\`DJANGO_SU_PASSWORD\`\``.
+   Questo comando crea automaticamente un superutente con le credenziali specificate in :env:`DJANGO_SU_USERNAME`, :env:`DJANGO_SU_EMAIL` e :env:`DJANGO_SU_PASSWORD`.
 
 
 Modello base astratto
 ^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.core.models
 
-Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabilire il `livello di accesso` di un `utente <Utenti in Sophon>` all'oggetto e per generare automaticamente i `rest_framework.serializers.ModelSerializer` in base ad esso.
+Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabilire il `livello di accesso <Livelli di accesso>` di un `utente <Utenti in Sophon>` all'oggetto e per generare automaticamente i `rest_framework.serializers.ModelSerializer` in base ad esso.
 
 .. class:: SophonModel(django.db.models.Model)
 
@@ -143,7 +143,7 @@ Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabil
       Controlla se un utente può modificare l'oggetto attuale.
 
       :param user: L'utente da controllare.
-      :returns: `True` se l'utente deve poter modificare l'oggetto, altrimenti `False`.
+      :returns: :data:`True` se l'utente deve poter modificare l'oggetto, altrimenti :data:`False`.
 
    .. method:: can_admin(self, user: django.contrib.auth.models.User) -> bool
       :abstractmethod:
@@ -151,23 +151,23 @@ Viene estesa la classe astratta `django.db.models.Model` con funzioni per stabil
       Controlla se un utente può amministrare l'oggetto attuale.
 
       :param user: L'utente da controllare.
-      :returns: `True` se l'utente deve poter amministrare l'oggetto, altrimenti `False`.
+      :returns: :data:`True` se l'utente deve poter amministrare l'oggetto, altrimenti :data:`False`.
 
    .. classmethod:: get_fields(cls) -> set[str]
 
-      :returns: il `set` di nomi di campi che devono essere mostrati quando viene richiesto l'oggetto attraverso l'API.
+      :returns: il :class:`set` di nomi di campi che devono essere mostrati quando viene richiesto l'oggetto attraverso l'API.
 
    .. classmethod:: get_editable_fields(cls) -> set[str]
 
-      :returns: il `set` di nomi di campi di cui deve essere permessa la modifica se l'utente può modificare (`.can_edit`) l'oggetto.
+      :returns: il :class:`set` di nomi di campi di cui deve essere permessa la modifica se l'utente può modificare (:meth:`.can_edit`) l'oggetto.
 
    .. classmethod:: get_administrable_fields(cls) -> set[str]
 
-      :returns: il `set` di nomi di campi di cui deve essere permessa la modifica se l'utente può amministrare (`.can_admin`) l'oggetto.
+      :returns: il :class:`set` di nomi di campi di cui deve essere permessa la modifica se l'utente può amministrare (:meth:`.can_admin`) l'oggetto.
 
    .. classmethod:: get_creation_fields(cls) -> set[str]
 
-      :returns: il `set` di nomi di campi che possono essere specificati dall'utente al momento della creazione dell'oggetto.
+      :returns: il :class:`set` di nomi di campi che possono essere specificati dall'utente al momento della creazione dell'oggetto.
 
 
 Modello di autorizzazione astratto
@@ -223,7 +223,7 @@ Viene definito un nuovo modello astratto, basato su `SophonModel`, che permette 
 Modello dei dettagli dell'istanza
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Viene creato il modello che rappresenta i dettagli dell'`istanza di Sophon <Istanza di Sophon>`.
+Viene creato il modello che rappresenta i dettagli dell'`istanza di Sophon <Istanza in Sophon>`.
 
 .. class:: SophonInstanceDetails(SophonModel)
 
@@ -254,7 +254,7 @@ Viene creato il modello che rappresenta i dettagli dell'`istanza di Sophon <Ista
 Modello del gruppo di ricerca
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Viene creato il modello che rappresenta un :ref:`gruppo di ricerca <Gruppi di ricerca>`.
+Viene creato il modello che rappresenta un `gruppo di ricerca <Gruppi di ricerca in Sophon>`.
 
 .. class:: ResearchGroup(SophonGroupModel)
 
@@ -937,8 +937,11 @@ public
    Contiene i file statici da servire assieme all'app.
 
 
-Comunicazione con il server
----------------------------
+Comunicazione con il backend
+----------------------------
+
+Sono state sviluppate alcune funzioni di utilità per facilitare la comunicazione con il `modulo backend <Realizzazione del modulo backend>`.
+
 
 Axios
 ^^^^^
@@ -971,25 +974,53 @@ Utilizzo di viewset
 
 Viene implementato un hook che si integra con i viewset di Django, fornendo un API semplificato per effettuare azioni su di essi.
 
-.. function:: useViewSet(baseRoute)
+.. function:: useViewSet(baseRoute) → viewset
 
    Questo hook implementa tutte le azioni :py:mod:`rest_framework` di un viewset in lettura e scrittura.
 
    Richiede di essere chiamato all'interno di un :data:`AuthorizationContext`.
 
-   .. function:: async list(config = {})
-   .. function:: async retrieve(pk, config = {})
-   .. function:: async create(config)
-   .. function:: async update(pk, config)
-   .. function:: async destroy(pk, config)
+   .. function:: viewset.list(config = {})
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
+
+      Richiede la lista di tutte le risorse del viewset.
+
+   .. function:: viewset.retrieve(pk, config = {})
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
+
+      Richiede i dettagli di una specifica risorsa del viewset.
+
+   .. function:: viewset.create(config)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
+
+      Crea una nuova risorsa nel viewset.
+
+   .. function:: viewset.update(pk, config)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
+
+      Aggiorna una specifica risorsa nel viewset.
+
+   .. function:: viewset.destroy(pk, config)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
+
+      Elimina una specifica risorsa dal viewset.
 
    Viene inoltre fornito supporto per le azioni personalizzate.
 
-   .. function:: async command(config)
+   .. function:: viewset.command(config)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Permette azioni personalizzate su tutto il viewset.
 
-   .. function:: async action(config)
+   .. function:: viewset.action(config)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Permette azioni personalizzate su uno specifico oggetto del viewset.
 
@@ -999,51 +1030,63 @@ Emulazione di viewset
 
 Viene creato un hook che tiene traccia degli oggetti restituiti da un determinato viewset, ed emula i risultati delle azioni effettuate, minimizzando i rerender e ottenendo una ottima user experience.
 
-.. function:: useManagedViewSet(baseRoute, pkKey, refreshOnMount)
+.. function:: useManagedViewSet(baseRoute, pkKey, refreshOnMount) → managed
 
-   .. attribute:: viewset
+   .. attribute:: managed.viewset
 
       Il viewset restituito da :func:`useViewSet`, utilizzato come interfaccia di basso livello per effettuare azioni.
 
-   .. attribute:: state
+   .. attribute:: managed.state
 
       Lo stato del viewset, che tiene traccia degli oggetti e delle azioni in corso su di essi.
 
       Gli oggetti all'interno di esso sono istanze di :class:`ManagedResource`, create usando wrapper di :func:`.update`, :func:`.destroy` e :func:`.action`, che permettono di modificare direttamente l'oggetto senza preoccuparsi dell'indice a cui si trova nell'array.
 
-   .. attribute:: dispatch
+   .. attribute:: managed.dispatch
 
       Riduttore che permette di alterare lo :attr:`.state`.
 
-   .. function:: async refresh()
+   .. function:: managed.refresh()
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Ricarica gli oggetti del viewset.
 
       Viene chiamata automaticamente al primo render se ``refreshOnMount`` è :data:`True`.
 
-   .. function:: async create(data)
+   .. function:: managed.create(data)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Crea un nuovo oggetto nel viewset con i dati specificati come argomento, e lo aggiunge allo stato se la richiesta va a buon fine.
 
-   .. function:: async command(method, cmd, data)
+   .. function:: managed.command(method, cmd, data)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Esegue l'azione personalizzata ``cmd`` su tutto il viewset, utilizzando il metodo ``method`` e con i dati specificati in ``data``.
 
       Se la richiesta va a buon fine, il valore restituito dal backend sostituisce nello stato le risorse dell'intero viewset.
 
-   .. function:: async update(index, data)
+   .. function:: managed.update(index, data)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Modifica l'oggetto alla posizione ``index`` dell'array :attr:`.state` con i dati specificati in ``data``.
 
       Se la richiesta va a buon fine, la modifica viene anche applicata all'interno di :attr:`.state`
 
-   .. function:: async destroy(index)
+   .. function:: managed.destroy(index)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Elimina l'oggetto alla posizione ``index`` dell'array :attr:`.state`.
 
       Se la richiesta va a buon fine, l'oggetto viene eliminato anche da :attr:`.state`.
 
-   .. function:: async action(index, method, act, data)
+   .. function:: managed.action(index, method, act, data)
+
+      Funzione **asincrona**, che restituisce una :class:`Promise`.
 
       Esegue l'azione personalizzata ``act`` sull'oggetto alla posizione ``index`` dell'array :attr:`.state`, utilizzando il metodo ``method`` e con i dati specificati in ``data``.
 
@@ -1064,11 +1107,11 @@ Viene definito un contesto per ogni tipo di risorsa selezionabile nell'interfacc
 
 Essi sono, in ordine dal più esterno al più interno:
 
-#. :data:`InstanceContext` (:ref:`Istanza`)
-#. :data:`AuthorizationContext` (:ref:`Utente`)
-#. :data:`GroupContext` (:ref:`Gruppo di ricerca`)
-#. :data:`ProjectContext` (:ref:`Progetto di ricerca`)
-#. :data:`NotebookContext` (:ref:`Notebook`)
+#. :data:`InstanceContext` (`Istanza <Istanza in Sophon>`)
+#. :data:`AuthorizationContext` (`Utente <Utenti in Sophon>`)
+#. :data:`GroupContext` (`Gruppo di ricerca <Gruppi di ricerca in Sophon>`)
+#. :data:`ProjectContext` (`Progetto di ricerca <Progetti di ricerca in Sophon>`)
+#. :data:`NotebookContext` (`Notebook <Notebook in Sophon>`)
 
 
 Contenuto dei contesti
@@ -1113,10 +1156,10 @@ Viene definita una funzione in grado di comprendere gli URL contestuali:
       Un oggetto con le seguenti chiavi, dette "segmenti di percorso", le quali possono essere :data:`undefined` per indicare che non è stato selezionato un oggetto di quel tipo:
 
       - ``instance``: l'URL dell'istanza da utilizzare, con caratteri speciali sostituiti da ``:``
-      - ``loggedIn``: :class:`Boolean`, se :data:`True` l'utente ha effettuato il login (come :ref:`Ospite` o :ref:`Utente`)
-      - ``researchGroup``: lo slug del :ref:`gruppo di ricerca` selezionato
-      - ``researchProject``: lo slug del :ref:`progetto di ricerca` selezionato
-      - ``notebook``: lo slug del :ref:`notebook` selezionato
+      - ``loggedIn``: :class:`Boolean`, se :data:`True` l'utente ha effettuato il login (anche come ospite)
+      - ``researchGroup``: lo slug del `gruppo di ricerca <Gruppi di ricerca in Sophon>` selezionato
+      - ``researchProject``: lo slug del `progetto di ricerca <Progetti di ricerca in Sophon>` selezionato
+      - ``notebook``: lo slug del `notebook <Notebook in Sophon>` selezionato
 
       Ad esempio, l'URL precedente restituirebbe il seguente oggetto se processato:
 
@@ -1181,7 +1224,7 @@ Esempio di utilizzo di ViewSetRouter
 
    Implementato come:
 
-   .. code-block:: tsx
+   .. code-block:: jsx
 
         <ViewSetRouter
             {...props}
@@ -1240,7 +1283,7 @@ Il tema dell'istanza è implementato come uno speciale contesto globale :data:`T
 Cache
 """""
 
-Viene salvato l'elenco di tutti i membri dell':ref:`istanza` in uno speciale contesto :data:`CacheContext` in modo da poter risolvere gli id degli utenti al loro username senza dover effettuare ulteriori richieste.
+Viene salvato l'elenco di tutti i membri dell'`istanza <Istanza in Sophon>` in uno speciale contesto :data:`CacheContext` in modo da poter risolvere gli id degli utenti al loro username senza dover effettuare ulteriori richieste.
 
 
 Containerizzazione del modulo frontend
@@ -1251,8 +1294,8 @@ Il modulo frontend è incapsulato in un'immagine `Docker` basata sull'immagine u
 L'immagine installa le dipendenze del modulo con `Yarn`, per poi eseguire il comando ``yarn run serve``, che avvia la procedura di preparazione della pagina e la rende disponibile su un webserver locale alla porta 3000.
 
 
-Modulo proxy
-============
+Realizzazione del modulo proxy
+==============================
 
 Il modulo proxy consiste in un file di configurazione di `Apache HTTP Server`.
 
@@ -1266,7 +1309,7 @@ Il file di configurazione abilita i moduli httpd `rewrite`_, `proxy`_, `proxy_ws
 
 Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che viene utilizzato per effettuare reverse proxying secondo le seguenti regole:
 
-#. Tutte le richieste verso ``static.`` prefisso ad :ref:`\`\`APACHE_PROXY_BASE_DOMAIN\`\`` vengono processate direttamente dal webserver, utilizzando i file disponibili nella cartella ``/var/www/html/django-static`` che gli vengono forniti dal volume ``django-static`` del :ref:`modulo backend`.
+#. Tutte le richieste verso ``static.`` prefisso ad :env:`APACHE_PROXY_BASE_DOMAIN` vengono processate direttamente dal webserver, utilizzando i file disponibili nella cartella ``/var/www/html/django-static`` che gli vengono forniti dal volume ``django-static`` del :ref:`modulo backend`.
 
    .. code-block:: apacheconf
 
@@ -1275,7 +1318,7 @@ Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che vi
       # Process the request yourself
       RewriteRule ".?" - [L]
 
-#. Tutte le richieste verso :ref:`\`\`APACHE_PROXY_BASE_DOMAIN\`\`` senza nessun sottodominio vengono inoltrate al container Docker del :ref:`modulo frontend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
+#. Tutte le richieste verso :env:`APACHE_PROXY_BASE_DOMAIN` senza nessun sottodominio vengono inoltrate al container Docker del :ref:`modulo frontend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
 
    .. code-block:: apacheconf
 
@@ -1286,7 +1329,7 @@ Inoltre, nel file di configurazione viene abilitato il ``RewriteEngine``, che vi
       # Forward to the frontend
       RewriteRule "/(.*)" "http://%1/$1" [P,L]
 
-#. Tutte le richieste verso ``api.`` prefisso ad :ref:`\`\`APACHE_PROXY_BASE_DOMAIN\`\`` vengono inoltrate al container Docker del :ref:`modulo backend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
+#. Tutte le richieste verso ``api.`` prefisso ad :env:`APACHE_PROXY_BASE_DOMAIN` vengono inoltrate al container Docker del :ref:`modulo backend` utilizzando la risoluzione dei nomi di dominio di Docker Compose.
 
    .. code-block:: apacheconf
 
@@ -1334,8 +1377,8 @@ Dockerizzazione del modulo proxy
 Il modulo proxy è incapsulato in un'immagine `Docker` basata sull'immagine ufficiale `httpd:2.4 <https://hub.docker.com/_/httpd>`_, che si limita ad applicare la configurazione personalizzata.
 
 
-Modulo Jupyter
-==============
+Realizzazione del modulo Jupyter
+================================
 
 Il *modulo Jupyter* consiste in un ambiente `Jupyter <https://jupyter.org/>`_ e `JupyterLab <https://jupyterlab.readthedocs.io/en/stable/>`_ modificato per una migliore integrazione con Sophon, in particolare con il :ref:`modulo frontend` e il :ref:`modulo backend`.
 
@@ -1343,17 +1386,25 @@ Il *modulo Jupyter* consiste in un ambiente `Jupyter <https://jupyter.org/>`_ e 
 
 
 Sviluppo del tema per Jupyter
-=============================
+-----------------------------
 
-.. todo:: Tema personalizzato di Jupyter
+Per rendere l'interfaccia grafica più consistente ed user-friendly, è stato sviluppato un tema colori personalizzato per `JupyterLab`.
+
+È stato creato partendo dal template `jupyterlab/theme-cookiecutter <https://github.com/jupyterlab/theme-cookiecutter>`_, e in esso sono state modificati le variabili di stile (contenute nel file ``style/variables.css``) usando i colori del tema "The Sophonity" di `Bluelib`.
+
+È stato poi pubblicato sull':abbr:`PyPI (Python Package Index)` e su `npm`, permettendone l'uso a tutti gli utenti di JupyterLab.
+
+.. note::
+
+   Per facilitarne la distribuzione e il riutilizzo anche esternamente a Sophon, il tema è stato creato in un repository `Git` esterno a quello del progetto.
 
 
-Funzionamento del modulo
-------------------------
+Estensione del container Docker di Jupyter
+------------------------------------------
 
-Il modulo è composto da un singolo ``Dockerfile`` che crea un immagine Docker in quattro fasi:
+Il ``Dockerfile`` del modulo ne crea un immagine Docker in quattro fasi:
 
-#. **Base**: Parte dall'immagine base ``jupyter/scipy-notebook`` ed altera i label dell'immagine;
+#. **Base**: Parte dall'immagine base ``jupyter/scipy-notebook`` e ne altera i label.
 
    .. code-block:: docker
 
@@ -1361,7 +1412,7 @@ Il modulo è composto da un singolo ``Dockerfile`` che crea un immagine Docker i
       # Set the maintainer label
       LABEL maintainer="Stefano Pigozzi <me@steffo.eu>"
 
-#. **Env**: Configura le variabili di ambiente dell'immagine, attivando JupyterLab, configurando il riavvio automatico di Jupyter e permettendo all'utente non-privilegiato di acquisire i privilegi di root attraverso il comando ``sudo``;
+#. **Env**: Configura le variabili di ambiente dell'immagine, attivando JupyterLab, configurando il riavvio automatico di Jupyter e permettendo all'utente non-privilegiato di acquisire i privilegi di root attraverso il comando ``sudo``.
 
    .. code-block:: docker
 
@@ -1371,7 +1422,7 @@ Il modulo è composto da un singolo ``Dockerfile`` che crea un immagine Docker i
       ENV RESTARTABLE=yes
       ENV GRANT_SUDO=yes
 
-#. **Extensions**: Installa, abilita e configura le estensioni necessarie all'integrazione con Sophon (attualmente, soltanto il tema JupyterLab Sophon);
+#. **Extensions**: Installa, abilita e configura le estensioni necessarie all'integrazione con Sophon (attualmente, soltanto il tema JupyterLab Sophon).
 
    .. code-block:: docker
 
@@ -1387,7 +1438,7 @@ Il modulo è composto da un singolo ``Dockerfile`` che crea un immagine Docker i
       RUN mkdir -p '.jupyter/lab/user-settings/@jupyterlab/apputils-extension/'
       RUN echo '{"theme": "JupyterLab Sophon"}' > ".jupyter/lab/user-settings/@jupyterlab/apputils-extension/themes.jupyterlab-settings"
 
-#. **Healthcheck**: Installa ``curl``, e aggiunge all'immagine un controllo per verificarne lo stato di avvio, permettendo al :ref:`modulo backend` di comunicare una richiesta di avvio riuscita solo quando l'intera immagine è avviata
+#. **Healthcheck**: Installa `curl`, uno strumento in grado di effettuare richieste :abbr:`HTTP (HyperText Transfer Protocol` da linea di comando, e configura la verifica dello `stato di salute <Controllo dello stato di salute>` dell'immagine, al fine di comunicare al `modulo backend <Modulo backend>` il risultato di una richiesta di avvio.
 
    .. code-block:: docker
 
@@ -1402,12 +1453,6 @@ Il modulo è composto da un singolo ``Dockerfile`` che crea un immagine Docker i
 
       # We probably should go back to the default user
       USER ${NB_UID}
-
-.. note::
-
-   I blocchi di codice all'interno di questa sezione sono stati inseriti manualmente e potrebbero non essere interamente aggiornati alla versione più recente del file.
-
-   Si consiglia di consultare il ``Dockerfile`` in caso si necessiti di informazioni aggiornate.
 
 
 Strumenti di sviluppo

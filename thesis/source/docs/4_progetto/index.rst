@@ -417,23 +417,23 @@ Fa ampio uso delle `CSS Custom Properties <https://developer.mozilla.org/en-US/d
 
 .. figure:: bluelib_royalblue.png
 
-   Il tema "Royal Blue" di Bluelib, da cui ha origine il nome.
+   Il tema "Royal Blue" (``royalblue``) di Bluelib, da cui ha origine il nome.
 
 .. figure:: bluelib_paper.png
 
-   Il tema "Sheet of Paper" di Bluelib, pensato per la stampa su carta.
+   Il tema "Sheet of Paper" (``paper``) di Bluelib, pensato per la stampa su carta.
 
 .. figure:: bluelib_sophon.png
 
-   Il tema "Sophon" di Bluelib, creato appositamente per questo progetto.
+   Il tema "The Sophonity" (``sophon``) di Bluelib, creato appositamente per questo progetto.
 
 .. figure:: bluelib_hacker.png
 
-   Il tema "Hacker Terminal" di Bluelib, creato per testare la visualizzazione di caratteri monospace.
+   Il tema "Hacker Terminal" (``hacker``) di Bluelib, creato per testare la visualizzazione di caratteri monospace.
 
 .. figure:: bluelib_amber.png
 
-   Il tema "Gestione Amber" di Bluelib, realizzato da Lorenzo Balugani.
+   Il tema "Gestione Amber" (``amber``) di Bluelib, realizzato da Lorenzo Balugani.
 
 
 .. index::
@@ -659,7 +659,7 @@ Controllo versione
 
 Per assistere nello sviluppo del software si è deciso di utilizzare il sistema di controllo versione `Git` in ogni fase dello sviluppo del progetto.
 
-Inoltre, per favorire lo sviluppo di una community `open source <Open source>` attorno a Sophon, si è deciso di pubblicare il progetto su `GitHub`, sotto la licenza `AGPL 3.0+`.
+Inoltre, per favorire lo sviluppo di una community `open source <Open source>` attorno a Sophon, si è deciso di pubblicare il progetto su `GitHub`, sotto la `Affero General Public License 3.0+`.
 
 
 .. index::
@@ -686,6 +686,21 @@ GitHub
 `GitHub <https://github.com/>`_ è un servizio web di Microsoft per l'hosting e la pubblicazione di repository Git.
 
 Per ciascun repository sono messe a disposizione gratuitamente numerose funzionalità, quali un issue tracker, strumenti di code review e sistemi di automazione per lo sviluppo :cite:`github:features`.
+
+
+Affero General Public License 3.0+
+----------------------------------
+
+Sophon è rilasciato sotto la `GNU Affero General Public License 3`_ (o successiva).
+
+Il testo completo della licenza è disponibile all'interno del file `LICENSE.txt`_ allegato al codice sorgente del software.
+
+In breve, la licenza permette a chiunque di utilizzare, distribuire e modificare il software, a condizione che qualsiasi modifica venga ri-distribuita agli utenti del software modificato.
+
+Si specifica che la licenza copre tutti i file all'interno del repository ``Steffo99/sophon``, anche se essi non contengono un header che indica che sono protetti da copyright.
+
+.. _GNU Affero General Public License 3: https://www.gnu.org/licenses/agpl-3.0.html
+.. _LICENSE.txt: https://github.com/Steffo99/sophon/blob/main/LICENSE.txt
 
 
 .. index::
@@ -778,7 +793,7 @@ Un *gruppo di ricerca* rappresenta un insieme di utenti che collaborano su uno o
 Membri e modalità di accesso
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Gli utenti dell'`istanza <Istanza di Sophon>` possono diventare *membri* dei gruppi di ricerca, con una delle seguenti modalità selezionate nelle impostazioni del gruppo:
+Gli utenti dell'`istanza <Istanza in Sophon>` possono diventare *membri* dei gruppi di ricerca, con una delle seguenti modalità selezionate nelle impostazioni del gruppo:
 
 - se il gruppo è *aperto*, allora qualsiasi utente potrà diventarne membro semplicemente **facendo richiesta** attraverso l'interfaccia web;
 - se il gruppo è in *modalità manuale*, allora nessun utente potrà richiedere di unirsi, e i membri saranno **selezionati manualmente** dal creatore del gruppo.
