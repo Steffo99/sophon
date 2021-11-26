@@ -7,6 +7,9 @@
 Installazione
 *************
 
+Questo capitolo descrive la procedura da seguire per installare Sophon.
+
+
 .. toctree::
 
    1_requirements
