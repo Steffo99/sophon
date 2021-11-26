@@ -20,7 +20,7 @@ Si è stabilito che per essere un'alternativa valida, il progetto dovesse avere 
 
 *  `estendibilità <Estendibilità>`
 *  `security by default <Sicurezza>`
-*  `interfaccia grafica facile ed intuibile <Intuibilità>`
+*  `interfaccia grafica facile ed intuitiva <Intuitività>`
 *  `maggiore possibilità di collaborazione <Possibilità di collaborazione>`
 *  `codice open source <Open source>`
 *  `possibilità di personalizzazione <Personalizzabilità>`
@@ -60,10 +60,10 @@ Non si reputa nemmeno importante limitare le risorse utilizzate dai `notebook <n
 .. index::
    pair: requisiti; intuibilità
 
-Intuibilità
+Intuitività
 -----------
 
-Il modo in cui utilizzare l'interfaccia utente del software deve essere **facilmente intuibile** dall'utente medio, senza che abbia bisogno di leggere alcuna guida o manuale.
+Il modo in cui utilizzare l'interfaccia utente del software deve essere **intuitiva** per l'utente medio, senza che abbia bisogno di leggere alcuna guida o manuale.
 
 A tale scopo, l'interfaccia grafica deve utilizzare **design patterns comuni e familiari** all'utente medio.
 
@@ -388,7 +388,7 @@ Si basa sul concetto di *componenti*, piccole parti incapsulate di interfaccia g
       );
    }
 
-È stata scelta per l'utilizzo in Sophon in quanto permette la realizzazione di interfacce grafiche molto complesse attraverso codice di facile comprensione, rendendo possibile la creazione di un'interfaccia interattiva ed `intuibile <Intuibilità>`.
+È stata scelta per l'utilizzo in Sophon in quanto permette la realizzazione di interfacce grafiche molto complesse attraverso codice di facile comprensione, rendendo possibile la creazione di un'interfaccia interattiva ed `intuitiva <Intuitività>`.
 
 
 .. index::
@@ -399,7 +399,7 @@ FontAwesome
 
 `FontAwesome <https://fontawesome.com/>`_ è una libreria che fornisce più di mille icone utilizzabili gratuitamente all'interno di pagine web.
 
-È stata usata per favorire l'`intuibilità <Intuibilità>` dell'interfaccia grafica attraverso simboli familiari all'utente.
+È stata usata per favorire l'`intuibilità <Intuitività>` dell'interfaccia grafica attraverso simboli familiari all'utente.
 
 
 .. index::

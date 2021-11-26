@@ -754,7 +754,7 @@ Il modulo :mod:`docker` viene esteso implementando supporto per l'istruzione ``H
 Generazione di token sicuri
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Per rendere l'interfaccia grafica più `intuibile <intuibile>`, si è scelto di rendere trasparente all'utente il meccanismo di autenticazione a JupyterLab.
+Per rendere l'interfaccia grafica più `intuitiva <Intuitività>`, si è scelto di rendere trasparente all'utente il meccanismo di autenticazione a JupyterLab.
 
 Pertanto, si è verificata la necessità di generare token crittograficamente sicuri da richiedere per l'accesso a JupyterLab.
 
