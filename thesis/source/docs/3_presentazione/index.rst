@@ -1,7 +1,7 @@
 :github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/3_presentazione/index.rst
 
 .. index::
-   single: ! ricerca collaborativa
+   single: ricerca collaborativa
 
 *********************
 Ricerca collaborativa

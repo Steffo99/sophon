@@ -1,7 +1,7 @@
 :github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/4_progetto/index.rst
 
 .. index::
-   pair: ! Sophon; progettazione
+   pair: Sophon; progettazione
 
 ***********************
 Progettazione di Sophon

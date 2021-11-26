@@ -1,7 +1,7 @@
 :github_url: https://github.com/Steffo99/sophon/blob/main/thesis/source/5_implementazione/index.rst
 
 .. index::
-   pair: ! realizzazione; Sophon
+   pair: realizzazione; Sophon
 
 ***********************
 Realizzazione di Sophon
@@ -91,7 +91,7 @@ Inoltre, viene configurato il modulo `logging` per emettere testo colorato di pi
        "style": "{",
    }
 
-Una lista di tutte le variabili di ambiente di configurazione è riportata nella :ref:`Guida all'installazione` dell'appendice.
+Una lista di tutte le variabili di ambiente di configurazione è riportata nel capitolo :ref:`Installazione`.
 
 
 Miglioramenti all'autenticazione
