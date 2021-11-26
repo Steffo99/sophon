@@ -192,7 +192,7 @@ In particolare, tutte le impostazioni precedute da ``# INSTALL`` vanno obbligato
 
    Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il ``DOMINIO`` per il quale si è configurato il DNS in precedenza.
 
-   Deve essere uguale a :envvar:`DJANGO_PROXY_BASE_DOMAIN`
+   Deve essere uguale a :envvar:`DJANGO_PROXY_BASE_DOMAIN`.
 
    .. code-block:: yaml
 
