@@ -1439,10 +1439,10 @@ Tutte le regole usano il flag ``L`` di ``RewriteRule``, che porta il motore di r
 
 
 .. index::
-   pair: proxy; dockerizzazione
+   pair: proxy; containerizzazione
 
-Dockerizzazione del modulo proxy
---------------------------------
+Containerizzazione del modulo proxy
+-----------------------------------
 
 Il modulo proxy è incapsulato in un'immagine :ref:`Docker` basata sull'immagine ufficiale `httpd:2.4 <https://hub.docker.com/_/httpd>`_, che si limita ad applicare la configurazione personalizzata.
 
