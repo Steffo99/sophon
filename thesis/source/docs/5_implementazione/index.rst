@@ -91,7 +91,7 @@ Inoltre, viene configurato il modulo `logging` per emettere testo colorato di pi
        "style": "{",
    }
 
-Una lista di tutte le variabili di ambiente di configurazione è riportata nel capitolo :ref:`Installazione`.
+Una lista di tutte le variabili di ambiente di configurazione è riportata nel capitolo :ref:`Installazione di Sophon`.
 
 
 Miglioramenti all'autenticazione

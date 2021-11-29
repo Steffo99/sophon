@@ -602,7 +602,7 @@ Sono il parallelo delle immagini disco delle macchine virtuali.
 Docker Engine
 -------------
 
-`Docker Engine <https://docs.docker.com/engine/>`_ è il daemon che si occupa della gestione di `immagini <Immagini Docker>`, `container <Container Docker>`, `network <Network>` e `volumi <Volumi Docker>`.
+`Docker Engine <https://docs.docker.com/engine/>`_ è il daemon che si occupa della gestione di `immagini <Immagini Docker>`, `container <Container Docker>`, `network <Network Docker>` e `volumi <Volumi Docker>`.
 
 Astrae la piattaforma su cui viene eseguito, in modo che tutte le immagini possano essere eseguite su Linux come su Windows o Mac OS X.
 
