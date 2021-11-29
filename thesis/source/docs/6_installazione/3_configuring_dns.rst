@@ -3,7 +3,7 @@
 Configurazione DNS
 ==================
 
-Si scelga il dominio (o sottodominio) sul quale si vuole che Sophon sia accessibile e si aggiungano i seguenti record DNS, sostituendo il dominio ``ilmiosophon.it`` con il proprio nome di dominio, e gli indirizzi IPv4 e IPv6 del server al posto di `0.0.0.0` e `1234::1234`:
+Si scelga il dominio (o sottodominio) sul quale si vuole che Sophon sia accessibile e si aggiungano i seguenti record DNS, sostituendo il dominio ``ilmiosophon.it`` con il proprio nome di dominio, e gli indirizzi IPv4 e IPv6 del server al posto di ``0.0.0.0`` e ``1234::1234``:
 
 .. code-block:: dns
 
