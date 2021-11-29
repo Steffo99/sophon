@@ -19,19 +19,21 @@
     </content>
     <content url="file://$MODULE_DIR$/../report">
       <sourceFolder url="file://$MODULE_DIR$/../report/source" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../report/build" />
     </content>
     <content url="file://$MODULE_DIR$/../thesis">
       <sourceFolder url="file://$MODULE_DIR$/../thesis/source" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/../thesis/build" />
       <excludeFolder url="file://$MODULE_DIR$/../thesis/source/_extra" />
     </content>
-    <orderEntry type="jdk" jdkName="Poetry (backend) (3)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.9 (Poetry, Sophon Backend)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">
     <option name="TEMPLATE_CONFIGURATION" value="Django" />
     <option name="TEMPLATE_FOLDERS">
       <list>
+        <option value="$MODULE_DIR$/sophon/templates" />
         <option value="$MODULE_DIR$/sophon/templates" />
         <option value="$MODULE_DIR$/../thesis/source/_templates" />
       </list>
