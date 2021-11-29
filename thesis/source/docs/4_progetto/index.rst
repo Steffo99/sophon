@@ -191,7 +191,7 @@ La sua sintassi è semplice ed human-friendly, come è possibile vedere dal segu
    for animale in zoo:
       animale.verso()
 
-La sua semplicità e l'enorme quantità di librerie a disposizione lo ha reso il secondo linguaggio di programmazione più popolare al mondo :cite:`so:survey2021`, subito dopo `JavaScript`; proprio per questi motivi è stato scelto per lo sviluppo del modulo backend.
+La sua semplicità e l'enorme quantità di librerie a disposizione lo ha reso il secondo linguaggio di programmazione più popolare al mondo [so:survey2021]_, subito dopo `JavaScript`; proprio per questi motivi è stato scelto per lo sviluppo del modulo backend.
 
 
 .. index::
@@ -552,7 +552,7 @@ Docker
 Immagini Docker
 ^^^^^^^^^^^^^^^
 
-Le *immagini* Docker sono sequenze di regole e insiemi di file per la creazione di un `container <Container Docker>`, tipicamente partendo da un altro container come base. :cite:`docker:overview`
+Le *immagini* Docker sono sequenze di regole e insiemi di file per la creazione di un `container <Container Docker>`, tipicamente partendo da un altro container come base. [docker:overview]_
 
 Utilizzano un filesystem copy-on-write a strati: vengono registrate all'interno dell'immagine solamente le modifiche che ogni regola ha apportato al filesystem interno, rendendo le immagini molto più leggere di quanto lo sarebbero se dovesse essere salvato tutto il disco virtuale.
 
@@ -565,7 +565,7 @@ Possono essere comparate a immagini di macchine virtuali con tanti "punti di rip
 Container Docker
 ^^^^^^^^^^^^^^^^
 
-I *container* Docker sono istanze di `immagini <Immagini Docker>` che possono essere eseguite dal `Docker Engine` :cite:`docker:overview`.
+I *container* Docker sono istanze di `immagini <Immagini Docker>` che possono essere eseguite dal `Docker Engine` [docker:overview]_.
 
 Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arrestata.
 
@@ -576,7 +576,7 @@ Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arr
 Network Docker
 ^^^^^^^^^^^^^^
 
-I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari `container <Container Docker>` ad una rete locale virtuale, permettendone l'interazione :cite:`docker:networking`.
+I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari `container <Container Docker>` ad una rete locale virtuale, permettendone l'interazione [docker:networking]_.
 
 All'interno di un network è disponibile una funzionalità di risoluzione automatica degli indirizzi IP virtuali dei container: per accedere al container ``pear`` in HTTP, ad esempio, sarà sufficiente utilizzare ``apple`` come se fosse un nome di dominio: ``http://pear/``.
 
@@ -589,7 +589,7 @@ Sono una versione più potente dei moduli di rete per macchine virtuali.
 Volumi Docker
 ^^^^^^^^^^^^^
 
-I *volumi* Docker sono astrazioni per filesystem che permettono la condivisione di file tra container :cite:`docker:volumes`.
+I *volumi* Docker sono astrazioni per filesystem che permettono la condivisione di file tra container [docker:volumes]_.
 
 Essi vengono montati all'interno di un container in una cartella configurabile detta *mount point*; tutti i container con accesso al volume vedranno gli stessi file all'interno di essa.
 
@@ -687,7 +687,7 @@ GitHub
 
 `GitHub <https://github.com/>`_ è un servizio web di Microsoft per l'hosting e la pubblicazione di repository Git.
 
-Per ciascun repository sono messe a disposizione gratuitamente numerose funzionalità, quali un issue tracker, strumenti di code review e sistemi di automazione per lo sviluppo :cite:`github:features`.
+Per ciascun repository sono messe a disposizione gratuitamente numerose funzionalità, quali un issue tracker, strumenti di code review e sistemi di automazione per lo sviluppo [github:features]_.
 
 
 Affero General Public License 3.0+

@@ -17,7 +17,6 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.todo",
-    "sphinxcontrib.bibtex",
 ]
 
 # Source files encoding
@@ -152,12 +151,6 @@ latex_elements = {
 todo_include_todos = True  # TODO: Change to false in the final version
 todo_emit_warnings = False
 todo_link_only = False
-
-# BibTeX
-bibtex_bibfiles = [
-    "refs.bib",
-]
-bibtex_reference_style = "super"
 
 # Rinohtype
 rinoh_documents = [
