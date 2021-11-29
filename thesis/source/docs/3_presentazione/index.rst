@@ -9,7 +9,7 @@ Ricerca collaborativa
 
 Nelle scienze, sia teoriche, sia sperimentali, si verifica spesso la necessità di dover prendere appunti e condividere appunti sulla ricerca effettuata.
 
-Mentre in passato a tale scopo venivano utilizzati quaderni di carta (detti anche *"blocchi note laboratoriali"* :cite:`enwiki:993314047`), con la nascita dell'informatica si iniziarono ad utilizzare strumenti digitali, più comodi ed efficienti: inizialmente, semplici sistemi di composizione tipografica come *TeX*, poi editor :abbr:`WYSIWYG (What You See Is What You Get)` come *Microsoft Word*, arrivando infine negli ultimi anni ai più avanzati e interattivi `notebook computazionali <Notebook computazionali>`.
+Mentre in passato a tale scopo venivano utilizzati quaderni di carta (detti anche *"blocchi note laboratoriali"* [enwiki:993314047]_), con la nascita dell'informatica si iniziarono ad utilizzare strumenti digitali, più comodi ed efficienti: inizialmente, semplici sistemi di composizione tipografica come *TeX*, poi editor :abbr:`WYSIWYG (What You See Is What You Get)` come *Microsoft Word*, arrivando infine negli ultimi anni ai più avanzati e interattivi `notebook computazionali <Notebook computazionali>`.
 
 
 .. index::
@@ -22,7 +22,7 @@ I primi sistemi utilizzati in ambito accademico per la creazione di documenti er
 
 Sono esempi di sistemi di composizione tipografica `TeX <https://www.tug.org/begin.html>`_, usato ancora oggi in combinazione con il sistema `LaTeX <https://www.latex-project.org//>`_ per comporre documenti accademici come paper e tesi (inclusa questa), e `roff <https://en.wikipedia.org/wiki/Roff_(software)>`_, su cui si basa oggi lo strumento `groff <https://it.wikipedia.org/wiki/Groff_(software)>`_ per comporre le pagine di manuale dei sistemi operativi Unix-like.
 
-Un esempio di documento LaTeX :cite:`overleaf:learn30mins` è il seguente:
+Un esempio di documento LaTeX [overleaf:learn30mins]_ è il seguente:
 
 .. code-block:: latex
 
@@ -102,7 +102,7 @@ Jupyter
 
 Come tutti i notebook computazionali è strutturato in celle, le quali possono contenere testo, dati oppure codice di programmazione con relativo output.
 
-Prende ispirazione dai `web-based editor <Web-based editor>`, permettendo agli utenti di modificare i notebook direttamente da un browser web, e include rudimentali funzionalità di collaborazione in tempo reale :cite:`jupyter:collaboration`.
+Prende ispirazione dai `web-based editor <Web-based editor>`, permettendo agli utenti di modificare i notebook direttamente da un browser web, e include rudimentali funzionalità di collaborazione in tempo reale [jupyter:collaboration]_.
 
 .. figure:: hist_example.png
 
@@ -127,7 +127,7 @@ Kernel Jupyter
 
 Il kernel è la parte di Jupyter che si occupa di eseguire le celle del notebook, restituendone i risultati al `server <server Jupyter>`.
 
-Per ogni linguaggio di programmazione che si desidera utilizzare nel notebook è necessario il relativo **kernel**: il kernel predefinito di Jupyter è `IPython <https://ipython.org/>`_, che permette di utilizzare il linguaggio di programmazione `Python <https://www.python.org/>`_; sono però disponibili tanti altri kernel, tra cui uno per `Julia <https://julialang.org/>`_ e uno per `R <https://www.r-project.org/>`_ :cite:`jupyter:kernels`.
+Per ogni linguaggio di programmazione che si desidera utilizzare nel notebook è necessario il relativo **kernel**: il kernel predefinito di Jupyter è `IPython <https://ipython.org/>`_, che permette di utilizzare il linguaggio di programmazione `Python <https://www.python.org/>`_; sono però disponibili tanti altri kernel, tra cui uno per `Julia <https://julialang.org/>`_ e uno per `R <https://www.r-project.org/>`_ [jupyter:kernels]_.
 
 
 .. index::
@@ -201,8 +201,8 @@ Hosting on-premises
 
 È possibile configurare un **server della propria istituzione** in modo tale che esegua uno o più `server Jupyter <Server Jupyter>` a cui si connetteranno i `client <client Jupyter>`.
 
-A tale scopo, è disponibile il progetto `JupyterHub <https://jupyter.org/hub>`_, in grado di gestire migliaia di utenti simultanei :cite:`jupyter:ifaq`, ciascuno con il proprio notebook.
+A tale scopo, è disponibile il progetto `JupyterHub <https://jupyter.org/hub>`_, in grado di gestire migliaia di utenti simultanei [jupyter:ifaq]_, ciascuno con il proprio notebook.
 
 È performante ed efficace, e in base alla configurazione scelta dall'amministratore, può permettere agli utenti di personalizzare il loro ambiente di lavoro con plugin.
 
-L'interfaccia di gestione utenti e notebook è però molto essenziale, essendo un progetto piuttosto nuovo, e in aggiunta non supporta nativamente la collaborazione real-time su un singolo notebook, preferendo il modello *"tanti server Jupyter da utente singolo"* :cite:`jupyter:hub`.
+L'interfaccia di gestione utenti e notebook è però molto essenziale, essendo un progetto piuttosto nuovo, e in aggiunta non supporta nativamente la collaborazione real-time su un singolo notebook, preferendo il modello *"tanti server Jupyter da utente singolo"* [jupyter:hub]_.
