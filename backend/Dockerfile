@@ -12,7 +12,7 @@ COPY pyproject.toml ./pyproject.toml
 COPY poetry.lock    ./poetry.lock
 
 # Install the dependencies using Poetry
-RUN poetry install --no-root
+RUN poetry install --no-root --no-dev
 
 # Copy the rest of the project into the container
 COPY . .
