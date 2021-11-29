@@ -3,9 +3,9 @@
 .. index::
    pair: Sophon; installazione
 
-*************
-Installazione
-*************
+***********************
+Installazione di Sophon
+***********************
 
 Questo capitolo descrive la procedura da seguire per installare Sophon.
 

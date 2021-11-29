@@ -552,7 +552,7 @@ Docker
 Immagini Docker
 ^^^^^^^^^^^^^^^
 
-Le *immagini* Docker sono sequenze di regole e insiemi di file per la creazione di un `container <Container>`, tipicamente partendo da un altro container come base. :cite:`docker:overview`
+Le *immagini* Docker sono sequenze di regole e insiemi di file per la creazione di un `container <Container Docker>`, tipicamente partendo da un altro container come base. :cite:`docker:overview`
 
 Utilizzano un filesystem copy-on-write a strati: vengono registrate all'interno dell'immagine solamente le modifiche che ogni regola ha apportato al filesystem interno, rendendo le immagini molto più leggere di quanto lo sarebbero se dovesse essere salvato tutto il disco virtuale.
 
@@ -565,7 +565,7 @@ Possono essere comparate a immagini di macchine virtuali con tanti "punti di rip
 Container Docker
 ^^^^^^^^^^^^^^^^
 
-I *container* Docker sono istanze di `immagini <Immagini>` che possono essere eseguite dal `Docker Engine` :cite:`docker:overview`.
+I *container* Docker sono istanze di `immagini <Immagini Docker>` che possono essere eseguite dal `Docker Engine` :cite:`docker:overview`.
 
 Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arrestata.
 
@@ -576,7 +576,7 @@ Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arr
 Network Docker
 ^^^^^^^^^^^^^^
 
-I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari `container <Container>` ad una rete locale virtuale, permettendone l'interazione :cite:`docker:networking`.
+I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari `container <Container Docker>` ad una rete locale virtuale, permettendone l'interazione :cite:`docker:networking`.
 
 All'interno di un network è disponibile una funzionalità di risoluzione automatica degli indirizzi IP virtuali dei container: per accedere al container ``pear`` in HTTP, ad esempio, sarà sufficiente utilizzare ``apple`` come se fosse un nome di dominio: ``http://pear/``.
 
@@ -602,7 +602,7 @@ Sono il parallelo delle immagini disco delle macchine virtuali.
 Docker Engine
 -------------
 
-`Docker Engine <https://docs.docker.com/engine/>`_ è il daemon che si occupa della gestione di `immagini <Immagini>`, `container <Container>`, `network <Network>` e `volumi <Volumi>`.
+`Docker Engine <https://docs.docker.com/engine/>`_ è il daemon che si occupa della gestione di `immagini <Immagini Docker>`, `container <Container Docker>`, `network <Network>` e `volumi <Volumi Docker>`.
 
 Astrae la piattaforma su cui viene eseguito, in modo che tutte le immagini possano essere eseguite su Linux come su Windows o Mac OS X.
 

@@ -3,7 +3,7 @@
 Configurazione del webserver dell'host
 ======================================
 
-Si configuri il webserver dell'host per inoltrare tutto il traffico dalla porta 443 (o 80, se si è selezionato ``http`` in :ref:`\`\`DJANGO_PROXY_PROTOCOL\`\``) alla porta locale 30033.
+Si configuri il webserver dell'host per inoltrare tutto il traffico dalla porta 443 (o 80, se si è selezionato ``http`` in :envvar:`DJANGO_PROXY_PROTOCOL`) alla porta locale 30033.
 
 Sono allegate le istruzioni per il webserver `Apache HTTPd`_; possono essere però adattate se si vuole usare un webserver diverso, come `NGINX`_ o `caddy`_.
 
