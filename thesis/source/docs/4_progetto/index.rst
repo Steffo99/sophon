@@ -540,9 +540,9 @@ Al fine di facilitare l'installazione e di migliorare la `sicurezza <Sicurezza>`
 Docker
 ------
 
-`Docker <https://www.docker.com/>`_ è un software che permette di eseguire applicazioni all'interno di `container <Container>` isolati dal resto del sistema, in maniera simile all'esecuzione di macchine virtuali, ma **condividendo il kernel** con la macchina host.
+`Docker <https://www.docker.com/>`_ è un software che permette di eseguire applicazioni all'interno di `container <Container Docker>` isolati dal resto del sistema, in maniera simile all'esecuzione di macchine virtuali, ma **condividendo il kernel** con la macchina host.
 
-È composto da due parti, `Docker Engine` e `Docker Compose`, e prevede varie astrazioni, quali le `immagini <Immagini>`, i `container <Container>`, i `network <Network>` e i `volumi <Volumi>`.
+È composto da due parti, `Docker Engine` e `Docker Compose`, e prevede varie astrazioni, quali le `immagini <Immagini Docker>`, i `container <Container Docker>`, i `network <Network Docker>` e i `volumi <Volumi Docker>`.
 
 
 .. index::
