@@ -135,6 +135,8 @@ latex_setup = {
     "dangerBgColor": "{rgb}{0.95,0.62,0.59}",
     "errorBorderColor": "{rgb}{0.95,0.62,0.59}",
     "errorBgColor": "{rgb}{0.95,0.62,0.59}",
+
+    "bookmarksdepth": 2,
 }
 latex_elements = {
     "papersize": "a4paper",
