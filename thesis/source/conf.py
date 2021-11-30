@@ -17,6 +17,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.autosectionlabel",
     "sphinx.ext.todo",
+    "sphinxcontrib.httpdomain",
 ]
 
 # Source files encoding

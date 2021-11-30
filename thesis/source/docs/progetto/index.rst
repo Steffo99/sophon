@@ -792,6 +792,10 @@ Gruppi di ricerca in Sophon
 Un *gruppo di ricerca* rappresenta un insieme di utenti che collaborano su uno o più progetti.
 
 
+.. index::
+   pair: Sophon; membro
+   pair: gruppo; modalità di accesso
+
 Membri e modalità di accesso
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

@@ -25,9 +25,10 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    Collegamenti utili
    ==================
 
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
+   *  :ref:`genindex`
+   *  :ref:`modindex`
+   *  :ref:`routingtable`
+   *  :ref:`search`
 
    Da fare
    =======

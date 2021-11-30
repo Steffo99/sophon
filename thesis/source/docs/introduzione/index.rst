@@ -46,6 +46,10 @@ La tesi è strutturata nel seguente modo:
 #. nel terzo capitolo, :ref:`Ricerca collaborativa`, viene presentata in dettaglio la situazione attuale della ricerca collaborativa;
 #. nel quarto capitolo, :ref:`Progettazione di Sophon`, viene descritta la progettazione avvenuta, entrando nei dettagli dei requisiti, della suddivisione in moduli e delle astrazioni create;
 #. nel quinto capitolo, :ref:`Realizzazione di Sophon`, vengono trattate le specifiche tecniche implementative del progetto;
-#. nel sesto capitolo, :ref:`Installazione di Sophon`, vengono riportate le istruzioni di installazione del software;
-#. nel settimo capitolo, :ref:`Utilizzare Sophon`, viene spiegato come utilizzare il software;
-#. nell'ottavo capitolo, :ref:`Conclusione`, vengono tratte le conclusioni della tesi;
+#. nel sesto capitolo, :ref:`Risultati ottenuti`, viene mostrato il risultato finale del processo di sviluppo;
+#. nel settimo capitolo, :ref:`Conclusione`, vengono tratte le conclusioni della tesi.
+
+Inoltre, sono riportati come appendice i seguenti capitoli:
+
+*  :ref:`Installazione di Sophon`, in cui vengono riportate le istruzioni di installazione del software;
+*  :ref:`Bibliografia`, in cui vengono riportate le fonti utilizzate per la scrittura di questa tesi.
