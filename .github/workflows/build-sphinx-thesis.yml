@@ -77,6 +77,12 @@ jobs:
         run: |
           source $pythonLocation/activate
           make latex
+      - name: "Remove numbering from subsubsections and lower headings"
+        working-directory: thesis/build/latex/
+        run: |
+          sed s/\subsubsection[{]/\subsubsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex > progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+          sed s/\paragraph[{]/\paragraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex > progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+          sed s/\subparagraph[{]/\subparagraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex > progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Build PDF document with Latexmk"
         working-directory: thesis/build/latex/
         run: make
