@@ -195,7 +195,10 @@ Il modulo backend terminato espone una web API all'indirizzo :samp:`api.{BASE_DO
    :status 404: Risorsa non esistente.
 
 
-In aggiunta, espone la pagina di amministrazione al seguente indirizzo.
+Pagina di amministrazione
+-------------------------
+
+In aggiunta alla web API, Sophon espone la `pagina di amministrazione <Pagina di amministrazione>` Django al seguente URL.
 
 
 .. http:get:: /admin/
@@ -206,11 +209,81 @@ In aggiunta, espone la pagina di amministrazione al seguente indirizzo.
    :status 200: Accesso riuscito.
 
 
+La prima pagina richiede l'accesso con credenziali di un `superutente <Livelli di accesso>`.
+
+.. figure:: admin_login.png
+   :scale: 80%
+
+   Schermata di login della pagina di amministrazione.
+
+
+Una volta effettuato l'accesso, all'interno della pagina è possibile modificare ogni genere di `entità <Entità di Sophon>` presente nell'istanza.
+
+.. figure:: admin_resources.png
+   :scale: 50%
+
+   Elenco delle entità presenti all'interno dell'istanza.
+
+.. figure:: admin_list.png
+   :scale: 50%
+
+   Elenco dei notebook presenti all'interno dell'istanza di dimostrazione.
+
+.. figure:: admin_edit.png
+   :scale: 50%
+
+   Pagina di modifica di uno dei notebook dell'istanza di dimostrazione.
+
+.. figure:: admin_details.png
+   :scale: 50%
+
+   Pagina di modifica dei dettagli dell'istanza Sophon.
+
+
+
 Stato finale del modulo frontend
 ================================
+
+Il modulo frontend terminato espone una :abbr:`SPA (single page app)` all'indirizzo :samp:`{BASE_DOMAIN}`.
+
+.. figure:: frontend_instance.png
+   :scale: 50%
+
+   Pagina di selezione istanza.
+
+.. figure:: frontend_login.png
+   :scale: 50%
+
+   Pagina di login all'istanza Sophon di dimostrazione, che utilizza il tema "Royal Blue".
+
+.. figure:: frontend_group.png
+   :scale: 50%
+
+   Pagina di selezione e creazione gruppi di ricerca.
+
+.. figure:: frontend_project.png
+   :scale: 50%
+
+   Pagina di selezione e creazione progetti di ricerca.
+
+.. figure:: frontend_notebook.png
+   :scale: 50%
+
+   Pagina di selezione, creazione e avvio notebook.
+
+.. figure:: frontend_nbdetails.png
+   :scale: 50%
+
+   Pagina di dettagli di un notebook, che permette l'accesso al modulo Jupyter.
+
+
+Stato finale del modulo Jupyter
+===============================
+
+.. todo:: Stato finale del modulo Jupyter
+
 
 Stato finale del modulo proxy
 =============================
 
-Stato finale del modulo Jupyter
-===============================
+Il modulo proxy terminato effettua correttamente proxying tra gli altri moduli.
