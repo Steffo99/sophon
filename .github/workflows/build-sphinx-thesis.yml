@@ -77,6 +77,9 @@ jobs:
         run: |
           source $pythonLocation/activate
           make latex
+      - name: "Remove numbering from subsections"
+        working-directory: thesis/build/latex/
+        run: sed --regexp-extended --in-place s/\subsection[{]/\subsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Remove numbering from subsubsections"
         working-directory: thesis/build/latex/
         run: sed --regexp-extended --in-place s/\subsubsection[{]/\subsubsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
