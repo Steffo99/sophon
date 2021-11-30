@@ -1486,7 +1486,7 @@ Il ``Dockerfile`` del modulo ne crea un `immagine Docker <Immagini Docker>` in q
       # Set the maintainer label
       LABEL maintainer="Stefano Pigozzi <me@steffo.eu>"
 
-#. **Env**: Configura le variabili di ambiente dell'immagine, attivando JupyterLab, configurando il riavvio automatico di Jupyter e permettendo all'utente non-privilegiato di acquisire i privilegi di root attraverso il comando ``sudo``.
+#. **Env**: Configura le variabili di ambiente dell'immagine, attivando JupyterLab, configurando il riavvio automatico di Jupyter, la collaborazione real time e permettendo all'utente non-privilegiato di acquisire i privilegi di root attraverso il comando ``sudo``.
 
    .. code-block:: docker
 
@@ -1495,6 +1495,8 @@ Il ``Dockerfile`` del modulo ne crea un `immagine Docker <Immagini Docker>` in q
       ENV JUPYTER_ENABLE_LAB=yes
       ENV RESTARTABLE=yes
       ENV GRANT_SUDO=yes
+      # Enable real time collaboration
+      CMD ["start-notebook.sh", "--collaborative"]
 
 #. **Extensions**: Installa, abilita e configura le estensioni necessarie all'integrazione con Sophon (attualmente, soltanto il tema JupyterLab Sophon).
 

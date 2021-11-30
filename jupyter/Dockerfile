@@ -11,6 +11,9 @@ ENV JUPYTER_ENABLE_LAB=yes
 ENV RESTARTABLE=yes
 ENV GRANT_SUDO=yes
 
+# Enable real time collaboration
+CMD ["start-notebook.sh", "--collaborative"]
+
 
 FROM env AS extensions
 # As the default user...
