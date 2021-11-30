@@ -79,10 +79,11 @@ jobs:
           make latex
       - name: "Remove numbering from subsubsections and lower headings"
         working-directory: thesis/build/latex/
+        # Doesn't work by using < and >. I have no idea why.
         run: |
-          sed -E s/\subsubsection[{]/\subsubsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex > progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
-          sed -E s/\paragraph[{]/\paragraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex > progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
-          sed -E s/\subparagraph[{]/\subparagraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex > progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+          cat progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex | sed -E s/\subsubsection[{]/\subsubsection*{/g | tee progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+          cat progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex | sed -E s/\paragraph[{]/\paragraph*{/g | tee progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+          cat progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex | sed -E s/\subparagraph[{]/\subparagraph*{/g | tee progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Build PDF document with Latexmk"
         working-directory: thesis/build/latex/
         run: make
