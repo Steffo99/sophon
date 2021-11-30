@@ -14,8 +14,8 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    docs/ricercacollaborativa/index
    docs/progetto/index
    docs/realizzazione/index
-   docs/installazione/index
    docs/risultato/index
+   docs/installazione/index
    docs/conclusione/index
    docs/bibliografia/index
 

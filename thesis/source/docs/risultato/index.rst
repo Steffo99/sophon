@@ -280,7 +280,10 @@ Il modulo frontend terminato espone una :abbr:`SPA (single page app)` all'indiri
 Stato finale del modulo Jupyter
 ===============================
 
-.. todo:: Stato finale del modulo Jupyter
+Il modulo Jupyter terminato espone un'istanza collaborativa di `JupyterLab` all'indirizzo :samp:`{NOTEBOOK_SLUG}.{BASE_DOMAIN}`.
+
+.. figure:: jupyter_collab.png
+   :scale: 30%
 
 
 Stato finale del modulo proxy
