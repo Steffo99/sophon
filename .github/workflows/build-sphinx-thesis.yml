@@ -76,7 +76,10 @@ jobs:
         working-directory: thesis/
         run: |
           source $pythonLocation/activate
-          make latexpdf
+          make latex
+      - name: "Build PDF document with Latexmk"
+        working-directory: thesis/build/latex/
+        run: make
       - name: "Upload build artifact"
         uses: actions/upload-artifact@v2
         with:
