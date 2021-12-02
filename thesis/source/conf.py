@@ -182,7 +182,7 @@ latex_elements = {
               \begin{flushleft}
                 \mdseries\large Candidato: 
                 \vskip0.1in
-                \large Matr. \\Stefano Pigozzi
+                \large Matr. 128570\\Stefano Pigozzi
               \end{flushleft}
             \end{minipage}
             
