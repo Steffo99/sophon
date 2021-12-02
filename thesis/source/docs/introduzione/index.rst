@@ -48,3 +48,5 @@ La tesi è strutturata nel seguente modo:
 #. nel quinto capitolo, :ref:`Realizzazione di Sophon`, vengono trattate le specifiche tecniche implementative del progetto;
 #. nel sesto capitolo, :ref:`Risultati ottenuti`, viene mostrato il risultato finale del processo di sviluppo;
 #. nel settimo capitolo, :ref:`Il futuro di Sophon`, vengono tratte le conclusioni della tesi.
+
+In aggiunta, nell'appendice, è disponibile una guida tecnica all':ref:`Installazione di Sophon`.
