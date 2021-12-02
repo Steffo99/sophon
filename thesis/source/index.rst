@@ -15,9 +15,18 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    docs/progetto/index
    docs/realizzazione/index
    docs/risultato/index
-   docs/installazione/index
    docs/conclusione/index
    docs/bibliografia/index
+
+.. toctree::
+   :maxdepth: 6
+   :numbered: 2
+   :caption: Appendice
+
+   docs/installazione/index
+   genindex
+   modindex
+   routingtable
 
 
 .. only:: html
@@ -25,9 +34,6 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    Collegamenti utili
    ==================
 
-   *  :ref:`genindex`
-   *  :ref:`modindex`
-   *  :ref:`routingtable`
    *  :ref:`search`
 
    Da fare
