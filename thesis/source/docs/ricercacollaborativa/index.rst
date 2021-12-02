@@ -9,7 +9,7 @@ Ricerca collaborativa
 
 Nelle scienze, sia teoriche, sia sperimentali, si verifica spesso la necessità di dover prendere appunti e condividere appunti sulla ricerca effettuata.
 
-Mentre in passato a tale scopo venivano utilizzati quaderni di carta (detti anche *"blocchi note laboratoriali"* [enwiki:993314047]_), con la nascita dell'informatica si iniziarono ad utilizzare strumenti digitali, più comodi ed efficienti: inizialmente, semplici sistemi di composizione tipografica come *TeX*, poi editor :abbr:`WYSIWYG (What You See Is What You Get)` come *Microsoft Word*, arrivando infine negli ultimi anni ai più avanzati e interattivi `notebook computazionali <Notebook computazionali>`.
+Mentre in passato a tale scopo venivano utilizzati quaderni di carta (detti anche *"blocchi note laboratoriali"* [wiki:eln]_), con la nascita dell'informatica si iniziarono ad utilizzare strumenti digitali, più comodi ed efficienti: inizialmente, semplici sistemi di composizione tipografica come *TeX*, poi editor :abbr:`WYSIWYG (What You See Is What You Get)` come *Microsoft Word*, arrivando infine negli ultimi anni ai più avanzati e interattivi `notebook computazionali <Notebook computazionali>`.
 
 
 .. index::
