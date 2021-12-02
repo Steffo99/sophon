@@ -24,9 +24,6 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    :caption: Appendice
 
    docs/installazione/index
-   genindex
-   modindex
-   routingtable
 
 
 .. only:: html
@@ -34,6 +31,7 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
    Collegamenti utili
    ==================
 
+   *  :ref:`genindex`
    *  :ref:`search`
 
    Da fare
