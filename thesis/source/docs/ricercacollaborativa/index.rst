@@ -40,8 +40,6 @@ Un esempio di documento LaTeX [overleaf:learn30mins]_ è il seguente:
 Editor WYSIWYG
 ==============
 
-.. todo:: Non mi piace questa frase.
-
 Con l'evolversi dei sistemi operativi, in particolare con la diffusione dei sistemi operativi a finestre, sono stati sviluppati software detti "editor di testo :abbr:`WYSIWYG (What You See Is What You Get)`", che permettono di scrivere documenti avendo un'anteprima istantanea del testo inserito.
 
 Essendo molto più intuitivi da usare dei loro predecessori, ne hanno preso rapidamente il posto in tutto il mondo, di fatto limitando l'uso dei `sistemi di composizione tipografica <Sistemi di composizione tipografica>` ad ambiti in cui era necessaria una formattazione avanzata dei documenti.
