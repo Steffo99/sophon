@@ -79,7 +79,7 @@ Il più importante di questi editor è `Google Docs <https://docs.google.com/>`_
 Notebook computazionali
 =======================
 
-In parallelo ai `web-based editor <Web-based editor>`, ha preso piede nel mondo della ricerca scientifica una nuova tipologia di documento: il notebook computazionali.
+In parallelo ai `web-based editor <Web-based editor>`, ha preso piede nel mondo della ricerca scientifica una nuova tipologia di documento: il notebook computazionale.
 
 I *notebook computazionali* sono un tipo di documento interattivo che permette contemporaneamente di analizzare dati, elaborarli e documentare elaborazioni effettuate e risultati ottenuti.
 
