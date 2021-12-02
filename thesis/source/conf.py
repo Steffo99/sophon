@@ -112,8 +112,6 @@ latex_show_urls = "footnote"
 # LaTeX theme
 latex_theme = "manual"
 
-
-
 latex_setup = {
     "TitleColor": "{rgb}{0,0,0.08}",
 
