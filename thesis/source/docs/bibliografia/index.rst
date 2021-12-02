@@ -17,8 +17,6 @@
 
 .. [jupyter:collaboration] Project Jupyter. **Real Time Collaboration**. https://web.archive.org/web/20211118174617/https://jupyterlab.readthedocs.io/en/stable/user/rtc.html
 
-.. [wiki:eln] English Wikipedia. **Electronic lab notebook**. https://en.wikipedia.org/w/index.php?title=Electronic_lab_notebook&oldid=993314047
-
 .. [overleaf:learn30mins] Overleaf. **Learn LaTeX in 30 minutes**. https://web.archive.org/web/20211116220924/https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes
 
 .. [so:survey2021] Stack Overflow. **2021 Developer Survey**. https://web.archive.org/web/20211126152610/https://insights.stackoverflow.com/survey/2021
