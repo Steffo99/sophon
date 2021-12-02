@@ -89,15 +89,6 @@ jobs:
       - name: "Remove numbering from subparagraphs"
         working-directory: thesis/build/latex/
         run: sed --regexp-extended --in-place 's/[\]subparagraph[{]/\subparagraph*{/g' progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
-      - name: "Rename genindex to 'Indice analitico'"
-        working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place 's/[{][\]indexname[}][{]Indice[}]/{\indexname}{Indice analitico}/g' progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
-      - name: "Remove modindex"
-        working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place 's/[\]renewcommand[{][\]indexname[}][{]Indice del modulo Python[}].*?[\]end[{]sphinxtheindex[}]//g' progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
-      - name: "Remove routing table"
-        working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place 's/[\]renewcommand[{][\]indexname[}][{]HTTP Routing Table[}].*?[\]end[{]sphinxtheindex[}]//g' progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Build PDF document with Latexmk"
         working-directory: thesis/build/latex/
         run: make
