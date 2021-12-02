@@ -35,10 +35,6 @@ L'obiettivo di questa tesi è quello di descrivere lo sviluppo dell'applicativo 
 Struttura della tesi
 ====================
 
-.. todo::
-
-   Aggiornare questo elenco man mano che vengono aggiunti nuovi capitoli.
-
 La tesi è strutturata nel seguente modo:
 
 #. nel primo capitolo, :ref:`Sinossi`, viene descritto molto brevemente il progetto realizzato;
