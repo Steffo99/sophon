@@ -79,16 +79,25 @@ jobs:
           make latex
       - name: "Remove numbering from subsections"
         working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place s/\subsection[{]/\subsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+        run: sed --regexp-extended --in-place s/[\]subsection[{]/\subsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Remove numbering from subsubsections"
         working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place s/\subsubsection[{]/\subsubsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+        run: sed --regexp-extended --in-place s/[\]subsubsection[{]/\subsubsection*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Remove numbering from paragraphs"
         working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place s/\paragraph[{]/\paragraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+        run: sed --regexp-extended --in-place s/[\]paragraph[{]/\paragraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
       - name: "Remove numbering from subparagraphs"
         working-directory: thesis/build/latex/
-        run: sed --regexp-extended --in-place s/\subparagraph[{]/\subparagraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+        run: sed --regexp-extended --in-place s/[\]subparagraph[{]/\subparagraph*{/g progettazioneesviluppodisophonapplicativocloudasupportodellaricerca.tex
+      - name: "Rename genindex to 'Indice analitico'"
+        working-directory: thesis/build/latex/
+        run: sed --regexp-extended --in-place s/[{][\]indexname[}][{]Indice[}]/{\indexname}{Indice analitico}/g
+      - name: "Remove modindex"
+        working-directory: thesis/build/latex/
+        run: sed --regexp-extended --in-place s/[\]renewcommand[{][\]indexname[}][{]Indice del modulo Python[}].*[\]end[{]sphinxtheindex[}]//g
+      - name: "Remove routing table"
+        working-directory: thesis/build/latex/
+        run: sed --regexp-extended --in-place s/[\]renewcommand[{][\]indexname[}][{]HTTP Routing Table[}].*[\]end[{]sphinxtheindex[}]//g
       - name: "Build PDF document with Latexmk"
         working-directory: thesis/build/latex/
         run: make
