@@ -198,7 +198,7 @@ Il modulo backend terminato espone una web API all'indirizzo :samp:`api.{BASE_DO
 Pagina di amministrazione esposta
 ---------------------------------
 
-In aggiunta alla web API, Sophon espone la `pagina di amministrazione <Pagina di amministrazione>` Django al seguente URL.
+In aggiunta alla web API, Sophon espone la :ref:`pagina di amministrazione <Pagina di amministrazione>` Django al seguente URL.
 
 
 .. http:get:: /admin/
