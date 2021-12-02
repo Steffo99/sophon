@@ -106,7 +106,7 @@ Prende ispirazione dai `web-based editor <Web-based editor>`, permettendo agli u
 
 .. figure:: hist_example.png
 
-   Un esempio di notebook Jupyter con una cella di testo e una cella di Python che emette un grafico.
+   Un esempio di notebook Jupyter con una cella di testo e una cella di Python che emette un grafico [matplotlib:histograms]_.
 
 
 .. index::
