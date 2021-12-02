@@ -83,7 +83,7 @@ Il modulo backend terminato espone una web API all'indirizzo :samp:`api.{BASE_DO
 .. http:get:: /api/core/users/by-id/
    :synopsis: Utenti in ordine di ID
 
-   Accede agli `utenti <Utenti>` dell'istanza Sophon usando il loro ID come chiave, permettendone la visualizzazione.
+   Accede agli `utenti <Utenti in Sophon>` dell'istanza Sophon usando il loro ID come chiave, permettendone la visualizzazione.
 
    :json integer id: ID dell'utente.
    :json string username: Username dell'utente.
@@ -97,7 +97,7 @@ Il modulo backend terminato espone una web API all'indirizzo :samp:`api.{BASE_DO
 .. http:get:: /api/core/users/by-username/
    :synopsis: Utenti in ordine di username
 
-   Accede agli `utenti <Utenti>` dell'istanza Sophon usando il loro username come chiave, permettendone la visualizzazione.
+   Accede agli `utenti <Utenti in Sophon>` dell'istanza Sophon usando il loro username come chiave, permettendone la visualizzazione.
 
    :json string id: ID dell'utente.
    :json string username: Username dell'utente.
@@ -185,7 +185,7 @@ Il modulo backend terminato espone una web API all'indirizzo :samp:`api.{BASE_DO
    :json string project: Slug del progetto a cui appartiene il notebook.
    :json string jupyter_token: Token per l'autenticazione sul `modulo Jupyter <Modulo Jupyter>`.
    :json string legacy_notebook_url: URL per la connessione all'interfaccia legacy "*Jupyter Notebook*" del notebook.
-   :json string lab_url: URL per la connessione all'interfaccia `JupyterLab` del notebook.
+   :json string lab_url: URL per la connessione all'interfaccia `JupyterLab <Client Jupyter>` del notebook.
 
    :status 200: Operazione effettuata.
    :status 201: Risorsa creata.
@@ -280,7 +280,7 @@ Il modulo frontend terminato espone una :abbr:`SPA (single page app)` all'indiri
 Stato finale del modulo Jupyter
 ===============================
 
-Il modulo Jupyter terminato espone un'istanza collaborativa di `JupyterLab` all'indirizzo :samp:`{NOTEBOOK_SLUG}.{BASE_DOMAIN}`.
+Il modulo Jupyter terminato espone un'istanza collaborativa di `JupyterLab <Client Jupyter>` all'indirizzo :samp:`{NOTEBOOK_SLUG}.{BASE_DOMAIN}`.
 
 .. figure:: jupyter_collab.png
    :scale: 30%
