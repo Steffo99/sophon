@@ -7,9 +7,6 @@
 Il futuro di Sophon
 *******************
 
-.. and them's the facts
-https://www.youtube.com/watch?v=Q-ZeVMqJgAM
-
 Lo sviluppo di Sophon lascia aperte innumerevoli strade per la sua espansione con funzionalità aggiuntive.
 
 Si conclude la tesi analizzandone alcune.
