@@ -149,7 +149,52 @@ latex_elements = {
         \setmainfont{EB Garamond}
         \setsansfont{EB Garamond}
         \setmonofont{Fira Code}
-    """
+    """,
+    "maketitle": r"""
+        \begin{titlepage}
+        
+            \begin{center}
+                \mdseries
+                \huge UNIVERSITÀ DEGLI STUDI DI MODENA E REGGIO EMILIA
+                \vskip-.1in
+                \rule{\textwidth}{1pt}
+                \vskip.1in
+                \LARGE Dipartimento di Scienze Fisiche, Informatiche e Matematiche
+                \vskip.2in
+            
+                \LARGE Corso di Laurea in Informatica
+                \vskip.5in
+                \LARGE Tesi di Laurea
+                \vskip.5in
+                \emph{\Huge Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca}
+            \end{center}
+            \vskip1.7in
+            
+            \begin{minipage}{.40\textwidth}
+              \begin{flushleft}
+                \mdseries\large Relatore: 
+                \vskip0.1in
+                \large Prof.ssa\\ Claudia Canali 
+              \end{flushleft}
+            \end{minipage}
+            \hskip.3\textwidth
+            \begin{minipage}{.25\textwidth}
+              \begin{flushleft}
+                \mdseries\large Candidato: 
+                \vskip0.1in
+                \large Matr. \\Stefano Pigozzi
+              \end{flushleft}
+            \end{minipage}
+            
+            \vskip0.5in
+            
+            \centering
+            \mdseries
+            \rule{\textwidth}{1pt}
+            \LARGE Anno Accademico 2020-2021
+            
+        \end{titlepage}
+    """,  # TODO: Add here Unimore front matter
 }
 
 # TODOs
