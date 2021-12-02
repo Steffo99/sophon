@@ -195,8 +195,8 @@ Il modulo backend terminato espone una web API all'indirizzo :samp:`api.{BASE_DO
    :status 404: Risorsa non esistente.
 
 
-Pagina di amministrazione
--------------------------
+Pagina di amministrazione esposta
+---------------------------------
 
 In aggiunta alla web API, Sophon espone la `pagina di amministrazione <Pagina di amministrazione>` Django al seguente URL.
 
