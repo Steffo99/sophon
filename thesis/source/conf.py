@@ -198,7 +198,7 @@ latex_elements = {
 }
 
 # TODOs
-todo_include_todos = True  # TODO: Change to false in the final version
+todo_include_todos = False
 todo_emit_warnings = False
 todo_link_only = False
 

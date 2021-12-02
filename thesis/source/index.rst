@@ -33,8 +33,3 @@ Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
 
    *  :ref:`genindex`
    *  :ref:`search`
-
-   Da fare
-   =======
-
-   .. todolist::
