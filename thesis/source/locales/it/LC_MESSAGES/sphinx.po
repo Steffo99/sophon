@@ -1,0 +1,19 @@
+#: sphinx/builders/html/__init__.py:488 sphinx/themes/basic/defindex.html:30
+msgid "General Index"
+msgstr "Indice analitico"
+
+#: sphinx/builders/html/__init__.py:488
+msgid "index"
+msgstr "indice analitico"
+
+#: sphinx/builders/latex/__init__.py:194 sphinx/domains/std.py:604
+#: sphinx/templates/latex/latex.tex_t:97
+#: sphinx/themes/basic/genindex-single.html:30
+#: sphinx/themes/basic/genindex-single.html:55
+#: sphinx/themes/basic/genindex-split.html:11
+#: sphinx/themes/basic/genindex-split.html:14
+#: sphinx/themes/basic/genindex.html:11 sphinx/themes/basic/genindex.html:34
+#: sphinx/themes/basic/genindex.html:67 sphinx/themes/basic/layout.html:147
+#: sphinx/writers/texinfo.py:498
+msgid "Index"
+msgstr "Indice analitico"

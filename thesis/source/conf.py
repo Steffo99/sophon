@@ -100,6 +100,8 @@ html_static_path = [
 html_extra_path = [
     "_extra",
 ]
+# Disable additional indexes
+html_domain_indices = False
 
 # LaTeX rendering engine to use
 latex_engine = "lualatex"
@@ -109,6 +111,8 @@ latex_toplevel_sectioning = "chapter"
 latex_show_urls = "footnote"
 # LaTeX theme
 latex_theme = "manual"
+
+
 
 latex_setup = {
     "TitleColor": "{rgb}{0,0,0.08}",
