@@ -887,8 +887,8 @@ Qualsiasi *membro* di un `gruppo di ricerca <Gruppi di ricerca in Sophon>` può 
 .. index::
    pair: Sophon; notebook
 
-Notebook
---------
+Notebook in Sophon
+------------------
 
 Un *notebook* rappresenta una **postazione di lavoro** che può essere allegata ad un `progetto di ricerca <Progetti di ricerca in Sophon>`.
 
