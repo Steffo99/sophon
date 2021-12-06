@@ -61,7 +61,7 @@ Il paradigma web "2.0" ha portato miglioramenti significativi agli editor :abbr:
 
 Ciò ha semplificato il processo di collaborazione sui documenti: non è più necessario inviare ai collaboratori tutte le revisioni dei documenti, ma è possibile semplicemente condividergli un link, al quale sarà possibile accedere al documento.
 
-Da questa funzionalità ne è poi derivata un'altra, che ha rivoluzionato la scrittura di testi: la possibilità di collaborare online con gli altri autori, vedendo le loro modifiche in tempo reale sulla propria pagina.
+Da questa funzionalità ne è poi derivata un'altra, che ha rivoluzionato la scrittura di testi: la possibilità di collaborare online con gli altri autori, vedendo le loro modifiche in tempo reale.
 
 Il più importante di questi editor è `Google Docs <https://docs.google.com/>`_, rilasciato nel 2009; la sua popolarità ha portato allo sviluppo di alternative come `Office 365 <https://www.office.com/>`_, una versione web di `Microsoft Word <Editor WYSIWYG>`.
 
@@ -103,6 +103,7 @@ Come tutti i notebook computazionali è strutturato in celle, le quali possono c
 Prende ispirazione dai `web-based editor <Web-based editor>`, permettendo agli utenti di modificare i notebook direttamente da un browser web, e include rudimentali funzionalità di collaborazione in tempo reale [jupyter:collaboration]_.
 
 .. figure:: hist_example.png
+   :scale: 100%
 
    Un esempio di notebook Jupyter con una cella di testo e una cella di Python che emette un grafico [matplotlib:histograms]_.
 
@@ -188,7 +189,7 @@ Un esempio di cloud provider che fornisce questo servizio è Google, con `Google
 
 Usare il modello :abbr:`SaaS (Software as a Service)` è il modo più semplice per usare Jupyter, in quanto non richiede di effettuare alcuna installazione sul proprio computer, e in genere permette di collaborare online con altri utenti.
 
-In genere, però, Jupyter sulle piattaforme :abbr:`SaaS (Software as a Service)` non permette l'installazione di plugin, limitando la personalizzazione, e, se si necessitano più risorse di quelle offerte gratuitamente dai provider, si rischia di trovarsi a pagare mensilmente cifre elevate.
+Di contro, però, Jupyter sulle piattaforme :abbr:`SaaS (Software as a Service)` non permette l'installazione di plugin, limitando la personalizzazione, e, se si necessitano più risorse di quelle offerte gratuitamente dai provider, si rischiano canoni mensili elevati.
 
 
 .. index::
@@ -203,4 +204,4 @@ A tale scopo, è disponibile il progetto `JupyterHub <https://jupyter.org/hub>`_
 
 È performante ed efficace, e in base alla configurazione scelta dall'amministratore, può permettere agli utenti di personalizzare il loro ambiente di lavoro con plugin.
 
-L'interfaccia di gestione utenti e notebook è però molto essenziale, essendo un progetto piuttosto nuovo, e in aggiunta non supporta nativamente la collaborazione real-time su un singolo notebook, preferendo il modello *"tanti server Jupyter da utente singolo"* [jupyter:hub]_.
+L'interfaccia di gestione utenti e notebook è però molto essenziale, e in aggiunta non supporta nativamente la collaborazione real-time su un singolo notebook, preferendo il modello *"tanti server Jupyter da utente singolo"* [jupyter:hub]_.

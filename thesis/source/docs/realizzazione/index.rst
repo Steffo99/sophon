@@ -98,7 +98,7 @@ Miglioramenti all'autenticazione
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. module:: sophon.auth1
 
-La classe :class:`rest_framework.authentication.TokenAuthentication` viene modificata per ottenere un comportamento conforme agli standard del web.
+La classe :class:`rest_framework.authentication.TokenAuthentication` viene modificata per ottenere un comportamento conforme allo standard della Bearer authentication.
 
 .. class:: BearerTokenAuthentication(rest_framework.authentication.TokenAuthentication)
 
@@ -355,7 +355,7 @@ Vengono definiti tre viewset in grado di utilizzare i metodi aggiunti dalle clas
 
    Classe **astratta** che estende la classe base :class:`ReadSophonViewSet` aggiungendoci i metodi di :class:`rest_framework.viewsets.ModelViewSet` che effettuano modifiche sugli oggetti.
 
-   Depreca i metodi ``perform_*`` di :mod:`rest_framework`, introducendone versioni migliorate con una signature diversa dal nome di ``hook_*``.
+   Depreca i metodi ``perform_*`` di :mod:`rest_framework`, introducendone versioni estese con una signature diversa dal nome di ``hook_*``.
 
    .. method:: perform_create(self, serializer)
 
@@ -956,7 +956,7 @@ Axios
 
 Per effettuare richieste all'API web, si è deciso di utilizzare la libreria :mod:`axios`, in quanto permette di creare dei "client" personalizzabili con varie proprietà.
 
-In particolare, si è scelto di forkarla, integrando anticipatamente una proposta di funzionalità che permette alle richieste di essere interrotte attraverso degli :class:`AbortController`.
+In particolare, si è scelto di effettuare un fork della stessa, integrando anticipatamente una proposta di funzionalità che permette alle richieste di essere interrotte attraverso degli :class:`AbortController`.
 
 
 Client personalizzati

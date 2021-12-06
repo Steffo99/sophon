@@ -63,7 +63,7 @@ Non si reputa nemmeno importante limitare le risorse utilizzate dai `notebook <n
 Intuitività
 -----------
 
-Il modo in cui utilizzare l'interfaccia utente del software deve essere **intuitiva** per l'utente medio, senza che abbia bisogno di leggere alcuna guida o manuale.
+Il modo in cui utilizzare l'interfaccia utente del software deve essere **intuitiva** per l'utente medio, senza che egli abbia bisogno di leggere alcuna guida o manuale.
 
 A tale scopo, l'interfaccia grafica deve utilizzare **design patterns comuni e familiari** all'utente medio.
 
@@ -113,7 +113,7 @@ Responsività
 
 Il software deve essere **utilizzabile su schermi di dimensione ridotta**, come quelli di un cellulare.
 
-Pertanto, gli elementi dell'interfaccia devono essere disposti in modo che non escano dallo schermo qualora non ci fosse spazio sufficiente per mostrarli.
+Pertanto, gli elementi dell'interfaccia devono essere disposti in modo tale da permetterne la visualizzazione corretta su schermi di qualsiasi dimensione e risoluzione.
 
 
 .. index::
@@ -126,7 +126,7 @@ Il software deve essere utilizzabile da **qualsiasi tipologia di utente**, inclu
 
 Deve essere quindi possibile utilizzare il software **interamente da tastiera**, senza dover ricorrere a un mouse.
 
-Inoltre, i colori scelti per l'interfaccia grafica **devono essere chiari anche a persone affette da daltonismo**.
+Inoltre, i colori dell'interfaccia grafica devono **essere scelti favorendo l'accessibilità degli utenti daltonici**.
 
 
 .. index::
@@ -162,9 +162,9 @@ Esso è **eseguito dal server** sul quale è ospitato Sophon.
 Python
 ^^^^^^
 
-`Python <https://www.python.org/>`_ è un linguaggio di programmazione interpretato con tipizzazione forte, particolarmente popolare negli ambiti dello sviluppo web e data science.
+`Python <https://www.python.org/>`_ è un linguaggio di programmazione orientato agli oggetti interpretato con tipizzazione dinamica forte, particolarmente popolare negli ambiti dello sviluppo web e data science.
 
-Ha numerosissime librerie (dette *packages*) sia incluse nell'eseguibile stesso del linguaggio, sia disponibili per il download sul `Python Package Index <https://pypi.org/>`_.
+Ha numerosissime librerie (dette *packages*), sia incluse nella distribuzione base del linguaggio, sia disponibili per il download sul `Python Package Index <https://pypi.org/>`_.
 
 La sua sintassi è semplice ed human-friendly, come è possibile vedere dal seguente frammento di codice:
 
@@ -276,9 +276,9 @@ Viene **eseguito dal browser web** dell'utente che desidera interagire con Sopho
 JavaScript
 ^^^^^^^^^^
 
-`JavaScript <https://it.wikipedia.org/wiki/JavaScript>`_ è un linguaggio di programmazione interpretato con tipizzazione debole.
+`JavaScript <https://it.wikipedia.org/wiki/JavaScript>`_ è un linguaggio di programmazione interpretato con tipizzazione dinamica debole.
 
-È l'unico linguaggio utilizzabile per fornire interattività alle pagine web; pertanto, è indirettamente utilizzato dal modulo frontend di Sophon.
+È l'unico linguaggio utilizzabile per rendere interattive le pagine web; pertanto, è indirettamente utilizzato dal modulo frontend di Sophon.
 
 Il suo modello di oggetti si basa su dizionari che mappano i nomi degli attributi ai loro corrispondenti valori.
 
@@ -580,7 +580,7 @@ I *network* Docker sono astrazioni per vari tipi di reti di calcolatori: in part
 
 All'interno di un network è disponibile una funzionalità di risoluzione automatica degli indirizzi IP virtuali dei container: per accedere al container ``pear`` in HTTP, ad esempio, sarà sufficiente utilizzare ``apple`` come se fosse un nome di dominio: ``http://pear/``.
 
-Sono una versione più potente dei moduli di rete per macchine virtuali.
+Sono una versione più elaborata ed efficiente dei moduli di rete per macchine virtuali.
 
 
 .. index::
@@ -589,7 +589,7 @@ Sono una versione più potente dei moduli di rete per macchine virtuali.
 Volumi Docker
 ^^^^^^^^^^^^^
 
-I *volumi* Docker sono astrazioni per filesystem che permettono la condivisione di file tra container [docker:volumes]_.
+I *volumi* Docker sono astrazioni per filesystem che permettono la permanenza e la condivisione tra container di file [docker:volumes]_.
 
 Essi vengono montati all'interno di un container in una cartella configurabile detta *mount point*; tutti i container con accesso al volume vedranno gli stessi file all'interno di essa.
 
@@ -613,7 +613,7 @@ Astrae la piattaforma su cui viene eseguito, in modo che tutte le immagini possa
 Docker Compose
 --------------
 
-`Docker Compose <https://docs.docker.com/compose/>`_ è uno strumento da linea di comando che permette l'esecuzione di applicazioni Docker composte da tanti container.
+`Docker Compose <https://docs.docker.com/compose/>`_ è uno strumento da linea di comando che permette l'esecuzione di applicazioni Docker composte da più container.
 
 Le applicazioni Compose sono definite all'interno di un file `YAML <https://it.wikipedia.org/wiki/YAML>`_ come il seguente:
 
@@ -693,15 +693,15 @@ Per ciascun repository sono messe a disposizione gratuitamente numerose funziona
 Affero General Public License 3.0+
 ----------------------------------
 
-Sophon è rilasciato sotto la `GNU Affero General Public License 3`_ (o successiva).
+Sophon è rilasciato sotto la `GNU Affero General Public License v3`_ (o successiva).
 
 Il testo completo della licenza è disponibile all'interno del file `LICENSE.txt`_ allegato al codice sorgente del software.
 
-In breve, la licenza permette a chiunque di utilizzare, distribuire e modificare il software, a condizione che qualsiasi modifica venga ri-distribuita agli utenti del software modificato.
+In breve, la licenza, detta virale, permette a chiunque di utilizzare, distribuire e modificare il software, a condizione che qualsiasi modifica venga ri-distribuita agli utenti del software modificato utilizzando la stessa licenza.
 
 Si specifica che la licenza copre tutti i file all'interno del repository ``Steffo99/sophon``, anche se essi non contengono un header che indica che sono protetti da copyright.
 
-.. _GNU Affero General Public License 3: https://www.gnu.org/licenses/agpl-3.0.html
+.. _GNU Affero General Public License v3: https://www.gnu.org/licenses/agpl-3.0.html
 .. _LICENSE.txt: https://github.com/Steffo99/sophon/blob/main/LICENSE.txt
 
 
@@ -777,10 +777,6 @@ Credenziali di accesso
 Gli utenti di tipo *Utente* e *Superutente* devono identificarsi sull'istanza con le loro credenziali.
 
 Di default, le credenziali sono un **nome utente** e una **password**, ma è possibile implementare un sistema diverso, ad esempio un sistema :abbr:`SSO (Single Sign-On)`.
-
-.. warning::
-
-   Non avendo a disposizione sistemi di :abbr:`SSO (Single Sign-On)`, questa funzionalità non è stata testata, e potrebbe non funzionare.
 
 
 .. index::
@@ -922,8 +918,8 @@ Stato del notebook
 
 Un notebook può essere *avviato* o *fermo* in base al suo stato di esecuzione sull'`istanza <Istanza in Sophon>` Sophon:
 
-*  è *avviato* se sta venendo eseguito ed è accessibile;
-*  è *fermo* se non sta venendo eseguito o sta venendo preparato.
+*  è *avviato* se è in esecuzione e accessibile;
+*  è *fermo* se non è in esecuzione o se è in fase di preparazione.
 
 Alla creazione, un notebook è *fermo*.
 
@@ -969,11 +965,11 @@ Blocco di un notebook
 
 Qualsiasi **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>` a cui appartiene il notebook può *bloccarlo* per segnalare agli altri utenti che vi hanno accesso di non utilizzare quello specifico notebook.
 
-Bloccare un notebook **rimuove dall'interfaccia web** i bottoni di interazione con esso per tutti gli utenti, tranne quello che ha richiesto il blocco.
+Bloccare un notebook **rimuove dall'interfaccia web** i bottoni di interazione con esso per tutti gli utenti, tranne l'utente richiedente il blocco.
 
 .. note::
 
-   Il blocco di un notebook **è solo estetico**, e non ha lo scopo di impedire agli utenti di interagire con il notebook, ma serve per indicare ai propri collaboratori che si stanno effettuando modifiche grandi che non permettono collaborazione sul notebook.
+   Il blocco di un notebook **è solo estetico**, e non ha lo scopo di impedire agli utenti di interagire con il notebook, ma serve per indicare ai propri collaboratori che si stanno effettuando modifiche che non permettono collaborazione sul notebook.
 
 Un notebook bloccato può essere sbloccato da qualsiasi **membro** del `gruppo di ricerca <Gruppi di ricerca in Sophon>`; il membro che ha richiesto il blocco potrà sbloccarlo **immediatamente**, mentre agli altri membri è richiesto di confermare l'azione.
 
