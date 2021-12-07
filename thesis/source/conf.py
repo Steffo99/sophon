@@ -156,8 +156,7 @@ latex_elements = {
         \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
         \renewcommand{\pysiglinewithargsret}[1]{%                                 
         \setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
-        \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}                                    
-        \makeatother
+        \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
     """,
     "maketitle": r"""
         \begin{titlepage}
