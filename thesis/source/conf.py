@@ -112,7 +112,7 @@ latex_show_urls = "footnote"
 # LaTeX theme
 latex_theme = "manual"
 
-latex_setup = {
+latex_setup_rgb = {
     "TitleColor": "{rgb}{0,0,0.08}",
 
     "InnerLinkColor": "{rgb}{0.19,0.57,0.82}",
@@ -143,6 +143,39 @@ latex_setup = {
 
     "verbatimforcewraps": "true",
 }
+latex_setup_bw = {
+    "TitleColor": "{rgb}{0,0,0}",
+
+    "InnerLinkColor": "{rgb}{0,0,0}",
+    "OuterLinkColor": "{rgb}{0,0,0}",
+
+    "VerbatimBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "VerbatimColor": "{rgb}{0.97,0.97,0.97}",
+
+    "noteBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "importantBorderColor": "{rgb}{0.88,0.88,0.88}",
+
+    "hintBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "tipBorderColor": "{rgb}{0.88,0.88,0.88}",
+
+    "warningBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "warningBgColor": "{rgb}{0.97,0.97,0.97}",
+    "cautionBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "cautionBgColor": "{rgb}{0.97,0.97,0.97}",
+    "attentionBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "attentionBgColor": "{rgb}{0.97,0.97,0.97}",
+
+    "dangerBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "dangerBgColor": "{rgb}{0.97,0.97,0.97}",
+    "errorBorderColor": "{rgb}{0.88,0.88,0.88}",
+    "errorBgColor": "{rgb}{0.97,0.97,0.97}",
+
+    "bookmarksdepth": "2",
+
+    "verbatimforcewraps": "true",
+}
+latex_setup = latex_setup_bw
+
 latex_elements = {
     "papersize": "a4paper",
     "pointsize": "12pt",
