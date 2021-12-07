@@ -150,6 +150,15 @@ latex_elements = {
         \setsansfont{EB Garamond}
         \setmonofont{Fira Code}
     """,
+    "preamble": r"""
+        \renewcommand{\pysigline}[1]{%                                   
+        \setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
+        \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
+        \renewcommand{\pysiglinewithargsret}[1]{%                                 
+        \setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
+        \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}                                    
+        \makeatother
+    """,
     "maketitle": r"""
         \begin{titlepage}
         
