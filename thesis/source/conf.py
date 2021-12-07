@@ -82,6 +82,9 @@ numfig_format = {
 # Maximum depth for autonumeration
 numfig_secnum_depth = 2
 
+# Try making more space
+add_module_names = False
+
 # HTML builder theme
 html_theme = 'sphinx_rtd_theme'
 # Configuration for the theme
