@@ -139,7 +139,9 @@ latex_setup = {
     "errorBorderColor": "{rgb}{0.95,0.62,0.59}",
     "errorBgColor": "{rgb}{0.95,0.62,0.59}",
 
-    "bookmarksdepth": 2,
+    "bookmarksdepth": "2",
+
+    "verbatimforcewraps": "true",
 }
 latex_elements = {
     "papersize": "a4paper",
@@ -149,14 +151,6 @@ latex_elements = {
         \setmainfont{EB Garamond}
         \setsansfont{EB Garamond}
         \setmonofont{Fira Code}
-    """,
-    "preamble": r"""
-        \renewcommand{\pysigline}[1]{%                                   
-        \setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
-        \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
-        \renewcommand{\pysiglinewithargsret}[1]{%                                 
-        \setlength{\py@argswidth}{\dimexpr\labelwidth+\linewidth\relax}%
-        \item[{\parbox[t]{\py@argswidth}{\raggedright#1}}]}
     """,
     "maketitle": r"""
         \begin{titlepage}
