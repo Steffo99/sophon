@@ -194,6 +194,12 @@ latex_elements = {
             \LARGE Anno Accademico 2020-2021
             
         \end{titlepage}
+        
+        \newpage 
+
+        \ % The empty page
+        
+        \newpage
     """,
 }
 
