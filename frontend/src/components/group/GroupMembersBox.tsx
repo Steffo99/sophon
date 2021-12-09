@@ -31,10 +31,10 @@ export function GroupMembersBox(): JSX.Element | null {
             return null
         }
 
-        const username = id === authorization?.state.user?.id ? <UAnnotation>{user.value.username}</UAnnotation> : user.value.username
+        const username = index === 0 ? <UAnnotation>{user.value.username}</UAnnotation> : user.value.username
 
         return (
-            <ListUnordered.Item bluelibClassNames={index === 0 ? "color-blue" : ""} key={id}>
+            <ListUnordered.Item bluelibClassNames={id === authorization?.state.user?.id ? "color-magenta" : ""} key={id}>
                 {username}
             </ListUnordered.Item>
         )
