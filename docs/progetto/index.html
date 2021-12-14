@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. Progettazione di Sophon &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="5. Realizzazione di Sophon" href="../realizzazione/index.html" />
+    <link rel="prev" title="3. Ricerca collaborativa" href="../ricercacollaborativa/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">4. Progettazione di Sophon</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#requisiti-del-progetto">4.1. Requisiti del progetto</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#estendibilita">Estendibilità</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#sicurezza">Sicurezza</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#intuitivita">Intuitività</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#personalizzabilita">Personalizzabilità</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#possibilita-di-collaborazione">Possibilità di collaborazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#open-source">Open source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#responsivita">Responsività</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#accessibilita">Accessibilità</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#separazione-in-moduli">4.2. Separazione in moduli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#modulo-backend">Modulo backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#python">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#poetry">Poetry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#django">Django</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#django-rest-framework">Django REST Framework</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#docker-sdk-for-python">Docker SDK for Python</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulo-frontend">Modulo frontend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#javascript">JavaScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#node-js">Node.js</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#create-react-app">Create React App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#typescript">TypeScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#react">React</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#fontawesome">FontAwesome</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#bluelib">Bluelib</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulo-proxy">Modulo proxy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#reverse-proxy">Reverse proxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#apache-http-server">Apache HTTP server</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#modulo-jupyter">Modulo Jupyter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#containerizzazione">4.3. Containerizzazione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#docker">Docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#immagini-docker">Immagini Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#container-docker">Container Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#network-docker">Network Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#volumi-docker">Volumi Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-engine">Docker Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-compose">Docker Compose</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#controllo-versione">4.4. Controllo versione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#git">Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#github">GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#affero-general-public-license-3-0">Affero General Public License 3.0+</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#entita-di-sophon">4.5. Entità di Sophon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#istanza-in-sophon">Istanza in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#url-dell-istanza">URL dell'istanza</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#utenti-in-sophon">Utenti in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#livelli-di-accesso">Livelli di accesso</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#credenziali-di-accesso">Credenziali di accesso</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#gruppi-di-ricerca-in-sophon">Gruppi di ricerca in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#membri-e-modalita-di-accesso">Membri e modalità di accesso</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creazione-di-nuovi-gruppi">Creazione di nuovi gruppi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifica-di-gruppi">Modifica di gruppi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eliminazione-di-gruppi">Eliminazione di gruppi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#progetti-di-ricerca-in-sophon">Progetti di ricerca in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#visibilita-dei-progetti">Visibilità dei progetti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#creazione-di-nuovi-progetti">Creazione di nuovi progetti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifica-di-progetti">Modifica di progetti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eliminazione-di-progetti">Eliminazione di progetti</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#notebook-in-sophon">Notebook in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#creazione-di-nuovi-notebook">Creazione di nuovi notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#slug-riservati">Slug riservati</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#stato-del-notebook">Stato del notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#immagine-del-notebook">Immagine del notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#collegamento-a-un-notebook">Collegamento a un notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#blocco-di-un-notebook">Blocco di un notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#modifica-di-un-notebook">Modifica di un notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#eliminazione-di-un-notebook">Eliminazione di un notebook</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#database">4.6. Database</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installazione/index.html">1. Installazione di Sophon</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">4. </span>Progettazione di Sophon</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/4_progetto/index.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="progettazione-di-sophon">
+<span id="index-0"></span><h1><span class="section-number">4. </span>Progettazione di Sophon<a class="headerlink" href="#progettazione-di-sophon" title="Link a questa intestazione"></a></h1>
+<p>Vista la situazione della <a class="reference internal" href="../ricercacollaborativa/index.html#ricerca-collaborativa"><span class="std std-ref">ricerca collaborativa</span></a>, si è ritenuto potesse essere utile sviluppare un'alternativa al <a class="reference internal" href="../ricercacollaborativa/index.html#hosting-on-premises"><span class="std std-ref">progetto JupyterHub</span></a>.</p>
+<section id="requisiti-del-progetto">
+<span id="index-1"></span><h2><span class="section-number">4.1. </span>Requisiti del progetto<a class="headerlink" href="#requisiti-del-progetto" title="Link a questa intestazione"></a></h2>
+<p>Si è stabilito che per essere un'alternativa valida, il progetto dovesse avere i seguenti requisiti:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#estendibilita"><span class="std std-ref">estendibilità</span></a></p></li>
+<li><p><a class="reference internal" href="#sicurezza"><span class="std std-ref">security by default</span></a></p></li>
+<li><p><a class="reference internal" href="#intuitivita"><span class="std std-ref">interfaccia grafica facile ed intuitiva</span></a></p></li>
+<li><p><a class="reference internal" href="#possibilita-di-collaborazione"><span class="std std-ref">maggiore possibilità di collaborazione</span></a></p></li>
+<li><p><a class="reference internal" href="#open-source"><span class="std std-ref">codice open source</span></a></p></li>
+<li><p><a class="reference internal" href="#personalizzabilita"><span class="std std-ref">possibilità di personalizzazione</span></a></p></li>
+<li><p><a class="reference internal" href="#accessibilita"><span class="std std-ref">accessibilità</span></a></p></li>
+</ul>
+<p>Seguono descrizioni dettagliate dei requisiti elencati.</p>
+<section id="estendibilita">
+<span id="index-2"></span><h3>Estendibilità<a class="headerlink" href="#estendibilita" title="Link a questa intestazione"></a></h3>
+<p><strong>Aggiungere nuove funzionalità</strong> al software deve essere facile, e non richiedere ristrutturazioni profonde del codice.</p>
+<p>Inoltre, il software deve essere <strong>modulare</strong>, in modo da semplificare l'aggiornamento, la sostituzione e la eventuale rimozione di componenti.</p>
+<p>Infine, il software deve esporre un'<strong>interfaccia alla quale altri software esterni possono connettersi</strong> per interagirvi come se fossero un utente.</p>
+</section>
+<section id="sicurezza">
+<span id="index-3"></span><h3>Sicurezza<a class="headerlink" href="#sicurezza" title="Link a questa intestazione"></a></h3>
+<p>I dati immagazzinati all'interno del software devono essere <strong>protetti da acccessi non autorizzati</strong>.</p>
+<p><strong>Tentativi di ingannare gli utenti del software devono essere impediti</strong>, riducendo il fattore umano nelle falle di sicurezza.</p>
+<p>Non si reputa importante impedire agli utenti di comunicare con Internet all'interno delle loro ricerche, in quanto si ritiene che essi siano utenti fidati; qualora ne sorga la necessità, ciò deve essere possibile senza ristrutturazione del codice.</p>
+<p>Non si reputa nemmeno importante limitare le risorse utilizzate dai <a class="reference internal" href="../ricercacollaborativa/index.html#notebook-computazionali"><span class="std std-ref">notebook</span></a> in uso; deve però essere possibile implementare la funzionalità in futuro, se divenisse necessario.</p>
+</section>
+<section id="intuitivita">
+<span id="index-4"></span><h3>Intuitività<a class="headerlink" href="#intuitivita" title="Link a questa intestazione"></a></h3>
+<p>Il modo in cui utilizzare l'interfaccia utente del software deve essere <strong>intuitiva</strong> per l'utente medio, senza che egli abbia bisogno di leggere alcuna guida o manuale.</p>
+<p>A tale scopo, l'interfaccia grafica deve utilizzare <strong>design patterns comuni e familiari</strong> all'utente medio.</p>
+<p>In aggiunta, i <strong>dettagli implementativi devono essere nascosti</strong> all'utente, in modo che possa concentrarsi sull'utilizzo del software.</p>
+</section>
+<section id="personalizzabilita">
+<span id="index-5"></span><h3>Personalizzabilità<a class="headerlink" href="#personalizzabilita" title="Link a questa intestazione"></a></h3>
+<p>Il software deve permettere all'utente di <strong>personalizzare il suo workflow senza alcuna limitazione</strong>, che ciò venga fatto tramite plugin, configurazioni speciali o modifica di file dell'ambiente di lavoro, assicurando che i workflow personalizzati di un utente <strong>non possano interferire</strong> con quelli degli altri.</p>
+<p>Inoltre, il software deve inoltre permettere all'amministratore di <strong>personalizzare nome e aspetto</strong> mostrati agli utenti nell'interfaccia grafica, in modo che essa possa essere adattata al brand dell'istituzione che utilizza il progetto.</p>
+</section>
+<section id="possibilita-di-collaborazione">
+<span id="index-6"></span><h3>Possibilità di collaborazione<a class="headerlink" href="#possibilita-di-collaborazione" title="Link a questa intestazione"></a></h3>
+<p>Il software deve permettere agli utenti di <strong>collaborare sui notebook in tempo reale</strong>, come all'interno dei <a class="reference internal" href="../ricercacollaborativa/index.html#web-based-editor"><span class="std std-ref">web-based editor</span></a>.</p>
+<p>Devono essere <strong>facilitate le interazioni tra utenti</strong>, al fine di ridurre errori e incomprensioni tra essi.</p>
+</section>
+<section id="open-source">
+<span id="index-7"></span><h3>Open source<a class="headerlink" href="#open-source" title="Link a questa intestazione"></a></h3>
+<p>Il software deve essere interamente <strong>open source</strong>.</p>
+<p>In pieno spirito collaborativo, il <strong>codice sorgente deve essere liberamente consultabile, modificabile, utilizzabile e condivisibile</strong>, sia per soddisfare la curiosità degli utenti, sia per permetterne lo studio e il miglioramento.</p>
+<p>Tutte le <strong>modifiche al codice sorgente devono essere rese disponibili agli utenti</strong> del software modificato, in modo che possano verificare l'affidabilità del software che utilizzano.</p>
+</section>
+<section id="responsivita">
+<span id="index-8"></span><h3>Responsività<a class="headerlink" href="#responsivita" title="Link a questa intestazione"></a></h3>
+<p>Il software deve essere <strong>utilizzabile su schermi di dimensione ridotta</strong>, come quelli di un cellulare.</p>
+<p>Pertanto, gli elementi dell'interfaccia devono essere disposti in modo tale da permetterne la visualizzazione corretta su schermi di qualsiasi dimensione e risoluzione.</p>
+</section>
+<section id="accessibilita">
+<span id="index-9"></span><h3>Accessibilità<a class="headerlink" href="#accessibilita" title="Link a questa intestazione"></a></h3>
+<p>Il software deve essere utilizzabile da <strong>qualsiasi tipologia di utente</strong>, inclusi utenti con disabilità visive e motorie.</p>
+<p>Deve essere quindi possibile utilizzare il software <strong>interamente da tastiera</strong>, senza dover ricorrere a un mouse.</p>
+<p>Inoltre, i colori dell'interfaccia grafica devono <strong>essere scelti favorendo l'accessibilità degli utenti daltonici</strong>.</p>
+</section>
+</section>
+<section id="separazione-in-moduli">
+<span id="index-10"></span><h2><span class="section-number">4.2. </span>Separazione in moduli<a class="headerlink" href="#separazione-in-moduli" title="Link a questa intestazione"></a></h2>
+<p>Per realizzare il requisito dell'<a class="reference internal" href="#estendibilita"><span class="std std-ref">estendibilità</span></a>, si è scelto di separare le parti dell'applicazioni in 4 diversi moduli interagenti.</p>
+<figure class="align-default" id="id26">
+<img alt="../../_images/diagram_modules.png" src="../../_images/diagram_modules.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.1 </span><span class="caption-text">Schema che mostra come interagiscono tra loro i moduli di Sophon.</span><a class="headerlink" href="#id26" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<section id="modulo-backend">
+<span id="index-11"></span><h3>Modulo backend<a class="headerlink" href="#modulo-backend" title="Link a questa intestazione"></a></h3>
+<p>Il modulo backend consiste in una web <abbr title="application programming interface">API</abbr> che si interfaccia con il database e i moduli Jupyter, permettendo un accesso controllato alle risorse del software.</p>
+<p>È scritto in <a class="reference internal" href="#python"><span class="std std-ref">Python</span></a>, usando <a class="reference internal" href="#poetry"><span class="std std-ref">Poetry</span></a> e le librerie <a class="reference internal" href="#django"><span class="std std-ref">Django</span></a>, <a class="reference internal" href="#django-rest-framework"><span class="std std-ref">Django REST Framework</span></a> e <a class="reference internal" href="#docker-sdk-for-python"><span class="std std-ref">Docker SDK for Python</span></a>, descritte nei prossimi paragrafi.</p>
+<p>Esso è <strong>eseguito dal server</strong> sul quale è ospitato Sophon.</p>
+<section id="python">
+<span id="index-12"></span><h4>Python<a class="headerlink" href="#python" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://www.python.org/">Python</a> è un linguaggio di programmazione orientato agli oggetti interpretato con tipizzazione dinamica forte, particolarmente popolare negli ambiti dello sviluppo web e data science.</p>
+<p>Ha numerosissime librerie (dette <em>packages</em>), sia incluse nella distribuzione base del linguaggio, sia disponibili per il download sul <a class="reference external" href="https://pypi.org/">Python Package Index</a>.</p>
+<p>La sua sintassi è semplice ed human-friendly, come è possibile vedere dal seguente frammento di codice:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Animale</span><span class="p">:</span>
+   <span class="k">def</span> <span class="nf">verso</span><span class="p">():</span>
+      <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
+
+<span class="k">class</span> <span class="nc">Cane</span><span class="p">(</span><span class="n">Animale</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">verso</span><span class="p">():</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Woof!&quot;</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Gatto</span><span class="p">(</span><span class="n">Animale</span><span class="p">):</span>
+   <span class="k">def</span> <span class="nf">verso</span><span class="p">():</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Miao!&quot;</span><span class="p">)</span>
+
+<span class="n">zoo</span> <span class="o">=</span> <span class="p">[</span>
+   <span class="n">Cane</span><span class="p">(),</span>
+   <span class="n">Gatto</span><span class="p">(),</span>
+   <span class="n">Cane</span><span class="p">(),</span>
+<span class="p">]</span>
+
+<span class="k">for</span> <span class="n">animale</span> <span class="ow">in</span> <span class="n">zoo</span><span class="p">:</span>
+   <span class="n">animale</span><span class="o">.</span><span class="n">verso</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>La sua semplicità e l'enorme quantità di librerie a disposizione lo ha reso il secondo linguaggio di programmazione più popolare al mondo <a class="reference internal" href="../bibliografia/index.html#so-survey2021" id="id2"><span>[so:survey2021]</span></a>, subito dopo <a class="reference internal" href="#javascript"><span class="std std-ref">JavaScript</span></a>; proprio per questi motivi è stato scelto per lo sviluppo del modulo backend.</p>
+</section>
+<section id="poetry">
+<span id="index-13"></span><h4>Poetry<a class="headerlink" href="#poetry" title="Link a questa intestazione"></a></h4>
+<p>Per gestire le dipendenze di Sophon si è scelto di usare <a class="reference external" href="https://python-poetry.org/">Poetry</a>, un innovativo package manager per il linguaggio Python.</p>
+<p>Poetry è in grado di risolvere automaticamente alberi complessi di dipendenze, generando un <em>lockfile</em> (<code class="docutils literal notranslate"><span class="pre">poetry.lock</span></code>) con la soluzione adottata, in modo che le dipendenze utilizzate siano congelate e uguali per tutti gli ambienti in cui deve essere sviluppato Sophon.</p>
+</section>
+<section id="django">
+<span id="index-14"></span><h4>Django<a class="headerlink" href="#django" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://www.djangoproject.com/">Django</a> è un framework Python per lo sviluppo di siti web dinamici.</p>
+<p>Fornisce una suite di strumenti che assistono nella creazione di siti di medie dimensioni, come un <abbr title="object-relational model">ORM</abbr> per i database, una pagina di amministrazione integrata per la gestione dei contenuti del sito e un sistema di moduli scollegabili detti &quot;app&quot;.</p>
+<p>Le pagine restituite vengono definite attraverso funzioni, dette <em>function-based views</em>, o attraverso classi, dette <em>class-based views</em>, che ricevono in input la richiesta effettuata dall'utente ed restituscono in output la risposta HTTP da inoltrargli.</p>
+<p>È stato scelto per la realizzazione del modulo backend in quanto presentato al corso di Tecnologie web di Unimore, e in quanto contenente tutte le funzionalità necessarie per la realizzazione del progetto del sito.</p>
+</section>
+<section id="django-rest-framework">
+<span id="index-15"></span><h4>Django REST Framework<a class="headerlink" href="#django-rest-framework" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://www.django-rest-framework.org/">Django REST Framework</a> è un'estensione per <a class="reference internal" href="#django"><span class="std std-ref">Django</span></a> che aggiunge la possibilità di inserire <abbr title="representational state transfer">REST</abbr> <abbr title="application programming interface">API</abbr> all'interno delle applicazioni Django.</p>
+<p>Permette di definire metodi dell'API in modo molto simile alle views di Django: si vengono a creare le <em>function-based API views</em> se i metodi sono definiti attraverso funzioni, o le <em>class-based API views</em> se i metodi sono definiti attraverso classi.</p>
+<p>Inoltre, permette la generazione automatica di metodi per l'interazione con certe entità del database, attraverso particolari classi dette <em>viewset</em>.</p>
+<p>Come per Django, è stato scelto per lo sviluppo di Sophon in quanto è stato presentato al corso di Tecnologie web di Unimore, e perchè si è ritenuto che fosse l'opzione più semplice per realizzare una web <abbr title="application programming interface">API</abbr> all'interno di Django.</p>
+</section>
+<section id="docker-sdk-for-python">
+<span id="index-16"></span><h4>Docker SDK for Python<a class="headerlink" href="#docker-sdk-for-python" title="Link a questa intestazione"></a></h4>
+<p>Per interfacciarsi con i <a class="reference internal" href="#modulo-jupyter"><span class="std std-ref">moduli Jupyter</span></a>, si è deciso di utilizzare <a class="reference external" href="https://docker-py.readthedocs.io/en/stable/">Docker SDK for Python</a>, un client Python per l'interazione con il daemon <a class="reference internal" href="#docker"><span class="std std-ref">Docker</span></a>.</p>
+<div class="admonition seealso">
+<p class="admonition-title">Vedi anche</p>
+<p><a class="reference internal" href="#containerizzazione"><span class="std std-ref">Containerizzazione</span></a>, più avanti nel capitolo.</p>
+</div>
+</section>
+</section>
+<section id="modulo-frontend">
+<span id="index-17"></span><h3>Modulo frontend<a class="headerlink" href="#modulo-frontend" title="Link a questa intestazione"></a></h3>
+<p>Il <em>modulo frontend</em> consiste in una applicazione web che consente agli utenti di interagire con Sophon da un'interfaccia grafica.</p>
+<p>Le interazioni vengono inviate al <a class="reference internal" href="#modulo-proxy"><span class="std std-ref">modulo proxy</span></a>, che le ispeziona e le inoltra al <a class="reference internal" href="#modulo-backend"><span class="std std-ref">modulo backend</span></a>.</p>
+<p>È scritto in <a class="reference internal" href="#typescript"><span class="std std-ref">TypeScript</span></a>, usando <a class="reference internal" href="#react"><span class="std std-ref">React</span></a> e le librerie <a class="reference internal" href="#fontawesome"><span class="std std-ref">FontAwesome</span></a> e <a class="reference internal" href="#bluelib"><span class="std std-ref">Bluelib</span></a>, in aggiunta alle loro dipendenze ed altre piccole librerie di supporto.</p>
+<p>Viene <strong>eseguito dal browser web</strong> dell'utente che desidera interagire con Sophon, transcompilato da TypeScript a <a class="reference internal" href="#javascript"><span class="std std-ref">JavaScript</span></a>.</p>
+<section id="javascript">
+<span id="index-18"></span><h4>JavaScript<a class="headerlink" href="#javascript" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://it.wikipedia.org/wiki/JavaScript">JavaScript</a> è un linguaggio di programmazione interpretato con tipizzazione dinamica debole.</p>
+<p>È l'unico linguaggio utilizzabile per rendere interattive le pagine web; pertanto, è indirettamente utilizzato dal modulo frontend di Sophon.</p>
+<p>Il suo modello di oggetti si basa su dizionari che mappano i nomi degli attributi ai loro corrispondenti valori.</p>
+<p>Fa inoltre abbondante uso della capacità dei linguaggi dinamici di definire funzioni a runtime (dette anche callback), sfruttandole per favorire la programmazione funzionale.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">cane</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="nx">verso</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Woof!&quot;</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">gatto</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="nx">verso</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Miao!&quot;</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="kd">const</span> <span class="nx">zoo</span> <span class="o">=</span> <span class="p">[</span><span class="nx">cane</span><span class="p">,</span> <span class="nx">gatto</span><span class="p">];</span>
+
+<span class="nx">zoo</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span>
+   <span class="p">(</span><span class="nx">animale</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">animale</span><span class="p">.</span><span class="nx">verso</span><span class="p">()</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+</section>
+<section id="node-js">
+<span id="index-19"></span><h4>Node.js<a class="headerlink" href="#node-js" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://nodejs.org/">Node.js</a> è un runtime <a class="reference internal" href="#javascript"><span class="std std-ref">JavaScript</span></a> che permette la scrittura e l'esecuzione di programmi all'esterno del contesto di un browser web, utilizzando invece come contesto il sistema operativo su cui viene eseguito.</p>
+<p>Include <abbr title="Node package manager">npm</abbr>, un gestore di pacchetti per il download di librerie Node, che interagisce con l'<a class="reference external" href="https://www.npmjs.com/">npm Registry</a>.</p>
+<p>È utilizzato da Sophon come toolchain per lo sviluppo e il deployment del modulo frontend, in quanto necessario per l'esecuzione di <a class="reference internal" href="#create-react-app"><span class="std std-ref">Create React App</span></a>.</p>
+</section>
+<section id="create-react-app">
+<span id="index-20"></span><h4>Create React App<a class="headerlink" href="#create-react-app" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://create-react-app.dev/">Create React App</a> è un insieme di strumenti <a class="reference internal" href="#node-js"><span class="std std-ref">Node.js</span></a> per lo sviluppo di una applicazione web utilizzando la libreria per la creazione di interfacce grafiche <a class="reference internal" href="#react"><span class="std std-ref">React</span></a>.</p>
+<p>È utilizzato da Sophon per la costruzione della pagina del modulo frontend che sarà servita all'utente.</p>
+<p>Si è scelto di usare Create React App in quanto astrae al programmatore tutta la logica di creazione della pagina, semplificando enormemente la manutenzione ed <a class="reference internal" href="#estendibilita"><span class="std std-ref">estensione</span></a> futura del software.</p>
+</section>
+<section id="typescript">
+<span id="index-21"></span><h4>TypeScript<a class="headerlink" href="#typescript" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://www.typescriptlang.org/">TypeScript</a> è un'estensione al linguaggio di programmazione <a class="reference internal" href="#javascript"><span class="std std-ref">JavaScript</span></a> che vi introduce un sistema di tipizzazione forte.</p>
+<p>Non essendo immediatamente utilizzabile all'interno delle pagine web, deve essere prima convertito in JavaScript: ciò viene effettuato da <a class="reference internal" href="#create-react-app"><span class="std std-ref">Create React App</span></a> in fase di costruzione dell'applicazione.</p>
+<div class="highlight-typescript notranslate"><div class="highlight"><pre><span></span><span class="kd">interface</span> <span class="nx">Animale</span> <span class="p">{</span>
+   <span class="nx">verso</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="kt">string</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">cane</span>: <span class="kt">Animale</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="nx">verso</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Woof!&quot;</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">gatto</span>: <span class="kt">Animale</span> <span class="o">=</span> <span class="p">{</span>
+   <span class="nx">verso</span><span class="o">:</span> <span class="p">()</span> <span class="p">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;Miao!&quot;</span><span class="p">),</span>
+<span class="p">};</span>
+
+<span class="kd">var</span> <span class="nx">zoo</span>: <span class="kt">Animale</span><span class="p">[]</span> <span class="o">=</span> <span class="p">[</span><span class="nx">cane</span><span class="p">,</span> <span class="nx">gatto</span><span class="p">];</span>
+
+<span class="nx">zoo</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span>
+   <span class="p">(</span><span class="nx">animale</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="nx">animale</span><span class="p">.</span><span class="nx">verso</span><span class="p">()</span>
+<span class="p">);</span>
+</pre></div>
+</div>
+<p>È stata utilizzata in quasi ogni singola parte del modulo frontend, in quanto avere una tipizzazione forte riduce significativamente i bug prodotti e facilita manutenzione ed <a class="reference internal" href="#estendibilita"><span class="std std-ref">estensione</span></a> del software.</p>
+</section>
+<section id="react">
+<span id="index-22"></span><h4>React<a class="headerlink" href="#react" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://reactjs.org/">React</a> è una libreria <a class="reference internal" href="#javascript"><span class="std std-ref">JavaScript</span></a> per lo sviluppo di interfacce grafiche interattive all'interno di pagine web o applicazioni mobile.</p>
+<p>L'interfaccia viene definita in modo dichiarativo e funzionale attraverso una variante dei linguaggi <a class="reference internal" href="#javascript"><span class="std std-ref">JavaScript</span></a> (o <a class="reference internal" href="#typescript"><span class="std std-ref">TypeScript</span></a>) detta JSX (o TSX), che permette l'inserimento di nodi HTML all'interno del codice.</p>
+<p>Si basa sul concetto di <em>componenti</em>, piccole parti incapsulate di interfaccia grafica riutilizzabili attraverso tutta l'applicazione definite attraverso funzioni pure, e di <em>hooks</em>, particolari funzioni il cui nome inizia con <code class="docutils literal notranslate"><span class="pre">use</span></code> in grado di tenere traccia dello stato di un componente o di causare effetti collaterali all'interno di esso.</p>
+<div class="highlight-jsx notranslate"><div class="highlight"><pre><span></span><span class="kd">const</span> <span class="nx">ComponenteTitoloMaiuscolo</span> <span class="o">=</span> <span class="p">({</span><span class="nx">text</span><span class="p">})</span> <span class="p">=&gt;</span> <span class="p">{</span>
+   <span class="kd">const</span> <span class="nx">capitalizedText</span> <span class="o">=</span> <span class="nx">text</span><span class="p">.</span><span class="nx">toUpperCase</span><span class="p">();</span>
+
+   <span class="k">return</span> <span class="p">(</span>
+      <span class="p">&lt;</span><span class="nt">h1</span><span class="p">&gt;</span>
+         <span class="p">{</span><span class="nx">capitalizedText</span><span class="p">}</span>
+      <span class="p">&lt;/</span><span class="nt">h1</span><span class="p">&gt;</span>
+   <span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>È stata scelta per l'utilizzo in Sophon in quanto permette la realizzazione di interfacce grafiche molto complesse attraverso codice di facile comprensione, rendendo possibile la creazione di un'interfaccia interattiva ed <a class="reference internal" href="#intuitivita"><span class="std std-ref">intuitiva</span></a>.</p>
+</section>
+<section id="fontawesome">
+<span id="index-23"></span><h4>FontAwesome<a class="headerlink" href="#fontawesome" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://fontawesome.com/">FontAwesome</a> è una libreria che fornisce più di mille icone utilizzabili gratuitamente all'interno di pagine web.</p>
+<p>È stata usata per favorire l'<a class="reference internal" href="#intuitivita"><span class="std std-ref">intuibilità</span></a> dell'interfaccia grafica attraverso simboli familiari all'utente.</p>
+</section>
+<section id="bluelib">
+<span id="index-24"></span><h4>Bluelib<a class="headerlink" href="#bluelib" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://gh.steffo.eu/bluelib/">Bluelib</a> è un foglio di stile per pagine web orientato alla modularità, alla responsività e all'<a class="reference internal" href="#accessibilita"><span class="std std-ref">accessibilità</span></a>.</p>
+<p>È stato sviluppato nell'Estate 2021 come progetto personale dell'autore di questa tesi, ed è stato esteso con temi aggiuntivi in Autunno 2021, tra cui uno sviluppato appositamente per Sophon.</p>
+<p>Si basa sul concetto di <strong>pannelli</strong>, sezioni di pagina separate dal resto tramite un colore di sfondo o un bordo diverso.</p>
+<p>Fa ampio uso delle <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/CSS/--*">CSS Custom Properties</a>, permettendo lo sviluppo di vari <em>temi</em> con aspetto differente.</p>
+<figure class="align-default" id="id27">
+<img alt="../../_images/bluelib_royalblue.png" src="../../_images/bluelib_royalblue.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.2 </span><span class="caption-text">Il tema &quot;Royal Blue&quot; (<code class="docutils literal notranslate"><span class="pre">royalblue</span></code>) di Bluelib, da cui ha origine il nome.</span><a class="headerlink" href="#id27" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id28">
+<img alt="../../_images/bluelib_paper.png" src="../../_images/bluelib_paper.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.3 </span><span class="caption-text">Il tema &quot;Sheet of Paper&quot; (<code class="docutils literal notranslate"><span class="pre">paper</span></code>) di Bluelib, pensato per la stampa su carta.</span><a class="headerlink" href="#id28" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id29">
+<img alt="../../_images/bluelib_sophon.png" src="../../_images/bluelib_sophon.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.4 </span><span class="caption-text">Il tema &quot;The Sophonity&quot; (<code class="docutils literal notranslate"><span class="pre">sophon</span></code>) di Bluelib, creato appositamente per questo progetto.</span><a class="headerlink" href="#id29" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id30">
+<img alt="../../_images/bluelib_hacker.png" src="../../_images/bluelib_hacker.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.5 </span><span class="caption-text">Il tema &quot;Hacker Terminal&quot; (<code class="docutils literal notranslate"><span class="pre">hacker</span></code>) di Bluelib, creato per testare la visualizzazione di caratteri monospace.</span><a class="headerlink" href="#id30" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id31">
+<img alt="../../_images/bluelib_amber.png" src="../../_images/bluelib_amber.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.6 </span><span class="caption-text">Il tema &quot;Gestione Amber&quot; (<code class="docutils literal notranslate"><span class="pre">amber</span></code>) di Bluelib, realizzato da Lorenzo Balugani.</span><a class="headerlink" href="#id31" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<section id="bluelib-react">
+<span id="index-25"></span><h5>Bluelib React<a class="headerlink" href="#bluelib-react" title="Link a questa intestazione"></a></h5>
+<p><a class="reference external" href="http://gh.steffo.eu/bluelib-react/">Bluelib React</a> è un adattamento a <a class="reference internal" href="#react"><span class="std std-ref">React</span></a> del foglio di stile <a class="reference internal" href="#bluelib"><span class="std std-ref">Bluelib</span></a>.</p>
+<p>È stato sviluppato a inizio Autunno 2021 come parte del tirocinio interno dell'autore di questa tesi.</p>
+<p>Definice componenti per ogni elemento grafico introdotto in Bluelib, e rende velocemente configurabili alcuni parametri, come il colore o la disabilitazione di un pannello.</p>
+</section>
+</section>
+</section>
+<section id="modulo-proxy">
+<span id="index-26"></span><h3>Modulo proxy<a class="headerlink" href="#modulo-proxy" title="Link a questa intestazione"></a></h3>
+<p>Il <em>modulo proxy</em> consiste in un web server che permette di accedere al <a class="reference internal" href="#modulo-backend"><span class="std std-ref">modulo backend</span></a>, ai <a class="reference internal" href="#modulo-jupyter"><span class="std std-ref">moduli Jupyter</span></a> e a una versione preconfigurata del <a class="reference internal" href="#modulo-frontend"><span class="std std-ref">modulo frontend</span></a>.</p>
+<p>È stato realizzato configurando <a class="reference internal" href="#apache-http-server"><span class="std std-ref">Apache HTTP server</span></a> in modo che effettuasse dinamicamente <a class="reference internal" href="#reverse-proxy"><span class="std std-ref">reverse proxying</span></a> verso gli altri moduli basandosi su una rubrica aggiornata dal backend.</p>
+<p>Viene <strong>eseguito dal server</strong> sul quale è ospitato Sophon.</p>
+<section id="reverse-proxy">
+<span id="index-27"></span><h4>Reverse proxy<a class="headerlink" href="#reverse-proxy" title="Link a questa intestazione"></a></h4>
+<p>Il <em>reverse proxying</em> è un'operazione effettuabile dai web server per permettere l'accesso controllato ad altri web server collocati su una rete interna attraverso l'inoltro di pacchetti.</p>
+<p>Frequentemente, il reverse proxying viene utilizzato per &quot;aggiungere&quot; l'HTTPS a un web server disponibile solo in HTTP, o per disambiguare tra più web server che devono essere accessibili allo stesso indirizzo IP ma con nomi di dominio diversi.</p>
+<p>In un'installazione predefinita di Sophon, il reverse proxying effettuato è duplice:</p>
+<ul class="simple">
+<li><p>il server web della macchina host riceve richieste HTTPS e le inoltra in HTTP al server web del <a class="reference internal" href="#modulo-proxy"><span class="std std-ref">modulo proxy</span></a>;</p></li>
+<li><p>il server web del modulo proxy riceve richieste HTTP che inoltra ai vari moduli in base al valore dell'header <code class="docutils literal notranslate"><span class="pre">Host</span></code> della richiesta ricevuta.</p></li>
+</ul>
+<figure class="align-default" id="id32">
+<img alt="../../_images/diagram_proxy.png" src="../../_images/diagram_proxy.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.2.7 </span><span class="caption-text">Schema del reverse proxying di Sophon.</span><a class="headerlink" href="#id32" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="apache-http-server">
+<span id="index-28"></span><h4>Apache HTTP server<a class="headerlink" href="#apache-http-server" title="Link a questa intestazione"></a></h4>
+<p><a class="reference external" href="https://httpd.apache.org/">Apache HTTP Server</a>, comunemente chiamato anche <em>httpd</em> o <em>apache2</em>, è uno dei tre webserver &quot;general purpose&quot; più comunemente usati al mondo.</p>
+<p>Ha una struttura a moduli, che forniscono funzionalità aggiuntive, ed è configurabile tramite uno o più file <code class="docutils literal notranslate"><span class="pre">.conf</span></code> aventi sintassi come la seguente:</p>
+<div class="highlight-apacheconf notranslate"><div class="highlight"><pre><span></span><span class="c"># Questa è un&#39;istruzione globale.</span>
+<span class="nb">Bind</span> <span class="m">80</span>
+
+<span class="c"># Questo è un blocco di istruzioni ristretto a un contesto specifico.</span>
+<span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+   <span class="nb">ServerName</span> <span class="s2">&quot;ilmiosophon.it&quot;</span>
+   <span class="nb">ServerAlias</span> <span class="s2">&quot;*.ilmiosophon.it&quot;</span>
+
+   <span class="nb">RewriteEngine</span> <span class="k">On</span>
+   <span class="nb">RewriteRule</span> ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="modulo-jupyter">
+<span id="index-29"></span><h3>Modulo Jupyter<a class="headerlink" href="#modulo-jupyter" title="Link a questa intestazione"></a></h3>
+<p>Il <em>modulo Jupyter</em> consiste in una versione preconfigurata di <a class="reference internal" href="../ricercacollaborativa/index.html#index-5"><span class="std std-ref">Jupyter</span></a> pronta per essere istanziata dal <a class="reference internal" href="#modulo-backend"><span class="std std-ref">modulo backend</span></a>.</p>
+<p>Tanti moduli Jupyter possono esistere contemporaneamente su Sophon: ne viene creato uno per ogni <a class="reference internal" href="../ricercacollaborativa/index.html#notebook-computazionali"><span class="std std-ref">notebook computazionale</span></a> gestito dal modulo backend.</p>
+<p>Viene <strong>eseguito dal server</strong> sul quale è ospitato Sophon.</p>
+</section>
+</section>
+<section id="containerizzazione">
+<span id="index-30"></span><h2><span class="section-number">4.3. </span>Containerizzazione<a class="headerlink" href="#containerizzazione" title="Link a questa intestazione"></a></h2>
+<p>Al fine di facilitare l'installazione e di migliorare la <a class="reference internal" href="#sicurezza"><span class="std std-ref">sicurezza</span></a> dell'applicazione, si è stabilito di costruire <a class="reference internal" href="#container-docker"><span class="std std-ref">container Docker</span></a> per tutti i moduli di Sophon.</p>
+<section id="docker">
+<span id="index-31"></span><h3>Docker<a class="headerlink" href="#docker" title="Link a questa intestazione"></a></h3>
+<p><a class="reference external" href="https://www.docker.com/">Docker</a> è un software che permette di eseguire applicazioni all'interno di <a class="reference internal" href="#container-docker"><span class="std std-ref">container</span></a> isolati dal resto del sistema, in maniera simile all'esecuzione di macchine virtuali, ma <strong>condividendo il kernel</strong> con la macchina host.</p>
+<p>È composto da due parti, <a class="reference internal" href="#docker-engine"><span class="std std-ref">Docker Engine</span></a> e <a class="reference internal" href="#docker-compose"><span class="std std-ref">Docker Compose</span></a>, e prevede varie astrazioni, quali le <a class="reference internal" href="#immagini-docker"><span class="std std-ref">immagini</span></a>, i <a class="reference internal" href="#container-docker"><span class="std std-ref">container</span></a>, i <a class="reference internal" href="#network-docker"><span class="std std-ref">network</span></a> e i <a class="reference internal" href="#volumi-docker"><span class="std std-ref">volumi</span></a>.</p>
+<section id="immagini-docker">
+<span id="index-32"></span><h4>Immagini Docker<a class="headerlink" href="#immagini-docker" title="Link a questa intestazione"></a></h4>
+<p>Le <em>immagini</em> Docker sono sequenze di regole e insiemi di file per la creazione di un <a class="reference internal" href="#container-docker"><span class="std std-ref">container</span></a>, tipicamente partendo da un altro container come base. <a class="reference internal" href="../bibliografia/index.html#docker-overview" id="id17"><span>[docker:overview]</span></a></p>
+<p>Utilizzano un filesystem copy-on-write a strati: vengono registrate all'interno dell'immagine solamente le modifiche che ogni regola ha apportato al filesystem interno, rendendo le immagini molto più leggere di quanto lo sarebbero se dovesse essere salvato tutto il disco virtuale.</p>
+<p>Possono essere comparate a immagini di macchine virtuali con tanti &quot;punti di ripristino&quot;.</p>
+</section>
+<section id="container-docker">
+<span id="index-33"></span><h4>Container Docker<a class="headerlink" href="#container-docker" title="Link a questa intestazione"></a></h4>
+<p>I <em>container</em> Docker sono istanze di <a class="reference internal" href="#immagini-docker"><span class="std std-ref">immagini</span></a> che possono essere eseguite dal <a class="reference internal" href="#docker-engine"><span class="std std-ref">Docker Engine</span></a> <a class="reference internal" href="../bibliografia/index.html#docker-overview" id="id18"><span>[docker:overview]</span></a>.</p>
+<p>Sono l'equivalente di un'intera macchina virtuale, che può essere avviata o arrestata.</p>
+</section>
+<section id="network-docker">
+<span id="index-34"></span><h4>Network Docker<a class="headerlink" href="#network-docker" title="Link a questa intestazione"></a></h4>
+<p>I <em>network</em> Docker sono astrazioni per vari tipi di reti di calcolatori: in particolare, essi permettono di collegare vari <a class="reference internal" href="#container-docker"><span class="std std-ref">container</span></a> ad una rete locale virtuale, permettendone l'interazione <a class="reference internal" href="../bibliografia/index.html#docker-networking" id="id19"><span>[docker:networking]</span></a>.</p>
+<p>All'interno di un network è disponibile una funzionalità di risoluzione automatica degli indirizzi IP virtuali dei container: per accedere al container <code class="docutils literal notranslate"><span class="pre">pear</span></code> in HTTP, ad esempio, sarà sufficiente utilizzare <code class="docutils literal notranslate"><span class="pre">apple</span></code> come se fosse un nome di dominio: <code class="docutils literal notranslate"><span class="pre">http://pear/</span></code>.</p>
+<p>Sono una versione più elaborata ed efficiente dei moduli di rete per macchine virtuali.</p>
+</section>
+<section id="volumi-docker">
+<span id="index-35"></span><h4>Volumi Docker<a class="headerlink" href="#volumi-docker" title="Link a questa intestazione"></a></h4>
+<p>I <em>volumi</em> Docker sono astrazioni per filesystem che permettono la permanenza e la condivisione tra container di file <a class="reference internal" href="../bibliografia/index.html#docker-volumes" id="id20"><span>[docker:volumes]</span></a>.</p>
+<p>Essi vengono montati all'interno di un container in una cartella configurabile detta <em>mount point</em>; tutti i container con accesso al volume vedranno gli stessi file all'interno di essa.</p>
+<p>Sono il parallelo delle immagini disco delle macchine virtuali.</p>
+</section>
+</section>
+<section id="docker-engine">
+<span id="index-36"></span><h3>Docker Engine<a class="headerlink" href="#docker-engine" title="Link a questa intestazione"></a></h3>
+<p><a class="reference external" href="https://docs.docker.com/engine/">Docker Engine</a> è il daemon che si occupa della gestione di <a class="reference internal" href="#immagini-docker"><span class="std std-ref">immagini</span></a>, <a class="reference internal" href="#container-docker"><span class="std std-ref">container</span></a>, <a class="reference internal" href="#network-docker"><span class="std std-ref">network</span></a> e <a class="reference internal" href="#volumi-docker"><span class="std std-ref">volumi</span></a>.</p>
+<p>Astrae la piattaforma su cui viene eseguito, in modo che tutte le immagini possano essere eseguite su Linux come su Windows o Mac OS X.</p>
+</section>
+<section id="docker-compose">
+<span id="index-37"></span><h3>Docker Compose<a class="headerlink" href="#docker-compose" title="Link a questa intestazione"></a></h3>
+<p><a class="reference external" href="https://docs.docker.com/compose/">Docker Compose</a> è uno strumento da linea di comando che permette l'esecuzione di applicazioni Docker composte da più container.</p>
+<p>Le applicazioni Compose sono definite all'interno di un file <a class="reference external" href="https://it.wikipedia.org/wiki/YAML">YAML</a> come il seguente:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">version</span><span class="p">:</span> <span class="s">&quot;3.9&quot;</span>
+
+<span class="c1"># Elenco dei volumi dell&#39;applicazione</span>
+<span class="nt">volumes</span><span class="p">:</span>
+  <span class="nt">db-data</span><span class="p">:</span>
+
+<span class="c1"># Elenco dei network dell&#39;applicazione</span>
+<span class="nt">networks</span><span class="p">:</span>
+  <span class="nt">main</span><span class="p">:</span>
+
+<span class="c1"># Elenco dei container dell&#39;applicazione</span>
+<span class="nt">services</span><span class="p">:</span>
+  <span class="nt">db</span><span class="p">:</span>
+    <span class="c1"># Immagine del container</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">postgres</span>
+    <span class="c1"># Mount point dei volumi del container</span>
+    <span class="nt">volumes</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">db-data:/var/lib/postgresql/data</span>
+    <span class="c1"># Network del container</span>
+    <span class="nt">networks</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">main</span>
+
+  <span class="nt">app</span><span class="p">:</span>
+    <span class="nt">image</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-app-image</span>
+    <span class="nt">networks</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">main</span>
+    <span class="c1"># Container richiesti da questo container</span>
+    <span class="nt">depends_on</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">db</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="controllo-versione">
+<span id="index-38"></span><h2><span class="section-number">4.4. </span>Controllo versione<a class="headerlink" href="#controllo-versione" title="Link a questa intestazione"></a></h2>
+<p>Per assistere nello sviluppo del software si è deciso di utilizzare il sistema di controllo versione <a class="reference internal" href="#git"><span class="std std-ref">Git</span></a> in ogni fase dello sviluppo del progetto.</p>
+<p>Inoltre, per favorire lo sviluppo di una community <a class="reference internal" href="#open-source"><span class="std std-ref">open source</span></a> attorno a Sophon, si è deciso di pubblicare il progetto su <a class="reference internal" href="#github"><span class="std std-ref">GitHub</span></a>, sotto la <a class="reference internal" href="#affero-general-public-license-3-0"><span class="std std-ref">Affero General Public License 3.0+</span></a>.</p>
+<section id="git">
+<span id="index-39"></span><h3>Git<a class="headerlink" href="#git" title="Link a questa intestazione"></a></h3>
+<p><a class="reference external" href="https://git-scm.com/">Git</a> è un software di controllo versione, ovvero un software in grado di tenere traccia di modifiche effettuate su file, in modo da mantenerne uno storico, e permettere a più autori di lavorare in parallelo su documenti.</p>
+<p>Inizialmente realizzato da Linus Torvalds per lo sviluppo del kernel Linux, ha preso velocemente piede in tutto il settore dello sviluppo software, diventando di fatto lo standard per lo sviluppo collaborativo di software.</p>
+<p>Le cartelle di file tracciate da Git sono dette <em>repository</em>, mentre un blocco atomico di modifiche è detto <em>commit</em>.</p>
+</section>
+<section id="github">
+<span id="index-40"></span><h3>GitHub<a class="headerlink" href="#github" title="Link a questa intestazione"></a></h3>
+<p><a class="reference external" href="https://github.com/">GitHub</a> è un servizio web di Microsoft per l'hosting e la pubblicazione di repository Git.</p>
+<p>Per ciascun repository sono messe a disposizione gratuitamente numerose funzionalità, quali un issue tracker, strumenti di code review e sistemi di automazione per lo sviluppo <a class="reference internal" href="../bibliografia/index.html#github-features" id="id25"><span>[github:features]</span></a>.</p>
+</section>
+<section id="affero-general-public-license-3-0">
+<h3>Affero General Public License 3.0+<a class="headerlink" href="#affero-general-public-license-3-0" title="Link a questa intestazione"></a></h3>
+<p>Sophon è rilasciato sotto la <a class="reference external" href="https://www.gnu.org/licenses/agpl-3.0.html">GNU Affero General Public License v3</a> (o successiva).</p>
+<p>Il testo completo della licenza è disponibile all'interno del file <a class="reference external" href="https://github.com/Steffo99/sophon/blob/main/LICENSE.txt">LICENSE.txt</a> allegato al codice sorgente del software.</p>
+<p>In breve, la licenza, detta virale, permette a chiunque di utilizzare, distribuire e modificare il software, a condizione che qualsiasi modifica venga ri-distribuita agli utenti del software modificato utilizzando la stessa licenza.</p>
+<p>Si specifica che la licenza copre tutti i file all'interno del repository <code class="docutils literal notranslate"><span class="pre">Steffo99/sophon</span></code>, anche se essi non contengono un header che indica che sono protetti da copyright.</p>
+</section>
+</section>
+<section id="entita-di-sophon">
+<span id="index-41"></span><h2><span class="section-number">4.5. </span>Entità di Sophon<a class="headerlink" href="#entita-di-sophon" title="Link a questa intestazione"></a></h2>
+<p>Al fine di definire più in dettaglio le operazioni che devono poter essere effettuate all'interno di Sophon, sono state definite delle <em>entità</em>, i tipi base con cui l'utente può interagire.</p>
+<section id="istanza-in-sophon">
+<span id="index-42"></span><h3>Istanza in Sophon<a class="headerlink" href="#istanza-in-sophon" title="Link a questa intestazione"></a></h3>
+<p>Un'<em>istanza</em> rappresenta un'<strong>installazione di Sophon</strong> effettuata su un server di un'istituzione di ricerca, come ad esempio un'Università.</p>
+<p>Ogni istanza è <strong>fisicamente e logicamente separata</strong> dalle altre; istanze diverse <strong>non condividono alcun dato</strong> tra loro.</p>
+<section id="url-dell-istanza">
+<h4>URL dell'istanza<a class="headerlink" href="#url-dell-istanza" title="Link a questa intestazione"></a></h4>
+<p>Ciascuna istanza è accessibile tramite <strong>uno specifico URL</strong>, scelto dall'amministratore di sistema al momento dell'installazione.</p>
+<figure class="align-default" id="id33">
+<img alt="../../_images/diagram_instance_urls.png" src="../../_images/diagram_instance_urls.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.5.1 </span><span class="caption-text">Schema rappresentante un esempio di URL di istanza rispettivamente per Unimore, Unibo e il CERN. Si noti come Sophon possa essere ospitato a domini di qualsiasi livello o radici diverse da <code class="docutils literal notranslate"><span class="pre">/</span></code>, quella predefinita.</span><a class="headerlink" href="#id33" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="utenti-in-sophon">
+<span id="index-43"></span><h3>Utenti in Sophon<a class="headerlink" href="#utenti-in-sophon" title="Link a questa intestazione"></a></h3>
+<p>Un <em>utente</em> è una entità che interagisce con una specifica istanza Sophon: ad esempio, un utente potrebbe essere una persona fisica, oppure potrebbe essere un software di automazione che si interfaccia con Sophon.</p>
+<p>La tabella viene creata automaticamente da Django all'interno di ogni applicazione che include</p>
+<section id="livelli-di-accesso">
+<span id="index-44"></span><h4>Livelli di accesso<a class="headerlink" href="#livelli-di-accesso" title="Link a questa intestazione"></a></h4>
+<p>Un utente può avere uno dei seguenti <em>livelli di accesso</em>:</p>
+<dl class="simple">
+<dt>Superutente</dt><dd><p>Utente con accesso completo a ogni singola risorsa sull'istanza Sophon, tipicamente riservato per l'amministratore di sistema.</p>
+</dd>
+<dt>Utente</dt><dd><p>Utente con permessi limitati alle risorse che ha creato o a cui è stato fornito accesso.</p>
+</dd>
+<dt>Ospite</dt><dd><p>Utente che può visualizzare alcuni contenuti dell'istanza Sophon ma non può interagirci.</p>
+</dd>
+</dl>
+</section>
+<section id="credenziali-di-accesso">
+<span id="index-45"></span><h4>Credenziali di accesso<a class="headerlink" href="#credenziali-di-accesso" title="Link a questa intestazione"></a></h4>
+<p>Gli utenti di tipo <em>Utente</em> e <em>Superutente</em> devono identificarsi sull'istanza con le loro credenziali.</p>
+<p>Di default, le credenziali sono un <strong>nome utente</strong> e una <strong>password</strong>, ma è possibile implementare un sistema diverso, ad esempio un sistema <abbr title="Single Sign-On">SSO</abbr>.</p>
+</section>
+</section>
+<section id="gruppi-di-ricerca-in-sophon">
+<span id="index-46"></span><h3>Gruppi di ricerca in Sophon<a class="headerlink" href="#gruppi-di-ricerca-in-sophon" title="Link a questa intestazione"></a></h3>
+<p>Un <em>gruppo di ricerca</em> rappresenta un insieme di utenti che collaborano su uno o più progetti.</p>
+<section id="membri-e-modalita-di-accesso">
+<span id="index-47"></span><h4>Membri e modalità di accesso<a class="headerlink" href="#membri-e-modalita-di-accesso" title="Link a questa intestazione"></a></h4>
+<p>Gli utenti dell'<a class="reference internal" href="#istanza-in-sophon"><span class="std std-ref">istanza</span></a> possono diventare <em>membri</em> dei gruppi di ricerca, con una delle seguenti modalità selezionate nelle impostazioni del gruppo:</p>
+<ul class="simple">
+<li><p>se il gruppo è <em>aperto</em>, allora qualsiasi utente potrà diventarne membro semplicemente <strong>facendo richiesta</strong> attraverso l'interfaccia web;</p></li>
+<li><p>se il gruppo è in <em>modalità manuale</em>, allora nessun utente potrà richiedere di unirsi, e i membri saranno <strong>selezionati manualmente</strong> dal creatore del gruppo.</p></li>
+</ul>
+<p>In qualsiasi momento, i membri di un gruppo possono <strong>lasciarlo</strong> facendo apposita richiesta attraverso il frontend.</p>
+</section>
+<section id="creazione-di-nuovi-gruppi">
+<h4>Creazione di nuovi gruppi<a class="headerlink" href="#creazione-di-nuovi-gruppi" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <a class="reference internal" href="#utenti-in-sophon"><span class="std std-ref">utente</span></a> può <strong>creare</strong> gruppi di ricerca dall'interfaccia web.</p>
+</section>
+<section id="modifica-di-gruppi">
+<h4>Modifica di gruppi<a class="headerlink" href="#modifica-di-gruppi" title="Link a questa intestazione"></a></h4>
+<p>Il creatore di un gruppo di ricerca è l'unico <a class="reference internal" href="#utenti-in-sophon"><span class="std std-ref">utente</span></a> che può cambiarne <strong>nome</strong>, <strong>descrizione</strong>, <strong>membri</strong> e <strong>modalità di accesso</strong>.</p>
+<p>Lo <em>slug</em>, l'identificatore univoco del gruppo, non è modificabile successivamente alla creazione, in quanto verrà utilizzato all'interno degli URL, che devono essere immutabili.</p>
+</section>
+<section id="eliminazione-di-gruppi">
+<h4>Eliminazione di gruppi<a class="headerlink" href="#eliminazione-di-gruppi" title="Link a questa intestazione"></a></h4>
+<p>Il creatore di un gruppo è l'unico utente in grado di <strong>cancellare</strong> il gruppo che ha creato.</p>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>L'eliminazione di un gruppo è un'operazione distruttiva non reversibile!</p>
+</div>
+</section>
+</section>
+<section id="progetti-di-ricerca-in-sophon">
+<span id="index-48"></span><h3>Progetti di ricerca in Sophon<a class="headerlink" href="#progetti-di-ricerca-in-sophon" title="Link a questa intestazione"></a></h3>
+<p>Un <em>progetto di ricerca</em> rappresenta una <strong>collezione di oggetti</strong> relativa a un singolo argomento mantenuta da un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a>.</p>
+<section id="visibilita-dei-progetti">
+<span id="index-49"></span><h4>Visibilità dei progetti<a class="headerlink" href="#visibilita-dei-progetti" title="Link a questa intestazione"></a></h4>
+<p>I progetti hanno tre diverse impostazioni di visibilità che regolano chi può visualizzarne i contenuti:</p>
+<dl class="simple">
+<dt>Progetto privato</dt><dd><p>Il progetto è visibile <strong>solo ai membri del gruppo</strong> a cui appartiene il progetto.</p>
+</dd>
+<dt>Progetto interno</dt><dd><p>Il progetto è visibile <strong>solo agli utenti</strong> dell'istanza, e non agli ospiti.</p>
+</dd>
+<dt>Progetto pubblico</dt><dd><p>Il progetto è visibile <strong>a tutti</strong>.</p>
+</dd>
+</dl>
+</section>
+<section id="creazione-di-nuovi-progetti">
+<h4>Creazione di nuovi progetti<a class="headerlink" href="#creazione-di-nuovi-progetti" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <em>membro</em> di un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> può creare nuovi progetti.</p>
+</section>
+<section id="modifica-di-progetti">
+<h4>Modifica di progetti<a class="headerlink" href="#modifica-di-progetti" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <em>membro</em> di un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> può modificare <strong>nome</strong>, <strong>descrizione</strong> dei progetti al suo interno.</p>
+<p>Solo il <em>creatore del gruppo</em> può modificarne la <strong>visibilità</strong>, o <strong>trasferire il progetto ad un altro gruppo</strong>.</p>
+<p>Lo <em>slug</em>, l'identificatore univoco del progetto, non è modificabile successivamente alla creazione, in quanto è utilizzato all'interno degli URL, che devono essere immutabili.</p>
+</section>
+<section id="eliminazione-di-progetti">
+<h4>Eliminazione di progetti<a class="headerlink" href="#eliminazione-di-progetti" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <em>membro</em> di un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> può eliminare i progetti al suo interno.</p>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>L'eliminazione di un progetto è un'operazione distruttiva non reversibile!</p>
+</div>
+</section>
+</section>
+<section id="notebook-in-sophon">
+<span id="index-50"></span><h3>Notebook in Sophon<a class="headerlink" href="#notebook-in-sophon" title="Link a questa intestazione"></a></h3>
+<p>Un <em>notebook</em> rappresenta una <strong>postazione di lavoro</strong> che può essere allegata ad un <a class="reference internal" href="#progetti-di-ricerca-in-sophon"><span class="std std-ref">progetto di ricerca</span></a>.</p>
+<section id="creazione-di-nuovi-notebook">
+<h4>Creazione di nuovi notebook<a class="headerlink" href="#creazione-di-nuovi-notebook" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <strong>membro</strong> di un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> può creare nuovi notebook all'interno di uno dei progetti del gruppo a cui appartiene.</p>
+</section>
+<section id="slug-riservati">
+<h4>Slug riservati<a class="headerlink" href="#slug-riservati" title="Link a questa intestazione"></a></h4>
+<p>Un notebook non può avere come <em>slug</em> uno dei seguenti valori, in quanto riservati per altri usi:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">backend</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">frontend</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">proxy</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">api</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">static</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">src</span></code></p></li>
+</ul>
+<p>In più, uno slug di un notebook non può iniziare o terminare con un trattino <code class="docutils literal notranslate"><span class="pre">-</span></code>, in quanto risulterebbe in un sottodominio non valido.</p>
+</section>
+<section id="stato-del-notebook">
+<span id="index-51"></span><h4>Stato del notebook<a class="headerlink" href="#stato-del-notebook" title="Link a questa intestazione"></a></h4>
+<p>Un notebook può essere <em>avviato</em> o <em>fermo</em> in base al suo stato di esecuzione sull'<a class="reference internal" href="#istanza-in-sophon"><span class="std std-ref">istanza</span></a> Sophon:</p>
+<ul class="simple">
+<li><p>è <em>avviato</em> se è in esecuzione e accessibile;</p></li>
+<li><p>è <em>fermo</em> se non è in esecuzione o se è in fase di preparazione.</p></li>
+</ul>
+<p>Alla creazione, un notebook è <em>fermo</em>.</p>
+<section id="avviare-un-notebook">
+<h5>Avviare un notebook<a class="headerlink" href="#avviare-un-notebook" title="Link a questa intestazione"></a></h5>
+<p>Un <strong>membro</strong> del <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> a cui appartiene il notebook può richiedere al server l'avvio di quest'ultimo, in modo da poterlo utilizzare successivamente.</p>
+</section>
+<section id="fermare-un-notebook">
+<h5>Fermare un notebook<a class="headerlink" href="#fermare-un-notebook" title="Link a questa intestazione"></a></h5>
+<p>Un <strong>membro</strong> del <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> a cui appartiene il notebook può richiedere al server l'arresto di quest'ultimo, salvando i dati e interrompendo la sessione di lavoro attualmente in corso.</p>
+</section>
+</section>
+<section id="immagine-del-notebook">
+<span id="index-52"></span><h4>Immagine del notebook<a class="headerlink" href="#immagine-del-notebook" title="Link a questa intestazione"></a></h4>
+<p>In <strong>fase di creazione</strong> di un notebook, oppure mentre esso è <strong>fermo</strong>, è possibile selezionare l'<a class="reference internal" href="#immagini-docker"><span class="std std-ref">immagine Docker</span></a> che esso deve eseguire all'avvio.</p>
+<p>Di default, l'immagine deve essere quella del <a class="reference internal" href="#modulo-jupyter"><span class="std std-ref">modulo Jupyter</span></a>.</p>
+<p>Le immagini ammesse devono esporre un server HTTP sulla porta 8080, su cui verrà fatto <a class="reference internal" href="#reverse-proxy"><span class="std std-ref">reverse proxying</span></a> dal <a class="reference internal" href="#modulo-proxy"><span class="std std-ref">modulo proxy</span></a>.</p>
+</section>
+<section id="collegamento-a-un-notebook">
+<h4>Collegamento a un notebook<a class="headerlink" href="#collegamento-a-un-notebook" title="Link a questa intestazione"></a></h4>
+<p>I <strong>membri</strong> del <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> a cui appartiene il notebook possono connettersi ad un notebook <strong>avviato</strong> attraverso un URL segreto comunicatogli dal <a class="reference internal" href="#modulo-backend"><span class="std std-ref">modulo backend</span></a>.</p>
+<p>L'URL segreto è ottenuto inserendo come query parameter dell'URL del notebook il token di autenticazione di <a class="reference internal" href="../ricercacollaborativa/index.html#index-5"><span class="std std-ref">Jupyter</span></a>.</p>
+</section>
+<section id="blocco-di-un-notebook">
+<span id="index-53"></span><h4>Blocco di un notebook<a class="headerlink" href="#blocco-di-un-notebook" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <strong>membro</strong> del <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> a cui appartiene il notebook può <em>bloccarlo</em> per segnalare agli altri utenti che vi hanno accesso di non utilizzare quello specifico notebook.</p>
+<p>Bloccare un notebook <strong>rimuove dall'interfaccia web</strong> i bottoni di interazione con esso per tutti gli utenti, tranne l'utente richiedente il blocco.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Il blocco di un notebook <strong>è solo estetico</strong>, e non ha lo scopo di impedire agli utenti di interagire con il notebook, ma serve per indicare ai propri collaboratori che si stanno effettuando modifiche che non permettono collaborazione sul notebook.</p>
+</div>
+<p>Un notebook bloccato può essere sbloccato da qualsiasi <strong>membro</strong> del <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a>; il membro che ha richiesto il blocco potrà sbloccarlo <strong>immediatamente</strong>, mentre agli altri membri è richiesto di confermare l'azione.</p>
+</section>
+<section id="modifica-di-un-notebook">
+<h4>Modifica di un notebook<a class="headerlink" href="#modifica-di-un-notebook" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <em>membro</em> di un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> può modificare <strong>nome</strong> e <strong>immagine</strong> dei notebook <em>fermi</em> al suo interno.</p>
+<p>I notebook <em>avviati</em> non possono essere modificati.</p>
+<p>Lo <em>slug</em>, l'identificatore univoco del notebook, non è modificabile successivamente alla creazione, in quanto è utilizzato all'interno degli URL, che devono essere immutabili.</p>
+</section>
+<section id="eliminazione-di-un-notebook">
+<h4>Eliminazione di un notebook<a class="headerlink" href="#eliminazione-di-un-notebook" title="Link a questa intestazione"></a></h4>
+<p>Qualsiasi <em>membro</em> di un <a class="reference internal" href="#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppo di ricerca</span></a> può eliminare i notebook all'interno dei progetti del gruppo, a condizione che questi siano <em>fermi</em> e <em>non bloccati</em>.</p>
+</section>
+</section>
+</section>
+<section id="database">
+<span id="index-54"></span><h2><span class="section-number">4.6. </span>Database<a class="headerlink" href="#database" title="Link a questa intestazione"></a></h2>
+<p>Il <a class="reference internal" href="#modulo-backend"><span class="std std-ref">modulo backend</span></a> di Sophon necessita di archiviare dati persistenti altamente relazionali; pertanto, è stato necessario adottare una soluzione in grado di gestirli.</p>
+<p>A tale scopo, è stato selezionato il database relazionale <a class="reference external" href="https://www.postgresql.org/">PostgreSQL</a>, in quanto <abbr title="Free and Libre Open Source Software">FLOSS</abbr>, adatto a dati relazionali, compatibile con Django, e ampiamente utilizzato in tutto il mondo.</p>
+<figure class="align-default" id="id34">
+<img alt="../../_images/diagram_database.png" src="../../_images/diagram_database.png" />
+<figcaption>
+<p><span class="caption-number">Figura 4.6.1 </span><span class="caption-text">Schema semplificato del database di Sophon.</span><a class="headerlink" href="#id34" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="../ricercacollaborativa/index.html" class="btn btn-neutral float-left" title="3. Ricerca collaborativa" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="../realizzazione/index.html" class="btn btn-neutral float-right" title="5. Realizzazione di Sophon" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

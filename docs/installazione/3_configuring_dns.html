@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.3. Configurazione DNS &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="1.4. Configurazione docker-compose.yml" href="4_configuring_compose.html" />
+    <link rel="prev" title="1.2. Preparazione di Docker Compose" href="2_preparing_compose.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Installazione di Sophon</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_requirements.html">1.1. Requisiti dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_preparing_compose.html">1.2. Preparazione di Docker Compose</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.3. Configurazione DNS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_configuring_compose.html">1.4. Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_pulling_images.html">1.5. Download delle immagini Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_starting_sophon.html">1.6. Avvio di Sophon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7_host_reverse_proxy.html">1.7. Configurazione del webserver dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="8_final_check.html">1.8. Verificare il funzionamento</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>Installazione di Sophon</a> &raquo;</li>
+      <li><span class="section-number">1.3. </span>Configurazione DNS</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/6_installazione/3_configuring_dns.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configurazione-dns">
+<h1><span class="section-number">1.3. </span>Configurazione DNS<a class="headerlink" href="#configurazione-dns" title="Link a questa intestazione"></a></h1>
+<p>Si scelga il dominio (o sottodominio) sul quale si vuole che Sophon sia accessibile e si aggiungano i seguenti record DNS, sostituendo il dominio <code class="docutils literal notranslate"><span class="pre">ilmiosophon.it</span></code> con il proprio nome di dominio, e gli indirizzi IPv4 e IPv6 del server al posto di <code class="docutils literal notranslate"><span class="pre">0.0.0.0</span></code> e <code class="docutils literal notranslate"><span class="pre">1234::1234</span></code>:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>*.ilmiosophon.it 1800 IN A    0.0.0.0
+*.ilmiosophon.it 1800 IN AAAA 1234::1234
+ilmiosophon.it   1800 IN A    0.0.0.0
+ilmiosophon.it   1800 IN AAAA 1234::1234
+</pre></div>
+</div>
+<p>Sophon sarà quindi accessibile ai seguenti indirizzi:</p>
+<ul class="simple">
+<li><p>l'interfaccia web al dominio base (<code class="docutils literal notranslate"><span class="pre">https://ilmiosophon.it/</span></code>);</p></li>
+<li><p>l'API al dominio base prefisso con <code class="docutils literal notranslate"><span class="pre">api.</span></code> (<code class="docutils literal notranslate"><span class="pre">https://api.ilmiosophon.it/</span></code>);</p></li>
+<li><p>i notebook al dominio base prefissi con lo slug del notebook (<code class="docutils literal notranslate"><span class="pre">https://ilmionotebook.ilmiosophon.it/</span></code>).</p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="2_preparing_compose.html" class="btn btn-neutral float-left" title="1.2. Preparazione di Docker Compose" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="4_configuring_compose.html" class="btn btn-neutral float-right" title="1.4. Configurazione docker-compose.yml" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

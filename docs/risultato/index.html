@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. Risultati ottenuti &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="7. Il futuro di Sophon" href="../conclusione/index.html" />
+    <link rel="prev" title="5. Realizzazione di Sophon" href="../realizzazione/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">6. Risultati ottenuti</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#stato-finale-del-modulo-backend">6.1. Stato finale del modulo backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pagina-di-amministrazione-esposta">Pagina di amministrazione esposta</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#stato-finale-del-modulo-frontend">6.2. Stato finale del modulo frontend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stato-finale-del-modulo-jupyter">6.3. Stato finale del modulo Jupyter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#stato-finale-del-modulo-proxy">6.4. Stato finale del modulo proxy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installazione/index.html">1. Installazione di Sophon</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">6. </span>Risultati ottenuti</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/7_utilizzo/index.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="risultati-ottenuti">
+<span id="index-0"></span><h1><span class="section-number">6. </span>Risultati ottenuti<a class="headerlink" href="#risultati-ottenuti" title="Link a questa intestazione"></a></h1>
+<p>Al termine del periodo di sviluppo, il software ha soddisfatto <a class="reference internal" href="../progetto/index.html#requisiti-del-progetto"><span class="std std-ref">tutti i requisiti prefissati</span></a>.</p>
+<p>In particolare:</p>
+<ul class="simple">
+<li><p>tutte le funzionalità desiderate sono state sviluppate, raggiungendo la feature parity con JupyterHub;</p>
+<ul>
+<li><p>il software ha ampio spazio per eventuali <a class="reference internal" href="../progetto/index.html#estendibilita"><span class="std std-ref">estensioni</span></a> grazie alle numerosi classi astratte sviluppate;</p></li>
+<li><p>l'isolamento tra notebook e l'autenticazione all'accesso è stata realizzata, garantendo la <a class="reference internal" href="../progetto/index.html#sicurezza"><span class="std std-ref">sicurezza</span></a> dei dati;</p></li>
+<li><p>l'interfaccia web è sufficientemente <a class="reference internal" href="../progetto/index.html#intuitivita"><span class="std std-ref">intuitiva</span></a> per permetterne un utilizzo e apprendimento autonomo;</p></li>
+<li><p>è possibile <a class="reference internal" href="../progetto/index.html#personalizzabilita"><span class="std std-ref">personalizzare</span></a> i dettagli del software con il brand della propria istituzione;</p></li>
+<li><p>più utenti possono <a class="reference internal" href="../progetto/index.html#possibilita-di-collaborazione"><span class="std std-ref">collaborare</span></a> simultaneamente all'interno dello stesso notebook;</p></li>
+<li><p>il software è stato pubblicato su <a class="reference internal" href="../progetto/index.html#github"><span class="std std-ref">GitHub</span></a> come progetto <a class="reference internal" href="../progetto/index.html#open-source"><span class="std std-ref">open source</span></a>;</p></li>
+<li><p>da dispositivi mobili, l'interfaccia grafica di Sophon risulta interamente utilizzabile, raggiungendo il requisito di <a class="reference internal" href="../progetto/index.html#responsivita"><span class="std std-ref">responsività</span></a>, anche se la modifica di notebook computazionali con JupyterLab potrebbe risultare difficile su schermi con risoluzione molto ridotta;</p></li>
+<li><p>l'interfaccia web soddisfa i requisiti di <a class="reference internal" href="../progetto/index.html#accessibilita"><span class="std std-ref">accessibilità</span></a> fissati;</p></li>
+</ul>
+</li>
+<li><p>il software è sufficientemente stabile per l'utilizzo in produzione, permettendone il suo utilizzo all'interno dell'Università;</p></li>
+<li><p>le <a class="reference internal" href="../installazione/index.html#installazione-di-sophon"><span class="std std-ref">istruzioni per l'installazione</span></a> sono state scritte, permettendo ad altri interessati di installare Sophon.</p></li>
+</ul>
+<section id="stato-finale-del-modulo-backend">
+<h2><span class="section-number">6.1. </span>Stato finale del modulo backend<a class="headerlink" href="#stato-finale-del-modulo-backend" title="Link a questa intestazione"></a></h2>
+<p>Il modulo backend terminato espone una web API all'indirizzo <code class="samp docutils literal notranslate"><span class="pre">api.</span><em><span class="pre">BASE_DOMAIN</span></em></code> con i seguenti endpoints.</p>
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-auth-token-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/auth/token/</span></span><a class="headerlink" href="#post--api-auth-token-" title="Link a questa definizione"></a></dt>
+<dd><p>Effettua l'accesso in cambio di un token di autenticazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>string</em>) -- Username dell'utente.</p></li>
+<li><p><strong>password</strong> (<em>string</em>) -- Password dell'utente.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Login riuscito.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http post">
+<dt class="sig sig-object http" id="post--api-auth-session-">
+<span class="sig-name descname"><span class="pre">POST</span> </span><span class="sig-name descname"><span class="pre">/api/auth/session/</span></span><a class="headerlink" href="#post--api-auth-session-" title="Link a questa definizione"></a></dt>
+<dd><p>Effettua l'accesso, salvando i dati di autenticazione nei cookie.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>username</strong> (<em>string</em>) -- Username dell'utente.</p></li>
+<li><p><strong>password</strong> (<em>string</em>) -- Password dell'utente.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Login riuscito.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http any">
+<dt class="sig sig-object http" id="any--api-core-groups-">
+<span class="sig-name descname"><span class="pre">ANY</span> </span><span class="sig-name descname"><span class="pre">/api/core/groups/</span></span><a class="headerlink" href="#any--api-core-groups-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede ai <a class="reference internal" href="../progetto/index.html#gruppi-di-ricerca-in-sophon"><span class="std std-ref">gruppi di ricerca</span></a>, permettendone la visualizzazione (<code class="docutils literal notranslate"><span class="pre">GET</span></code>), la creazione (<code class="docutils literal notranslate"><span class="pre">POST</span></code>), la modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) e l'eliminazione (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), a condizione che si sia autorizzati ad effettuare l'operazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slug</strong> (<em>string</em>) -- Slug del gruppo di ricerca.</p></li>
+<li><p><strong>name</strong> (<em>string</em>) -- Nome del gruppo di ricerca.</p></li>
+<li><p><strong>description</strong> (<em>string</em>) -- Descrizione del gruppo di ricerca.</p></li>
+<li><p><strong>access</strong> (<em>string</em>) -- <a class="reference internal" href="../progetto/index.html#membri-e-modalita-di-accesso"><span class="std std-ref">Modalità di accesso</span></a> al gruppo.</p></li>
+<li><p><strong>owner</strong> (<em>integer</em>) -- ID del creatore del gruppo.</p></li>
+<li><p><strong>members</strong> (<em>integer[]</em>) -- Elenco dei membri degli ID dei membri del gruppo.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a></span> -- Risorsa creata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5">204 No Content</a></span> -- Risorsa eliminata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a></span> -- Accesso non effettuato.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a></span> -- Operazione non permessa.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> -- Risorsa non esistente.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-core-users-by-id-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/core/users/by-id/</span></span><a class="headerlink" href="#get--api-core-users-by-id-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede agli <a class="reference internal" href="../progetto/index.html#utenti-in-sophon"><span class="std std-ref">utenti</span></a> dell'istanza Sophon usando il loro ID come chiave, permettendone la visualizzazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>integer</em>) -- ID dell'utente.</p></li>
+<li><p><strong>username</strong> (<em>string</em>) -- Username dell'utente.</p></li>
+<li><p><strong>first_name</strong> (<em>string</em>) -- Nome dell'utente (non utilizzato se non specificato manualmente nell'interfaccia di amministrazione).</p></li>
+<li><p><strong>last_name</strong> (<em>string</em>) -- Cognome dell'utente (non utilizzato se non specificato manualmente nell'interfaccia di amministrazione).</p></li>
+<li><p><strong>email</strong> (<em>string</em>) -- Email dell'utente (non utilizzata se non specificata manualmente nell'interfaccia di amministrazione).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http get">
+<dt class="sig sig-object http" id="get--api-core-users-by-username-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/api/core/users/by-username/</span></span><a class="headerlink" href="#get--api-core-users-by-username-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede agli <a class="reference internal" href="../progetto/index.html#utenti-in-sophon"><span class="std std-ref">utenti</span></a> dell'istanza Sophon usando il loro username come chiave, permettendone la visualizzazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id</strong> (<em>string</em>) -- ID dell'utente.</p></li>
+<li><p><strong>username</strong> (<em>string</em>) -- Username dell'utente.</p></li>
+<li><p><strong>first_name</strong> (<em>string</em>) -- Nome dell'utente (non utilizzato se non specificato manualmente nell'interfaccia di amministrazione).</p></li>
+<li><p><strong>last_name</strong> (<em>string</em>) -- Cognome dell'utente (non utilizzato se non specificato manualmente nell'interfaccia di amministrazione).</p></li>
+<li><p><strong>email</strong> (<em>string</em>) -- Email dell'utente (non utilizzata se non specificata manualmente nell'interfaccia di amministrazione).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http any">
+<dt class="sig sig-object http" id="any--api-projects-by-slug-">
+<span class="sig-name descname"><span class="pre">ANY</span> </span><span class="sig-name descname"><span class="pre">/api/projects/by-slug/</span></span><a class="headerlink" href="#any--api-projects-by-slug-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede a tutti i <a class="reference internal" href="../progetto/index.html#progetti-di-ricerca-in-sophon"><span class="std std-ref">progetti di ricerca</span></a> dell'istanza Sophon, permettendone la visualizzazione (<code class="docutils literal notranslate"><span class="pre">GET</span></code>), la creazione (<code class="docutils literal notranslate"><span class="pre">POST</span></code>), la modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) e l'eliminazione (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), a condizione che si sia autorizzati ad effettuare l'operazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slug</strong> (<em>string</em>) -- Slug del progetto.</p></li>
+<li><p><strong>name</strong> (<em>string</em>) -- Nome del progetto.</p></li>
+<li><p><strong>description</strong> (<em>string</em>) -- Descrizione del progetto.</p></li>
+<li><p><strong>visibility</strong> (<em>string</em>) -- <a class="reference internal" href="../progetto/index.html#visibilita-dei-progetti"><span class="std std-ref">Visibilità</span></a> del progetto.</p></li>
+<li><p><strong>group</strong> (<em>string</em>) -- Slug del gruppo a cui appartiene il progetto.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a></span> -- Risorsa creata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5">204 No Content</a></span> -- Risorsa eliminata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a></span> -- Accesso non effettuato.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a></span> -- Operazione non permessa.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> -- Risorsa non esistente.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http any">
+<dt class="sig sig-object http" id="any--api-projects-by-group-(str-group_slug)-">
+<span class="sig-name descname"><span class="pre">ANY</span> </span><span class="sig-name descname"><span class="pre">/api/projects/by-group/</span></span><span class="sig-paren">(</span><em class="property"><span class="pre">str:</span> </em><em class="sig-param"><span class="pre">group_slug</span></em><span class="sig-paren">)</span><span class="sig-name descname"><span class="pre">/</span></span><a class="headerlink" href="#any--api-projects-by-group-(str-group_slug)-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede ai <a class="reference internal" href="../progetto/index.html#progetti-di-ricerca-in-sophon"><span class="std std-ref">progetti di ricerca</span></a> appartenenti a un certo gruppo, permettendone la visualizzazione (<code class="docutils literal notranslate"><span class="pre">GET</span></code>), la creazione (<code class="docutils literal notranslate"><span class="pre">POST</span></code>), la modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) e l'eliminazione (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), a condizione che si sia autorizzati ad effettuare l'operazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>group_slug</strong> -- Slug del gruppo di cui si vogliono ottenere i progetti.</p></li>
+</ul>
+</dd>
+<dt class="field-even">JSON Parameters</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>slug</strong> (<em>string</em>) -- Slug del progetto.</p></li>
+<li><p><strong>name</strong> (<em>string</em>) -- Nome del progetto.</p></li>
+<li><p><strong>description</strong> (<em>string</em>) -- Descrizione del progetto.</p></li>
+<li><p><strong>visibility</strong> (<em>string</em>) -- <a class="reference internal" href="../progetto/index.html#visibilita-dei-progetti"><span class="std std-ref">Visibilità</span></a> del progetto.</p></li>
+<li><p><strong>group</strong> (<em>string</em>) -- Slug del gruppo a cui appartiene il progetto.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a></span> -- Risorsa creata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5">204 No Content</a></span> -- Risorsa eliminata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a></span> -- Accesso non effettuato.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a></span> -- Operazione non permessa.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> -- Risorsa non esistente.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http any">
+<dt class="sig sig-object http" id="any--api-notebooks-by-slug-">
+<span class="sig-name descname"><span class="pre">ANY</span> </span><span class="sig-name descname"><span class="pre">/api/notebooks/by-slug/</span></span><a class="headerlink" href="#any--api-notebooks-by-slug-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede a tutti i <a class="reference internal" href="../progetto/index.html#notebook-in-sophon"><span class="std std-ref">notebook</span></a> dell'istanza Sophon, permettendone la visualizzazione (<code class="docutils literal notranslate"><span class="pre">GET</span></code>), la creazione (<code class="docutils literal notranslate"><span class="pre">POST</span></code>), la modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) e l'eliminazione (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), a condizione che si sia autorizzati ad effettuare l'operazione.</p>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Questo endpoint non restituisce i dettagli di connessione al notebook; a tale scopo, è necessario utilizzare <a class="reference internal" href="#any--api-notebooks-by-project-(str-project_slug)-" title="ANY /api/notebooks/by-project/(str:project_slug)/"><code class="xref http http-any docutils literal notranslate"><span class="pre">ANY</span> <span class="pre">/api/notebooks/by-project/(str:project_slug)/</span></code></a>.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slug</strong> (<em>string</em>) -- Slug del notebook.</p></li>
+<li><p><strong>name</strong> (<em>string</em>) -- Nome del notebook.</p></li>
+<li><p><strong>is_running</strong> (<em>boolean</em>) -- Se il notebook è <a class="reference internal" href="../progetto/index.html#stato-del-notebook"><span class="std std-ref">avviato</span></a> oppure no.</p></li>
+<li><p><strong>locked_by</strong> (<em>integer</em>) -- ID dell'utente che ha <a class="reference internal" href="../progetto/index.html#blocco-di-un-notebook"><span class="std std-ref">bloccato</span></a> il notebook.</p></li>
+<li><p><strong>container_image</strong> (<em>string</em>) -- Il nome dell'<a class="reference internal" href="../progetto/index.html#immagine-del-notebook"><span class="std std-ref">immagine</span></a> del notebook.</p></li>
+<li><p><strong>project</strong> (<em>string</em>) -- Slug del progetto a cui appartiene il notebook.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a></span> -- Risorsa creata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5">204 No Content</a></span> -- Risorsa eliminata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a></span> -- Accesso non effettuato.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a></span> -- Operazione non permessa.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> -- Risorsa non esistente.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="http any">
+<dt class="sig sig-object http" id="any--api-notebooks-by-project-(str-project_slug)-">
+<span class="sig-name descname"><span class="pre">ANY</span> </span><span class="sig-name descname"><span class="pre">/api/notebooks/by-project/</span></span><span class="sig-paren">(</span><em class="property"><span class="pre">str:</span> </em><em class="sig-param"><span class="pre">project_slug</span></em><span class="sig-paren">)</span><span class="sig-name descname"><span class="pre">/</span></span><a class="headerlink" href="#any--api-notebooks-by-project-(str-project_slug)-" title="Link a questa definizione"></a></dt>
+<dd><p>Accede ai <a class="reference internal" href="../progetto/index.html#notebook-in-sophon"><span class="std std-ref">notebook</span></a> appartenenti a un certo progetto, permettendone la visualizzazione (<code class="docutils literal notranslate"><span class="pre">GET</span></code>), la creazione (<code class="docutils literal notranslate"><span class="pre">POST</span></code>), la modifica (<code class="docutils literal notranslate"><span class="pre">PUT</span></code>) e l'eliminazione (<code class="docutils literal notranslate"><span class="pre">DELETE</span></code>), a condizione che si sia autorizzati ad effettuare l'operazione.</p>
+<dl class="field-list simple">
+<dt class="field-odd">JSON Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slug</strong> (<em>string</em>) -- Slug del notebook.</p></li>
+<li><p><strong>name</strong> (<em>string</em>) -- Nome del notebook.</p></li>
+<li><p><strong>is_running</strong> (<em>boolean</em>) -- Se il notebook è <a class="reference internal" href="../progetto/index.html#stato-del-notebook"><span class="std std-ref">avviato</span></a> oppure no.</p></li>
+<li><p><strong>locked_by</strong> (<em>integer</em>) -- ID dell'utente che ha <a class="reference internal" href="../progetto/index.html#blocco-di-un-notebook"><span class="std std-ref">bloccato</span></a> il notebook.</p></li>
+<li><p><strong>container_image</strong> (<em>string</em>) -- Il nome dell'<a class="reference internal" href="../progetto/index.html#immagine-del-notebook"><span class="std std-ref">immagine</span></a> del notebook.</p></li>
+<li><p><strong>project</strong> (<em>string</em>) -- Slug del progetto a cui appartiene il notebook.</p></li>
+<li><p><strong>jupyter_token</strong> (<em>string</em>) -- Token per l'autenticazione sul <a class="reference internal" href="../progetto/index.html#modulo-jupyter"><span class="std std-ref">modulo Jupyter</span></a>.</p></li>
+<li><p><strong>legacy_notebook_url</strong> (<em>string</em>) -- URL per la connessione all'interfaccia legacy &quot;<em>Jupyter Notebook</em>&quot; del notebook.</p></li>
+<li><p><strong>lab_url</strong> (<em>string</em>) -- URL per la connessione all'interfaccia <a class="reference internal" href="../ricercacollaborativa/index.html#client-jupyter"><span class="std std-ref">JupyterLab</span></a> del notebook.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Status Codes</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Operazione effettuata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.2">201 Created</a></span> -- Risorsa creata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.5">204 No Content</a></span> -- Risorsa eliminata.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.2">401 Unauthorized</a></span> -- Accesso non effettuato.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.4">403 Forbidden</a></span> -- Operazione non permessa.</p></li>
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.4.5">404 Not Found</a></span> -- Risorsa non esistente.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<section id="pagina-di-amministrazione-esposta">
+<h3>Pagina di amministrazione esposta<a class="headerlink" href="#pagina-di-amministrazione-esposta" title="Link a questa intestazione"></a></h3>
+<p>In aggiunta alla web API, Sophon espone la <a class="reference internal" href="../realizzazione/index.html#module-sophon.core.admin"><span class="std std-ref">pagina di amministrazione</span></a> Django al seguente URL.</p>
+<dl class="http get">
+<dt class="sig sig-object http" id="get--admin-">
+<span class="sig-name descname"><span class="pre">GET</span> </span><span class="sig-name descname"><span class="pre">/admin/</span></span><a class="headerlink" href="#get--admin-" title="Link a questa definizione"></a></dt>
+<dd><p>La pagina di amministrazione Django, personalizzata per Sophon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Status Codes</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><span><a class="reference external" href="https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.2.1">200 OK</a></span> -- Accesso riuscito.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<p>La prima pagina richiede l'accesso con credenziali di un <a class="reference internal" href="../progetto/index.html#livelli-di-accesso"><span class="std std-ref">superutente</span></a>.</p>
+<figure class="align-default" id="id1">
+<a class="reference internal image-reference" href="../../_images/admin_login.png"><img alt="../../_images/admin_login.png" src="../../_images/admin_login.png" style="width: 467.20000000000005px; height: 304.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.1.1 </span><span class="caption-text">Schermata di login della pagina di amministrazione.</span><a class="headerlink" href="#id1" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<p>Una volta effettuato l'accesso, all'interno della pagina è possibile modificare ogni genere di <a class="reference internal" href="../progetto/index.html#entita-di-sophon"><span class="std std-ref">entità</span></a> presente nell'istanza.</p>
+<figure class="align-default" id="id2">
+<a class="reference internal image-reference" href="../../_images/admin_resources.png"><img alt="../../_images/admin_resources.png" src="../../_images/admin_resources.png" style="width: 534.5px; height: 432.5px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.1.2 </span><span class="caption-text">Elenco delle entità presenti all'interno dell'istanza.</span><a class="headerlink" href="#id2" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id3">
+<a class="reference internal image-reference" href="../../_images/admin_list.png"><img alt="../../_images/admin_list.png" src="../../_images/admin_list.png" style="width: 534.5px; height: 310.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.1.3 </span><span class="caption-text">Elenco dei notebook presenti all'interno dell'istanza di dimostrazione.</span><a class="headerlink" href="#id3" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id4">
+<a class="reference internal image-reference" href="../../_images/admin_edit.png"><img alt="../../_images/admin_edit.png" src="../../_images/admin_edit.png" style="width: 534.5px; height: 591.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.1.4 </span><span class="caption-text">Pagina di modifica di uno dei notebook dell'istanza di dimostrazione.</span><a class="headerlink" href="#id4" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id5">
+<a class="reference internal image-reference" href="../../_images/admin_details.png"><img alt="../../_images/admin_details.png" src="../../_images/admin_details.png" style="width: 534.5px; height: 384.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.1.5 </span><span class="caption-text">Pagina di modifica dei dettagli dell'istanza Sophon.</span><a class="headerlink" href="#id5" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+<section id="stato-finale-del-modulo-frontend">
+<h2><span class="section-number">6.2. </span>Stato finale del modulo frontend<a class="headerlink" href="#stato-finale-del-modulo-frontend" title="Link a questa intestazione"></a></h2>
+<p>Il modulo frontend terminato espone una <abbr title="single page app">SPA</abbr> all'indirizzo <code class="samp docutils literal notranslate"><em><span class="pre">BASE_DOMAIN</span></em></code>.</p>
+<figure class="align-default" id="id6">
+<a class="reference internal image-reference" href="../../_images/frontend_instance.png"><img alt="../../_images/frontend_instance.png" src="../../_images/frontend_instance.png" style="width: 540.0px; height: 362.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.2.1 </span><span class="caption-text">Pagina di selezione istanza.</span><a class="headerlink" href="#id6" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id7">
+<a class="reference internal image-reference" href="../../_images/frontend_login.png"><img alt="../../_images/frontend_login.png" src="../../_images/frontend_login.png" style="width: 540.0px; height: 362.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.2.2 </span><span class="caption-text">Pagina di login all'istanza Sophon di dimostrazione, che utilizza il tema &quot;Royal Blue&quot;.</span><a class="headerlink" href="#id7" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id8">
+<a class="reference internal image-reference" href="../../_images/frontend_group.png"><img alt="../../_images/frontend_group.png" src="../../_images/frontend_group.png" style="width: 540.0px; height: 456.5px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.2.3 </span><span class="caption-text">Pagina di selezione e creazione gruppi di ricerca.</span><a class="headerlink" href="#id8" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id9">
+<a class="reference internal image-reference" href="../../_images/frontend_project.png"><img alt="../../_images/frontend_project.png" src="../../_images/frontend_project.png" style="width: 540.0px; height: 650.5px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.2.4 </span><span class="caption-text">Pagina di selezione e creazione progetti di ricerca.</span><a class="headerlink" href="#id9" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id10">
+<a class="reference internal image-reference" href="../../_images/frontend_notebook.png"><img alt="../../_images/frontend_notebook.png" src="../../_images/frontend_notebook.png" style="width: 540.0px; height: 645.5px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.2.5 </span><span class="caption-text">Pagina di selezione, creazione e avvio notebook.</span><a class="headerlink" href="#id10" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id11">
+<a class="reference internal image-reference" href="../../_images/frontend_nbdetails.png"><img alt="../../_images/frontend_nbdetails.png" src="../../_images/frontend_nbdetails.png" style="width: 540.0px; height: 362.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 6.2.6 </span><span class="caption-text">Pagina di dettagli di un notebook, che permette l'accesso al modulo Jupyter.</span><a class="headerlink" href="#id11" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="stato-finale-del-modulo-jupyter">
+<h2><span class="section-number">6.3. </span>Stato finale del modulo Jupyter<a class="headerlink" href="#stato-finale-del-modulo-jupyter" title="Link a questa intestazione"></a></h2>
+<p>Il modulo Jupyter terminato espone un'istanza collaborativa di <a class="reference internal" href="../ricercacollaborativa/index.html#client-jupyter"><span class="std std-ref">JupyterLab</span></a> all'indirizzo <code class="samp docutils literal notranslate"><em><span class="pre">NOTEBOOK_SLUG</span></em><span class="pre">.</span><em><span class="pre">BASE_DOMAIN</span></em></code>.</p>
+<figure class="align-default">
+<a class="reference internal image-reference" href="../../_images/jupyter_collab.png"><img alt="../../_images/jupyter_collab.png" src="../../_images/jupyter_collab.png" style="width: 576.6px; height: 142.2px;" /></a>
+</figure>
+</section>
+<section id="stato-finale-del-modulo-proxy">
+<h2><span class="section-number">6.4. </span>Stato finale del modulo proxy<a class="headerlink" href="#stato-finale-del-modulo-proxy" title="Link a questa intestazione"></a></h2>
+<p>Il modulo proxy terminato effettua correttamente proxying tra gli altri moduli.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="../realizzazione/index.html" class="btn btn-neutral float-left" title="5. Realizzazione di Sophon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="../conclusione/index.html" class="btn btn-neutral float-right" title="7. Il futuro di Sophon" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

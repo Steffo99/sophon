@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.4. Configurazione docker-compose.yml &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="1.5. Download delle immagini Docker" href="5_pulling_images.html" />
+    <link rel="prev" title="1.3. Configurazione DNS" href="3_configuring_dns.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Installazione di Sophon</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_requirements.html">1.1. Requisiti dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_preparing_compose.html">1.2. Preparazione di Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_configuring_dns.html">1.3. Configurazione DNS</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.4. Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_pulling_images.html">1.5. Download delle immagini Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_starting_sophon.html">1.6. Avvio di Sophon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7_host_reverse_proxy.html">1.7. Configurazione del webserver dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="8_final_check.html">1.8. Verificare il funzionamento</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>Installazione di Sophon</a> &raquo;</li>
+      <li><span class="section-number">1.4. </span>Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/6_installazione/4_configuring_compose.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configurazione-docker-compose-yml">
+<h1><span class="section-number">1.4. </span>Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code><a class="headerlink" href="#configurazione-docker-compose-yml" title="Link a questa intestazione"></a></h1>
+<p>Si configuri con l'editor di testo preferito il file <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> con le impostazioni desiderate.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root:/dock/sophon# </span>open docker-compose.yml
+</pre></div>
+</div>
+<p>In particolare, tutte le impostazioni precedute da <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">INSTALL</span></code> vanno obbligatoriamente modificate.</p>
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_SECRET_KEY">
+<span class="sig-name descname"><span class="pre">DJANGO_SECRET_KEY</span></span><a class="headerlink" href="#envvar-DJANGO_SECRET_KEY" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica la chiave segreta da usare per i cookie di sessione.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_SECRET_KEY=do-not-use-this-key-in-production-or-you-will-get-hacked</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Cambiare la chiave segreta una volta installato Sophon invaliderà tutti gli accessi effettuati dagli utenti.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">Pericolo</p>
+<p>La chiave segreta è un dato estremamente riservato: chiunque sia a conoscenza della chiave segreta potrà effettuare l'accesso come qualsiasi utente!</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">Vedi anche</p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-SECRET_KEY">SECRET_KEY</a> nella documentazione di Django.</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_PROXY_BASE_DOMAIN">
+<span class="sig-name descname"><span class="pre">DJANGO_PROXY_BASE_DOMAIN</span></span><a class="headerlink" href="#envvar-DJANGO_PROXY_BASE_DOMAIN" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il dominio per il quale si è configurato il DNS in precedenza.</p>
+<p>Se non è specificato, Sophon verrà eseguito in <a class="reference internal" href="../realizzazione/index.html#modalita-sviluppo"><span class="std std-ref">modalità sviluppo</span></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_PROXY_BASE_DOMAIN=ilmiosophon.it</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_PROXY_PROTOCOL">
+<span class="sig-name descname"><span class="pre">DJANGO_PROXY_PROTOCOL</span></span><a class="headerlink" href="#envvar-DJANGO_PROXY_PROTOCOL" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica il protocollo che dovrà essere usato nei mapping del proxy.</p>
+<p>Si consiglia di utilizzare <code class="docutils literal notranslate"><span class="pre">https</span></code>, ma è un valore valido anche <code class="docutils literal notranslate"><span class="pre">http</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_PROXY_PROTOCOL=https</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_ALLOWED_HOSTS">
+<span class="sig-name descname"><span class="pre">DJANGO_ALLOWED_HOSTS</span></span><a class="headerlink" href="#envvar-DJANGO_ALLOWED_HOSTS" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica i domini da cui possono provenire le richieste alla pagina di amministrazione.</p>
+<p>Per specificare più domini, è necessario separarli con dei pipe <code class="docutils literal notranslate"><span class="pre">|</span></code> .</p>
+<p>Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso da <code class="docutils literal notranslate"><span class="pre">api.</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_ALLOWED_HOSTS=api.ilmiosophon.it</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">Vedi anche</p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/3.2/ref/settings/#allowed-hosts">ALLOWED_HOSTS</a> nella documentazione di Django.</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_ALLOWED_ORIGINS">
+<span class="sig-name descname"><span class="pre">DJANGO_ALLOWED_ORIGINS</span></span><a class="headerlink" href="#envvar-DJANGO_ALLOWED_ORIGINS" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica i domini da cui possono provenire le richieste all'API.</p>
+<p>Per specificare più domini, è necessario separarli con dei pipe <code class="docutils literal notranslate"><span class="pre">|</span></code> .</p>
+<p>Eccetto in configurazioni speciali, deve contenere il proprio dominio prefisso dal protocollo, e in aggiunta il dominio speciale <code class="docutils literal notranslate"><span class="pre">https://sophon.steffo.eu</span></code>, necessario per permettere l'accesso dall'interfaccia web &quot;universale&quot; di Sophon.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_ALLOWED_ORIGINS=https://ilmiosophon.it|https://sophon.steffo.eu</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">Vedi anche</p>
+<p>L'header <a class="reference external" href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin">Access-Control-Allow-Origin</a> su MDN.</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_STATIC_URL">
+<span class="sig-name descname"><span class="pre">DJANGO_STATIC_URL</span></span><a class="headerlink" href="#envvar-DJANGO_STATIC_URL" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica l'URL a cui saranno accessibili i file statici di Sophon.</p>
+<p>Eccetto in configurazioni speciali, deve essere uguale alla seguente stringa, con le parole in maiuscolo sostituite rispettivamente dal protocollo e dal dominio selezionato: <code class="docutils literal notranslate"><span class="pre">PROTOCOLLO://static.DOMINIO/django-static/</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_ALLOWED_ORIGINS=http://static.ilmiosophon.it/django-static/</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>Ci si assicuri che sia presente uno slash al termine della stringa, oppure il pannello di amministrazione non sarà visualizzato correttamente!</p>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">Vedi anche</p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/3.2/ref/settings/#std:setting-STATIC_URL">STATIC_URL</a> nella documentazione di Django</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_LANGUAGE_CODE">
+<span class="sig-name descname"><span class="pre">DJANGO_LANGUAGE_CODE</span></span><a class="headerlink" href="#envvar-DJANGO_LANGUAGE_CODE" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica la lingua che deve usare Sophon nei messaggi di errore.</p>
+<p>Usa il formato <a class="reference external" href="https://docs.djangoproject.com/en/3.2/topics/i18n/#term-language-code">language code</a> di Django.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_LANGUAGE_CODE=en-us</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">Vedi anche</p>
+<p><a class="reference external" href="https://docs.djangoproject.com/en/3.2/ref/settings/#language-code">LANGUAGE_CODE</a> nella documentazione di Django</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_TIME_ZONE">
+<span class="sig-name descname"><span class="pre">DJANGO_TIME_ZONE</span></span><a class="headerlink" href="#envvar-DJANGO_TIME_ZONE" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica il fuso orario che deve usare Sophon nell'interfaccia di amministrazione.</p>
+<p>Usa il formato <a class="reference external" href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">tzdata</a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_TIME_ZONE=Europe/Paris</span>
+</pre></div>
+</div>
+<div class="admonition hint">
+<p class="admonition-title">Suggerimento</p>
+<p>Il fuso orario italiano è <code class="docutils literal notranslate"><span class="pre">Europe/Rome</span></code>.</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_SU_USERNAME">
+<span class="sig-name descname"><span class="pre">DJANGO_SU_USERNAME</span></span><a class="headerlink" href="#envvar-DJANGO_SU_USERNAME" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica il nome del <a class="reference internal" href="../progetto/index.html#livelli-di-accesso"><span class="std std-ref">superutente</span></a> che verrà automaticamente creato qualora il database non contenga altri utenti.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_SU_USERNAME=root</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_SU_EMAIL">
+<span class="sig-name descname"><span class="pre">DJANGO_SU_EMAIL</span></span><a class="headerlink" href="#envvar-DJANGO_SU_EMAIL" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica l'email del <a class="reference internal" href="../progetto/index.html#livelli-di-accesso"><span class="std std-ref">superutente</span></a> che verrà automaticamente creato qualora il database non contenga altri utenti.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_SU_USERNAME=django@example.org</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Nota</p>
+<p>Attualmente, l'email non è utilizzata, ma è richiesta da Django per la creazione di un nuovo utente.</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-DJANGO_SU_PASSWORD">
+<span class="sig-name descname"><span class="pre">DJANGO_SU_PASSWORD</span></span><a class="headerlink" href="#envvar-DJANGO_SU_PASSWORD" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica la password del <a class="reference internal" href="../progetto/index.html#livelli-di-accesso"><span class="std std-ref">superutente</span></a> che verrà automaticamente creato qualora il database non contenga altri utenti.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">DJANGO_SU_PASSWORD=square</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Avvertimento</p>
+<p>La password è un dato estremamente riservato, in quanto chiunque ne venga a conoscenza potrà accedere a Sophon con pieni privilegi!</p>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-REACT_APP_DEFAULT_INSTANCE">
+<span class="sig-name descname"><span class="pre">REACT_APP_DEFAULT_INSTANCE</span></span><a class="headerlink" href="#envvar-REACT_APP_DEFAULT_INSTANCE" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica il valore con cui precompilare il campo &quot;selezione istanza&quot; dell'interfaccia web di Sophon.</p>
+<p>Eccetto in configurazioni speciali, deve essere uguale al dominio prefisso dal protocollo e da <code class="docutils literal notranslate"><span class="pre">api.</span></code>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">REACT_APP_DEFAULT_INSTANCE=https://api.ilmiosophon.it</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="std envvar">
+<dt class="sig sig-object std" id="envvar-APACHE_PROXY_BASE_DOMAIN">
+<span class="sig-name descname"><span class="pre">APACHE_PROXY_BASE_DOMAIN</span></span><a class="headerlink" href="#envvar-APACHE_PROXY_BASE_DOMAIN" title="Link a questa definizione"></a></dt>
+<dd><p>Specifica il dominio che dovrà essere usato come radice per il proxy, ovvero il <code class="docutils literal notranslate"><span class="pre">DOMINIO</span></code> per il quale si è configurato il DNS in precedenza.</p>
+<p>Deve essere uguale a <span class="target" id="index-0"></span><a class="reference internal" href="#envvar-DJANGO_PROXY_BASE_DOMAIN"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_PROXY_BASE_DOMAIN</span></code></a>.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">APACHE_PROXY_BASE_DOMAIN=ilmiosophon.it</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="3_configuring_dns.html" class="btn btn-neutral float-left" title="1.3. Configurazione DNS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="5_pulling_images.html" class="btn btn-neutral float-right" title="1.5. Download delle immagini Docker" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

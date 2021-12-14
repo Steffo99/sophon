@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="genindex.html" />
+    <link rel="search" title="Cerca" href="search.html" />
+    <link rel="next" title="1. Sinossi" href="docs/sinossi/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="#" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/installazione/index.html">1. Installazione di Sophon</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/index.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="progettazione-e-sviluppo-di-sophon-applicativo-cloud-a-supporto-della-ricerca">
+<h1>Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca<a class="headerlink" href="#progettazione-e-sviluppo-di-sophon-applicativo-cloud-a-supporto-della-ricerca" title="Link a questa intestazione"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="docs/introduzione/index.html">2. Introduzione alla tesi</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/introduzione/index.html#obiettivo-della-tesi">2.1. Obiettivo della tesi</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/introduzione/index.html#struttura-della-tesi">2.2. Struttura della tesi</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/ricercacollaborativa/index.html">3. Ricerca collaborativa</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/ricercacollaborativa/index.html#sistemi-di-composizione-tipografica">3.1. Sistemi di composizione tipografica</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ricercacollaborativa/index.html#editor-wysiwyg">3.2. Editor WYSIWYG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ricercacollaborativa/index.html#web-based-editor">3.3. Web-based editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ricercacollaborativa/index.html#notebook-computazionali">3.4. Notebook computazionali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/ricercacollaborativa/index.html#index-5">3.5. Jupyter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/ricercacollaborativa/index.html#componenti-di-jupyter">Componenti di Jupyter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/ricercacollaborativa/index.html#kernel-jupyter">Kernel Jupyter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/ricercacollaborativa/index.html#server-jupyter">Server Jupyter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/ricercacollaborativa/index.html#client-jupyter">Client Jupyter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/ricercacollaborativa/index.html#hosting-di-jupyter">Hosting di Jupyter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/ricercacollaborativa/index.html#hosting-locale">Hosting locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/ricercacollaborativa/index.html#come-software-as-a-service">Come software-as-a-service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/ricercacollaborativa/index.html#hosting-on-premises">Hosting on-premises</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/progetto/index.html">4. Progettazione di Sophon</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/progetto/index.html#requisiti-del-progetto">4.1. Requisiti del progetto</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#estendibilita">Estendibilità</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#sicurezza">Sicurezza</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#intuitivita">Intuitività</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#personalizzabilita">Personalizzabilità</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#possibilita-di-collaborazione">Possibilità di collaborazione</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#open-source">Open source</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#responsivita">Responsività</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#accessibilita">Accessibilità</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/progetto/index.html#separazione-in-moduli">4.2. Separazione in moduli</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#modulo-backend">Modulo backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#python">Python</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#poetry">Poetry</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#django">Django</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#django-rest-framework">Django REST Framework</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#docker-sdk-for-python">Docker SDK for Python</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#modulo-frontend">Modulo frontend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#javascript">JavaScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#node-js">Node.js</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#create-react-app">Create React App</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#typescript">TypeScript</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#react">React</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#fontawesome">FontAwesome</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#bluelib">Bluelib</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="docs/progetto/index.html#bluelib-react">Bluelib React</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#modulo-proxy">Modulo proxy</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#reverse-proxy">Reverse proxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#apache-http-server">Apache HTTP server</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#modulo-jupyter">Modulo Jupyter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/progetto/index.html#containerizzazione">4.3. Containerizzazione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#docker">Docker</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#immagini-docker">Immagini Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#container-docker">Container Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#network-docker">Network Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#volumi-docker">Volumi Docker</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#docker-engine">Docker Engine</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#docker-compose">Docker Compose</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/progetto/index.html#controllo-versione">4.4. Controllo versione</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#git">Git</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#github">GitHub</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#affero-general-public-license-3-0">Affero General Public License 3.0+</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/progetto/index.html#entita-di-sophon">4.5. Entità di Sophon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#istanza-in-sophon">Istanza in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#url-dell-istanza">URL dell'istanza</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#utenti-in-sophon">Utenti in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#livelli-di-accesso">Livelli di accesso</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#credenziali-di-accesso">Credenziali di accesso</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#gruppi-di-ricerca-in-sophon">Gruppi di ricerca in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#membri-e-modalita-di-accesso">Membri e modalità di accesso</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#creazione-di-nuovi-gruppi">Creazione di nuovi gruppi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#modifica-di-gruppi">Modifica di gruppi</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#eliminazione-di-gruppi">Eliminazione di gruppi</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#progetti-di-ricerca-in-sophon">Progetti di ricerca in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#visibilita-dei-progetti">Visibilità dei progetti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#creazione-di-nuovi-progetti">Creazione di nuovi progetti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#modifica-di-progetti">Modifica di progetti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#eliminazione-di-progetti">Eliminazione di progetti</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/progetto/index.html#notebook-in-sophon">Notebook in Sophon</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#creazione-di-nuovi-notebook">Creazione di nuovi notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#slug-riservati">Slug riservati</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#stato-del-notebook">Stato del notebook</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="docs/progetto/index.html#avviare-un-notebook">Avviare un notebook</a></li>
+<li class="toctree-l5"><a class="reference internal" href="docs/progetto/index.html#fermare-un-notebook">Fermare un notebook</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#immagine-del-notebook">Immagine del notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#collegamento-a-un-notebook">Collegamento a un notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#blocco-di-un-notebook">Blocco di un notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#modifica-di-un-notebook">Modifica di un notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/progetto/index.html#eliminazione-di-un-notebook">Eliminazione di un notebook</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/progetto/index.html#database">4.6. Database</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/realizzazione/index.html">5. Realizzazione di Sophon</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/realizzazione/index.html#realizzazione-del-modulo-backend">5.1. Realizzazione del modulo backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon">Il project Django</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.admin">App di amministrazione personalizzata</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.settings">Caricamento dinamico delle impostazioni</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.auth1">Miglioramenti all'autenticazione</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core">L'app Sophon Core</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core.management.commands.initsuperuser">Aggiunta di un nuovo comando di gestione</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core.models">Modello base astratto</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#modello-di-autorizzazione-astratto">Modello di autorizzazione astratto</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#modello-dei-dettagli-dell-istanza">Modello dei dettagli dell'istanza</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#modello-del-gruppo-di-ricerca">Modello del gruppo di ricerca</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core.permissions">Estensione ai permessi di Django</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core.views">Viewset astratti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#viewset-concreti">Viewset concreti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core.admin">Pagina di amministrazione</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.core.tests">Testing in Sophon Core</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#test-case-generici">Test case generici</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#test-case-concreti">Test case concreti</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.projects">L'app Sophon Projects</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.projects.models">Modello del progetto di ricerca</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.projects.views">Viewset del gruppo di ricerca</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.projects.admin">Amministrazione del gruppo di ricerca</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.notebooks">L'app Sophon Notebooks</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#funzionamento-di-un-notebook">Funzionamento di un notebook</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="docs/realizzazione/index.html#modalita-sviluppo">Modalità sviluppo</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.notebooks.apache">Gestione della rubrica del proxy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#assegnazione-porta-effimera">Assegnazione porta effimera</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.notebooks.docker">Connessione al daemon Docker</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#controllo-dello-stato-di-salute">Controllo dello stato di salute</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#generazione-di-token-sicuri">Generazione di token sicuri</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.notebooks.models">Modello dei notebook</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#module-sophon.notebooks.views">Viewset dei notebook</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#containerizzazione-del-modulo-backend">Containerizzazione del modulo backend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/realizzazione/index.html#realizzazione-del-modulo-frontend">5.2. Realizzazione del modulo frontend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#struttura-delle-directory">Struttura delle directory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#comunicazione-con-il-backend">Comunicazione con il backend</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#axios">Axios</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#client-personalizzati">Client personalizzati</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#utilizzo-di-viewset">Utilizzo di viewset</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#emulazione-di-viewset">Emulazione di viewset</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#contesti-innestati">Contesti innestati</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#i-contesti">I contesti</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="docs/realizzazione/index.html#contenuto-dei-contesti">Contenuto dei contesti</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#segmenti-di-url">Segmenti di URL</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="docs/realizzazione/index.html#parsing-dei-segmenti-di-url">Parsing dei segmenti di URL</a></li>
+<li class="toctree-l5"><a class="reference internal" href="docs/realizzazione/index.html#breadcrumbs">Breadcrumbs</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#componenti-contestuali">Componenti contestuali</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#routing-basato-sui-contesti">Routing basato sui contesti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#albero-completo-dei-contesti">Albero completo dei contesti</a></li>
+<li class="toctree-l4"><a class="reference internal" href="docs/realizzazione/index.html#altri-contesti">Altri contesti</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="docs/realizzazione/index.html#tema">Tema</a></li>
+<li class="toctree-l5"><a class="reference internal" href="docs/realizzazione/index.html#cache">Cache</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#containerizzazione-del-modulo-frontend">Containerizzazione del modulo frontend</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/realizzazione/index.html#realizzazione-del-modulo-proxy">5.3. Realizzazione del modulo proxy</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#containerizzazione-del-modulo-proxy">Containerizzazione del modulo proxy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/realizzazione/index.html#realizzazione-del-modulo-jupyter">5.4. Realizzazione del modulo Jupyter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#sviluppo-del-tema-per-jupyter">Sviluppo del tema per Jupyter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#estensione-del-container-docker-di-jupyter">Estensione del container Docker di Jupyter</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/realizzazione/index.html#automazione-di-sviluppo">5.5. Automazione di sviluppo</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#scansione-automatica-delle-dipendenze">Scansione automatica delle dipendenze</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#controllo-automatico-del-codice">Controllo automatico del codice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#costruzione-automatica-delle-immagini-docker">Costruzione automatica delle immagini Docker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/realizzazione/index.html#costruzione-automatica-della-documentazione">Costruzione automatica della documentazione</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/risultato/index.html">6. Risultati ottenuti</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/risultato/index.html#stato-finale-del-modulo-backend">6.1. Stato finale del modulo backend</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/risultato/index.html#pagina-di-amministrazione-esposta">Pagina di amministrazione esposta</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/risultato/index.html#stato-finale-del-modulo-frontend">6.2. Stato finale del modulo frontend</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/risultato/index.html#stato-finale-del-modulo-jupyter">6.3. Stato finale del modulo Jupyter</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/risultato/index.html#stato-finale-del-modulo-proxy">6.4. Stato finale del modulo proxy</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/conclusione/index.html">7. Il futuro di Sophon</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/conclusione/index.html#repository-github-di-sophon">7.1. Repository GitHub di Sophon</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/conclusione/index.html#nuova-entita-il-documento">Nuova entità: il documento</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/conclusione/index.html#sistema-per-organizzazione-delle-entita">Sistema per organizzazione delle entità</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/conclusione/index.html#registro-delle-attivita">Registro delle attività</a></li>
+<li class="toctree-l3"><a class="reference internal" href="docs/conclusione/index.html#federazione-tra-istanze">Federazione tra istanze</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="docs/bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="docs/installazione/index.html">1. Installazione di Sophon</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/1_requirements.html">1.1. Requisiti dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/2_preparing_compose.html">1.2. Preparazione di Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/3_configuring_dns.html">1.3. Configurazione DNS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/4_configuring_compose.html">1.4. Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/5_pulling_images.html">1.5. Download delle immagini Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/6_starting_sophon.html">1.6. Avvio di Sophon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/7_host_reverse_proxy.html">1.7. Configurazione del webserver dell'host</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="docs/installazione/7_host_reverse_proxy.html#con-apache-httpd">Con Apache HTTPd</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="docs/installazione/8_final_check.html">1.8. Verificare il funzionamento</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<section id="collegamenti-utili">
+<h2>Collegamenti utili<a class="headerlink" href="#collegamenti-utili" title="Link a questa intestazione"></a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Indice analitico</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Indice dei moduli</span></a></p></li>
+<li><p><a class="reference internal" href="http-routingtable.html"><span class="std std-ref">HTTP Routing Table</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Cerca</span></a></p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="docs/sinossi/index.html" class="btn btn-neutral float-right" title="1. Sinossi" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

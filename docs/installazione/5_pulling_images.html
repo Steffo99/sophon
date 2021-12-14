@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.5. Download delle immagini Docker &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="1.6. Avvio di Sophon" href="6_starting_sophon.html" />
+    <link rel="prev" title="1.4. Configurazione docker-compose.yml" href="4_configuring_compose.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Installazione di Sophon</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_requirements.html">1.1. Requisiti dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_preparing_compose.html">1.2. Preparazione di Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_configuring_dns.html">1.3. Configurazione DNS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_configuring_compose.html">1.4. Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.5. Download delle immagini Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_starting_sophon.html">1.6. Avvio di Sophon</a></li>
+<li class="toctree-l2"><a class="reference internal" href="7_host_reverse_proxy.html">1.7. Configurazione del webserver dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="8_final_check.html">1.8. Verificare il funzionamento</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>Installazione di Sophon</a> &raquo;</li>
+      <li><span class="section-number">1.5. </span>Download delle immagini Docker</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/6_installazione/5_pulling_images.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="download-delle-immagini-docker">
+<h1><span class="section-number">1.5. </span>Download delle immagini Docker<a class="headerlink" href="#download-delle-immagini-docker" title="Link a questa intestazione"></a></h1>
+<p>Si utilizzi <a class="reference external" href="https://docs.docker.com/compose/">Docker Compose</a> per scaricare le <a class="reference external" href="https://docs.docker.com/engine/reference/commandline/images/">immagini</a> Docker necessarie all'avvio di Sophon:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root:/dock/sophon# </span>docker compose pull
+<span class="go">[+] Running 4/4</span>
+<span class="go"> ⠿ proxy Pulled                                                                                 1.5s</span>
+<span class="go"> ⠿ frontend Pulled                                                                              1.4s</span>
+<span class="go"> ⠿ db Pulled                                                                                    1.9s</span>
+<span class="go"> ⠿ backend Pulled                                                                               1.6s</span>
+</pre></div>
+</div>
+<p>Inoltre, si scarichi manualmente l'<a class="reference internal" href="../progetto/index.html#immagine-del-notebook"><span class="std std-ref">Immagine del notebook</span></a> che può essere avviata da Sophon:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root:/dock/sophon# </span>docker image pull <span class="s2">&quot;ghcr.io/steffo99/sophon-jupyter:latest&quot;</span>
+<span class="go">latest: Pulling from steffo99/sophon-jupyter</span>
+<span class="go">7b1a6ab2e44d: Already exists</span>
+<span class="go">578d7ac380c6: Pull complete</span>
+<span class="go">37f1e0b584f6: Pull complete</span>
+<span class="go">3c7282703390: Pull complete</span>
+<span class="go">b38aa558f711: Pull complete</span>
+<span class="go">1412103d568f: Pull complete</span>
+<span class="go">67419a9a821e: Pull complete</span>
+<span class="go">37e6cc015184: Pull complete</span>
+<span class="go">7d9316e2b57c: Pull complete</span>
+<span class="go">a7f024508c72: Pull complete</span>
+<span class="go">f3eae3c301a1: Pull complete</span>
+<span class="go">d3e2107efade: Pull complete</span>
+<span class="go">d94bc6f8f069: Pull complete</span>
+<span class="go">1e1dc3e818ad: Pull complete</span>
+<span class="go">c975ee664182: Pull complete</span>
+<span class="go">101cfcc0e15b: Pull complete</span>
+<span class="go">bf991a0d7538: Pull complete</span>
+<span class="go">4c044af18c7e: Pull complete</span>
+<span class="go">605d8c6e8eba: Pull complete</span>
+<span class="go">ed06f2ae4a88: Pull complete</span>
+<span class="go">ed8b1c841d10: Pull complete</span>
+<span class="go">468fe9a390ae: Pull complete</span>
+<span class="go">Digest: sha256:5d42e5e40e406130c688914d6a58aa94769eab03620b53e0fd409a7fb2682a01</span>
+<span class="go">Status: Downloaded newer image for ghcr.io/steffo99/sophon-jupyter:latest</span>
+<span class="go">ghcr.io/steffo99/sophon-jupyter:latest</span>
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="4_configuring_compose.html" class="btn btn-neutral float-left" title="1.4. Configurazione docker-compose.yml" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="6_starting_sophon.html" class="btn btn-neutral float-right" title="1.6. Avvio di Sophon" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

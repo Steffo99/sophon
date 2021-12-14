@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>1.7. Configurazione del webserver dell&#39;host &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="1.8. Verificare il funzionamento" href="8_final_check.html" />
+    <link rel="prev" title="1.6. Avvio di Sophon" href="6_starting_sophon.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ricercacollaborativa/index.html">3. Ricerca collaborativa</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">1. Installazione di Sophon</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="1_requirements.html">1.1. Requisiti dell'host</a></li>
+<li class="toctree-l2"><a class="reference internal" href="2_preparing_compose.html">1.2. Preparazione di Docker Compose</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_configuring_dns.html">1.3. Configurazione DNS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="4_configuring_compose.html">1.4. Configurazione <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="5_pulling_images.html">1.5. Download delle immagini Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="6_starting_sophon.html">1.6. Avvio di Sophon</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">1.7. Configurazione del webserver dell'host</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#con-apache-httpd">Con Apache HTTPd</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="8_final_check.html">1.8. Verificare il funzionamento</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html"><span class="section-number">1. </span>Installazione di Sophon</a> &raquo;</li>
+      <li><span class="section-number">1.7. </span>Configurazione del webserver dell'host</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/6_installazione/7_host_reverse_proxy.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="configurazione-del-webserver-dell-host">
+<h1><span class="section-number">1.7. </span>Configurazione del webserver dell'host<a class="headerlink" href="#configurazione-del-webserver-dell-host" title="Link a questa intestazione"></a></h1>
+<p>Si configuri il webserver dell'host per inoltrare tutto il traffico dalla porta 443 (o 80, se si è selezionato <code class="docutils literal notranslate"><span class="pre">http</span></code> in <span class="target" id="index-0"></span><a class="reference internal" href="4_configuring_compose.html#envvar-DJANGO_PROXY_PROTOCOL"><code class="xref std std-envvar docutils literal notranslate"><span class="pre">DJANGO_PROXY_PROTOCOL</span></code></a>) alla porta locale 30033.</p>
+<p>Sono allegate le istruzioni per il webserver <a class="reference external" href="https://httpd.apache.org/">Apache HTTPd</a>; possono essere però adattate se si vuole usare un webserver diverso, come <a class="reference external" href="https://www.nginx.com/">NGINX</a> o <a class="reference external" href="https://caddyserver.com/">caddy</a>.</p>
+<section id="con-apache-httpd">
+<h2>Con Apache HTTPd<a class="headerlink" href="#con-apache-httpd" title="Link a questa intestazione"></a></h2>
+<p>Ci si assicuri che <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_rewrite.html">mod_rewrite</a>, <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_proxy.html">mod_proxy</a>, <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_proxy_http.html">mod_proxy_http</a> e <a class="reference external" href="https://httpd.apache.org/docs/2.4/mod/mod_proxy_wstunnel.html">mod_proxy_wstunnel</a> siano attivati.</p>
+<p>Si aggiungano i seguenti <code class="docutils literal notranslate"><span class="pre">VirtualHost</span></code> alla configurazione:</p>
+<div class="highlight-apacheconf notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">*:80</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> <span class="s2">&quot;ilmiosophon.it&quot;</span>
+    <span class="nb">ServerAlias</span> <span class="s2">&quot;*.ilmiosophon.it&quot;</span>
+
+    <span class="nb">RewriteEngine</span> <span class="k">On</span>
+    <span class="nb">RewriteRule</span> ^(.*)$ https://%{HTTP_HOST}$1 [R=301,L]
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-apacheconf notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;VirtualHost</span> <span class="s">*:443</span><span class="nt">&gt;</span>
+    <span class="nb">ServerName</span> <span class="s2">&quot;ilmiosophon.it&quot;</span>
+    <span class="nb">ServerAlias</span> <span class="s2">&quot;*.ilmiosophon.it&quot;</span>
+
+    <span class="nb">SSLEngine</span> <span class="k">on</span>
+    <span class="nb">SSLCertificateFile</span>      <span class="s2">&quot;/SOSTITUISCIMI/CON/IL/PERCORSO/ALLA/FULL/CHAIN/SSL&quot;</span>
+    <span class="nb">SSLCertificateKeyFile</span>   <span class="s2">&quot;/SOSTITUISCIMI/CON/IL/PERCORSO/ALLA/CHIAVE/PRIVATA/SSL&quot;</span>
+
+    <span class="nb">ProxyPreserveHost</span> <span class="k">On</span>
+    <span class="nb">RequestHeader</span> set <span class="s2">&quot;X-Forwarded-Proto&quot;</span> expr=%{REQUEST_SCHEME}
+
+    <span class="nb">RewriteEngine</span> <span class="k">On</span>
+    <span class="nb">RewriteCond</span> %{HTTP:Upgrade} =websocket [NC]
+    <span class="nb">RewriteRule</span> /(.*)           ws://127.0.0.1:30033/$1 [P,L]
+    <span class="nb">RewriteRule</span> /(.*)           http://127.0.0.1:30033/$1 [P,L]
+
+    <span class="nb">Protocols</span> h2 http/1.1
+    <span class="nb">Header</span> always set Strict-Transport-Security <span class="s2">&quot;max-age=63072000&quot;</span>
+<span class="nt">&lt;/VirtualHost&gt;</span>
+</pre></div>
+</div>
+<p>Infine, si riavvii <a class="reference external" href="https://httpd.apache.org/">Apache HTTPd</a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">root:/dock/sophon# </span>systemctl restart httpd
+</pre></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="6_starting_sophon.html" class="btn btn-neutral float-left" title="1.6. Avvio di Sophon" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="8_final_check.html" class="btn btn-neutral float-right" title="1.8. Verificare il funzionamento" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

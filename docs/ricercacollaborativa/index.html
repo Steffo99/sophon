@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="it" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3. Ricerca collaborativa &mdash; Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/translations.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Indice analitico" href="../../genindex.html" />
+    <link rel="search" title="Cerca" href="../../search.html" />
+    <link rel="next" title="4. Progettazione di Sophon" href="../progetto/index.html" />
+    <link rel="prev" title="2. Introduzione alla tesi" href="../introduzione/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #051836" >
+            <a href="../../index.html" class="icon icon-home"> Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Cerca documenti" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Menu di navigazione">
+              <p class="caption" role="heading"><span class="caption-text">Contenuti</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../sinossi/index.html">1. Sinossi</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../introduzione/index.html">2. Introduzione alla tesi</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">3. Ricerca collaborativa</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#sistemi-di-composizione-tipografica">3.1. Sistemi di composizione tipografica</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#editor-wysiwyg">3.2. Editor WYSIWYG</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#web-based-editor">3.3. Web-based editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#notebook-computazionali">3.4. Notebook computazionali</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#index-5">3.5. Jupyter</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#componenti-di-jupyter">Componenti di Jupyter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#kernel-jupyter">Kernel Jupyter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#server-jupyter">Server Jupyter</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#client-jupyter">Client Jupyter</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#hosting-di-jupyter">Hosting di Jupyter</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#hosting-locale">Hosting locale</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#come-software-as-a-service">Come software-as-a-service</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#hosting-on-premises">Hosting on-premises</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../progetto/index.html">4. Progettazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../realizzazione/index.html">5. Realizzazione di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../risultato/index.html">6. Risultati ottenuti</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../conclusione/index.html">7. Il futuro di Sophon</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bibliografia/index.html">8. Bibliografia</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Appendice</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installazione/index.html">1. Installazione di Sophon</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Menu navigazione dispositivi mobili"  style="background: #051836" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Progettazione e sviluppo di Sophon, applicativo cloud a supporto della ricerca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Naviga tra le pagine">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li><span class="section-number">3. </span>Ricerca collaborativa</li>
+      <li class="wy-breadcrumbs-aside">
+              <!-- User defined GitHub URL -->
+              <a href="https://github.com/Steffo99/sophon/blob/main/thesis/source/3_presentazione/index.rst" class="fa fa-github"> Modifica su GitHub</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="ricerca-collaborativa">
+<span id="index-0"></span><h1><span class="section-number">3. </span>Ricerca collaborativa<a class="headerlink" href="#ricerca-collaborativa" title="Link a questa intestazione"></a></h1>
+<p>Nelle scienze, sia teoriche, sia sperimentali, si verifica spesso la necessità di dover prendere appunti e condividere appunti sulla ricerca effettuata.</p>
+<p>Mentre in passato a tale scopo venivano utilizzati quaderni di carta (detti anche <em>&quot;blocchi note laboratoriali&quot;</em> <a class="reference internal" href="../bibliografia/index.html#wiki-eln" id="id1"><span>[wiki:eln]</span></a>), con la nascita dell'informatica si iniziarono ad utilizzare strumenti digitali, più comodi ed efficienti: inizialmente, semplici sistemi di composizione tipografica come <em>TeX</em>, poi editor <abbr title="What You See Is What You Get">WYSIWYG</abbr> come <em>Microsoft Word</em>, arrivando infine negli ultimi anni ai più avanzati e interattivi <a class="reference internal" href="#notebook-computazionali"><span class="std std-ref">notebook computazionali</span></a>.</p>
+<section id="sistemi-di-composizione-tipografica">
+<span id="index-1"></span><h2><span class="section-number">3.1. </span>Sistemi di composizione tipografica<a class="headerlink" href="#sistemi-di-composizione-tipografica" title="Link a questa intestazione"></a></h2>
+<p>I primi sistemi utilizzati in ambito accademico per la creazione di documenti erano molto semplici: si limitavano a descrivere come dovevano apparire i contenuti sul foglio stampato attraverso istruzioni molto simili a quelle di un linguaggio di programmazione.</p>
+<p>Sono esempi di sistemi di composizione tipografica <a class="reference external" href="https://www.tug.org/begin.html">TeX</a>, usato ancora oggi in combinazione con il sistema <a class="reference external" href="https://www.latex-project.org//">LaTeX</a> per comporre documenti accademici come paper e tesi (inclusa questa), e <a class="reference external" href="https://en.wikipedia.org/wiki/Roff_(software)">roff</a>, su cui si basa oggi lo strumento <a class="reference external" href="https://it.wikipedia.org/wiki/Groff_(software)">groff</a> per comporre le pagine di manuale dei sistemi operativi Unix-like.</p>
+<p>Un esempio di documento LaTeX <a class="reference internal" href="../bibliografia/index.html#overleaf-learn30mins" id="id2"><span>[overleaf:learn30mins]</span></a> è il seguente:</p>
+<div class="highlight-latex notranslate"><div class="highlight"><pre><span></span><span class="k">\documentclass</span><span class="nb">{</span>article<span class="nb">}</span>
+
+<span class="k">\begin</span><span class="nb">{</span>document<span class="nb">}</span>
+   First document.
+   This is a simple example, with no extra parameters or packages included.
+<span class="k">\end</span><span class="nb">{</span>document<span class="nb">}</span>
+</pre></div>
+</div>
+</section>
+<section id="editor-wysiwyg">
+<span id="index-2"></span><h2><span class="section-number">3.2. </span>Editor WYSIWYG<a class="headerlink" href="#editor-wysiwyg" title="Link a questa intestazione"></a></h2>
+<p>Con l'evolversi dei sistemi operativi, in particolare con la diffusione dei sistemi operativi a finestre, sono stati sviluppati software detti &quot;editor di testo <abbr title="What You See Is What You Get">WYSIWYG</abbr>&quot;, che permettono di scrivere documenti avendo un'anteprima istantanea del testo inserito.</p>
+<p>Essendo molto più intuitivi da usare dei loro predecessori, ne hanno preso rapidamente il posto in tutto il mondo, di fatto limitando l'uso dei <a class="reference internal" href="#sistemi-di-composizione-tipografica"><span class="std std-ref">sistemi di composizione tipografica</span></a> ad ambiti in cui era necessaria una formattazione avanzata dei documenti.</p>
+<p>Alcuni esempi moderni di editor <abbr title="What You See Is What You Get">WYSIWYG</abbr> sono <a class="reference external" href="https://www.microsoft.com/it-it/microsoft-365/word">Microsoft Word</a> e <a class="reference external" href="https://it.libreoffice.org/scopri/writer/">LibreOffice Writer</a>.</p>
+<figure class="align-default" id="id9">
+<img alt="../../_images/libreoffice.png" src="../../_images/libreoffice.png" />
+<figcaption>
+<p><span class="caption-number">Figura 3.2.1 </span><span class="caption-text">Modifica di un documento su LibreOffice 7.2.2.2.</span><a class="headerlink" href="#id9" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="web-based-editor">
+<span id="index-3"></span><h2><span class="section-number">3.3. </span>Web-based editor<a class="headerlink" href="#web-based-editor" title="Link a questa intestazione"></a></h2>
+<p>Il paradigma web &quot;2.0&quot; ha portato miglioramenti significativi agli editor <abbr title="What You See Is What You Get">WYSIWYG</abbr>, rendendoli utilizzabili online come software-as-a-service direttamente da un browser.</p>
+<p>Ciò ha semplificato il processo di collaborazione sui documenti: non è più necessario inviare ai collaboratori tutte le revisioni dei documenti, ma è possibile semplicemente condividergli un link, al quale sarà possibile accedere al documento.</p>
+<p>Da questa funzionalità ne è poi derivata un'altra, che ha rivoluzionato la scrittura di testi: la possibilità di collaborare online con gli altri autori, vedendo le loro modifiche in tempo reale.</p>
+<p>Il più importante di questi editor è <a class="reference external" href="https://docs.google.com/">Google Docs</a>, rilasciato nel 2009; la sua popolarità ha portato allo sviluppo di alternative come <a class="reference external" href="https://www.office.com/">Office 365</a>, una versione web di <a class="reference internal" href="#editor-wysiwyg"><span class="std std-ref">Microsoft Word</span></a>.</p>
+<figure class="align-default" id="id10">
+<img alt="../../_images/google_docs.png" src="../../_images/google_docs.png" />
+<figcaption>
+<p><span class="caption-number">Figura 3.3.1 </span><span class="caption-text">Un esempio di collaborazione su un documento Google Docs.</span><a class="headerlink" href="#id10" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="notebook-computazionali">
+<span id="index-4"></span><h2><span class="section-number">3.4. </span>Notebook computazionali<a class="headerlink" href="#notebook-computazionali" title="Link a questa intestazione"></a></h2>
+<p>In parallelo ai <a class="reference internal" href="#web-based-editor"><span class="std std-ref">web-based editor</span></a>, ha preso piede nel mondo della ricerca scientifica una nuova tipologia di documento: il notebook computazionale.</p>
+<p>I <em>notebook computazionali</em> sono un tipo di documento interattivo che permette contemporaneamente di analizzare dati, elaborarli e documentare elaborazioni effettuate e risultati ottenuti.</p>
+<p>Essi sono composti da tante <strong>celle</strong>, ciascuna contenente codice in un determinato linguaggio di programmazione o di marcatura, il quale è eseguito, mostrandone poi i risultati all'utente, sotto forma di testo, equazioni, immagini, grafici, o anche widget interattivi come slider o aree di input testo.</p>
+<p>Alcuni esempi di software per la scrittura di notebook computazionali sono <a class="reference external" href="https://jupyter.org/">Jupyter</a>, <a class="reference external" href="https://www.wolfram.com/mathematica/">Wolfram Mathematica</a>, <a class="reference external" href="https://it.mathworks.com/products/matlab/live-editor.html">MATLAB Live Editor</a>...</p>
+<figure class="align-default" id="id11">
+<img alt="../../_images/wolfram_cloud.png" src="../../_images/wolfram_cloud.png" />
+<figcaption>
+<p><span class="caption-number">Figura 3.4.1 </span><span class="caption-text">Un esempio di notebook Mathematica, scritto su Wolfram Cloud.</span><a class="headerlink" href="#id11" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="index-5">
+<span id="id3"></span><h2><span class="section-number">3.5. </span>Jupyter<a class="headerlink" href="#index-5" title="Link a questa intestazione"></a></h2>
+<p><em>Jupyter</em> è un software open-source che permette la scrittura e la visualizzazione di <a class="reference internal" href="#notebook-computazionali"><span class="std std-ref">notebook computazionali</span></a>.</p>
+<p>Come tutti i notebook computazionali è strutturato in celle, le quali possono contenere testo, dati oppure codice di programmazione con relativo output.</p>
+<p>Prende ispirazione dai <a class="reference internal" href="#web-based-editor"><span class="std std-ref">web-based editor</span></a>, permettendo agli utenti di modificare i notebook direttamente da un browser web, e include rudimentali funzionalità di collaborazione in tempo reale <a class="reference internal" href="../bibliografia/index.html#jupyter-collaboration" id="id4"><span>[jupyter:collaboration]</span></a>.</p>
+<figure class="align-default" id="id12">
+<a class="reference internal image-reference" href="../../_images/hist_example.png"><img alt="../../_images/hist_example.png" src="../../_images/hist_example.png" style="width: 542.0px; height: 468.0px;" /></a>
+<figcaption>
+<p><span class="caption-number">Figura 3.5.1 </span><span class="caption-text">Un esempio di notebook Jupyter con una cella di testo e una cella di Python che emette un grafico <a class="reference internal" href="../bibliografia/index.html#matplotlib-histograms" id="id5"><span>[matplotlib:histograms]</span></a>.</span><a class="headerlink" href="#id12" title="Link a questa immagine"></a></p>
+</figcaption>
+</figure>
+<section id="componenti-di-jupyter">
+<span id="index-6"></span><h3>Componenti di Jupyter<a class="headerlink" href="#componenti-di-jupyter" title="Link a questa intestazione"></a></h3>
+<p>Jupyter è composto da 3 componenti: un <a class="reference internal" href="#kernel-jupyter"><span class="std std-ref">kernel</span></a>, un <a class="reference internal" href="#server-jupyter"><span class="std std-ref">server</span></a> e un <a class="reference internal" href="#client-jupyter"><span class="std std-ref">client</span></a>.</p>
+<section id="kernel-jupyter">
+<span id="index-7"></span><h4>Kernel Jupyter<a class="headerlink" href="#kernel-jupyter" title="Link a questa intestazione"></a></h4>
+<p>Il kernel è la parte di Jupyter che si occupa di eseguire le celle del notebook, restituendone i risultati al <a class="reference internal" href="#server-jupyter"><span class="std std-ref">server</span></a>.</p>
+<p>Per ogni linguaggio di programmazione che si desidera utilizzare nel notebook è necessario il relativo <strong>kernel</strong>: il kernel predefinito di Jupyter è <a class="reference external" href="https://ipython.org/">IPython</a>, che permette di utilizzare il linguaggio di programmazione <a class="reference external" href="https://www.python.org/">Python</a>; sono però disponibili tanti altri kernel, tra cui uno per <a class="reference external" href="https://julialang.org/">Julia</a> e uno per <a class="reference external" href="https://www.r-project.org/">R</a> <a class="reference internal" href="../bibliografia/index.html#jupyter-kernels" id="id6"><span>[jupyter:kernels]</span></a>.</p>
+</section>
+<section id="server-jupyter">
+<span id="index-8"></span><h4>Server Jupyter<a class="headerlink" href="#server-jupyter" title="Link a questa intestazione"></a></h4>
+<p>Il <strong>server</strong> è la parte di Jupyter che gestisce le interazioni del <a class="reference internal" href="#client-jupyter"><span class="std std-ref">client</span></a> con il notebook, inoltrandole al <a class="reference internal" href="#kernel-jupyter"><span class="std std-ref">kernel</span></a> appropriato se necessario.</p>
+<p>Il server ufficiale di Jupyter è <a class="reference external" href="https://github.com/jupyter-server/jupyter_server">Jupyter Server</a>.</p>
+</section>
+<section id="client-jupyter">
+<span id="index-9"></span><h4>Client Jupyter<a class="headerlink" href="#client-jupyter" title="Link a questa intestazione"></a></h4>
+<p>Il <strong>client</strong> è la parte di Jupyter che mostra in un formato user-friendly il contenuto del notebook e gli permette di interagirvi, comunicando le interazioni al <a class="reference internal" href="#server-jupyter"><span class="std std-ref">server</span></a>.</p>
+<p>Esistono due client ufficiali per Jupyter: il client di vecchia generazione <a class="reference external" href="https://github.com/jupyter/notebook">Jupyter Notebook</a> e il client di nuova generazione <a class="reference external" href="https://github.com/jupyterlab">JupyterLab</a>, entrambi web-based.</p>
+</section>
+</section>
+<section id="hosting-di-jupyter">
+<span id="index-10"></span><h3>Hosting di Jupyter<a class="headerlink" href="#hosting-di-jupyter" title="Link a questa intestazione"></a></h3>
+<p>Essendo <a class="reference internal" href="#server-jupyter"><span class="std std-ref">server</span></a> e <a class="reference internal" href="#client-jupyter"><span class="std std-ref">client</span></a> separati, è possibile eseguire il server su una macchina e il client su un'altra.</p>
+<p>È possibile selezionare la macchina su cui eseguire il server in tre modi diversi, elencati nelle prossime sezioni, ciascuno con alcuni vantaggi e svantaggi.</p>
+<section id="hosting-locale">
+<h4>Hosting locale<a class="headerlink" href="#hosting-locale" title="Link a questa intestazione"></a></h4>
+<p>È possibile installare il server Jupyter <strong>sul proprio computer</strong>.</p>
+<p>Così facendo, le celle saranno eseguite con le risorse del proprio computer, e il notebook sarà accessibile solo dal computer che sta eseguendo il server.</p>
+<p>È un ottimo modo per lavorare su progetti personali, in quanto offre la massima personalizzazione attraverso un sistema di plugin installabili, e per lavorare offline, in quanto è l'unico modo di usare il server senza connessione ad Internet.</p>
+<p>In base al proprio sistema operativo, però, potrebbe risultare difficile da installare, e in base alla propria configurazione di rete, la collaborazione realtime su un progetto potrebbe essere impossibile.</p>
+</section>
+<section id="come-software-as-a-service">
+<span id="index-11"></span><h4>Come software-as-a-service<a class="headerlink" href="#come-software-as-a-service" title="Link a questa intestazione"></a></h4>
+<p>È possibile utilizzare un server Jupyter <strong>gestito da un cloud provider</strong> ed utilizzare le risorse da esso fornite per eseguire le celle.</p>
+<p>Un esempio di cloud provider che fornisce questo servizio è Google, con <a class="reference external" href="https://colab.research.google.com/#">Google Colaboratory</a>.</p>
+<p>Usare il modello <abbr title="Software as a Service">SaaS</abbr> è il modo più semplice per usare Jupyter, in quanto non richiede di effettuare alcuna installazione sul proprio computer, e in genere permette di collaborare online con altri utenti.</p>
+<p>Di contro, però, Jupyter sulle piattaforme <abbr title="Software as a Service">SaaS</abbr> non permette l'installazione di plugin, limitando la personalizzazione, e, se si necessitano più risorse di quelle offerte gratuitamente dai provider, si rischiano canoni mensili elevati.</p>
+</section>
+<section id="hosting-on-premises">
+<span id="index-12"></span><h4>Hosting on-premises<a class="headerlink" href="#hosting-on-premises" title="Link a questa intestazione"></a></h4>
+<p>È possibile configurare un <strong>server della propria istituzione</strong> in modo tale che esegua uno o più <a class="reference internal" href="#server-jupyter"><span class="std std-ref">server Jupyter</span></a> a cui si connetteranno i <a class="reference internal" href="#client-jupyter"><span class="std std-ref">client</span></a>.</p>
+<p>A tale scopo, è disponibile il progetto <a class="reference external" href="https://jupyter.org/hub">JupyterHub</a>, in grado di gestire migliaia di utenti simultanei <a class="reference internal" href="../bibliografia/index.html#jupyter-ifaq" id="id7"><span>[jupyter:ifaq]</span></a>, ciascuno con il proprio notebook.</p>
+<p>È performante ed efficace, e in base alla configurazione scelta dall'amministratore, può permettere agli utenti di personalizzare il loro ambiente di lavoro con plugin.</p>
+<p>L'interfaccia di gestione utenti e notebook è però molto essenziale, e in aggiunta non supporta nativamente la collaborazione real-time su un singolo notebook, preferendo il modello <em>&quot;tanti server Jupyter da utente singolo&quot;</em> <a class="reference internal" href="../bibliografia/index.html#jupyter-hub" id="id8"><span>[jupyter:hub]</span></a>.</p>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Piè di pagina">
+        <a href="../introduzione/index.html" class="btn btn-neutral float-left" title="2. Introduzione alla tesi" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Precedente</a>
+        <a href="../progetto/index.html" class="btn btn-neutral float-right" title="4. Progettazione di Sophon" accesskey="n" rel="next">Prossimo <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, Stefano Pigozzi.</p>
+  </div>
+
+  Realizzato con <a href="https://www.sphinx-doc.org/">Sphinx</a> e il tema
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    fornito da <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
