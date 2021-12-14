@@ -44,6 +44,12 @@ jobs:
         with:
           name: "thesis.html.tar.gz"
           path: "thesis/build/thesis.html.tar.gz"
+      - name: "Publish build to GitHub Pages"
+        uses: peaceiris/actions-gh-pages@v3.7.3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: thesis/build/html/
+          enable_jekyll: false
   latexpdf:
     name: "Build PDF document"
     runs-on: ubuntu-latest
