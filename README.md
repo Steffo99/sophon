@@ -11,8 +11,7 @@ _A research hub for universities_
 
 ## Goal
 
-The goal of this project is developing a platform that universities can use to **host** and **share** their _datasets_, _research projects_ and resulting _
-papers_.
+The goal of this project is developing a platform that universities can use to **host** and **share** their _datasets_, _research projects_ and resulting _papers_.
 
 
 ## Installation
