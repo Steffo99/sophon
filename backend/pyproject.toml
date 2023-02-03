@@ -6,7 +6,7 @@ authors = ["Stefano Pigozzi <256895@studenti.unimore.it>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-Django = "^3.2.15"
+Django = "^3.2.17"
 psycopg2 = "^2.8.6"
 djangorestframework = "^3.12.4"
 Markdown = "^3.3.4"
