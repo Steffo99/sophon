@@ -1,5 +1,7 @@
 <div align="center">
 
+![](.media/icon-128x128_round.png)
+
 # Sophon
 
 Research hub for universities
