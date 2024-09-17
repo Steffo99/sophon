@@ -1,17 +1,31 @@
+<div align="center">
+
 # Sophon
 
-_A research hub for universities_
+Research hub for universities
+
+</div>
+
+> [!Danger]
+> This project is not currently being maintained due to a sudden lack of external interest.
+
+## Links
+
+[![On ACM Digital Library](https://img.shields.io/badge/acm%20digital%20library-open%20access-b95709)](https://dl.acm.org/doi/abs/10.1145/3491418.3535163)
+
+
+## Goal
+
+The goal of this project is developing a platform that universities can use to **host** and **share** their _datasets_, _research projects_ and resulting _papers_.
+
+
+## Screenshots
 
 ![Screenshot 1](https://user-images.githubusercontent.com/1540885/138204295-59c6efc3-a4fe-4c91-982b-8257e42b7970.png)
 
 ![Screenshot 2](https://user-images.githubusercontent.com/1540885/138204345-346d144f-914f-4435-8816-69abe4a34381.png)
 
 ![Screenshot 3](https://user-images.githubusercontent.com/1540885/138204387-69cd2e63-3030-48b8-a149-043e3e2393f7.png)
-
-
-## Goal
-
-The goal of this project is developing a platform that universities can use to **host** and **share** their _datasets_, _research projects_ and resulting _papers_.
 
 
 ## Installation
