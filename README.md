@@ -9,7 +9,8 @@ Research hub for universities
 </div>
 
 > [!Danger]
-> This project is not currently being maintained due to a sudden lack of external interest.
+> 
+> This project has been superseded by the NextPyther project.
 
 ## Links
 
