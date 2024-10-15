@@ -8,9 +8,9 @@ Research hub for universities
 
 </div>
 
-> [!Danger]
+> [!Alert]
 > 
-> This project has been superseded by the NextPyther project.
+> This project has been superseded by the NextPyter project.
 
 ## Links
 
