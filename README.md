@@ -8,7 +8,7 @@ Research hub for universities
 
 </div>
 
-> [!Alert]
+> [!Caution]
 > 
 > This project has been superseded by the NextPyter project.
 
